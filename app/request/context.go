@@ -51,7 +51,7 @@ func (c *Context) Session() *model.Session {
 func (c *Context) RequestID() string {
 	return c.requestID
 }
-func (c *Context) IDAddress() string {
+func (c *Context) IPAddress() string {
 	return c.ipAddress
 }
 func (c *Context) Path() string {
@@ -78,7 +78,7 @@ func (c *Context) SetT(t i18n.TranslateFunc) {
 func (c *Context) SetRequestID(s string) {
 	c.requestID = s
 }
-func (c *Context) SetIDAddress(s string) {
+func (c *Context) SetIPAddress(s string) {
 	c.ipAddress = s
 }
 func (c *Context) SetUserAgent(s string) {

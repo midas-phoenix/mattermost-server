@@ -20,7 +20,7 @@ func pluginContext(c *request.Context) *plugin.Context {
 	context := &plugin.Context{
 		RequestID:      c.RequestID(),
 		SessionID:      c.Session().ID,
-		IDAddress:      c.IDAddress(),
+		IPAddress:      c.IPAddress(),
 		AcceptLanguage: c.AcceptLanguage(),
 		UserAgent:      c.UserAgent(),
 	}

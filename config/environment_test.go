@@ -81,13 +81,13 @@ func TestRemoveEnvOverrides(t *testing.T) {
 		{
 			name: "bool setting",
 			inputConfig: modifiedDefault(func(in *model.Config) {
-				*in.ClusterSettings.UseIDAddress = false
+				*in.ClusterSettings.UseIPAddress = false
 			}),
 			env: map[string]string{
 				"MM_CLUSTERSETTINGS_USEIPADDRESS": "true",
 			},
 			expectedConfig: modifiedDefault(func(in *model.Config) {
-				*in.ClusterSettings.UseIDAddress = true
+				*in.ClusterSettings.UseIPAddress = true
 			}),
 		},
 		{

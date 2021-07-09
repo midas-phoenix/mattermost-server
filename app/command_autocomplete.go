@@ -259,7 +259,7 @@ func (a *App) getDynamicListArgument(c *request.Context, commandArgs *model.Comm
 	pluginContext := pluginContext(c)
 	params.Add("request_id", pluginContext.RequestID)
 	params.Add("session_id", pluginContext.SessionID)
-	params.Add("ip_address", pluginContext.IDAddress)
+	params.Add("ip_address", pluginContext.IPAddress)
 	params.Add("accept_language", pluginContext.AcceptLanguage)
 	params.Add("user_agent", pluginContext.UserAgent)
 

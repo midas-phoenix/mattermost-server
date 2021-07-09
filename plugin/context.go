@@ -9,7 +9,7 @@ package plugin
 type Context struct {
 	SessionID      string
 	RequestID      string
-	IDAddress      string
+	IPAddress      string
 	AcceptLanguage string
 	UserAgent      string
 	SourcePluginID string // Deprecated: Use the "Mattermost-Plugin-ID" HTTP header instead

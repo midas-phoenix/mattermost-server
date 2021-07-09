@@ -29,7 +29,7 @@ func (_m *AppContextInterface) AcceptLanguage() string {
 }
 
 // IpAddress provides a mock function with given fields:
-func (_m *AppContextInterface) IDAddress() string {
+func (_m *AppContextInterface) IPAddress() string {
 	ret := _m.Called()
 
 	var r0 string

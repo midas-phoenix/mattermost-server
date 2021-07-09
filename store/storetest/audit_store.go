@@ -19,7 +19,7 @@ func TestAuditStore(t *testing.T, ss store.Store) {
 }
 
 func testAuditStore(t *testing.T, ss store.Store) {
-	audit := &model.Audit{UserID: model.NewID(), IDAddress: "ipaddress", Action: "Action"}
+	audit := &model.Audit{UserID: model.NewID(), IPAddress: "ipaddress", Action: "Action"}
 	require.NoError(t, ss.Audit().Save(audit))
 	time.Sleep(100 * time.Millisecond)
 	require.NoError(t, ss.Audit().Save(audit))

@@ -12,7 +12,7 @@ type ClusterInfo struct {
 	ID         string `json:"id"`
 	Version    string `json:"version"`
 	ConfigHash string `json:"config_hash"`
-	IDAddress  string `json:"ipaddress"`
+	IPAddress  string `json:"ipaddress"`
 	Hostname   string `json:"hostname"`
 }
 

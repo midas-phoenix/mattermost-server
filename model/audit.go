@@ -14,7 +14,7 @@ type Audit struct {
 	UserID    string `json:"user_id"`
 	Action    string `json:"action"`
 	ExtraInfo string `json:"extra_info"`
-	IDAddress string `json:"ip_address"`
+	IPAddress string `json:"ip_address"`
 	SessionID string `json:"session_id"`
 }
 

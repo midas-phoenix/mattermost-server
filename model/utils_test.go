@@ -343,8 +343,8 @@ func TestIsValidAlphaNum(t *testing.T) {
 	}
 }
 
-func TestGetServerIDAddress(t *testing.T) {
-	require.NotEmpty(t, GetServerIDAddress(""), "Should find local ip address")
+func TestGetServerIPAddress(t *testing.T) {
+	require.NotEmpty(t, GetServerIPAddress(""), "Should find local ip address")
 }
 
 func TestIsValidAlphaNumHyphenUnderscore(t *testing.T) {
@@ -855,7 +855,7 @@ func TestSanitizeUnicode(t *testing.T) {
 	}
 }
 
-func TestIsValidHttpUrl(t *testing.T) {
+func TestIsValidHttpURL(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
@@ -940,7 +940,7 @@ func TestIsValidHttpUrl(t *testing.T) {
 			}()
 
 			t.Parallel()
-			require.Equal(t, testCase.Expected, IsValidHttpUrl(testCase.Value))
+			require.Equal(t, testCase.Expected, IsValidHttpURL(testCase.Value))
 		})
 	}
 }
