@@ -17,12 +17,12 @@ type PluginsResponse struct {
 	Inactive []*PluginInfo `json:"inactive"`
 }
 
-func (m *PluginsResponse) ToJson() string {
+func (m *PluginsResponse) ToJSON() string {
 	b, _ := json.Marshal(m)
 	return string(b)
 }
 
-func PluginsResponseFromJson(data io.Reader) *PluginsResponse {
+func PluginsResponseFromJSON(data io.Reader) *PluginsResponse {
 	var m *PluginsResponse
 	json.NewDecoder(data).Decode(&m)
 	return m

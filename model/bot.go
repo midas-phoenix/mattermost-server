@@ -116,13 +116,13 @@ func (b *Bot) Etag() string {
 }
 
 // ToJson serializes the bot to json.
-func (b *Bot) ToJson() []byte {
+func (b *Bot) ToJSON() []byte {
 	data, _ := json.Marshal(b)
 	return data
 }
 
 // BotFromJson deserializes a bot from json.
-func BotFromJson(data io.Reader) *Bot {
+func BotFromJSON(data io.Reader) *Bot {
 	var bot *Bot
 	json.NewDecoder(data).Decode(&bot)
 	return bot
@@ -163,7 +163,7 @@ func (b *Bot) WouldPatch(patch *BotPatch) bool {
 }
 
 // ToJson serializes the bot patch to json.
-func (b *BotPatch) ToJson() []byte {
+func (b *BotPatch) ToJSON() []byte {
 	data, err := json.Marshal(b)
 	if err != nil {
 		return nil
@@ -173,7 +173,7 @@ func (b *BotPatch) ToJson() []byte {
 }
 
 // BotPatchFromJson deserializes a bot patch from json.
-func BotPatchFromJson(data io.Reader) *BotPatch {
+func BotPatchFromJSON(data io.Reader) *BotPatch {
 	decoder := json.NewDecoder(data)
 	var botPatch BotPatch
 	err := decoder.Decode(&botPatch)
@@ -206,14 +206,14 @@ func BotFromUser(u *User) *Bot {
 }
 
 // BotListFromJson deserializes a list of bots from json.
-func BotListFromJson(data io.Reader) BotList {
+func BotListFromJSON(data io.Reader) BotList {
 	var bots BotList
 	json.NewDecoder(data).Decode(&bots)
 	return bots
 }
 
 // ToJson serializes a list of bots to json.
-func (l *BotList) ToJson() []byte {
+func (l *BotList) ToJSON() []byte {
 	b, _ := json.Marshal(l)
 	return b
 }

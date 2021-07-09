@@ -11,10 +11,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestTeamJson(t *testing.T) {
+func TestTeamJSON(t *testing.T) {
 	o := Team{ID: NewID(), DisplayName: NewID()}
-	json := o.ToJson()
-	ro := TeamFromJson(strings.NewReader(json))
+	json := o.ToJSON()
+	ro := TeamFromJSON(strings.NewReader(json))
 
 	require.Equal(t, o.ID, ro.ID, "Ids do not match")
 }

@@ -10,10 +10,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestEmojiSearchJson(t *testing.T) {
+func TestEmojiSearchJSON(t *testing.T) {
 	emojiSearch := EmojiSearch{Term: NewID()}
-	json := emojiSearch.ToJson()
-	remojiSearch := EmojiSearchFromJson(strings.NewReader(json))
+	json := emojiSearch.ToJSON()
+	remojiSearch := EmojiSearchFromJSON(strings.NewReader(json))
 
 	require.Equal(t, emojiSearch.Term, remojiSearch.Term, "Terms do not match")
 }

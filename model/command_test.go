@@ -10,10 +10,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestCommandJson(t *testing.T) {
+func TestCommandJSON(t *testing.T) {
 	o := Command{ID: NewID()}
-	json := o.ToJson()
-	ro := CommandFromJson(strings.NewReader(json))
+	json := o.ToJSON()
+	ro := CommandFromJSON(strings.NewReader(json))
 
 	require.Equal(t, o.ID, ro.ID, "Ids do not match")
 }

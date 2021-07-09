@@ -528,17 +528,17 @@ func (u *User) Patch(patch *UserPatch) {
 }
 
 // ToJson convert a User to a json string
-func (u *User) ToJson() string {
+func (u *User) ToJSON() string {
 	b, _ := json.Marshal(u)
 	return string(b)
 }
 
-func (u *UserPatch) ToJson() string {
+func (u *UserPatch) ToJSON() string {
 	b, _ := json.Marshal(u)
 	return string(b)
 }
 
-func (u *UserAuth) ToJson() string {
+func (u *UserAuth) ToJSON() string {
 	b, _ := json.Marshal(u)
 	return string(b)
 }
@@ -619,7 +619,7 @@ func (u *User) AddNotifyProp(key string, value string) {
 
 func (u *User) SetCustomStatus(cs *CustomStatus) {
 	u.MakeNonNil()
-	u.Props[UserPropsKeyCustomStatus] = cs.ToJson()
+	u.Props[UserPropsKeyCustomStatus] = cs.ToJSON()
 }
 
 func (u *User) ClearCustomStatus() {
@@ -804,41 +804,41 @@ func (u *UserPatch) SetField(fieldName string, fieldValue string) {
 }
 
 // UserFromJson will decode the input and return a User
-func UserFromJson(data io.Reader) *User {
+func UserFromJSON(data io.Reader) *User {
 	var user *User
 	json.NewDecoder(data).Decode(&user)
 	return user
 }
 
-func UserPatchFromJson(data io.Reader) *UserPatch {
+func UserPatchFromJSON(data io.Reader) *UserPatch {
 	var user *UserPatch
 	json.NewDecoder(data).Decode(&user)
 	return user
 }
 
-func UserAuthFromJson(data io.Reader) *UserAuth {
+func UserAuthFromJSON(data io.Reader) *UserAuth {
 	var user *UserAuth
 	json.NewDecoder(data).Decode(&user)
 	return user
 }
 
-func UserMapToJson(u map[string]*User) string {
+func UserMapToJSON(u map[string]*User) string {
 	b, _ := json.Marshal(u)
 	return string(b)
 }
 
-func UserMapFromJson(data io.Reader) map[string]*User {
+func UserMapFromJSON(data io.Reader) map[string]*User {
 	var users map[string]*User
 	json.NewDecoder(data).Decode(&users)
 	return users
 }
 
-func UserListToJson(u []*User) string {
+func UserListToJSON(u []*User) string {
 	b, _ := json.Marshal(u)
 	return string(b)
 }
 
-func UserListFromJson(data io.Reader) []*User {
+func UserListFromJSON(data io.Reader) []*User {
 	var users []*User
 	json.NewDecoder(data).Decode(&users)
 	return users
@@ -994,7 +994,7 @@ type UsersWithGroupsAndCount struct {
 	Count int64             `json:"total_count"`
 }
 
-func UsersWithGroupsAndCountFromJson(data io.Reader) *UsersWithGroupsAndCount {
+func UsersWithGroupsAndCountFromJSON(data io.Reader) *UsersWithGroupsAndCount {
 	uwg := &UsersWithGroupsAndCount{}
 	bodyBytes, _ := ioutil.ReadAll(data)
 	json.Unmarshal(bodyBytes, uwg)

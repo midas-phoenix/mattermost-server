@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestRemoteClusterJson(t *testing.T) {
+func TestRemoteClusterJSON(t *testing.T) {
 	o := RemoteCluster{RemoteID: NewID(), Name: "test"}
 
 	json, err := o.ToJSON()
@@ -66,7 +66,7 @@ func TestRemoteClusterPreSave(t *testing.T) {
 	require.GreaterOrEqual(t, o.CreateAt, now)
 }
 
-func TestRemoteClusterMsgJson(t *testing.T) {
+func TestRemoteClusterMsgJSON(t *testing.T) {
 	o := NewRemoteClusterMsg("shared_channel", []byte("{\"hello\":\"world\"}"))
 
 	json, err := json.Marshal(o)

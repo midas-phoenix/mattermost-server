@@ -10,10 +10,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestTeamSearchJson(t *testing.T) {
+func TestTeamSearchJSON(t *testing.T) {
 	teamSearch := TeamSearch{Term: NewID()}
-	json := teamSearch.ToJson()
-	rteamSearch := ChannelSearchFromJson(strings.NewReader(json))
+	json := teamSearch.ToJSON()
+	rteamSearch := ChannelSearchFromJSON(strings.NewReader(json))
 
 	assert.Equal(t, teamSearch.Term, rteamSearch.Term, "Terms do not match")
 }

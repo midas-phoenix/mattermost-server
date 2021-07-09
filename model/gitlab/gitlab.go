@@ -56,7 +56,7 @@ func userFromGitLabUser(glu *GitLabUser) *model.User {
 	return user
 }
 
-func gitLabUserFromJson(data io.Reader) (*GitLabUser, error) {
+func gitLabUserFromJSON(data io.Reader) (*GitLabUser, error) {
 	decoder := json.NewDecoder(data)
 	var glu GitLabUser
 	err := decoder.Decode(&glu)
@@ -66,7 +66,7 @@ func gitLabUserFromJson(data io.Reader) (*GitLabUser, error) {
 	return &glu, nil
 }
 
-func (glu *GitLabUser) ToJson() string {
+func (glu *GitLabUser) ToJSON() string {
 	b, err := json.Marshal(glu)
 	if err != nil {
 		return ""
@@ -90,8 +90,8 @@ func (glu *GitLabUser) getAuthData() string {
 	return strconv.FormatInt(glu.ID, 10)
 }
 
-func (m *GitLabProvider) GetUserFromJson(data io.Reader, tokenUser *model.User) (*model.User, error) {
-	glu, err := gitLabUserFromJson(data)
+func (m *GitLabProvider) GetUserFromJSON(data io.Reader, tokenUser *model.User) (*model.User, error) {
+	glu, err := gitLabUserFromJSON(data)
 	if err != nil {
 		return nil, err
 	}

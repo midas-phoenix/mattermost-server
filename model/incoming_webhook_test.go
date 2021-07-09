@@ -10,10 +10,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestIncomingWebhookJson(t *testing.T) {
+func TestIncomingWebhookJSON(t *testing.T) {
 	o := IncomingWebhook{ID: NewID()}
-	json := o.ToJson()
-	ro := IncomingWebhookFromJson(strings.NewReader(json))
+	json := o.ToJSON()
+	ro := IncomingWebhookFromJSON(strings.NewReader(json))
 
 	require.Equal(t, o.ID, ro.ID)
 }
@@ -85,7 +85,7 @@ func TestIncomingWebhookPreUpdate(t *testing.T) {
 	o.PreUpdate()
 }
 
-func TestIncomingWebhookRequestFromJson(t *testing.T) {
+func TestIncomingWebhookRequestFromJSON(t *testing.T) {
 	texts := []string{
 		`this is a test`,
 		`this is a test
@@ -139,7 +139,7 @@ func TestIncomingWebhookRequestFromJson(t *testing.T) {
 
 		// try to create an IncomingWebhookRequest from the payload
 		data := strings.NewReader(payload)
-		iwr, _ := IncomingWebhookRequestFromJson(data)
+		iwr, _ := IncomingWebhookRequestFromJSON(data)
 
 		// After it has been decoded, the JSON string won't contain the escape char anymore
 		expected := strings.Replace(text, `\"`, `"`, -1)
@@ -153,7 +153,7 @@ func TestIncomingWebhookRequestFromJson(t *testing.T) {
 
 func TestIncomingWebhookNullArrayItems(t *testing.T) {
 	payload := `{"attachments":[{"fields":[{"title":"foo","value":"bar","short":true}, null]}, null]}`
-	iwr, _ := IncomingWebhookRequestFromJson(strings.NewReader(payload))
+	iwr, _ := IncomingWebhookRequestFromJSON(strings.NewReader(payload))
 	require.NotNil(t, iwr)
 	require.Len(t, iwr.Attachments, 1)
 	require.Len(t, iwr.Attachments[0].Fields, 1)

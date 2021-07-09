@@ -10,13 +10,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestSamlCertificateStatusJson(t *testing.T) {
+func TestSamlCertificateStatusJSON(t *testing.T) {
 	status := &SamlCertificateStatus{IDpCertificateFile: true, PrivateKeyFile: true, PublicCertificateFile: true}
-	json := status.ToJson()
-	rstatus := SamlCertificateStatusFromJson(strings.NewReader(json))
+	json := status.ToJSON()
+	rstatus := SamlCertificateStatusFromJSON(strings.NewReader(json))
 
 	require.Equal(t, status.IDpCertificateFile, rstatus.IDpCertificateFile, "IdpCertificateFile do not match")
 
-	rstatus = SamlCertificateStatusFromJson(strings.NewReader("junk"))
+	rstatus = SamlCertificateStatusFromJSON(strings.NewReader("junk"))
 	require.Nil(t, rstatus, "should be nil")
 }

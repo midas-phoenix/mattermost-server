@@ -32,14 +32,14 @@ type CommandResponse struct {
 	ExtraResponses   []*CommandResponse `json:"extra_responses"`
 }
 
-func (o *CommandResponse) ToJson() string {
+func (o *CommandResponse) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
 func CommandResponseFromHTTPBody(contentType string, body io.Reader) (*CommandResponse, error) {
 	if strings.TrimSpace(strings.Split(contentType, ";")[0]) == "application/json" {
-		return CommandResponseFromJson(body)
+		return CommandResponseFromJSON(body)
 	}
 	if b, err := ioutil.ReadAll(body); err == nil {
 		return CommandResponseFromPlainText(string(b)), nil
@@ -53,7 +53,7 @@ func CommandResponseFromPlainText(text string) *CommandResponse {
 	}
 }
 
-func CommandResponseFromJson(data io.Reader) (*CommandResponse, error) {
+func CommandResponseFromJSON(data io.Reader) (*CommandResponse, error) {
 	b, err := ioutil.ReadAll(data)
 	if err != nil {
 		return nil, err

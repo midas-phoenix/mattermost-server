@@ -81,23 +81,23 @@ type SchemeRoles struct {
 	SchemeGuest bool `json:"scheme_guest"`
 }
 
-func (scheme *Scheme) ToJson() string {
+func (scheme *Scheme) ToJSON() string {
 	b, _ := json.Marshal(scheme)
 	return string(b)
 }
 
-func SchemeFromJson(data io.Reader) *Scheme {
+func SchemeFromJSON(data io.Reader) *Scheme {
 	var scheme *Scheme
 	json.NewDecoder(data).Decode(&scheme)
 	return scheme
 }
 
-func SchemesToJson(schemes []*Scheme) string {
+func SchemesToJSON(schemes []*Scheme) string {
 	b, _ := json.Marshal(schemes)
 	return string(b)
 }
 
-func SchemesFromJson(data io.Reader) []*Scheme {
+func SchemesFromJSON(data io.Reader) []*Scheme {
 	var schemes []*Scheme
 	if err := json.NewDecoder(data).Decode(&schemes); err == nil {
 		return schemes
@@ -187,24 +187,24 @@ func (scheme *Scheme) Patch(patch *SchemePatch) {
 	}
 }
 
-func (patch *SchemePatch) ToJson() string {
+func (patch *SchemePatch) ToJSON() string {
 	b, _ := json.Marshal(patch)
 	return string(b)
 }
 
-func SchemePatchFromJson(data io.Reader) *SchemePatch {
+func SchemePatchFromJSON(data io.Reader) *SchemePatch {
 	var patch *SchemePatch
 	json.NewDecoder(data).Decode(&patch)
 	return patch
 }
 
-func SchemeIDFromJson(data io.Reader) *string {
+func SchemeIDFromJSON(data io.Reader) *string {
 	var p *SchemeIDPatch
 	json.NewDecoder(data).Decode(&p)
 	return p.SchemeID
 }
 
-func (p *SchemeIDPatch) ToJson() string {
+func (p *SchemeIDPatch) ToJSON() string {
 	b, _ := json.Marshal(p)
 	return string(b)
 }
@@ -214,12 +214,12 @@ func IsValidSchemeName(name string) bool {
 	return re.MatchString(name)
 }
 
-func (schemeRoles *SchemeRoles) ToJson() string {
+func (schemeRoles *SchemeRoles) ToJSON() string {
 	b, _ := json.Marshal(schemeRoles)
 	return string(b)
 }
 
-func SchemeRolesFromJson(data io.Reader) *SchemeRoles {
+func SchemeRolesFromJSON(data io.Reader) *SchemeRoles {
 	var schemeRoles *SchemeRoles
 	json.NewDecoder(data).Decode(&schemeRoles)
 	return schemeRoles

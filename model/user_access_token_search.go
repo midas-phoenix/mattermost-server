@@ -13,7 +13,7 @@ type UserAccessTokenSearch struct {
 }
 
 // ToJson convert a UserAccessTokenSearch to json string
-func (c *UserAccessTokenSearch) ToJson() string {
+func (c *UserAccessTokenSearch) ToJSON() string {
 	b, err := json.Marshal(c)
 	if err != nil {
 		return ""
@@ -23,7 +23,7 @@ func (c *UserAccessTokenSearch) ToJson() string {
 }
 
 // UserAccessTokenSearchJson decodes the input and returns a UserAccessTokenSearch
-func UserAccessTokenSearchFromJson(data io.Reader) *UserAccessTokenSearch {
+func UserAccessTokenSearchFromJSON(data io.Reader) *UserAccessTokenSearch {
 	decoder := json.NewDecoder(data)
 	var cs UserAccessTokenSearch
 	err := decoder.Decode(&cs)

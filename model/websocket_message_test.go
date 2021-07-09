@@ -19,8 +19,8 @@ func TestWebSocketEvent(t *testing.T) {
 		ID: userID,
 	}
 	m.Add("user", user)
-	json := m.ToJson()
-	result := WebSocketEventFromJson(strings.NewReader(json))
+	json := m.ToJSON()
+	result := WebSocketEventFromJSON(strings.NewReader(json))
 
 	require.True(t, m.IsValid(), "should be valid")
 	require.Equal(t, m.GetBroadcast().TeamID, result.GetBroadcast().TeamID, "Team ids do not match")
@@ -75,11 +75,11 @@ func TestWebSocketEventImmutable(t *testing.T) {
 	require.Equal(t, m, copy)
 }
 
-func TestWebSocketEventFromJson(t *testing.T) {
-	ev := WebSocketEventFromJson(strings.NewReader("junk"))
+func TestWebSocketEventFromJSON(t *testing.T) {
+	ev := WebSocketEventFromJSON(strings.NewReader("junk"))
 	require.Nil(t, ev, "should not have parsed")
 	data := `{"event": "test", "data": {"key": "val"}, "seq": 45, "broadcast": {"user_id": "userid"}}`
-	ev = WebSocketEventFromJson(strings.NewReader(data))
+	ev = WebSocketEventFromJSON(strings.NewReader(data))
 	require.NotNil(t, ev, "should have parsed")
 	require.Equal(t, ev.Event, "test")
 	require.Equal(t, ev.Sequence, int64(45))
@@ -91,12 +91,12 @@ func TestWebSocketResponse(t *testing.T) {
 	m := NewWebSocketResponse("OK", 1, map[string]interface{}{})
 	e := NewWebSocketError(1, &AppError{})
 	m.Add("RootId", NewID())
-	json := m.ToJson()
-	result := WebSocketResponseFromJson(strings.NewReader(json))
-	json2 := e.ToJson()
-	WebSocketResponseFromJson(strings.NewReader(json2))
+	json := m.ToJSON()
+	result := WebSocketResponseFromJSON(strings.NewReader(json))
+	json2 := e.ToJSON()
+	WebSocketResponseFromJSON(strings.NewReader(json2))
 
-	badresult := WebSocketResponseFromJson(strings.NewReader("junk"))
+	badresult := WebSocketResponseFromJSON(strings.NewReader("junk"))
 	require.Nil(t, badresult, "should not have parsed")
 
 	require.True(t, m.IsValid(), "should be valid")
@@ -108,16 +108,16 @@ func TestWebSocketEvent_PrecomputeJSON(t *testing.T) {
 	event := NewWebSocketEvent(WebsocketEventPosted, "foo", "bar", "baz", nil)
 	event = event.SetSequence(7)
 
-	before := event.ToJson()
+	before := event.ToJSON()
 	event.PrecomputeJSON()
-	after := event.ToJson()
+	after := event.ToJSON()
 
 	assert.JSONEq(t, before, after)
 }
 
 var stringSink string
 
-func BenchmarkWebSocketEvent_ToJson(b *testing.B) {
+func BenchmarkWebSocketEvent_ToJSON(b *testing.B) {
 	event := NewWebSocketEvent(WebsocketEventPosted, "foo", "bar", "baz", nil)
 	for i := 0; i < 100; i++ {
 		event.GetData()[NewID()] = NewID()
@@ -125,7 +125,7 @@ func BenchmarkWebSocketEvent_ToJson(b *testing.B) {
 
 	b.Run("SerializedNTimes", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			stringSink = event.ToJson()
+			stringSink = event.ToJSON()
 		}
 	})
 
@@ -138,14 +138,14 @@ func BenchmarkWebSocketEvent_ToJson(b *testing.B) {
 	b.Run("PrecomputedAndSerializedNTimes", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			event.PrecomputeJSON()
-			stringSink = event.ToJson()
+			stringSink = event.ToJSON()
 		}
 	})
 
 	event.PrecomputeJSON()
 	b.Run("PrecomputedOnceAndSerializedNTimes", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			stringSink = event.ToJson()
+			stringSink = event.ToJSON()
 		}
 	})
 }

@@ -10,10 +10,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSuggestCommandJson(t *testing.T) {
+func TestSuggestCommandJSON(t *testing.T) {
 	command := &SuggestCommand{Suggestion: NewID()}
-	json := command.ToJson()
-	result := SuggestCommandFromJson(strings.NewReader(json))
+	json := command.ToJSON()
+	result := SuggestCommandFromJSON(strings.NewReader(json))
 
 	assert.Equal(t, command.Suggestion, result.Suggestion, "Ids do not match")
 }

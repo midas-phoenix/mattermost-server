@@ -108,7 +108,7 @@ func (a *OAuthApp) PreUpdate() {
 	a.UpdateAt = GetMillis()
 }
 
-func (a *OAuthApp) ToJson() string {
+func (a *OAuthApp) ToJSON() string {
 	b, _ := json.Marshal(a)
 	return string(b)
 }
@@ -133,18 +133,18 @@ func (a *OAuthApp) IsValidRedirectURL(url string) bool {
 	return false
 }
 
-func OAuthAppFromJson(data io.Reader) *OAuthApp {
+func OAuthAppFromJSON(data io.Reader) *OAuthApp {
 	var app *OAuthApp
 	json.NewDecoder(data).Decode(&app)
 	return app
 }
 
-func OAuthAppListToJson(l []*OAuthApp) string {
+func OAuthAppListToJSON(l []*OAuthApp) string {
 	b, _ := json.Marshal(l)
 	return string(b)
 }
 
-func OAuthAppListFromJson(data io.Reader) []*OAuthApp {
+func OAuthAppListFromJSON(data io.Reader) []*OAuthApp {
 	var o []*OAuthApp
 	json.NewDecoder(data).Decode(&o)
 	return o

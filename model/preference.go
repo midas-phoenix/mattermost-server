@@ -64,12 +64,12 @@ type Preference struct {
 	Value    string `json:"value"`
 }
 
-func (o *Preference) ToJson() string {
+func (o *Preference) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func PreferenceFromJson(data io.Reader) *Preference {
+func PreferenceFromJSON(data io.Reader) *Preference {
 	var o *Preference
 	json.NewDecoder(data).Decode(&o)
 	return o

@@ -31,12 +31,12 @@ type SharedChannel struct {
 	Type             string `db:"-"`
 }
 
-func (sc *SharedChannel) ToJson() string {
+func (sc *SharedChannel) ToJSON() string {
 	b, _ := json.Marshal(sc)
 	return string(b)
 }
 
-func SharedChannelFromJson(data io.Reader) (*SharedChannel, error) {
+func SharedChannelFromJSON(data io.Reader) (*SharedChannel, error) {
 	var sc *SharedChannel
 	err := json.NewDecoder(data).Decode(&sc)
 	return sc, err
@@ -116,12 +116,12 @@ type SharedChannelRemote struct {
 	LastPostID        string `json:"last_post_id"`
 }
 
-func (sc *SharedChannelRemote) ToJson() string {
+func (sc *SharedChannelRemote) ToJSON() string {
 	b, _ := json.Marshal(sc)
 	return string(b)
 }
 
-func SharedChannelRemoteFromJson(data io.Reader) (*SharedChannelRemote, error) {
+func SharedChannelRemoteFromJSON(data io.Reader) (*SharedChannelRemote, error) {
 	var sc *SharedChannelRemote
 	err := json.NewDecoder(data).Decode(&sc)
 	return sc, err

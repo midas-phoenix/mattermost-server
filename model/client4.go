@@ -25,7 +25,7 @@ const (
 	HeaderEtagServer         = "ETag"
 	HeaderEtagClient         = "If-None-Match"
 	HeaderForwarded          = "X-Forwarded-For"
-	HeaderRealIp             = "X-Real-IP"
+	HeaderRealID             = "X-Real-IP"
 	HeaderForwardedProto     = "X-Forwarded-Proto"
 	HeaderToken              = "token"
 	HeaderCsrfToken          = "X-CSRF-Token"
@@ -652,7 +652,7 @@ func (c *Client4) doApiRequestReader(method, url string, data io.Reader, headers
 
 	if rp.StatusCode >= 300 {
 		defer closeBody(rp)
-		return rp, AppErrorFromJson(rp.Body)
+		return rp, AppErrorFromJSON(rp.Body)
 	}
 
 	return rp, nil
@@ -683,10 +683,10 @@ func (c *Client4) doUploadFile(url string, body io.Reader, contentType string, c
 	defer closeBody(rp)
 
 	if rp.StatusCode >= 300 {
-		return nil, BuildErrorResponse(rp, AppErrorFromJson(rp.Body))
+		return nil, BuildErrorResponse(rp, AppErrorFromJSON(rp.Body))
 	}
 
-	return FileUploadResponseFromJson(rp.Body), BuildResponse(rp)
+	return FileUploadResponseFromJSON(rp.Body), BuildResponse(rp)
 }
 
 func (c *Client4) DoEmojiUploadFile(url string, data []byte, contentType string) (*Emoji, *Response) {
@@ -707,10 +707,10 @@ func (c *Client4) DoEmojiUploadFile(url string, data []byte, contentType string)
 	defer closeBody(rp)
 
 	if rp.StatusCode >= 300 {
-		return nil, BuildErrorResponse(rp, AppErrorFromJson(rp.Body))
+		return nil, BuildErrorResponse(rp, AppErrorFromJSON(rp.Body))
 	}
 
-	return EmojiFromJson(rp.Body), BuildResponse(rp)
+	return EmojiFromJSON(rp.Body), BuildResponse(rp)
 }
 
 func (c *Client4) DoUploadImportTeam(url string, data []byte, contentType string) (map[string]string, *Response) {
@@ -731,16 +731,16 @@ func (c *Client4) DoUploadImportTeam(url string, data []byte, contentType string
 	defer closeBody(rp)
 
 	if rp.StatusCode >= 300 {
-		return nil, BuildErrorResponse(rp, AppErrorFromJson(rp.Body))
+		return nil, BuildErrorResponse(rp, AppErrorFromJSON(rp.Body))
 	}
 
-	return MapFromJson(rp.Body), BuildResponse(rp)
+	return MapFromJSON(rp.Body), BuildResponse(rp)
 }
 
 // CheckStatusOK is a convenience function for checking the standard OK response
 // from the web service.
 func CheckStatusOK(r *http.Response) bool {
-	m := MapFromJson(r.Body)
+	m := MapFromJSON(r.Body)
 	defer closeBody(r)
 
 	if m != nil && m[STATUS] == StatusOk {
@@ -799,14 +799,14 @@ func (c *Client4) LoginWithMFA(loginID, password, mfaToken string) (*User, *Resp
 }
 
 func (c *Client4) login(m map[string]string) (*User, *Response) {
-	r, err := c.DoApiPost("/users/login", MapToJson(m))
+	r, err := c.DoApiPost("/users/login", MapToJSON(m))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
 	c.AuthToken = r.Header.Get(HeaderToken)
 	c.AuthType = HeaderBearer
-	return UserFromJson(r.Body), BuildResponse(r)
+	return UserFromJSON(r.Body), BuildResponse(r)
 }
 
 // Logout terminates the current user's session.
@@ -823,24 +823,24 @@ func (c *Client4) Logout() (bool, *Response) {
 
 // SwitchAccountType changes a user's login type from one type to another.
 func (c *Client4) SwitchAccountType(switchRequest *SwitchRequest) (string, *Response) {
-	r, err := c.DoApiPost(c.GetUsersRoute()+"/login/switch", switchRequest.ToJson())
+	r, err := c.DoApiPost(c.GetUsersRoute()+"/login/switch", switchRequest.ToJSON())
 	if err != nil {
 		return "", BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return MapFromJson(r.Body)["follow_link"], BuildResponse(r)
+	return MapFromJSON(r.Body)["follow_link"], BuildResponse(r)
 }
 
 // User Section
 
 // CreateUser creates a user in the system based on the provided user struct.
 func (c *Client4) CreateUser(user *User) (*User, *Response) {
-	r, err := c.DoApiPost(c.GetUsersRoute(), user.ToJson())
+	r, err := c.DoApiPost(c.GetUsersRoute(), user.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserFromJson(r.Body), BuildResponse(r)
+	return UserFromJSON(r.Body), BuildResponse(r)
 }
 
 // CreateUserWithToken creates a user in the system based on the provided tokenId.
@@ -851,13 +851,13 @@ func (c *Client4) CreateUserWithToken(user *User, tokenID string) (*User, *Respo
 	}
 
 	query := fmt.Sprintf("?t=%v", tokenID)
-	r, err := c.DoApiPost(c.GetUsersRoute()+query, user.ToJson())
+	r, err := c.DoApiPost(c.GetUsersRoute()+query, user.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
 
-	return UserFromJson(r.Body), BuildResponse(r)
+	return UserFromJSON(r.Body), BuildResponse(r)
 }
 
 // CreateUserWithInviteId creates a user in the system based on the provided invited id.
@@ -868,13 +868,13 @@ func (c *Client4) CreateUserWithInviteID(user *User, inviteID string) (*User, *R
 	}
 
 	query := fmt.Sprintf("?iid=%v", url.QueryEscape(inviteID))
-	r, err := c.DoApiPost(c.GetUsersRoute()+query, user.ToJson())
+	r, err := c.DoApiPost(c.GetUsersRoute()+query, user.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
 
-	return UserFromJson(r.Body), BuildResponse(r)
+	return UserFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetMe returns the logged in user.
@@ -884,7 +884,7 @@ func (c *Client4) GetMe(etag string) (*User, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserFromJson(r.Body), BuildResponse(r)
+	return UserFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUser returns a user based on the provided user id string.
@@ -894,7 +894,7 @@ func (c *Client4) GetUser(userID, etag string) (*User, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserFromJson(r.Body), BuildResponse(r)
+	return UserFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUserByUsername returns a user based on the provided user name string.
@@ -904,7 +904,7 @@ func (c *Client4) GetUserByUsername(userName, etag string) (*User, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserFromJson(r.Body), BuildResponse(r)
+	return UserFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUserByEmail returns a user based on the provided user email string.
@@ -914,7 +914,7 @@ func (c *Client4) GetUserByEmail(email, etag string) (*User, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserFromJson(r.Body), BuildResponse(r)
+	return UserFromJSON(r.Body), BuildResponse(r)
 }
 
 // AutocompleteUsersInTeam returns the users on a team based on search term.
@@ -925,7 +925,7 @@ func (c *Client4) AutocompleteUsersInTeam(teamID string, username string, limit 
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserAutocompleteFromJson(r.Body), BuildResponse(r)
+	return UserAutocompleteFromJSON(r.Body), BuildResponse(r)
 }
 
 // AutocompleteUsersInChannel returns the users in a channel based on search term.
@@ -936,7 +936,7 @@ func (c *Client4) AutocompleteUsersInChannel(teamID string, channelID string, us
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserAutocompleteFromJson(r.Body), BuildResponse(r)
+	return UserAutocompleteFromJSON(r.Body), BuildResponse(r)
 }
 
 // AutocompleteUsers returns the users in the system based on search term.
@@ -947,7 +947,7 @@ func (c *Client4) AutocompleteUsers(username string, limit int, etag string) (*U
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserAutocompleteFromJson(r.Body), BuildResponse(r)
+	return UserAutocompleteFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetDefaultProfileImage gets the default user's profile image. Must be logged in.
@@ -989,7 +989,7 @@ func (c *Client4) GetUsers(page int, perPage int, etag string) ([]*User, *Respon
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserListFromJson(r.Body), BuildResponse(r)
+	return UserListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUsersInTeam returns a page of users on a team. Page counting starts at 0.
@@ -1000,7 +1000,7 @@ func (c *Client4) GetUsersInTeam(teamID string, page int, perPage int, etag stri
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserListFromJson(r.Body), BuildResponse(r)
+	return UserListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetNewUsersInTeam returns a page of users on a team. Page counting starts at 0.
@@ -1011,7 +1011,7 @@ func (c *Client4) GetNewUsersInTeam(teamID string, page int, perPage int, etag s
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserListFromJson(r.Body), BuildResponse(r)
+	return UserListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetRecentlyActiveUsersInTeam returns a page of users on a team. Page counting starts at 0.
@@ -1022,7 +1022,7 @@ func (c *Client4) GetRecentlyActiveUsersInTeam(teamID string, page int, perPage 
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserListFromJson(r.Body), BuildResponse(r)
+	return UserListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetActiveUsersInTeam returns a page of users on a team. Page counting starts at 0.
@@ -1033,7 +1033,7 @@ func (c *Client4) GetActiveUsersInTeam(teamID string, page int, perPage int, eta
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserListFromJson(r.Body), BuildResponse(r)
+	return UserListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUsersNotInTeam returns a page of users who are not in a team. Page counting starts at 0.
@@ -1044,7 +1044,7 @@ func (c *Client4) GetUsersNotInTeam(teamID string, page int, perPage int, etag s
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserListFromJson(r.Body), BuildResponse(r)
+	return UserListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUsersInChannel returns a page of users in a channel. Page counting starts at 0.
@@ -1055,7 +1055,7 @@ func (c *Client4) GetUsersInChannel(channelID string, page int, perPage int, eta
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserListFromJson(r.Body), BuildResponse(r)
+	return UserListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUsersInChannelByStatus returns a page of users in a channel. Page counting starts at 0. Sorted by Status
@@ -1066,7 +1066,7 @@ func (c *Client4) GetUsersInChannelByStatus(channelID string, page int, perPage 
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserListFromJson(r.Body), BuildResponse(r)
+	return UserListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUsersNotInChannel returns a page of users not in a channel. Page counting starts at 0.
@@ -1077,7 +1077,7 @@ func (c *Client4) GetUsersNotInChannel(teamID, channelID string, page int, perPa
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserListFromJson(r.Body), BuildResponse(r)
+	return UserListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUsersWithoutTeam returns a page of users on the system that aren't on any teams. Page counting starts at 0.
@@ -1088,7 +1088,7 @@ func (c *Client4) GetUsersWithoutTeam(page int, perPage int, etag string) ([]*Us
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserListFromJson(r.Body), BuildResponse(r)
+	return UserListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUsersInGroup returns a page of users in a group. Page counting starts at 0.
@@ -1099,17 +1099,17 @@ func (c *Client4) GetUsersInGroup(groupID string, page int, perPage int, etag st
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserListFromJson(r.Body), BuildResponse(r)
+	return UserListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUsersByIds returns a list of users based on the provided user ids.
 func (c *Client4) GetUsersByIDs(userIDs []string) ([]*User, *Response) {
-	r, err := c.DoApiPost(c.GetUsersRoute()+"/ids", ArrayToJson(userIDs))
+	r, err := c.DoApiPost(c.GetUsersRoute()+"/ids", ArrayToJSON(userIDs))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserListFromJson(r.Body), BuildResponse(r)
+	return UserListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUsersByIds returns a list of users based on the provided user ids.
@@ -1124,28 +1124,28 @@ func (c *Client4) GetUsersByIDsWithOptions(userIDs []string, options *UserGetByI
 		url += "?" + v.Encode()
 	}
 
-	r, err := c.DoApiPost(url, ArrayToJson(userIDs))
+	r, err := c.DoApiPost(url, ArrayToJSON(userIDs))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserListFromJson(r.Body), BuildResponse(r)
+	return UserListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUsersByUsernames returns a list of users based on the provided usernames.
 func (c *Client4) GetUsersByUsernames(usernames []string) ([]*User, *Response) {
-	r, err := c.DoApiPost(c.GetUsersRoute()+"/usernames", ArrayToJson(usernames))
+	r, err := c.DoApiPost(c.GetUsersRoute()+"/usernames", ArrayToJSON(usernames))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserListFromJson(r.Body), BuildResponse(r)
+	return UserListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUsersByGroupChannelIds returns a map with channel ids as keys
 // and a list of users as values based on the provided user ids.
 func (c *Client4) GetUsersByGroupChannelIDs(groupChannelIDs []string) (map[string][]*User, *Response) {
-	r, err := c.DoApiPost(c.GetUsersRoute()+"/group_channels", ArrayToJson(groupChannelIDs))
+	r, err := c.DoApiPost(c.GetUsersRoute()+"/group_channels", ArrayToJSON(groupChannelIDs))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1158,42 +1158,42 @@ func (c *Client4) GetUsersByGroupChannelIDs(groupChannelIDs []string) (map[strin
 
 // SearchUsers returns a list of users based on some search criteria.
 func (c *Client4) SearchUsers(search *UserSearch) ([]*User, *Response) {
-	r, err := c.doApiPostBytes(c.GetUsersRoute()+"/search", search.ToJson())
+	r, err := c.doApiPostBytes(c.GetUsersRoute()+"/search", search.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserListFromJson(r.Body), BuildResponse(r)
+	return UserListFromJSON(r.Body), BuildResponse(r)
 }
 
 // UpdateUser updates a user in the system based on the provided user struct.
 func (c *Client4) UpdateUser(user *User) (*User, *Response) {
-	r, err := c.DoApiPut(c.GetUserRoute(user.ID), user.ToJson())
+	r, err := c.DoApiPut(c.GetUserRoute(user.ID), user.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserFromJson(r.Body), BuildResponse(r)
+	return UserFromJSON(r.Body), BuildResponse(r)
 }
 
 // PatchUser partially updates a user in the system. Any missing fields are not updated.
 func (c *Client4) PatchUser(userID string, patch *UserPatch) (*User, *Response) {
-	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/patch", patch.ToJson())
+	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/patch", patch.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserFromJson(r.Body), BuildResponse(r)
+	return UserFromJSON(r.Body), BuildResponse(r)
 }
 
 // UpdateUserAuth updates a user AuthData (uthData, authService and password) in the system.
 func (c *Client4) UpdateUserAuth(userID string, userAuth *UserAuth) (*UserAuth, *Response) {
-	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/auth", userAuth.ToJson())
+	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/auth", userAuth.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserAuthFromJson(r.Body), BuildResponse(r)
+	return UserAuthFromJSON(r.Body), BuildResponse(r)
 }
 
 // UpdateUserMfa activates multi-factor authentication for a user if activate
@@ -1204,7 +1204,7 @@ func (c *Client4) UpdateUserMfa(userID, code string, activate bool) (bool, *Resp
 	requestBody["activate"] = activate
 	requestBody["code"] = code
 
-	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/mfa", StringInterfaceToJson(requestBody))
+	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/mfa", StringInterfaceToJSON(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1218,13 +1218,13 @@ func (c *Client4) UpdateUserMfa(userID, code string, activate bool) (bool, *Resp
 func (c *Client4) CheckUserMfa(loginID string) (bool, *Response) {
 	requestBody := make(map[string]interface{})
 	requestBody["login_id"] = loginID
-	r, err := c.DoApiPost(c.GetUsersRoute()+"/mfa", StringInterfaceToJson(requestBody))
+	r, err := c.DoApiPost(c.GetUsersRoute()+"/mfa", StringInterfaceToJSON(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
 
-	data := StringInterfaceFromJson(r.Body)
+	data := StringInterfaceFromJSON(r.Body)
 	mfaRequired, ok := data["mfa_required"].(bool)
 	if !ok {
 		return false, BuildResponse(r)
@@ -1240,13 +1240,13 @@ func (c *Client4) GenerateMfaSecret(userID string) (*MfaSecret, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return MfaSecretFromJson(r.Body), BuildResponse(r)
+	return MfaSecretFromJSON(r.Body), BuildResponse(r)
 }
 
 // UpdateUserPassword updates a user's password. Must be logged in as the user or be a system administrator.
 func (c *Client4) UpdateUserPassword(userID, currentPassword, newPassword string) (bool, *Response) {
 	requestBody := map[string]string{"current_password": currentPassword, "new_password": newPassword}
-	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/password", MapToJson(requestBody))
+	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/password", MapToJSON(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1257,7 +1257,7 @@ func (c *Client4) UpdateUserPassword(userID, currentPassword, newPassword string
 // UpdateUserHashedPassword updates a user's password with an already-hashed password. Must be a system administrator.
 func (c *Client4) UpdateUserHashedPassword(userID, newHashedPassword string) (bool, *Response) {
 	requestBody := map[string]string{"already_hashed": "true", "new_password": newHashedPassword}
-	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/password", MapToJson(requestBody))
+	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/password", MapToJSON(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1288,7 +1288,7 @@ func (c *Client4) DemoteUserToGuest(guestID string) (bool, *Response) {
 // UpdateUserRoles updates a user's roles in the system. A user can have "system_user" and "system_admin" roles.
 func (c *Client4) UpdateUserRoles(userID, roles string) (bool, *Response) {
 	requestBody := map[string]string{"roles": roles}
-	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/roles", MapToJson(requestBody))
+	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/roles", MapToJSON(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1300,7 +1300,7 @@ func (c *Client4) UpdateUserRoles(userID, roles string) (bool, *Response) {
 func (c *Client4) UpdateUserActive(userID string, active bool) (bool, *Response) {
 	requestBody := make(map[string]interface{})
 	requestBody["active"] = active
-	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/active", StringInterfaceToJson(requestBody))
+	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/active", StringInterfaceToJSON(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1336,7 +1336,7 @@ func (c *Client4) ConvertUserToBot(userID string) (*Bot, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return BotFromJson(r.Body), BuildResponse(r)
+	return BotFromJSON(r.Body), BuildResponse(r)
 }
 
 // ConvertBotToUser converts a bot user to a user.
@@ -1345,12 +1345,12 @@ func (c *Client4) ConvertBotToUser(userID string, userPatch *UserPatch, setSyste
 	if setSystemAdmin {
 		query = "?set_system_admin=true"
 	}
-	r, err := c.DoApiPost(c.GetBotRoute(userID)+"/convert_to_user"+query, userPatch.ToJson())
+	r, err := c.DoApiPost(c.GetBotRoute(userID)+"/convert_to_user"+query, userPatch.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserFromJson(r.Body), BuildResponse(r)
+	return UserFromJSON(r.Body), BuildResponse(r)
 }
 
 // PermanentDeleteAll permanently deletes all users in the system. This is a local only endpoint
@@ -1367,7 +1367,7 @@ func (c *Client4) PermanentDeleteAllUsers() (bool, *Response) {
 // provided email.
 func (c *Client4) SendPasswordResetEmail(email string) (bool, *Response) {
 	requestBody := map[string]string{"email": email}
-	r, err := c.DoApiPost(c.GetUsersRoute()+"/password/reset/send", MapToJson(requestBody))
+	r, err := c.DoApiPost(c.GetUsersRoute()+"/password/reset/send", MapToJSON(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1378,7 +1378,7 @@ func (c *Client4) SendPasswordResetEmail(email string) (bool, *Response) {
 // ResetPassword uses a recovery code to update reset a user's password.
 func (c *Client4) ResetPassword(token, newPassword string) (bool, *Response) {
 	requestBody := map[string]string{"token": token, "new_password": newPassword}
-	r, err := c.DoApiPost(c.GetUsersRoute()+"/password/reset", MapToJson(requestBody))
+	r, err := c.DoApiPost(c.GetUsersRoute()+"/password/reset", MapToJSON(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1393,13 +1393,13 @@ func (c *Client4) GetSessions(userID, etag string) ([]*Session, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return SessionsFromJson(r.Body), BuildResponse(r)
+	return SessionsFromJSON(r.Body), BuildResponse(r)
 }
 
 // RevokeSession revokes a user session based on the provided user id and session id strings.
 func (c *Client4) RevokeSession(userID, sessionID string) (bool, *Response) {
 	requestBody := map[string]string{"session_id": sessionID}
-	r, err := c.DoApiPost(c.GetUserRoute(userID)+"/sessions/revoke", MapToJson(requestBody))
+	r, err := c.DoApiPost(c.GetUserRoute(userID)+"/sessions/revoke", MapToJSON(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1430,7 +1430,7 @@ func (c *Client4) RevokeSessionsFromAllUsers() (bool, *Response) {
 // AttachDeviceId attaches a mobile device ID to the current session.
 func (c *Client4) AttachDeviceID(deviceID string) (bool, *Response) {
 	requestBody := map[string]string{"device_id": deviceID}
-	r, err := c.DoApiPut(c.GetUsersRoute()+"/sessions/device", MapToJson(requestBody))
+	r, err := c.DoApiPut(c.GetUsersRoute()+"/sessions/device", MapToJSON(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1452,7 +1452,7 @@ func (c *Client4) GetTeamsUnreadForUser(userID, teamIDToExclude string) ([]*Team
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamsUnreadFromJson(r.Body), BuildResponse(r)
+	return TeamsUnreadFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUserAudits returns a list of audit based on the provided user id string.
@@ -1463,13 +1463,13 @@ func (c *Client4) GetUserAudits(userID string, page int, perPage int, etag strin
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return AuditsFromJson(r.Body), BuildResponse(r)
+	return AuditsFromJSON(r.Body), BuildResponse(r)
 }
 
 // VerifyUserEmail will verify a user's email using the supplied token.
 func (c *Client4) VerifyUserEmail(token string) (bool, *Response) {
 	requestBody := map[string]string{"token": token}
-	r, err := c.DoApiPost(c.GetUsersRoute()+"/email/verify", MapToJson(requestBody))
+	r, err := c.DoApiPost(c.GetUsersRoute()+"/email/verify", MapToJSON(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1484,7 +1484,7 @@ func (c *Client4) VerifyUserEmailWithoutToken(userID string) (*User, *Response) 
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserFromJson(r.Body), BuildResponse(r)
+	return UserFromJSON(r.Body), BuildResponse(r)
 }
 
 // SendVerificationEmail will send an email to the user with the provided email address, if
@@ -1492,7 +1492,7 @@ func (c *Client4) VerifyUserEmailWithoutToken(userID string) (*User, *Response) 
 // email address.
 func (c *Client4) SendVerificationEmail(email string) (bool, *Response) {
 	requestBody := map[string]string{"email": email}
-	r, err := c.DoApiPost(c.GetUsersRoute()+"/email/verify/send", MapToJson(requestBody))
+	r, err := c.DoApiPost(c.GetUsersRoute()+"/email/verify/send", MapToJSON(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1544,7 +1544,7 @@ func (c *Client4) SetProfileImage(userID string, data []byte) (bool, *Response) 
 	defer closeBody(rp)
 
 	if rp.StatusCode >= 300 {
-		return false, BuildErrorResponse(rp, AppErrorFromJson(rp.Body))
+		return false, BuildErrorResponse(rp, AppErrorFromJSON(rp.Body))
 	}
 
 	return CheckStatusOK(rp), BuildResponse(rp)
@@ -1556,12 +1556,12 @@ func (c *Client4) SetProfileImage(userID string, data []byte) (bool, *Response) 
 // permission. A non-blank description is required.
 func (c *Client4) CreateUserAccessToken(userID, description string) (*UserAccessToken, *Response) {
 	requestBody := map[string]string{"description": description}
-	r, err := c.DoApiPost(c.GetUserRoute(userID)+"/tokens", MapToJson(requestBody))
+	r, err := c.DoApiPost(c.GetUserRoute(userID)+"/tokens", MapToJSON(requestBody))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserAccessTokenFromJson(r.Body), BuildResponse(r)
+	return UserAccessTokenFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUserAccessTokens will get a page of access tokens' id, description, is_active
@@ -1574,7 +1574,7 @@ func (c *Client4) GetUserAccessTokens(page int, perPage int) ([]*UserAccessToken
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserAccessTokenListFromJson(r.Body), BuildResponse(r)
+	return UserAccessTokenListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUserAccessToken will get a user access tokens' id, description, is_active
@@ -1587,7 +1587,7 @@ func (c *Client4) GetUserAccessToken(tokenID string) (*UserAccessToken, *Respons
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserAccessTokenFromJson(r.Body), BuildResponse(r)
+	return UserAccessTokenFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUserAccessTokensForUser will get a paged list of user access tokens showing id,
@@ -1601,7 +1601,7 @@ func (c *Client4) GetUserAccessTokensForUser(userID string, page, perPage int) (
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserAccessTokenListFromJson(r.Body), BuildResponse(r)
+	return UserAccessTokenListFromJSON(r.Body), BuildResponse(r)
 }
 
 // RevokeUserAccessToken will revoke a user access token by id. Must have the
@@ -1609,7 +1609,7 @@ func (c *Client4) GetUserAccessTokensForUser(userID string, page, perPage int) (
 // 'edit_other_users' permission.
 func (c *Client4) RevokeUserAccessToken(tokenID string) (bool, *Response) {
 	requestBody := map[string]string{"token_id": tokenID}
-	r, err := c.DoApiPost(c.GetUsersRoute()+"/tokens/revoke", MapToJson(requestBody))
+	r, err := c.DoApiPost(c.GetUsersRoute()+"/tokens/revoke", MapToJSON(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1619,12 +1619,12 @@ func (c *Client4) RevokeUserAccessToken(tokenID string) (bool, *Response) {
 
 // SearchUserAccessTokens returns user access tokens matching the provided search term.
 func (c *Client4) SearchUserAccessTokens(search *UserAccessTokenSearch) ([]*UserAccessToken, *Response) {
-	r, err := c.DoApiPost(c.GetUsersRoute()+"/tokens/search", search.ToJson())
+	r, err := c.DoApiPost(c.GetUsersRoute()+"/tokens/search", search.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserAccessTokenListFromJson(r.Body), BuildResponse(r)
+	return UserAccessTokenListFromJSON(r.Body), BuildResponse(r)
 }
 
 // DisableUserAccessToken will disable a user access token by id. Must have the
@@ -1632,7 +1632,7 @@ func (c *Client4) SearchUserAccessTokens(search *UserAccessTokenSearch) ([]*User
 // 'edit_other_users' permission.
 func (c *Client4) DisableUserAccessToken(tokenID string) (bool, *Response) {
 	requestBody := map[string]string{"token_id": tokenID}
-	r, err := c.DoApiPost(c.GetUsersRoute()+"/tokens/disable", MapToJson(requestBody))
+	r, err := c.DoApiPost(c.GetUsersRoute()+"/tokens/disable", MapToJSON(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1645,7 +1645,7 @@ func (c *Client4) DisableUserAccessToken(tokenID string) (bool, *Response) {
 // 'edit_other_users' permission.
 func (c *Client4) EnableUserAccessToken(tokenID string) (bool, *Response) {
 	requestBody := map[string]string{"token_id": tokenID}
-	r, err := c.DoApiPost(c.GetUsersRoute()+"/tokens/enable", MapToJson(requestBody))
+	r, err := c.DoApiPost(c.GetUsersRoute()+"/tokens/enable", MapToJSON(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1657,22 +1657,22 @@ func (c *Client4) EnableUserAccessToken(tokenID string) (bool, *Response) {
 
 // CreateBot creates a bot in the system based on the provided bot struct.
 func (c *Client4) CreateBot(bot *Bot) (*Bot, *Response) {
-	r, err := c.doApiPostBytes(c.GetBotsRoute(), bot.ToJson())
+	r, err := c.doApiPostBytes(c.GetBotsRoute(), bot.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return BotFromJson(r.Body), BuildResponse(r)
+	return BotFromJSON(r.Body), BuildResponse(r)
 }
 
 // PatchBot partially updates a bot. Any missing fields are not updated.
 func (c *Client4) PatchBot(userID string, patch *BotPatch) (*Bot, *Response) {
-	r, err := c.doApiPutBytes(c.GetBotRoute(userID), patch.ToJson())
+	r, err := c.doApiPutBytes(c.GetBotRoute(userID), patch.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return BotFromJson(r.Body), BuildResponse(r)
+	return BotFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetBot fetches the given, undeleted bot.
@@ -1682,7 +1682,7 @@ func (c *Client4) GetBot(userID string, etag string) (*Bot, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return BotFromJson(r.Body), BuildResponse(r)
+	return BotFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetBot fetches the given bot, even if it is deleted.
@@ -1692,7 +1692,7 @@ func (c *Client4) GetBotIncludeDeleted(userID string, etag string) (*Bot, *Respo
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return BotFromJson(r.Body), BuildResponse(r)
+	return BotFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetBots fetches the given page of bots, excluding deleted.
@@ -1703,7 +1703,7 @@ func (c *Client4) GetBots(page, perPage int, etag string) ([]*Bot, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return BotListFromJson(r.Body), BuildResponse(r)
+	return BotListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetBotsIncludeDeleted fetches the given page of bots, including deleted.
@@ -1714,7 +1714,7 @@ func (c *Client4) GetBotsIncludeDeleted(page, perPage int, etag string) ([]*Bot,
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return BotListFromJson(r.Body), BuildResponse(r)
+	return BotListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetBotsOrphaned fetches the given page of bots, only including orphanded bots.
@@ -1725,7 +1725,7 @@ func (c *Client4) GetBotsOrphaned(page, perPage int, etag string) ([]*Bot, *Resp
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return BotListFromJson(r.Body), BuildResponse(r)
+	return BotListFromJSON(r.Body), BuildResponse(r)
 }
 
 // DisableBot disables the given bot in the system.
@@ -1735,7 +1735,7 @@ func (c *Client4) DisableBot(botUserID string) (*Bot, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return BotFromJson(r.Body), BuildResponse(r)
+	return BotFromJSON(r.Body), BuildResponse(r)
 }
 
 // EnableBot disables the given bot in the system.
@@ -1745,7 +1745,7 @@ func (c *Client4) EnableBot(botUserID string) (*Bot, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return BotFromJson(r.Body), BuildResponse(r)
+	return BotFromJSON(r.Body), BuildResponse(r)
 }
 
 // AssignBot assigns the given bot to the given user
@@ -1755,7 +1755,7 @@ func (c *Client4) AssignBot(botUserID, newOwnerID string) (*Bot, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return BotFromJson(r.Body), BuildResponse(r)
+	return BotFromJSON(r.Body), BuildResponse(r)
 }
 
 // SetBotIconImage sets LHS bot icon image.
@@ -1793,7 +1793,7 @@ func (c *Client4) SetBotIconImage(botUserID string, data []byte) (bool, *Respons
 	defer closeBody(rp)
 
 	if rp.StatusCode >= 300 {
-		return false, BuildErrorResponse(rp, AppErrorFromJson(rp.Body))
+		return false, BuildErrorResponse(rp, AppErrorFromJSON(rp.Body))
 	}
 
 	return CheckStatusOK(rp), BuildResponse(rp)
@@ -1828,12 +1828,12 @@ func (c *Client4) DeleteBotIconImage(botUserID string) (bool, *Response) {
 
 // CreateTeam creates a team in the system based on the provided team struct.
 func (c *Client4) CreateTeam(team *Team) (*Team, *Response) {
-	r, err := c.DoApiPost(c.GetTeamsRoute(), team.ToJson())
+	r, err := c.DoApiPost(c.GetTeamsRoute(), team.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamFromJson(r.Body), BuildResponse(r)
+	return TeamFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetTeam returns a team based on the provided team id string.
@@ -1843,7 +1843,7 @@ func (c *Client4) GetTeam(teamID, etag string) (*Team, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamFromJson(r.Body), BuildResponse(r)
+	return TeamFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetAllTeams returns all teams based on permissions.
@@ -1854,7 +1854,7 @@ func (c *Client4) GetAllTeams(etag string, page int, perPage int) ([]*Team, *Res
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamListFromJson(r.Body), BuildResponse(r)
+	return TeamListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetAllTeamsWithTotalCount returns all teams based on permissions.
@@ -1865,7 +1865,7 @@ func (c *Client4) GetAllTeamsWithTotalCount(etag string, page int, perPage int) 
 		return nil, 0, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	teamsListWithCount := TeamsWithCountFromJson(r.Body)
+	teamsListWithCount := TeamsWithCountFromJSON(r.Body)
 	return teamsListWithCount.Teams, teamsListWithCount.TotalCount, BuildResponse(r)
 }
 
@@ -1878,7 +1878,7 @@ func (c *Client4) GetAllTeamsExcludePolicyConstrained(etag string, page int, per
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamListFromJson(r.Body), BuildResponse(r)
+	return TeamListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetTeamByName returns a team based on the provided team name string.
@@ -1888,17 +1888,17 @@ func (c *Client4) GetTeamByName(name, etag string) (*Team, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamFromJson(r.Body), BuildResponse(r)
+	return TeamFromJSON(r.Body), BuildResponse(r)
 }
 
 // SearchTeams returns teams matching the provided search term.
 func (c *Client4) SearchTeams(search *TeamSearch) ([]*Team, *Response) {
-	r, err := c.DoApiPost(c.GetTeamsRoute()+"/search", search.ToJson())
+	r, err := c.DoApiPost(c.GetTeamsRoute()+"/search", search.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamListFromJson(r.Body), BuildResponse(r)
+	return TeamListFromJSON(r.Body), BuildResponse(r)
 }
 
 // SearchTeamsPaged returns a page of teams and the total count matching the provided search term.
@@ -1909,12 +1909,12 @@ func (c *Client4) SearchTeamsPaged(search *TeamSearch) ([]*Team, int64, *Respons
 	if search.PerPage == nil {
 		search.PerPage = NewInt(100)
 	}
-	r, err := c.DoApiPost(c.GetTeamsRoute()+"/search", search.ToJson())
+	r, err := c.DoApiPost(c.GetTeamsRoute()+"/search", search.ToJSON())
 	if err != nil {
 		return nil, 0, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	twc := TeamsWithCountFromJson(r.Body)
+	twc := TeamsWithCountFromJSON(r.Body)
 	return twc.Teams, twc.TotalCount, BuildResponse(r)
 }
 
@@ -1925,7 +1925,7 @@ func (c *Client4) TeamExists(name, etag string) (bool, *Response) {
 		return false, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return MapBoolFromJson(r.Body)["exists"], BuildResponse(r)
+	return MapBoolFromJSON(r.Body)["exists"], BuildResponse(r)
 }
 
 // GetTeamsForUser returns a list of teams a user is on. Must be logged in as the user
@@ -1936,7 +1936,7 @@ func (c *Client4) GetTeamsForUser(userID, etag string) ([]*Team, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamListFromJson(r.Body), BuildResponse(r)
+	return TeamListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetTeamMember returns a team member based on the provided team and user id strings.
@@ -1946,13 +1946,13 @@ func (c *Client4) GetTeamMember(teamID, userID, etag string) (*TeamMember, *Resp
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamMemberFromJson(r.Body), BuildResponse(r)
+	return TeamMemberFromJSON(r.Body), BuildResponse(r)
 }
 
 // UpdateTeamMemberRoles will update the roles on a team for a user.
 func (c *Client4) UpdateTeamMemberRoles(teamID, userID, newRoles string) (bool, *Response) {
 	requestBody := map[string]string{"roles": newRoles}
-	r, err := c.DoApiPut(c.GetTeamMemberRoute(teamID, userID)+"/roles", MapToJson(requestBody))
+	r, err := c.DoApiPut(c.GetTeamMemberRoute(teamID, userID)+"/roles", MapToJSON(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1962,7 +1962,7 @@ func (c *Client4) UpdateTeamMemberRoles(teamID, userID, newRoles string) (bool, 
 
 // UpdateTeamMemberSchemeRoles will update the scheme-derived roles on a team for a user.
 func (c *Client4) UpdateTeamMemberSchemeRoles(teamID string, userID string, schemeRoles *SchemeRoles) (bool, *Response) {
-	r, err := c.DoApiPut(c.GetTeamMemberRoute(teamID, userID)+"/schemeRoles", schemeRoles.ToJson())
+	r, err := c.DoApiPut(c.GetTeamMemberRoute(teamID, userID)+"/schemeRoles", schemeRoles.ToJSON())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1972,22 +1972,22 @@ func (c *Client4) UpdateTeamMemberSchemeRoles(teamID string, userID string, sche
 
 // UpdateTeam will update a team.
 func (c *Client4) UpdateTeam(team *Team) (*Team, *Response) {
-	r, err := c.DoApiPut(c.GetTeamRoute(team.ID), team.ToJson())
+	r, err := c.DoApiPut(c.GetTeamRoute(team.ID), team.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamFromJson(r.Body), BuildResponse(r)
+	return TeamFromJSON(r.Body), BuildResponse(r)
 }
 
 // PatchTeam partially updates a team. Any missing fields are not updated.
 func (c *Client4) PatchTeam(teamID string, patch *TeamPatch) (*Team, *Response) {
-	r, err := c.DoApiPut(c.GetTeamRoute(teamID)+"/patch", patch.ToJson())
+	r, err := c.DoApiPut(c.GetTeamRoute(teamID)+"/patch", patch.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamFromJson(r.Body), BuildResponse(r)
+	return TeamFromJSON(r.Body), BuildResponse(r)
 }
 
 // RestoreTeam restores a previously deleted team.
@@ -1997,7 +1997,7 @@ func (c *Client4) RestoreTeam(teamID string) (*Team, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamFromJson(r.Body), BuildResponse(r)
+	return TeamFromJSON(r.Body), BuildResponse(r)
 }
 
 // RegenerateTeamInviteId requests a new invite ID to be generated.
@@ -2007,7 +2007,7 @@ func (c *Client4) RegenerateTeamInviteID(teamID string) (*Team, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamFromJson(r.Body), BuildResponse(r)
+	return TeamFromJSON(r.Body), BuildResponse(r)
 }
 
 // SoftDeleteTeam deletes the team softly (archive only, not permanent delete).
@@ -2035,12 +2035,12 @@ func (c *Client4) PermanentDeleteTeam(teamID string) (bool, *Response) {
 // the corresponding AllowOpenInvite appropriately.
 func (c *Client4) UpdateTeamPrivacy(teamID string, privacy string) (*Team, *Response) {
 	requestBody := map[string]string{"privacy": privacy}
-	r, err := c.DoApiPut(c.GetTeamRoute(teamID)+"/privacy", MapToJson(requestBody))
+	r, err := c.DoApiPut(c.GetTeamRoute(teamID)+"/privacy", MapToJSON(requestBody))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamFromJson(r.Body), BuildResponse(r)
+	return TeamFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetTeamMembers returns team members based on the provided team id string.
@@ -2051,7 +2051,7 @@ func (c *Client4) GetTeamMembers(teamID string, page int, perPage int, etag stri
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamMembersFromJson(r.Body), BuildResponse(r)
+	return TeamMembersFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetTeamMembersWithoutDeletedUsers returns team members based on the provided team id string. Additional parameters of sort and exclude_deleted_users accepted as well
@@ -2063,7 +2063,7 @@ func (c *Client4) GetTeamMembersSortAndWithoutDeletedUsers(teamID string, page i
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamMembersFromJson(r.Body), BuildResponse(r)
+	return TeamMembersFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetTeamMembersForUser returns the team members for a user.
@@ -2073,29 +2073,29 @@ func (c *Client4) GetTeamMembersForUser(userID string, etag string) ([]*TeamMemb
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamMembersFromJson(r.Body), BuildResponse(r)
+	return TeamMembersFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetTeamMembersByIds will return an array of team members based on the
 // team id and a list of user ids provided. Must be authenticated.
 func (c *Client4) GetTeamMembersByIDs(teamID string, userIDs []string) ([]*TeamMember, *Response) {
-	r, err := c.DoApiPost(fmt.Sprintf("/teams/%v/members/ids", teamID), ArrayToJson(userIDs))
+	r, err := c.DoApiPost(fmt.Sprintf("/teams/%v/members/ids", teamID), ArrayToJSON(userIDs))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamMembersFromJson(r.Body), BuildResponse(r)
+	return TeamMembersFromJSON(r.Body), BuildResponse(r)
 }
 
 // AddTeamMember adds user to a team and return a team member.
 func (c *Client4) AddTeamMember(teamID, userID string) (*TeamMember, *Response) {
 	member := &TeamMember{TeamID: teamID, UserID: userID}
-	r, err := c.DoApiPost(c.GetTeamMembersRoute(teamID), member.ToJson())
+	r, err := c.DoApiPost(c.GetTeamMembersRoute(teamID), member.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamMemberFromJson(r.Body), BuildResponse(r)
+	return TeamMemberFromJSON(r.Body), BuildResponse(r)
 }
 
 // AddTeamMemberFromInvite adds a user to a team and return a team member using an invite id
@@ -2116,7 +2116,7 @@ func (c *Client4) AddTeamMemberFromInvite(token, inviteID string) (*TeamMember, 
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamMemberFromJson(r.Body), BuildResponse(r)
+	return TeamMemberFromJSON(r.Body), BuildResponse(r)
 }
 
 // AddTeamMembers adds a number of users to a team and returns the team members.
@@ -2127,12 +2127,12 @@ func (c *Client4) AddTeamMembers(teamID string, userIDs []string) ([]*TeamMember
 		members = append(members, member)
 	}
 
-	r, err := c.DoApiPost(c.GetTeamMembersRoute(teamID)+"/batch", TeamMembersToJson(members))
+	r, err := c.DoApiPost(c.GetTeamMembersRoute(teamID)+"/batch", TeamMembersToJSON(members))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamMembersFromJson(r.Body), BuildResponse(r)
+	return TeamMembersFromJSON(r.Body), BuildResponse(r)
 }
 
 // AddTeamMembers adds a number of users to a team and returns the team members.
@@ -2143,12 +2143,12 @@ func (c *Client4) AddTeamMembersGracefully(teamID string, userIDs []string) ([]*
 		members = append(members, member)
 	}
 
-	r, err := c.DoApiPost(c.GetTeamMembersRoute(teamID)+"/batch?graceful="+c.boolString(true), TeamMembersToJson(members))
+	r, err := c.DoApiPost(c.GetTeamMembersRoute(teamID)+"/batch?graceful="+c.boolString(true), TeamMembersToJSON(members))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamMembersWithErrorFromJson(r.Body), BuildResponse(r)
+	return TeamMembersWithErrorFromJSON(r.Body), BuildResponse(r)
 }
 
 // RemoveTeamMember will remove a user from a team.
@@ -2169,7 +2169,7 @@ func (c *Client4) GetTeamStats(teamID, etag string) (*TeamStats, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamStatsFromJson(r.Body), BuildResponse(r)
+	return TeamStatsFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetTotalUsersStats returns a total system user stats.
@@ -2180,7 +2180,7 @@ func (c *Client4) GetTotalUsersStats(etag string) (*UsersStats, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UsersStatsFromJson(r.Body), BuildResponse(r)
+	return UsersStatsFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetTeamUnread will return a TeamUnread object that contains the amount of
@@ -2192,7 +2192,7 @@ func (c *Client4) GetTeamUnread(teamID, userID string) (*TeamUnread, *Response) 
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamUnreadFromJson(r.Body), BuildResponse(r)
+	return TeamUnreadFromJSON(r.Body), BuildResponse(r)
 }
 
 // ImportTeam will import an exported team from other app into a existing team.
@@ -2236,7 +2236,7 @@ func (c *Client4) ImportTeam(data []byte, filesize int, importFrom, filename, te
 
 // InviteUsersToTeam invite users by email to the team.
 func (c *Client4) InviteUsersToTeam(teamID string, userEmails []string) (bool, *Response) {
-	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/invite/email", ArrayToJson(userEmails))
+	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/invite/email", ArrayToJSON(userEmails))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2251,7 +2251,7 @@ func (c *Client4) InviteGuestsToTeam(teamID string, userEmails []string, channel
 		Channels: channels,
 		Message:  message,
 	}
-	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/invite-guests/email", guestsInvite.ToJson())
+	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/invite-guests/email", guestsInvite.ToJSON())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2261,12 +2261,12 @@ func (c *Client4) InviteGuestsToTeam(teamID string, userEmails []string, channel
 
 // InviteUsersToTeam invite users by email to the team.
 func (c *Client4) InviteUsersToTeamGracefully(teamID string, userEmails []string) ([]*EmailInviteWithError, *Response) {
-	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/invite/email?graceful="+c.boolString(true), ArrayToJson(userEmails))
+	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/invite/email?graceful="+c.boolString(true), ArrayToJSON(userEmails))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return EmailInviteWithErrorFromJson(r.Body), BuildResponse(r)
+	return EmailInviteWithErrorFromJSON(r.Body), BuildResponse(r)
 }
 
 // InviteGuestsToTeam invite guest by email to some channels in a team.
@@ -2276,12 +2276,12 @@ func (c *Client4) InviteGuestsToTeamGracefully(teamID string, userEmails []strin
 		Channels: channels,
 		Message:  message,
 	}
-	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/invite-guests/email?graceful="+c.boolString(true), guestsInvite.ToJson())
+	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/invite-guests/email?graceful="+c.boolString(true), guestsInvite.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return EmailInviteWithErrorFromJson(r.Body), BuildResponse(r)
+	return EmailInviteWithErrorFromJSON(r.Body), BuildResponse(r)
 }
 
 // InvalidateEmailInvites will invalidate active email invitations that have not been accepted by the user.
@@ -2301,7 +2301,7 @@ func (c *Client4) GetTeamInviteInfo(inviteID string) (*Team, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamFromJson(r.Body), BuildResponse(r)
+	return TeamFromJSON(r.Body), BuildResponse(r)
 }
 
 // SetTeamIcon sets team icon of the team.
@@ -2340,7 +2340,7 @@ func (c *Client4) SetTeamIcon(teamID string, data []byte) (bool, *Response) {
 	defer closeBody(rp)
 
 	if rp.StatusCode >= 300 {
-		return false, BuildErrorResponse(rp, AppErrorFromJson(rp.Body))
+		return false, BuildErrorResponse(rp, AppErrorFromJSON(rp.Body))
 	}
 
 	return CheckStatusOK(rp), BuildResponse(rp)
@@ -2397,7 +2397,7 @@ func (c *Client4) getAllChannels(page int, perPage int, etag string, opts Channe
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelListWithTeamDataFromJson(r.Body), BuildResponse(r)
+	return ChannelListWithTeamDataFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetAllChannelsWithCount get all the channels including the total count. Must be a system administrator.
@@ -2408,38 +2408,38 @@ func (c *Client4) GetAllChannelsWithCount(page int, perPage int, etag string) (*
 		return nil, 0, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	cwc := ChannelsWithCountFromJson(r.Body)
+	cwc := ChannelsWithCountFromJSON(r.Body)
 	return cwc.Channels, cwc.TotalCount, BuildResponse(r)
 }
 
 // CreateChannel creates a channel based on the provided channel struct.
 func (c *Client4) CreateChannel(channel *Channel) (*Channel, *Response) {
-	r, err := c.DoApiPost(c.GetChannelsRoute(), channel.ToJson())
+	r, err := c.DoApiPost(c.GetChannelsRoute(), channel.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelFromJson(r.Body), BuildResponse(r)
+	return ChannelFromJSON(r.Body), BuildResponse(r)
 }
 
 // UpdateChannel updates a channel based on the provided channel struct.
 func (c *Client4) UpdateChannel(channel *Channel) (*Channel, *Response) {
-	r, err := c.DoApiPut(c.GetChannelRoute(channel.ID), channel.ToJson())
+	r, err := c.DoApiPut(c.GetChannelRoute(channel.ID), channel.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelFromJson(r.Body), BuildResponse(r)
+	return ChannelFromJSON(r.Body), BuildResponse(r)
 }
 
 // PatchChannel partially updates a channel. Any missing fields are not updated.
 func (c *Client4) PatchChannel(channelID string, patch *ChannelPatch) (*Channel, *Response) {
-	r, err := c.DoApiPut(c.GetChannelRoute(channelID)+"/patch", patch.ToJson())
+	r, err := c.DoApiPut(c.GetChannelRoute(channelID)+"/patch", patch.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelFromJson(r.Body), BuildResponse(r)
+	return ChannelFromJSON(r.Body), BuildResponse(r)
 }
 
 // ConvertChannelToPrivate converts public to private channel.
@@ -2449,18 +2449,18 @@ func (c *Client4) ConvertChannelToPrivate(channelID string) (*Channel, *Response
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelFromJson(r.Body), BuildResponse(r)
+	return ChannelFromJSON(r.Body), BuildResponse(r)
 }
 
 // UpdateChannelPrivacy updates channel privacy
 func (c *Client4) UpdateChannelPrivacy(channelID string, privacy string) (*Channel, *Response) {
 	requestBody := map[string]string{"privacy": privacy}
-	r, err := c.DoApiPut(c.GetChannelRoute(channelID)+"/privacy", MapToJson(requestBody))
+	r, err := c.DoApiPut(c.GetChannelRoute(channelID)+"/privacy", MapToJSON(requestBody))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelFromJson(r.Body), BuildResponse(r)
+	return ChannelFromJSON(r.Body), BuildResponse(r)
 }
 
 // RestoreChannel restores a previously deleted channel. Any missing fields are not updated.
@@ -2470,29 +2470,29 @@ func (c *Client4) RestoreChannel(channelID string) (*Channel, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelFromJson(r.Body), BuildResponse(r)
+	return ChannelFromJSON(r.Body), BuildResponse(r)
 }
 
 // CreateDirectChannel creates a direct message channel based on the two user
 // ids provided.
 func (c *Client4) CreateDirectChannel(userID1, userID2 string) (*Channel, *Response) {
 	requestBody := []string{userID1, userID2}
-	r, err := c.DoApiPost(c.GetChannelsRoute()+"/direct", ArrayToJson(requestBody))
+	r, err := c.DoApiPost(c.GetChannelsRoute()+"/direct", ArrayToJSON(requestBody))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelFromJson(r.Body), BuildResponse(r)
+	return ChannelFromJSON(r.Body), BuildResponse(r)
 }
 
 // CreateGroupChannel creates a group message channel based on userIds provided.
 func (c *Client4) CreateGroupChannel(userIDs []string) (*Channel, *Response) {
-	r, err := c.DoApiPost(c.GetChannelsRoute()+"/group", ArrayToJson(userIDs))
+	r, err := c.DoApiPost(c.GetChannelsRoute()+"/group", ArrayToJSON(userIDs))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelFromJson(r.Body), BuildResponse(r)
+	return ChannelFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetChannel returns a channel based on the provided channel id string.
@@ -2502,7 +2502,7 @@ func (c *Client4) GetChannel(channelID, etag string) (*Channel, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelFromJson(r.Body), BuildResponse(r)
+	return ChannelFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetChannelStats returns statistics for a channel.
@@ -2512,7 +2512,7 @@ func (c *Client4) GetChannelStats(channelID string, etag string) (*ChannelStats,
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelStatsFromJson(r.Body), BuildResponse(r)
+	return ChannelStatsFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetChannelMembersTimezones gets a list of timezones for a channel.
@@ -2522,7 +2522,7 @@ func (c *Client4) GetChannelMembersTimezones(channelID string) ([]string, *Respo
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ArrayFromJson(r.Body), BuildResponse(r)
+	return ArrayFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetPinnedPosts gets a list of pinned posts.
@@ -2532,7 +2532,7 @@ func (c *Client4) GetPinnedPosts(channelID string, etag string) (*PostList, *Res
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PostListFromJson(r.Body), BuildResponse(r)
+	return PostListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetPrivateChannelsForTeam returns a list of private channels based on the provided team id string.
@@ -2543,7 +2543,7 @@ func (c *Client4) GetPrivateChannelsForTeam(teamID string, page int, perPage int
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelSliceFromJson(r.Body), BuildResponse(r)
+	return ChannelSliceFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetPublicChannelsForTeam returns a list of public channels based on the provided team id string.
@@ -2554,7 +2554,7 @@ func (c *Client4) GetPublicChannelsForTeam(teamID string, page int, perPage int,
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelSliceFromJson(r.Body), BuildResponse(r)
+	return ChannelSliceFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetDeletedChannelsForTeam returns a list of public channels based on the provided team id string.
@@ -2565,17 +2565,17 @@ func (c *Client4) GetDeletedChannelsForTeam(teamID string, page int, perPage int
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelSliceFromJson(r.Body), BuildResponse(r)
+	return ChannelSliceFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetPublicChannelsByIdsForTeam returns a list of public channels based on provided team id string.
 func (c *Client4) GetPublicChannelsByIDsForTeam(teamID string, channelIDs []string) ([]*Channel, *Response) {
-	r, err := c.DoApiPost(c.GetChannelsForTeamRoute(teamID)+"/ids", ArrayToJson(channelIDs))
+	r, err := c.DoApiPost(c.GetChannelsForTeamRoute(teamID)+"/ids", ArrayToJSON(channelIDs))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelSliceFromJson(r.Body), BuildResponse(r)
+	return ChannelSliceFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetChannelsForTeamForUser returns a list channels of on a team for a user.
@@ -2585,7 +2585,7 @@ func (c *Client4) GetChannelsForTeamForUser(teamID, userID string, includeDelete
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelSliceFromJson(r.Body), BuildResponse(r)
+	return ChannelSliceFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetChannelsForTeamAndUserWithLastDeleteAt returns a list channels of a team for a user, additionally filtered with lastDeleteAt. This does not have any effect if includeDeleted is set to false.
@@ -2597,57 +2597,57 @@ func (c *Client4) GetChannelsForTeamAndUserWithLastDeleteAt(teamID, userID strin
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelSliceFromJson(r.Body), BuildResponse(r)
+	return ChannelSliceFromJSON(r.Body), BuildResponse(r)
 }
 
 // SearchChannels returns the channels on a team matching the provided search term.
 func (c *Client4) SearchChannels(teamID string, search *ChannelSearch) ([]*Channel, *Response) {
-	r, err := c.DoApiPost(c.GetChannelsForTeamRoute(teamID)+"/search", search.ToJson())
+	r, err := c.DoApiPost(c.GetChannelsForTeamRoute(teamID)+"/search", search.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelSliceFromJson(r.Body), BuildResponse(r)
+	return ChannelSliceFromJSON(r.Body), BuildResponse(r)
 }
 
 // SearchArchivedChannels returns the archived channels on a team matching the provided search term.
 func (c *Client4) SearchArchivedChannels(teamID string, search *ChannelSearch) ([]*Channel, *Response) {
-	r, err := c.DoApiPost(c.GetChannelsForTeamRoute(teamID)+"/search_archived", search.ToJson())
+	r, err := c.DoApiPost(c.GetChannelsForTeamRoute(teamID)+"/search_archived", search.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelSliceFromJson(r.Body), BuildResponse(r)
+	return ChannelSliceFromJSON(r.Body), BuildResponse(r)
 }
 
 // SearchAllChannels search in all the channels. Must be a system administrator.
 func (c *Client4) SearchAllChannels(search *ChannelSearch) (*ChannelListWithTeamData, *Response) {
-	r, err := c.DoApiPost(c.GetChannelsRoute()+"/search", search.ToJson())
+	r, err := c.DoApiPost(c.GetChannelsRoute()+"/search", search.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelListWithTeamDataFromJson(r.Body), BuildResponse(r)
+	return ChannelListWithTeamDataFromJSON(r.Body), BuildResponse(r)
 }
 
 // SearchAllChannelsPaged searches all the channels and returns the results paged with the total count.
 func (c *Client4) SearchAllChannelsPaged(search *ChannelSearch) (*ChannelsWithCount, *Response) {
-	r, err := c.DoApiPost(c.GetChannelsRoute()+"/search", search.ToJson())
+	r, err := c.DoApiPost(c.GetChannelsRoute()+"/search", search.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelsWithCountFromJson(r.Body), BuildResponse(r)
+	return ChannelsWithCountFromJSON(r.Body), BuildResponse(r)
 }
 
 // SearchGroupChannels returns the group channels of the user whose members' usernames match the search term.
 func (c *Client4) SearchGroupChannels(search *ChannelSearch) ([]*Channel, *Response) {
-	r, err := c.DoApiPost(c.GetChannelsRoute()+"/group/search", search.ToJson())
+	r, err := c.DoApiPost(c.GetChannelsRoute()+"/group/search", search.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelSliceFromJson(r.Body), BuildResponse(r)
+	return ChannelSliceFromJSON(r.Body), BuildResponse(r)
 }
 
 // DeleteChannel deletes channel based on the provided channel id string.
@@ -2676,12 +2676,12 @@ func (c *Client4) MoveChannel(channelID, teamID string, force bool) (*Channel, *
 		"team_id": teamID,
 		"force":   force,
 	}
-	r, err := c.DoApiPost(c.GetChannelRoute(channelID)+"/move", StringInterfaceToJson(requestBody))
+	r, err := c.DoApiPost(c.GetChannelRoute(channelID)+"/move", StringInterfaceToJSON(requestBody))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelFromJson(r.Body), BuildResponse(r)
+	return ChannelFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetChannelByName returns a channel based on the provided channel name and team id strings.
@@ -2691,7 +2691,7 @@ func (c *Client4) GetChannelByName(channelName, teamID string, etag string) (*Ch
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelFromJson(r.Body), BuildResponse(r)
+	return ChannelFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetChannelByNameIncludeDeleted returns a channel based on the provided channel name and team id strings. Other then GetChannelByName it will also return deleted channels.
@@ -2701,7 +2701,7 @@ func (c *Client4) GetChannelByNameIncludeDeleted(channelName, teamID string, eta
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelFromJson(r.Body), BuildResponse(r)
+	return ChannelFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetChannelByNameForTeamName returns a channel based on the provided channel name and team name strings.
@@ -2711,7 +2711,7 @@ func (c *Client4) GetChannelByNameForTeamName(channelName, teamName string, etag
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelFromJson(r.Body), BuildResponse(r)
+	return ChannelFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetChannelByNameForTeamNameIncludeDeleted returns a channel based on the provided channel name and team name strings. Other then GetChannelByNameForTeamName it will also return deleted channels.
@@ -2721,7 +2721,7 @@ func (c *Client4) GetChannelByNameForTeamNameIncludeDeleted(channelName, teamNam
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelFromJson(r.Body), BuildResponse(r)
+	return ChannelFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetChannelMembers gets a page of channel members.
@@ -2732,17 +2732,17 @@ func (c *Client4) GetChannelMembers(channelID string, page, perPage int, etag st
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelMembersFromJson(r.Body), BuildResponse(r)
+	return ChannelMembersFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetChannelMembersByIds gets the channel members in a channel for a list of user ids.
 func (c *Client4) GetChannelMembersByIDs(channelID string, userIDs []string) (*ChannelMembers, *Response) {
-	r, err := c.DoApiPost(c.GetChannelMembersRoute(channelID)+"/ids", ArrayToJson(userIDs))
+	r, err := c.DoApiPost(c.GetChannelMembersRoute(channelID)+"/ids", ArrayToJSON(userIDs))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelMembersFromJson(r.Body), BuildResponse(r)
+	return ChannelMembersFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetChannelMember gets a channel member.
@@ -2752,7 +2752,7 @@ func (c *Client4) GetChannelMember(channelID, userID, etag string) (*ChannelMemb
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelMemberFromJson(r.Body), BuildResponse(r)
+	return ChannelMemberFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetChannelMembersForUser gets all the channel members for a user on a team.
@@ -2762,18 +2762,18 @@ func (c *Client4) GetChannelMembersForUser(userID, teamID, etag string) (*Channe
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelMembersFromJson(r.Body), BuildResponse(r)
+	return ChannelMembersFromJSON(r.Body), BuildResponse(r)
 }
 
 // ViewChannel performs a view action for a user. Synonymous with switching channels or marking channels as read by a user.
 func (c *Client4) ViewChannel(userID string, view *ChannelView) (*ChannelViewResponse, *Response) {
 	url := fmt.Sprintf(c.GetChannelsRoute()+"/members/%v/view", userID)
-	r, err := c.DoApiPost(url, view.ToJson())
+	r, err := c.DoApiPost(url, view.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelViewResponseFromJson(r.Body), BuildResponse(r)
+	return ChannelViewResponseFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetChannelUnread will return a ChannelUnread object that contains the number of
@@ -2784,13 +2784,13 @@ func (c *Client4) GetChannelUnread(channelID, userID string) (*ChannelUnread, *R
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelUnreadFromJson(r.Body), BuildResponse(r)
+	return ChannelUnreadFromJSON(r.Body), BuildResponse(r)
 }
 
 // UpdateChannelRoles will update the roles on a channel for a user.
 func (c *Client4) UpdateChannelRoles(channelID, userID, roles string) (bool, *Response) {
 	requestBody := map[string]string{"roles": roles}
-	r, err := c.DoApiPut(c.GetChannelMemberRoute(channelID, userID)+"/roles", MapToJson(requestBody))
+	r, err := c.DoApiPut(c.GetChannelMemberRoute(channelID, userID)+"/roles", MapToJSON(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2800,7 +2800,7 @@ func (c *Client4) UpdateChannelRoles(channelID, userID, roles string) (bool, *Re
 
 // UpdateChannelMemberSchemeRoles will update the scheme-derived roles on a channel for a user.
 func (c *Client4) UpdateChannelMemberSchemeRoles(channelID string, userID string, schemeRoles *SchemeRoles) (bool, *Response) {
-	r, err := c.DoApiPut(c.GetChannelMemberRoute(channelID, userID)+"/schemeRoles", schemeRoles.ToJson())
+	r, err := c.DoApiPut(c.GetChannelMemberRoute(channelID, userID)+"/schemeRoles", schemeRoles.ToJSON())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2810,7 +2810,7 @@ func (c *Client4) UpdateChannelMemberSchemeRoles(channelID string, userID string
 
 // UpdateChannelNotifyProps will update the notification properties on a channel for a user.
 func (c *Client4) UpdateChannelNotifyProps(channelID, userID string, props map[string]string) (bool, *Response) {
-	r, err := c.DoApiPut(c.GetChannelMemberRoute(channelID, userID)+"/notify_props", MapToJson(props))
+	r, err := c.DoApiPut(c.GetChannelMemberRoute(channelID, userID)+"/notify_props", MapToJSON(props))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2821,23 +2821,23 @@ func (c *Client4) UpdateChannelNotifyProps(channelID, userID string, props map[s
 // AddChannelMember adds user to channel and return a channel member.
 func (c *Client4) AddChannelMember(channelID, userID string) (*ChannelMember, *Response) {
 	requestBody := map[string]string{"user_id": userID}
-	r, err := c.DoApiPost(c.GetChannelMembersRoute(channelID)+"", MapToJson(requestBody))
+	r, err := c.DoApiPost(c.GetChannelMembersRoute(channelID)+"", MapToJSON(requestBody))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelMemberFromJson(r.Body), BuildResponse(r)
+	return ChannelMemberFromJSON(r.Body), BuildResponse(r)
 }
 
 // AddChannelMemberWithRootId adds user to channel and return a channel member. Post add to channel message has the postRootId.
 func (c *Client4) AddChannelMemberWithRootID(channelID, userID, postRootID string) (*ChannelMember, *Response) {
 	requestBody := map[string]string{"user_id": userID, "post_root_id": postRootID}
-	r, err := c.DoApiPost(c.GetChannelMembersRoute(channelID)+"", MapToJson(requestBody))
+	r, err := c.DoApiPost(c.GetChannelMembersRoute(channelID)+"", MapToJSON(requestBody))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelMemberFromJson(r.Body), BuildResponse(r)
+	return ChannelMemberFromJSON(r.Body), BuildResponse(r)
 }
 
 // RemoveUserFromChannel will delete the channel member object for a user, effectively removing the user from a channel.
@@ -2858,7 +2858,7 @@ func (c *Client4) AutocompleteChannelsForTeam(teamID, name string) (*ChannelList
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelListFromJson(r.Body), BuildResponse(r)
+	return ChannelListFromJSON(r.Body), BuildResponse(r)
 }
 
 // AutocompleteChannelsForTeamForSearch will return an ordered list of your channels autocomplete suggestions.
@@ -2869,49 +2869,49 @@ func (c *Client4) AutocompleteChannelsForTeamForSearch(teamID, name string) (*Ch
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelListFromJson(r.Body), BuildResponse(r)
+	return ChannelListFromJSON(r.Body), BuildResponse(r)
 }
 
 // Post Section
 
 // CreatePost creates a post based on the provided post struct.
 func (c *Client4) CreatePost(post *Post) (*Post, *Response) {
-	r, err := c.DoApiPost(c.GetPostsRoute(), post.ToUnsanitizedJson())
+	r, err := c.DoApiPost(c.GetPostsRoute(), post.ToUnsanitizedJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PostFromJson(r.Body), BuildResponse(r)
+	return PostFromJSON(r.Body), BuildResponse(r)
 }
 
 // CreatePostEphemeral creates a ephemeral post based on the provided post struct which is send to the given user id.
 func (c *Client4) CreatePostEphemeral(post *PostEphemeral) (*Post, *Response) {
-	r, err := c.DoApiPost(c.GetPostsEphemeralRoute(), post.ToUnsanitizedJson())
+	r, err := c.DoApiPost(c.GetPostsEphemeralRoute(), post.ToUnsanitizedJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PostFromJson(r.Body), BuildResponse(r)
+	return PostFromJSON(r.Body), BuildResponse(r)
 }
 
 // UpdatePost updates a post based on the provided post struct.
 func (c *Client4) UpdatePost(postID string, post *Post) (*Post, *Response) {
-	r, err := c.DoApiPut(c.GetPostRoute(postID), post.ToUnsanitizedJson())
+	r, err := c.DoApiPut(c.GetPostRoute(postID), post.ToUnsanitizedJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PostFromJson(r.Body), BuildResponse(r)
+	return PostFromJSON(r.Body), BuildResponse(r)
 }
 
 // PatchPost partially updates a post. Any missing fields are not updated.
 func (c *Client4) PatchPost(postID string, patch *PostPatch) (*Post, *Response) {
-	r, err := c.DoApiPut(c.GetPostRoute(postID)+"/patch", patch.ToJson())
+	r, err := c.DoApiPut(c.GetPostRoute(postID)+"/patch", patch.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PostFromJson(r.Body), BuildResponse(r)
+	return PostFromJSON(r.Body), BuildResponse(r)
 }
 
 // SetPostUnread marks channel where post belongs as unread on the time of the provided post.
@@ -2952,7 +2952,7 @@ func (c *Client4) GetPost(postID string, etag string) (*Post, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PostFromJson(r.Body), BuildResponse(r)
+	return PostFromJSON(r.Body), BuildResponse(r)
 }
 
 // DeletePost deletes a post from the provided post id string.
@@ -2976,7 +2976,7 @@ func (c *Client4) GetPostThread(postID string, etag string, collapsedThreads boo
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PostListFromJson(r.Body), BuildResponse(r)
+	return PostListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetPostsForChannel gets a page of posts with an array for ordering for a channel.
@@ -2990,7 +2990,7 @@ func (c *Client4) GetPostsForChannel(channelID string, page, perPage int, etag s
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PostListFromJson(r.Body), BuildResponse(r)
+	return PostListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetFlaggedPostsForUser returns flagged posts of a user based on user id string.
@@ -3001,7 +3001,7 @@ func (c *Client4) GetFlaggedPostsForUser(userID string, page int, perPage int) (
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PostListFromJson(r.Body), BuildResponse(r)
+	return PostListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetFlaggedPostsForUserInTeam returns flagged posts in team of a user based on user id string.
@@ -3016,7 +3016,7 @@ func (c *Client4) GetFlaggedPostsForUserInTeam(userID string, teamID string, pag
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PostListFromJson(r.Body), BuildResponse(r)
+	return PostListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetFlaggedPostsForUserInChannel returns flagged posts in channel of a user based on user id string.
@@ -3031,7 +3031,7 @@ func (c *Client4) GetFlaggedPostsForUserInChannel(userID string, channelID strin
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PostListFromJson(r.Body), BuildResponse(r)
+	return PostListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetPostsSince gets posts created after a specified time as Unix time in milliseconds.
@@ -3045,7 +3045,7 @@ func (c *Client4) GetPostsSince(channelID string, time int64, collapsedThreads b
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PostListFromJson(r.Body), BuildResponse(r)
+	return PostListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetPostsAfter gets a page of posts that were posted after the post provided.
@@ -3059,7 +3059,7 @@ func (c *Client4) GetPostsAfter(channelID, postID string, page, perPage int, eta
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PostListFromJson(r.Body), BuildResponse(r)
+	return PostListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetPostsBefore gets a page of posts that were posted before the post provided.
@@ -3073,7 +3073,7 @@ func (c *Client4) GetPostsBefore(channelID, postID string, page, perPage int, et
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PostListFromJson(r.Body), BuildResponse(r)
+	return PostListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetPostsAroundLastUnread gets a list of posts around last unread post by a user in a channel.
@@ -3087,7 +3087,7 @@ func (c *Client4) GetPostsAroundLastUnread(userID, channelID string, limitBefore
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PostListFromJson(r.Body), BuildResponse(r)
+	return PostListFromJSON(r.Body), BuildResponse(r)
 }
 
 // SearchFiles returns any posts with matching terms string.
@@ -3101,12 +3101,12 @@ func (c *Client4) SearchFiles(teamID string, terms string, isOrSearch bool) (*Fi
 
 // SearchFilesWithParams returns any posts with matching terms string.
 func (c *Client4) SearchFilesWithParams(teamID string, params *SearchParameter) (*FileInfoList, *Response) {
-	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/files/search", params.SearchParameterToJson())
+	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/files/search", params.SearchParameterToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return FileInfoListFromJson(r.Body), BuildResponse(r)
+	return FileInfoListFromJSON(r.Body), BuildResponse(r)
 }
 
 // SearchPosts returns any posts with matching terms string.
@@ -3120,23 +3120,23 @@ func (c *Client4) SearchPosts(teamID string, terms string, isOrSearch bool) (*Po
 
 // SearchPostsWithParams returns any posts with matching terms string.
 func (c *Client4) SearchPostsWithParams(teamID string, params *SearchParameter) (*PostList, *Response) {
-	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/posts/search", params.SearchParameterToJson())
+	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/posts/search", params.SearchParameterToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PostListFromJson(r.Body), BuildResponse(r)
+	return PostListFromJSON(r.Body), BuildResponse(r)
 }
 
 // SearchPostsWithMatches returns any posts with matching terms string, including.
 func (c *Client4) SearchPostsWithMatches(teamID string, terms string, isOrSearch bool) (*PostSearchResults, *Response) {
 	requestBody := map[string]interface{}{"terms": terms, "is_or_search": isOrSearch}
-	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/posts/search", StringInterfaceToJson(requestBody))
+	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/posts/search", StringInterfaceToJSON(requestBody))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PostSearchResultsFromJson(r.Body), BuildResponse(r)
+	return PostSearchResultsFromJSON(r.Body), BuildResponse(r)
 }
 
 // DoPostAction performs a post action.
@@ -3301,7 +3301,7 @@ func (c *Client4) GetFileLink(fileID string) (string, *Response) {
 		return "", BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return MapFromJson(r.Body)["link"], BuildResponse(r)
+	return MapFromJSON(r.Body)["link"], BuildResponse(r)
 }
 
 // GetFilePreview gets the bytes for a file by id.
@@ -3341,7 +3341,7 @@ func (c *Client4) GetFileInfo(fileID string) (*FileInfo, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return FileInfoFromJson(r.Body), BuildResponse(r)
+	return FileInfoFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetFileInfosForPost gets all the file info objects attached to a post.
@@ -3351,7 +3351,7 @@ func (c *Client4) GetFileInfosForPost(postID string, etag string) ([]*FileInfo, 
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return FileInfosFromJson(r.Body), BuildResponse(r)
+	return FileInfosFromJSON(r.Body), BuildResponse(r)
 }
 
 // General/System Section
@@ -3382,7 +3382,7 @@ func (c *Client4) GetPing() (string, *Response) {
 		return "", BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return MapFromJson(r.Body)["status"], BuildResponse(r)
+	return MapFromJSON(r.Body)["status"], BuildResponse(r)
 }
 
 // GetPingWithServerStatus will return ok if several basic server health checks
@@ -3397,7 +3397,7 @@ func (c *Client4) GetPingWithServerStatus() (string, *Response) {
 		return "", BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return MapFromJson(r.Body)["status"], BuildResponse(r)
+	return MapFromJSON(r.Body)["status"], BuildResponse(r)
 }
 
 // GetPingWithFullServerStatus will return the full status if several basic server
@@ -3412,12 +3412,12 @@ func (c *Client4) GetPingWithFullServerStatus() (map[string]string, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return MapFromJson(r.Body), BuildResponse(r)
+	return MapFromJSON(r.Body), BuildResponse(r)
 }
 
 // TestEmail will attempt to connect to the configured SMTP server.
 func (c *Client4) TestEmail(config *Config) (bool, *Response) {
-	r, err := c.DoApiPost(c.GetTestEmailRoute(), config.ToJson())
+	r, err := c.DoApiPost(c.GetTestEmailRoute(), config.ToJSON())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -3429,7 +3429,7 @@ func (c *Client4) TestEmail(config *Config) (bool, *Response) {
 func (c *Client4) TestSiteURL(siteURL string) (bool, *Response) {
 	requestBody := make(map[string]string)
 	requestBody["site_url"] = siteURL
-	r, err := c.DoApiPost(c.GetTestSiteURLRoute(), MapToJson(requestBody))
+	r, err := c.DoApiPost(c.GetTestSiteURLRoute(), MapToJSON(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -3439,7 +3439,7 @@ func (c *Client4) TestSiteURL(siteURL string) (bool, *Response) {
 
 // TestS3Connection will attempt to connect to the AWS S3.
 func (c *Client4) TestS3Connection(config *Config) (bool, *Response) {
-	r, err := c.DoApiPost(c.GetTestS3Route(), config.ToJson())
+	r, err := c.DoApiPost(c.GetTestS3Route(), config.ToJSON())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -3454,7 +3454,7 @@ func (c *Client4) GetConfig() (*Config, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ConfigFromJson(r.Body), BuildResponse(r)
+	return ConfigFromJSON(r.Body), BuildResponse(r)
 }
 
 // ReloadConfig will reload the server configuration.
@@ -3475,7 +3475,7 @@ func (c *Client4) GetOldClientConfig(etag string) (map[string]string, *Response)
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return MapFromJson(r.Body), BuildResponse(r)
+	return MapFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetEnvironmentConfig will retrieve a map mirroring the server configuration where fields
@@ -3487,7 +3487,7 @@ func (c *Client4) GetEnvironmentConfig() (map[string]interface{}, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return StringInterfaceFromJson(r.Body), BuildResponse(r)
+	return StringInterfaceFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetOldClientLicense will retrieve the parts of the server license needed by the
@@ -3498,7 +3498,7 @@ func (c *Client4) GetOldClientLicense(etag string) (map[string]string, *Response
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return MapFromJson(r.Body), BuildResponse(r)
+	return MapFromJSON(r.Body), BuildResponse(r)
 }
 
 // DatabaseRecycle will recycle the connections. Discard current connection and get new one.
@@ -3523,12 +3523,12 @@ func (c *Client4) InvalidateCaches() (bool, *Response) {
 
 // UpdateConfig will update the server configuration.
 func (c *Client4) UpdateConfig(config *Config) (*Config, *Response) {
-	r, err := c.DoApiPut(c.GetConfigRoute(), config.ToJson())
+	r, err := c.DoApiPut(c.GetConfigRoute(), config.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ConfigFromJson(r.Body), BuildResponse(r)
+	return ConfigFromJSON(r.Body), BuildResponse(r)
 }
 
 // MigrateConfig will migrate existing config to the new one.
@@ -3536,7 +3536,7 @@ func (c *Client4) MigrateConfig(from, to string) (bool, *Response) {
 	m := make(map[string]string, 2)
 	m["from"] = from
 	m["to"] = to
-	r, err := c.DoApiPost(c.GetConfigRoute()+"/migrate", MapToJson(m))
+	r, err := c.DoApiPost(c.GetConfigRoute()+"/migrate", MapToJSON(m))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -3579,7 +3579,7 @@ func (c *Client4) UploadLicenseFile(data []byte) (bool, *Response) {
 	defer closeBody(rp)
 
 	if rp.StatusCode >= 300 {
-		return false, BuildErrorResponse(rp, AppErrorFromJson(rp.Body))
+		return false, BuildErrorResponse(rp, AppErrorFromJSON(rp.Body))
 	}
 
 	return CheckStatusOK(rp), BuildResponse(rp)
@@ -3607,29 +3607,29 @@ func (c *Client4) GetAnalyticsOld(name, teamID string) (AnalyticsRows, *Response
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return AnalyticsRowsFromJson(r.Body), BuildResponse(r)
+	return AnalyticsRowsFromJSON(r.Body), BuildResponse(r)
 }
 
 // Webhooks Section
 
 // CreateIncomingWebhook creates an incoming webhook for a channel.
 func (c *Client4) CreateIncomingWebhook(hook *IncomingWebhook) (*IncomingWebhook, *Response) {
-	r, err := c.DoApiPost(c.GetIncomingWebhooksRoute(), hook.ToJson())
+	r, err := c.DoApiPost(c.GetIncomingWebhooksRoute(), hook.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return IncomingWebhookFromJson(r.Body), BuildResponse(r)
+	return IncomingWebhookFromJSON(r.Body), BuildResponse(r)
 }
 
 // UpdateIncomingWebhook updates an incoming webhook for a channel.
 func (c *Client4) UpdateIncomingWebhook(hook *IncomingWebhook) (*IncomingWebhook, *Response) {
-	r, err := c.DoApiPut(c.GetIncomingWebhookRoute(hook.ID), hook.ToJson())
+	r, err := c.DoApiPut(c.GetIncomingWebhookRoute(hook.ID), hook.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return IncomingWebhookFromJson(r.Body), BuildResponse(r)
+	return IncomingWebhookFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetIncomingWebhooks returns a page of incoming webhooks on the system. Page counting starts at 0.
@@ -3640,7 +3640,7 @@ func (c *Client4) GetIncomingWebhooks(page int, perPage int, etag string) ([]*In
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return IncomingWebhookListFromJson(r.Body), BuildResponse(r)
+	return IncomingWebhookListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetIncomingWebhooksForTeam returns a page of incoming webhooks for a team. Page counting starts at 0.
@@ -3651,7 +3651,7 @@ func (c *Client4) GetIncomingWebhooksForTeam(teamID string, page int, perPage in
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return IncomingWebhookListFromJson(r.Body), BuildResponse(r)
+	return IncomingWebhookListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetIncomingWebhook returns an Incoming webhook given the hook ID.
@@ -3661,7 +3661,7 @@ func (c *Client4) GetIncomingWebhook(hookID string, etag string) (*IncomingWebho
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return IncomingWebhookFromJson(r.Body), BuildResponse(r)
+	return IncomingWebhookFromJSON(r.Body), BuildResponse(r)
 }
 
 // DeleteIncomingWebhook deletes and Incoming Webhook given the hook ID.
@@ -3676,22 +3676,22 @@ func (c *Client4) DeleteIncomingWebhook(hookID string) (bool, *Response) {
 
 // CreateOutgoingWebhook creates an outgoing webhook for a team or channel.
 func (c *Client4) CreateOutgoingWebhook(hook *OutgoingWebhook) (*OutgoingWebhook, *Response) {
-	r, err := c.DoApiPost(c.GetOutgoingWebhooksRoute(), hook.ToJson())
+	r, err := c.DoApiPost(c.GetOutgoingWebhooksRoute(), hook.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return OutgoingWebhookFromJson(r.Body), BuildResponse(r)
+	return OutgoingWebhookFromJSON(r.Body), BuildResponse(r)
 }
 
 // UpdateOutgoingWebhook creates an outgoing webhook for a team or channel.
 func (c *Client4) UpdateOutgoingWebhook(hook *OutgoingWebhook) (*OutgoingWebhook, *Response) {
-	r, err := c.DoApiPut(c.GetOutgoingWebhookRoute(hook.ID), hook.ToJson())
+	r, err := c.DoApiPut(c.GetOutgoingWebhookRoute(hook.ID), hook.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return OutgoingWebhookFromJson(r.Body), BuildResponse(r)
+	return OutgoingWebhookFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetOutgoingWebhooks returns a page of outgoing webhooks on the system. Page counting starts at 0.
@@ -3702,7 +3702,7 @@ func (c *Client4) GetOutgoingWebhooks(page int, perPage int, etag string) ([]*Ou
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return OutgoingWebhookListFromJson(r.Body), BuildResponse(r)
+	return OutgoingWebhookListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetOutgoingWebhook outgoing webhooks on the system requested by Hook Id.
@@ -3712,7 +3712,7 @@ func (c *Client4) GetOutgoingWebhook(hookID string) (*OutgoingWebhook, *Response
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return OutgoingWebhookFromJson(r.Body), BuildResponse(r)
+	return OutgoingWebhookFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetOutgoingWebhooksForChannel returns a page of outgoing webhooks for a channel. Page counting starts at 0.
@@ -3723,7 +3723,7 @@ func (c *Client4) GetOutgoingWebhooksForChannel(channelID string, page int, perP
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return OutgoingWebhookListFromJson(r.Body), BuildResponse(r)
+	return OutgoingWebhookListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetOutgoingWebhooksForTeam returns a page of outgoing webhooks for a team. Page counting starts at 0.
@@ -3734,7 +3734,7 @@ func (c *Client4) GetOutgoingWebhooksForTeam(teamID string, page int, perPage in
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return OutgoingWebhookListFromJson(r.Body), BuildResponse(r)
+	return OutgoingWebhookListFromJSON(r.Body), BuildResponse(r)
 }
 
 // RegenOutgoingHookToken regenerate the outgoing webhook token.
@@ -3744,7 +3744,7 @@ func (c *Client4) RegenOutgoingHookToken(hookID string) (*OutgoingWebhook, *Resp
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return OutgoingWebhookFromJson(r.Body), BuildResponse(r)
+	return OutgoingWebhookFromJSON(r.Body), BuildResponse(r)
 }
 
 // DeleteOutgoingWebhook delete the outgoing webhook on the system requested by Hook Id.
@@ -3766,13 +3766,13 @@ func (c *Client4) GetPreferences(userID string) (Preferences, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	preferences, _ := PreferencesFromJson(r.Body)
+	preferences, _ := PreferencesFromJSON(r.Body)
 	return preferences, BuildResponse(r)
 }
 
 // UpdatePreferences saves the user's preferences.
 func (c *Client4) UpdatePreferences(userID string, preferences *Preferences) (bool, *Response) {
-	r, err := c.DoApiPut(c.GetPreferencesRoute(userID), preferences.ToJson())
+	r, err := c.DoApiPut(c.GetPreferencesRoute(userID), preferences.ToJSON())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -3782,7 +3782,7 @@ func (c *Client4) UpdatePreferences(userID string, preferences *Preferences) (bo
 
 // DeletePreferences deletes the user's preferences.
 func (c *Client4) DeletePreferences(userID string, preferences *Preferences) (bool, *Response) {
-	r, err := c.DoApiPost(c.GetPreferencesRoute(userID)+"/delete", preferences.ToJson())
+	r, err := c.DoApiPost(c.GetPreferencesRoute(userID)+"/delete", preferences.ToJSON())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -3798,7 +3798,7 @@ func (c *Client4) GetPreferencesByCategory(userID string, category string) (Pref
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	preferences, _ := PreferencesFromJson(r.Body)
+	preferences, _ := PreferencesFromJSON(r.Body)
 	return preferences, BuildResponse(r)
 }
 
@@ -3810,7 +3810,7 @@ func (c *Client4) GetPreferenceByCategoryAndName(userID string, category string,
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PreferenceFromJson(r.Body), BuildResponse(r)
+	return PreferenceFromJSON(r.Body), BuildResponse(r)
 }
 
 // SAML Section
@@ -3920,19 +3920,19 @@ func (c *Client4) GetSamlCertificateStatus() (*SamlCertificateStatus, *Response)
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return SamlCertificateStatusFromJson(r.Body), BuildResponse(r)
+	return SamlCertificateStatusFromJSON(r.Body), BuildResponse(r)
 }
 
 func (c *Client4) GetSamlMetadataFromIDp(samlMetadataURL string) (*SamlMetadataResponse, *Response) {
 	requestBody := make(map[string]string)
 	requestBody["saml_metadata_url"] = samlMetadataURL
-	r, err := c.DoApiPost(c.GetSamlRoute()+"/metadatafromidp", MapToJson(requestBody))
+	r, err := c.DoApiPost(c.GetSamlRoute()+"/metadatafromidp", MapToJSON(requestBody))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 
 	defer closeBody(r)
-	return SamlMetadataResponseFromJson(r.Body), BuildResponse(r)
+	return SamlMetadataResponseFromJSON(r.Body), BuildResponse(r)
 }
 
 // ResetSamlAuthDataToEmail resets the AuthData field of SAML users to their Email.
@@ -3961,12 +3961,12 @@ func (c *Client4) ResetSamlAuthDataToEmail(includeDeleted bool, dryRun bool, use
 
 // CreateComplianceReport creates an incoming webhook for a channel.
 func (c *Client4) CreateComplianceReport(report *Compliance) (*Compliance, *Response) {
-	r, err := c.DoApiPost(c.GetComplianceReportsRoute(), report.ToJson())
+	r, err := c.DoApiPost(c.GetComplianceReportsRoute(), report.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ComplianceFromJson(r.Body), BuildResponse(r)
+	return ComplianceFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetComplianceReports returns list of compliance reports.
@@ -3977,7 +3977,7 @@ func (c *Client4) GetComplianceReports(page, perPage int) (Compliances, *Respons
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return CompliancesFromJson(r.Body), BuildResponse(r)
+	return CompliancesFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetComplianceReport returns a compliance report.
@@ -3987,7 +3987,7 @@ func (c *Client4) GetComplianceReport(reportID string) (*Compliance, *Response) 
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ComplianceFromJson(r.Body), BuildResponse(r)
+	return ComplianceFromJSON(r.Body), BuildResponse(r)
 }
 
 // DownloadComplianceReport returns a full compliance report as a file.
@@ -4008,7 +4008,7 @@ func (c *Client4) DownloadComplianceReport(reportID string) ([]byte, *Response) 
 	defer closeBody(rp)
 
 	if rp.StatusCode >= 300 {
-		return nil, BuildErrorResponse(rp, AppErrorFromJson(rp.Body))
+		return nil, BuildErrorResponse(rp, AppErrorFromJSON(rp.Body))
 	}
 
 	data, err := ioutil.ReadAll(rp.Body)
@@ -4028,7 +4028,7 @@ func (c *Client4) GetClusterStatus() ([]*ClusterInfo, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ClusterInfosFromJson(r.Body), BuildResponse(r)
+	return ClusterInfosFromJSON(r.Body), BuildResponse(r)
 }
 
 // LDAP Section
@@ -4094,7 +4094,7 @@ func (c *Client4) LinkLdapGroup(dn string) (*Group, *Response) {
 	}
 	defer closeBody(r)
 
-	return GroupFromJson(r.Body), BuildResponse(r)
+	return GroupFromJSON(r.Body), BuildResponse(r)
 }
 
 // UnlinkLdapGroup deletes the Mattermost group associated with the given LDAP group DN.
@@ -4107,12 +4107,12 @@ func (c *Client4) UnlinkLdapGroup(dn string) (*Group, *Response) {
 	}
 	defer closeBody(r)
 
-	return GroupFromJson(r.Body), BuildResponse(r)
+	return GroupFromJSON(r.Body), BuildResponse(r)
 }
 
 // MigrateIdLdap migrates the LDAP enabled users to given attribute
 func (c *Client4) MigrateIDLdap(toAttribute string) (bool, *Response) {
-	r, err := c.DoApiPost(c.GetLdapRoute()+"/migrateid", MapToJson(map[string]string{
+	r, err := c.DoApiPost(c.GetLdapRoute()+"/migrateid", MapToJSON(map[string]string{
 		"toAttribute": toAttribute,
 	}))
 	if err != nil {
@@ -4217,7 +4217,7 @@ func (c *Client4) GetGroups(opts GroupSearchOpts) ([]*Group, *Response) {
 	}
 	defer closeBody(r)
 
-	return GroupsFromJson(r.Body), BuildResponse(r)
+	return GroupsFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetGroupsByUserId retrieves Mattermost Groups for a user
@@ -4233,11 +4233,11 @@ func (c *Client4) GetGroupsByUserID(userID string) ([]*Group, *Response) {
 		return nil, BuildErrorResponse(r, appErr)
 	}
 	defer closeBody(r)
-	return GroupsFromJson(r.Body), BuildResponse(r)
+	return GroupsFromJSON(r.Body), BuildResponse(r)
 }
 
 func (c *Client4) MigrateAuthToLdap(fromAuthService string, matchField string, force bool) (bool, *Response) {
-	r, err := c.DoApiPost(c.GetUsersRoute()+"/migrate_auth/ldap", StringInterfaceToJson(map[string]interface{}{
+	r, err := c.DoApiPost(c.GetUsersRoute()+"/migrate_auth/ldap", StringInterfaceToJSON(map[string]interface{}{
 		"from":        fromAuthService,
 		"force":       force,
 		"match_field": matchField,
@@ -4250,7 +4250,7 @@ func (c *Client4) MigrateAuthToLdap(fromAuthService string, matchField string, f
 }
 
 func (c *Client4) MigrateAuthToSaml(fromAuthService string, usersMap map[string]string, auto bool) (bool, *Response) {
-	r, err := c.DoApiPost(c.GetUsersRoute()+"/migrate_auth/saml", StringInterfaceToJson(map[string]interface{}{
+	r, err := c.DoApiPost(c.GetUsersRoute()+"/migrate_auth/saml", StringInterfaceToJSON(map[string]interface{}{
 		"from":    fromAuthService,
 		"auto":    auto,
 		"matches": usersMap,
@@ -4314,7 +4314,7 @@ func (c *Client4) GetAudits(page int, perPage int, etag string) (Audits, *Respon
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return AuditsFromJson(r.Body), BuildResponse(r)
+	return AuditsFromJSON(r.Body), BuildResponse(r)
 }
 
 // Brand Section
@@ -4328,7 +4328,7 @@ func (c *Client4) GetBrandImage() ([]byte, *Response) {
 	defer closeBody(r)
 
 	if r.StatusCode >= 300 {
-		return nil, BuildErrorResponse(r, AppErrorFromJson(r.Body))
+		return nil, BuildErrorResponse(r, AppErrorFromJSON(r.Body))
 	}
 
 	data, err := ioutil.ReadAll(r.Body)
@@ -4383,7 +4383,7 @@ func (c *Client4) UploadBrandImage(data []byte) (bool, *Response) {
 	defer closeBody(rp)
 
 	if rp.StatusCode >= 300 {
-		return false, BuildErrorResponse(rp, AppErrorFromJson(rp.Body))
+		return false, BuildErrorResponse(rp, AppErrorFromJSON(rp.Body))
 	}
 
 	return CheckStatusOK(rp), BuildResponse(rp)
@@ -4399,41 +4399,41 @@ func (c *Client4) GetLogs(page, perPage int) ([]string, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ArrayFromJson(r.Body), BuildResponse(r)
+	return ArrayFromJSON(r.Body), BuildResponse(r)
 }
 
 // PostLog is a convenience Web Service call so clients can log messages into
 // the server-side logs. For example we typically log javascript error messages
 // into the server-side. It returns the log message if the logging was successful.
 func (c *Client4) PostLog(message map[string]string) (map[string]string, *Response) {
-	r, err := c.DoApiPost("/logs", MapToJson(message))
+	r, err := c.DoApiPost("/logs", MapToJSON(message))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return MapFromJson(r.Body), BuildResponse(r)
+	return MapFromJSON(r.Body), BuildResponse(r)
 }
 
 // OAuth Section
 
 // CreateOAuthApp will register a new OAuth 2.0 client application with Mattermost acting as an OAuth 2.0 service provider.
 func (c *Client4) CreateOAuthApp(app *OAuthApp) (*OAuthApp, *Response) {
-	r, err := c.DoApiPost(c.GetOAuthAppsRoute(), app.ToJson())
+	r, err := c.DoApiPost(c.GetOAuthAppsRoute(), app.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return OAuthAppFromJson(r.Body), BuildResponse(r)
+	return OAuthAppFromJSON(r.Body), BuildResponse(r)
 }
 
 // UpdateOAuthApp updates a page of registered OAuth 2.0 client applications with Mattermost acting as an OAuth 2.0 service provider.
 func (c *Client4) UpdateOAuthApp(app *OAuthApp) (*OAuthApp, *Response) {
-	r, err := c.DoApiPut(c.GetOAuthAppRoute(app.ID), app.ToJson())
+	r, err := c.DoApiPut(c.GetOAuthAppRoute(app.ID), app.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return OAuthAppFromJson(r.Body), BuildResponse(r)
+	return OAuthAppFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetOAuthApps gets a page of registered OAuth 2.0 client applications with Mattermost acting as an OAuth 2.0 service provider.
@@ -4444,7 +4444,7 @@ func (c *Client4) GetOAuthApps(page, perPage int) ([]*OAuthApp, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return OAuthAppListFromJson(r.Body), BuildResponse(r)
+	return OAuthAppListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetOAuthApp gets a registered OAuth 2.0 client application with Mattermost acting as an OAuth 2.0 service provider.
@@ -4454,7 +4454,7 @@ func (c *Client4) GetOAuthApp(appID string) (*OAuthApp, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return OAuthAppFromJson(r.Body), BuildResponse(r)
+	return OAuthAppFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetOAuthAppInfo gets a sanitized version of a registered OAuth 2.0 client application with Mattermost acting as an OAuth 2.0 service provider.
@@ -4464,7 +4464,7 @@ func (c *Client4) GetOAuthAppInfo(appID string) (*OAuthApp, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return OAuthAppFromJson(r.Body), BuildResponse(r)
+	return OAuthAppFromJSON(r.Body), BuildResponse(r)
 }
 
 // DeleteOAuthApp deletes a registered OAuth 2.0 client application.
@@ -4484,7 +4484,7 @@ func (c *Client4) RegenerateOAuthAppSecret(appID string) (*OAuthApp, *Response) 
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return OAuthAppFromJson(r.Body), BuildResponse(r)
+	return OAuthAppFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetAuthorizedOAuthAppsForUser gets a page of OAuth 2.0 client applications the user has authorized to use access their account.
@@ -4495,23 +4495,23 @@ func (c *Client4) GetAuthorizedOAuthAppsForUser(userID string, page, perPage int
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return OAuthAppListFromJson(r.Body), BuildResponse(r)
+	return OAuthAppListFromJSON(r.Body), BuildResponse(r)
 }
 
 // AuthorizeOAuthApp will authorize an OAuth 2.0 client application to access a user's account and provide a redirect link to follow.
 func (c *Client4) AuthorizeOAuthApp(authRequest *AuthorizeRequest) (string, *Response) {
-	r, err := c.DoApiRequest(http.MethodPost, c.Url+"/oauth/authorize", authRequest.ToJson(), "")
+	r, err := c.DoApiRequest(http.MethodPost, c.Url+"/oauth/authorize", authRequest.ToJSON(), "")
 	if err != nil {
 		return "", BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return MapFromJson(r.Body)["redirect"], BuildResponse(r)
+	return MapFromJSON(r.Body)["redirect"], BuildResponse(r)
 }
 
 // DeauthorizeOAuthApp will deauthorize an OAuth 2.0 client application from accessing a user's account.
 func (c *Client4) DeauthorizeOAuthApp(appID string) (bool, *Response) {
 	requestData := map[string]string{"client_id": appID}
-	r, err := c.DoApiRequest(http.MethodPost, c.Url+"/oauth/deauthorize", MapToJson(requestData), "")
+	r, err := c.DoApiRequest(http.MethodPost, c.Url+"/oauth/deauthorize", MapToJSON(requestData), "")
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -4538,10 +4538,10 @@ func (c *Client4) GetOAuthAccessToken(data url.Values) (*AccessResponse, *Respon
 	defer closeBody(rp)
 
 	if rp.StatusCode >= 300 {
-		return nil, BuildErrorResponse(rp, AppErrorFromJson(rp.Body))
+		return nil, BuildErrorResponse(rp, AppErrorFromJSON(rp.Body))
 	}
 
-	return AccessResponseFromJson(rp.Body), BuildResponse(rp)
+	return AccessResponseFromJSON(rp.Body), BuildResponse(rp)
 }
 
 // Elasticsearch Section
@@ -4588,7 +4588,7 @@ func (c *Client4) GetDataRetentionPolicy() (*GlobalRetentionPolicy, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return GlobalRetentionPolicyFromJson(r.Body), BuildResponse(r)
+	return GlobalRetentionPolicyFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetDataRetentionPolicyByID will get the details for the granular data retention policy with the specified ID.
@@ -4598,7 +4598,7 @@ func (c *Client4) GetDataRetentionPolicyByID(policyID string) (*RetentionPolicyW
 		return nil, BuildErrorResponse(r, appErr)
 	}
 	defer closeBody(r)
-	policy, err := RetentionPolicyWithTeamAndChannelCountsFromJson(r.Body)
+	policy, err := RetentionPolicyWithTeamAndChannelCountsFromJSON(r.Body)
 	if err != nil {
 		return nil, BuildErrorResponse(r, NewAppError("Client4.GetDataRetentionPolicyByID", "model.utils.decode_json.app_error", nil, err.Error(), r.StatusCode))
 	}
@@ -4630,7 +4630,7 @@ func (c *Client4) GetDataRetentionPolicies(page, perPage int) (*RetentionPolicyW
 		return nil, BuildErrorResponse(r, appErr)
 	}
 	defer closeBody(r)
-	policies, err := RetentionPolicyWithTeamAndChannelCountsListFromJson(r.Body)
+	policies, err := RetentionPolicyWithTeamAndChannelCountsListFromJSON(r.Body)
 	if err != nil {
 		return nil, BuildErrorResponse(r, NewAppError("Client4.GetDataRetentionPolicies", "model.utils.decode_json.app_error", nil, err.Error(), r.StatusCode))
 	}
@@ -4640,12 +4640,12 @@ func (c *Client4) GetDataRetentionPolicies(page, perPage int) (*RetentionPolicyW
 // CreateDataRetentionPolicy will create a new granular data retention policy which will be applied to
 // the specified teams and channels. The Id field of `policy` must be empty.
 func (c *Client4) CreateDataRetentionPolicy(policy *RetentionPolicyWithTeamAndChannelIDs) (*RetentionPolicyWithTeamAndChannelCounts, *Response) {
-	r, appErr := c.doApiPostBytes(c.GetDataRetentionRoute()+"/policies", policy.ToJson())
+	r, appErr := c.doApiPostBytes(c.GetDataRetentionRoute()+"/policies", policy.ToJSON())
 	if appErr != nil {
 		return nil, BuildErrorResponse(r, appErr)
 	}
 	defer closeBody(r)
-	newPolicy, err := RetentionPolicyWithTeamAndChannelCountsFromJson(r.Body)
+	newPolicy, err := RetentionPolicyWithTeamAndChannelCountsFromJSON(r.Body)
 	if err != nil {
 		return nil, BuildErrorResponse(r, NewAppError("Client4.CreateDataRetentionPolicy", "model.utils.decode_json.app_error", nil, err.Error(), r.StatusCode))
 	}
@@ -4665,12 +4665,12 @@ func (c *Client4) DeleteDataRetentionPolicy(policyID string) *Response {
 // PatchDataRetentionPolicy will patch the granular data retention policy with the specified ID.
 // The Id field of `patch` must be non-empty.
 func (c *Client4) PatchDataRetentionPolicy(patch *RetentionPolicyWithTeamAndChannelIDs) (*RetentionPolicyWithTeamAndChannelCounts, *Response) {
-	r, appErr := c.doApiPatchBytes(c.GetDataRetentionPolicyRoute(patch.ID), patch.ToJson())
+	r, appErr := c.doApiPatchBytes(c.GetDataRetentionPolicyRoute(patch.ID), patch.ToJSON())
 	if appErr != nil {
 		return nil, BuildErrorResponse(r, appErr)
 	}
 	defer closeBody(r)
-	policy, err := RetentionPolicyWithTeamAndChannelCountsFromJson(r.Body)
+	policy, err := RetentionPolicyWithTeamAndChannelCountsFromJSON(r.Body)
 	if err != nil {
 		return nil, BuildErrorResponse(r, NewAppError("Client4.PatchDataRetentionPolicy", "model.utils.decode_json.app_error", nil, err.Error(), r.StatusCode))
 	}
@@ -4817,28 +4817,28 @@ func (c *Client4) GetChannelPoliciesForUser(userID string, offset, limit int) (*
 
 // CreateCommand will create a new command if the user have the right permissions.
 func (c *Client4) CreateCommand(cmd *Command) (*Command, *Response) {
-	r, err := c.DoApiPost(c.GetCommandsRoute(), cmd.ToJson())
+	r, err := c.DoApiPost(c.GetCommandsRoute(), cmd.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return CommandFromJson(r.Body), BuildResponse(r)
+	return CommandFromJSON(r.Body), BuildResponse(r)
 }
 
 // UpdateCommand updates a command based on the provided Command struct.
 func (c *Client4) UpdateCommand(cmd *Command) (*Command, *Response) {
-	r, err := c.DoApiPut(c.GetCommandRoute(cmd.ID), cmd.ToJson())
+	r, err := c.DoApiPut(c.GetCommandRoute(cmd.ID), cmd.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return CommandFromJson(r.Body), BuildResponse(r)
+	return CommandFromJSON(r.Body), BuildResponse(r)
 }
 
 // MoveCommand moves a command to a different team.
 func (c *Client4) MoveCommand(teamID string, commandID string) (bool, *Response) {
 	cmr := CommandMoveRequest{TeamID: teamID}
-	r, err := c.DoApiPut(c.GetCommandMoveRoute(commandID), cmr.ToJson())
+	r, err := c.DoApiPut(c.GetCommandMoveRoute(commandID), cmr.ToJSON())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -4864,7 +4864,7 @@ func (c *Client4) ListCommands(teamID string, customOnly bool) ([]*Command, *Res
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return CommandListFromJson(r.Body), BuildResponse(r)
+	return CommandListFromJSON(r.Body), BuildResponse(r)
 }
 
 // ListCommandAutocompleteSuggestions will retrieve a list of suggestions for a userInput.
@@ -4886,7 +4886,7 @@ func (c *Client4) GetCommandByID(cmdID string) (*Command, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return CommandFromJson(r.Body), BuildResponse(r)
+	return CommandFromJSON(r.Body), BuildResponse(r)
 }
 
 // ExecuteCommand executes a given slash command.
@@ -4895,13 +4895,13 @@ func (c *Client4) ExecuteCommand(channelID, command string) (*CommandResponse, *
 		ChannelID: channelID,
 		Command:   command,
 	}
-	r, err := c.DoApiPost(c.GetCommandsRoute()+"/execute", commandArgs.ToJson())
+	r, err := c.DoApiPost(c.GetCommandsRoute()+"/execute", commandArgs.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
 
-	response, _ := CommandResponseFromJson(r.Body)
+	response, _ := CommandResponseFromJSON(r.Body)
 	return response, BuildResponse(r)
 }
 
@@ -4913,13 +4913,13 @@ func (c *Client4) ExecuteCommandWithTeam(channelID, teamID, command string) (*Co
 		TeamID:    teamID,
 		Command:   command,
 	}
-	r, err := c.DoApiPost(c.GetCommandsRoute()+"/execute", commandArgs.ToJson())
+	r, err := c.DoApiPost(c.GetCommandsRoute()+"/execute", commandArgs.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
 
-	response, _ := CommandResponseFromJson(r.Body)
+	response, _ := CommandResponseFromJSON(r.Body)
 	return response, BuildResponse(r)
 }
 
@@ -4930,7 +4930,7 @@ func (c *Client4) ListAutocompleteCommands(teamID string) ([]*Command, *Response
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return CommandListFromJson(r.Body), BuildResponse(r)
+	return CommandListFromJSON(r.Body), BuildResponse(r)
 }
 
 // RegenCommandToken will create a new token if the user have the right permissions.
@@ -4940,7 +4940,7 @@ func (c *Client4) RegenCommandToken(commandID string) (string, *Response) {
 		return "", BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return MapFromJson(r.Body)["token"], BuildResponse(r)
+	return MapFromJSON(r.Body)["token"], BuildResponse(r)
 }
 
 // Status Section
@@ -4952,27 +4952,27 @@ func (c *Client4) GetUserStatus(userID, etag string) (*Status, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return StatusFromJson(r.Body), BuildResponse(r)
+	return StatusFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUsersStatusesByIds returns a list of users status based on the provided user ids.
 func (c *Client4) GetUsersStatusesByIDs(userIDs []string) ([]*Status, *Response) {
-	r, err := c.DoApiPost(c.GetUserStatusesRoute()+"/ids", ArrayToJson(userIDs))
+	r, err := c.DoApiPost(c.GetUserStatusesRoute()+"/ids", ArrayToJSON(userIDs))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return StatusListFromJson(r.Body), BuildResponse(r)
+	return StatusListFromJSON(r.Body), BuildResponse(r)
 }
 
 // UpdateUserStatus sets a user's status based on the provided user id string.
 func (c *Client4) UpdateUserStatus(userID string, userStatus *Status) (*Status, *Response) {
-	r, err := c.DoApiPut(c.GetUserStatusRoute(userID), userStatus.ToJson())
+	r, err := c.DoApiPut(c.GetUserStatusRoute(userID), userStatus.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return StatusFromJson(r.Body), BuildResponse(r)
+	return StatusFromJSON(r.Body), BuildResponse(r)
 }
 
 // Emoji Section
@@ -4993,7 +4993,7 @@ func (c *Client4) CreateEmoji(emoji *Emoji, image []byte, filename string) (*Emo
 		return nil, &Response{StatusCode: http.StatusForbidden, Error: NewAppError("CreateEmoji", "model.client.create_emoji.image.app_error", nil, err.Error(), 0)}
 	}
 
-	if err := writer.WriteField("emoji", emoji.ToJson()); err != nil {
+	if err := writer.WriteField("emoji", emoji.ToJSON()); err != nil {
 		return nil, &Response{StatusCode: http.StatusForbidden, Error: NewAppError("CreateEmoji", "model.client.create_emoji.emoji.app_error", nil, err.Error(), 0)}
 	}
 
@@ -5012,7 +5012,7 @@ func (c *Client4) GetEmojiList(page, perPage int) ([]*Emoji, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return EmojiListFromJson(r.Body), BuildResponse(r)
+	return EmojiListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetSortedEmojiList returns a page of custom emoji on the system sorted based on the sort
@@ -5024,7 +5024,7 @@ func (c *Client4) GetSortedEmojiList(page, perPage int, sort string) ([]*Emoji, 
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return EmojiListFromJson(r.Body), BuildResponse(r)
+	return EmojiListFromJSON(r.Body), BuildResponse(r)
 }
 
 // DeleteEmoji delete an custom emoji on the provided emoji id string.
@@ -5044,7 +5044,7 @@ func (c *Client4) GetEmoji(emojiID string) (*Emoji, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return EmojiFromJson(r.Body), BuildResponse(r)
+	return EmojiFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetEmojiByName returns a custom emoji based on the name string.
@@ -5054,7 +5054,7 @@ func (c *Client4) GetEmojiByName(name string) (*Emoji, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return EmojiFromJson(r.Body), BuildResponse(r)
+	return EmojiFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetEmojiImage returns the emoji image.
@@ -5075,12 +5075,12 @@ func (c *Client4) GetEmojiImage(emojiID string) ([]byte, *Response) {
 
 // SearchEmoji returns a list of emoji matching some search criteria.
 func (c *Client4) SearchEmoji(search *EmojiSearch) ([]*Emoji, *Response) {
-	r, err := c.DoApiPost(c.GetEmojisRoute()+"/search", search.ToJson())
+	r, err := c.DoApiPost(c.GetEmojisRoute()+"/search", search.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return EmojiListFromJson(r.Body), BuildResponse(r)
+	return EmojiListFromJSON(r.Body), BuildResponse(r)
 }
 
 // AutocompleteEmoji returns a list of emoji starting with or matching name.
@@ -5091,19 +5091,19 @@ func (c *Client4) AutocompleteEmoji(name string, etag string) ([]*Emoji, *Respon
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return EmojiListFromJson(r.Body), BuildResponse(r)
+	return EmojiListFromJSON(r.Body), BuildResponse(r)
 }
 
 // Reaction Section
 
 // SaveReaction saves an emoji reaction for a post. Returns the saved reaction if successful, otherwise an error will be returned.
 func (c *Client4) SaveReaction(reaction *Reaction) (*Reaction, *Response) {
-	r, err := c.DoApiPost(c.GetReactionsRoute(), reaction.ToJson())
+	r, err := c.DoApiPost(c.GetReactionsRoute(), reaction.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ReactionFromJson(r.Body), BuildResponse(r)
+	return ReactionFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetReactions returns a list of reactions to a post.
@@ -5113,7 +5113,7 @@ func (c *Client4) GetReactions(postID string) ([]*Reaction, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ReactionsFromJson(r.Body), BuildResponse(r)
+	return ReactionsFromJSON(r.Body), BuildResponse(r)
 }
 
 // DeleteReaction deletes reaction of a user in a post.
@@ -5128,12 +5128,12 @@ func (c *Client4) DeleteReaction(reaction *Reaction) (bool, *Response) {
 
 // FetchBulkReactions returns a map of postIds and corresponding reactions
 func (c *Client4) GetBulkReactions(postIDs []string) (map[string][]*Reaction, *Response) {
-	r, err := c.DoApiPost(c.GetPostsRoute()+"/ids/reactions", ArrayToJson(postIDs))
+	r, err := c.DoApiPost(c.GetPostsRoute()+"/ids/reactions", ArrayToJSON(postIDs))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return MapPostIDToReactionsFromJson(r.Body), BuildResponse(r)
+	return MapPostIDToReactionsFromJSON(r.Body), BuildResponse(r)
 }
 
 // Timezone Section
@@ -5157,12 +5157,12 @@ func (c *Client4) OpenGraph(url string) (map[string]string, *Response) {
 	requestBody := make(map[string]string)
 	requestBody["url"] = url
 
-	r, err := c.DoApiPost(c.GetOpenGraphRoute(), MapToJson(requestBody))
+	r, err := c.DoApiPost(c.GetOpenGraphRoute(), MapToJSON(requestBody))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return MapFromJson(r.Body), BuildResponse(r)
+	return MapFromJSON(r.Body), BuildResponse(r)
 }
 
 // Jobs Section
@@ -5174,7 +5174,7 @@ func (c *Client4) GetJob(id string) (*Job, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return JobFromJson(r.Body), BuildResponse(r)
+	return JobFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetJobs gets all jobs, sorted with the job that was created most recently first.
@@ -5184,7 +5184,7 @@ func (c *Client4) GetJobs(page int, perPage int) ([]*Job, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return JobsFromJson(r.Body), BuildResponse(r)
+	return JobsFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetJobsByType gets all jobs of a given type, sorted with the job that was created most recently first.
@@ -5194,17 +5194,17 @@ func (c *Client4) GetJobsByType(jobType string, page int, perPage int) ([]*Job, 
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return JobsFromJson(r.Body), BuildResponse(r)
+	return JobsFromJSON(r.Body), BuildResponse(r)
 }
 
 // CreateJob creates a job based on the provided job struct.
 func (c *Client4) CreateJob(job *Job) (*Job, *Response) {
-	r, err := c.DoApiPost(c.GetJobsRoute(), job.ToJson())
+	r, err := c.DoApiPost(c.GetJobsRoute(), job.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return JobFromJson(r.Body), BuildResponse(r)
+	return JobFromJSON(r.Body), BuildResponse(r)
 }
 
 // CancelJob requests the cancellation of the job with the provided Id.
@@ -5241,7 +5241,7 @@ func (c *Client4) GetRole(id string) (*Role, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return RoleFromJson(r.Body), BuildResponse(r)
+	return RoleFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetRoleByName gets a single role by Name.
@@ -5251,39 +5251,39 @@ func (c *Client4) GetRoleByName(name string) (*Role, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return RoleFromJson(r.Body), BuildResponse(r)
+	return RoleFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetRolesByNames returns a list of roles based on the provided role names.
 func (c *Client4) GetRolesByNames(roleNames []string) ([]*Role, *Response) {
-	r, err := c.DoApiPost(c.GetRolesRoute()+"/names", ArrayToJson(roleNames))
+	r, err := c.DoApiPost(c.GetRolesRoute()+"/names", ArrayToJSON(roleNames))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return RoleListFromJson(r.Body), BuildResponse(r)
+	return RoleListFromJSON(r.Body), BuildResponse(r)
 }
 
 // PatchRole partially updates a role in the system. Any missing fields are not updated.
 func (c *Client4) PatchRole(roleID string, patch *RolePatch) (*Role, *Response) {
-	r, err := c.DoApiPut(c.GetRolesRoute()+fmt.Sprintf("/%v/patch", roleID), patch.ToJson())
+	r, err := c.DoApiPut(c.GetRolesRoute()+fmt.Sprintf("/%v/patch", roleID), patch.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return RoleFromJson(r.Body), BuildResponse(r)
+	return RoleFromJSON(r.Body), BuildResponse(r)
 }
 
 // Schemes Section
 
 // CreateScheme creates a new Scheme.
 func (c *Client4) CreateScheme(scheme *Scheme) (*Scheme, *Response) {
-	r, err := c.DoApiPost(c.GetSchemesRoute(), scheme.ToJson())
+	r, err := c.DoApiPost(c.GetSchemesRoute(), scheme.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return SchemeFromJson(r.Body), BuildResponse(r)
+	return SchemeFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetScheme gets a single scheme by ID.
@@ -5293,7 +5293,7 @@ func (c *Client4) GetScheme(id string) (*Scheme, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return SchemeFromJson(r.Body), BuildResponse(r)
+	return SchemeFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetSchemes gets all schemes, sorted with the most recently created first, optionally filtered by scope.
@@ -5303,7 +5303,7 @@ func (c *Client4) GetSchemes(scope string, page int, perPage int) ([]*Scheme, *R
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return SchemesFromJson(r.Body), BuildResponse(r)
+	return SchemesFromJSON(r.Body), BuildResponse(r)
 }
 
 // DeleteScheme deletes a single scheme by ID.
@@ -5318,12 +5318,12 @@ func (c *Client4) DeleteScheme(id string) (bool, *Response) {
 
 // PatchScheme partially updates a scheme in the system. Any missing fields are not updated.
 func (c *Client4) PatchScheme(id string, patch *SchemePatch) (*Scheme, *Response) {
-	r, err := c.DoApiPut(c.GetSchemeRoute(id)+"/patch", patch.ToJson())
+	r, err := c.DoApiPut(c.GetSchemeRoute(id)+"/patch", patch.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return SchemeFromJson(r.Body), BuildResponse(r)
+	return SchemeFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetTeamsForScheme gets the teams using this scheme, sorted alphabetically by display name.
@@ -5333,7 +5333,7 @@ func (c *Client4) GetTeamsForScheme(schemeID string, page int, perPage int) ([]*
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TeamListFromJson(r.Body), BuildResponse(r)
+	return TeamListFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetChannelsForScheme gets the channels using this scheme, sorted alphabetically by display name.
@@ -5343,7 +5343,7 @@ func (c *Client4) GetChannelsForScheme(schemeID string, page int, perPage int) (
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return *ChannelListFromJson(r.Body), BuildResponse(r)
+	return *ChannelListFromJSON(r.Body), BuildResponse(r)
 }
 
 // Plugin Section
@@ -5399,10 +5399,10 @@ func (c *Client4) uploadPlugin(file io.Reader, force bool) (*Manifest, *Response
 	defer closeBody(rp)
 
 	if rp.StatusCode >= 300 {
-		return nil, BuildErrorResponse(rp, AppErrorFromJson(rp.Body))
+		return nil, BuildErrorResponse(rp, AppErrorFromJSON(rp.Body))
 	}
 
-	return ManifestFromJson(rp.Body), BuildResponse(rp)
+	return ManifestFromJSON(rp.Body), BuildResponse(rp)
 }
 
 func (c *Client4) InstallPluginFromUrl(downloadUrl string, force bool) (*Manifest, *Response) {
@@ -5414,13 +5414,13 @@ func (c *Client4) InstallPluginFromUrl(downloadUrl string, force bool) (*Manifes
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ManifestFromJson(r.Body), BuildResponse(r)
+	return ManifestFromJSON(r.Body), BuildResponse(r)
 }
 
 // InstallMarketplacePlugin will install marketplace plugin.
 // WARNING: PLUGINS ARE STILL EXPERIMENTAL. THIS FUNCTION IS SUBJECT TO CHANGE.
 func (c *Client4) InstallMarketplacePlugin(request *InstallMarketplacePluginRequest) (*Manifest, *Response) {
-	json, err := request.ToJson()
+	json, err := request.ToJSON()
 	if err != nil {
 		return nil, &Response{Error: NewAppError("InstallMarketplacePlugin", "model.client.plugin_request_to_json.app_error", nil, err.Error(), http.StatusBadRequest)}
 	}
@@ -5429,7 +5429,7 @@ func (c *Client4) InstallMarketplacePlugin(request *InstallMarketplacePluginRequ
 		return nil, BuildErrorResponse(r, appErr)
 	}
 	defer closeBody(r)
-	return ManifestFromJson(r.Body), BuildResponse(r)
+	return ManifestFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetPlugins will return a list of plugin manifests for currently active plugins.
@@ -5440,7 +5440,7 @@ func (c *Client4) GetPlugins() (*PluginsResponse, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PluginsResponseFromJson(r.Body), BuildResponse(r)
+	return PluginsResponseFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetPluginStatuses will return the plugins installed on any server in the cluster, for reporting
@@ -5452,7 +5452,7 @@ func (c *Client4) GetPluginStatuses() (PluginStatuses, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return PluginStatusesFromJson(r.Body), BuildResponse(r)
+	return PluginStatusesFromJSON(r.Body), BuildResponse(r)
 }
 
 // RemovePlugin will disable and delete a plugin.
@@ -5474,7 +5474,7 @@ func (c *Client4) GetWebappPlugins() ([]*Manifest, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ManifestListFromJson(r.Body), BuildResponse(r)
+	return ManifestListFromJSON(r.Body), BuildResponse(r)
 }
 
 // EnablePlugin will enable an plugin installed.
@@ -5527,7 +5527,7 @@ func (c *Client4) GetMarketplacePlugins(filter *MarketplacePluginFilter) ([]*Mar
 // UpdateChannelScheme will update a channel's scheme.
 func (c *Client4) UpdateChannelScheme(channelID, schemeID string) (bool, *Response) {
 	sip := &SchemeIDPatch{SchemeID: &schemeID}
-	r, err := c.DoApiPut(c.GetChannelSchemeRoute(channelID), sip.ToJson())
+	r, err := c.DoApiPut(c.GetChannelSchemeRoute(channelID), sip.ToJSON())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -5538,7 +5538,7 @@ func (c *Client4) UpdateChannelScheme(channelID, schemeID string) (bool, *Respon
 // UpdateTeamScheme will update a team's scheme.
 func (c *Client4) UpdateTeamScheme(teamID, schemeID string) (bool, *Response) {
 	sip := &SchemeIDPatch{SchemeID: &schemeID}
-	r, err := c.DoApiPut(c.GetTeamSchemeRoute(teamID), sip.ToJson())
+	r, err := c.DoApiPut(c.GetTeamSchemeRoute(teamID), sip.ToJSON())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -5554,7 +5554,7 @@ func (c *Client4) GetRedirectLocation(urlParam, etag string) (string, *Response)
 		return "", BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return MapFromJson(r.Body)["location"], BuildResponse(r)
+	return MapFromJSON(r.Body)["location"], BuildResponse(r)
 }
 
 // SetServerBusy will mark the server as busy, which disables non-critical services for `secs` seconds.
@@ -5587,7 +5587,7 @@ func (c *Client4) GetServerBusy() (*ServerBusyState, *Response) {
 	}
 	defer closeBody(r)
 
-	sbs := ServerBusyStateFromJson(r.Body)
+	sbs := ServerBusyStateFromJSON(r.Body)
 	return sbs, BuildResponse(r)
 }
 
@@ -5602,7 +5602,7 @@ func (c *Client4) GetServerBusyExpires() (*time.Time, *Response) {
 	}
 	defer closeBody(r)
 
-	sbs := ServerBusyStateFromJson(r.Body)
+	sbs := ServerBusyStateFromJSON(r.Body)
 	expires := time.Unix(sbs.Expires, 0)
 	return &expires, BuildResponse(r)
 }
@@ -5611,7 +5611,7 @@ func (c *Client4) GetServerBusyExpires() (*time.Time, *Response) {
 func (c *Client4) RegisterTermsOfServiceAction(userID, termsOfServiceID string, accepted bool) (*bool, *Response) {
 	url := c.GetUserTermsOfServiceRoute(userID)
 	data := map[string]interface{}{"termsOfServiceId": termsOfServiceID, "accepted": accepted}
-	r, err := c.DoApiPost(url, StringInterfaceToJson(data))
+	r, err := c.DoApiPost(url, StringInterfaceToJSON(data))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -5627,7 +5627,7 @@ func (c *Client4) GetTermsOfService(etag string) (*TermsOfService, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TermsOfServiceFromJson(r.Body), BuildResponse(r)
+	return TermsOfServiceFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUserTermsOfService fetches user's latest terms of service action if the latest action was for acceptance.
@@ -5638,19 +5638,19 @@ func (c *Client4) GetUserTermsOfService(userID, etag string) (*UserTermsOfServic
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UserTermsOfServiceFromJson(r.Body), BuildResponse(r)
+	return UserTermsOfServiceFromJSON(r.Body), BuildResponse(r)
 }
 
 // CreateTermsOfService creates new terms of service.
 func (c *Client4) CreateTermsOfService(text, userID string) (*TermsOfService, *Response) {
 	url := c.GetTermsOfServiceRoute()
 	data := map[string]interface{}{"text": text}
-	r, err := c.DoApiPost(url, StringInterfaceToJson(data))
+	r, err := c.DoApiPost(url, StringInterfaceToJSON(data))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return TermsOfServiceFromJson(r.Body), BuildResponse(r)
+	return TermsOfServiceFromJSON(r.Body), BuildResponse(r)
 }
 
 func (c *Client4) GetGroup(groupID, etag string) (*Group, *Response) {
@@ -5659,7 +5659,7 @@ func (c *Client4) GetGroup(groupID, etag string) (*Group, *Response) {
 		return nil, BuildErrorResponse(r, appErr)
 	}
 	defer closeBody(r)
-	return GroupFromJson(r.Body), BuildResponse(r)
+	return GroupFromJSON(r.Body), BuildResponse(r)
 }
 
 func (c *Client4) PatchGroup(groupID string, patch *GroupPatch) (*Group, *Response) {
@@ -5669,7 +5669,7 @@ func (c *Client4) PatchGroup(groupID string, patch *GroupPatch) (*Group, *Respon
 		return nil, BuildErrorResponse(r, appErr)
 	}
 	defer closeBody(r)
-	return GroupFromJson(r.Body), BuildResponse(r)
+	return GroupFromJSON(r.Body), BuildResponse(r)
 }
 
 func (c *Client4) LinkGroupSyncable(groupID, syncableID string, syncableType GroupSyncableType, patch *GroupSyncablePatch) (*GroupSyncable, *Response) {
@@ -5680,7 +5680,7 @@ func (c *Client4) LinkGroupSyncable(groupID, syncableID string, syncableType Gro
 		return nil, BuildErrorResponse(r, appErr)
 	}
 	defer closeBody(r)
-	return GroupSyncableFromJson(r.Body), BuildResponse(r)
+	return GroupSyncableFromJSON(r.Body), BuildResponse(r)
 }
 
 func (c *Client4) UnlinkGroupSyncable(groupID, syncableID string, syncableType GroupSyncableType) *Response {
@@ -5699,7 +5699,7 @@ func (c *Client4) GetGroupSyncable(groupID, syncableID string, syncableType Grou
 		return nil, BuildErrorResponse(r, appErr)
 	}
 	defer closeBody(r)
-	return GroupSyncableFromJson(r.Body), BuildResponse(r)
+	return GroupSyncableFromJSON(r.Body), BuildResponse(r)
 }
 
 func (c *Client4) GetGroupSyncables(groupID string, syncableType GroupSyncableType, etag string) ([]*GroupSyncable, *Response) {
@@ -5708,7 +5708,7 @@ func (c *Client4) GetGroupSyncables(groupID string, syncableType GroupSyncableTy
 		return nil, BuildErrorResponse(r, appErr)
 	}
 	defer closeBody(r)
-	return GroupSyncablesFromJson(r.Body), BuildResponse(r)
+	return GroupSyncablesFromJSON(r.Body), BuildResponse(r)
 }
 
 func (c *Client4) PatchGroupSyncable(groupID, syncableID string, syncableType GroupSyncableType, patch *GroupSyncablePatch) (*GroupSyncable, *Response) {
@@ -5718,7 +5718,7 @@ func (c *Client4) PatchGroupSyncable(groupID, syncableID string, syncableType Gr
 		return nil, BuildErrorResponse(r, appErr)
 	}
 	defer closeBody(r)
-	return GroupSyncableFromJson(r.Body), BuildResponse(r)
+	return GroupSyncableFromJSON(r.Body), BuildResponse(r)
 }
 
 func (c *Client4) TeamMembersMinusGroupMembers(teamID string, groupIDs []string, page, perPage int, etag string) ([]*UserWithGroups, int64, *Response) {
@@ -5729,7 +5729,7 @@ func (c *Client4) TeamMembersMinusGroupMembers(teamID string, groupIDs []string,
 		return nil, 0, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	ugc := UsersWithGroupsAndCountFromJson(r.Body)
+	ugc := UsersWithGroupsAndCountFromJSON(r.Body)
 	return ugc.Users, ugc.Count, BuildResponse(r)
 }
 
@@ -5741,17 +5741,17 @@ func (c *Client4) ChannelMembersMinusGroupMembers(channelID string, groupIDs []s
 		return nil, 0, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	ugc := UsersWithGroupsAndCountFromJson(r.Body)
+	ugc := UsersWithGroupsAndCountFromJSON(r.Body)
 	return ugc.Users, ugc.Count, BuildResponse(r)
 }
 
 func (c *Client4) PatchConfig(config *Config) (*Config, *Response) {
-	r, err := c.DoApiPut(c.GetConfigRoute()+"/patch", config.ToJson())
+	r, err := c.DoApiPut(c.GetConfigRoute()+"/patch", config.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ConfigFromJson(r.Body), BuildResponse(r)
+	return ConfigFromJSON(r.Body), BuildResponse(r)
 }
 
 func (c *Client4) GetChannelModerations(channelID string, etag string) ([]*ChannelModeration, *Response) {
@@ -5760,7 +5760,7 @@ func (c *Client4) GetChannelModerations(channelID string, etag string) ([]*Chann
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelModerationsFromJson(r.Body), BuildResponse(r)
+	return ChannelModerationsFromJSON(r.Body), BuildResponse(r)
 }
 
 func (c *Client4) PatchChannelModerations(channelID string, patch []*ChannelModerationPatch) ([]*ChannelModeration, *Response) {
@@ -5770,7 +5770,7 @@ func (c *Client4) PatchChannelModerations(channelID string, patch []*ChannelMode
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelModerationsFromJson(r.Body), BuildResponse(r)
+	return ChannelModerationsFromJSON(r.Body), BuildResponse(r)
 }
 
 func (c *Client4) GetKnownUsers() ([]string, *Response) {
@@ -5786,7 +5786,7 @@ func (c *Client4) GetKnownUsers() ([]string, *Response) {
 
 // PublishUserTyping publishes a user is typing websocket event based on the provided TypingRequest.
 func (c *Client4) PublishUserTyping(userID string, typingRequest TypingRequest) (bool, *Response) {
-	r, err := c.DoApiPost(c.GetPublishUserTypingRoute(userID), typingRequest.ToJson())
+	r, err := c.DoApiPost(c.GetPublishUserTypingRoute(userID), typingRequest.ToJSON())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -5800,7 +5800,7 @@ func (c *Client4) GetChannelMemberCountsByGroup(channelID string, includeTimezon
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ChannelMemberCountsByGroupFromJson(r.Body), BuildResponse(r)
+	return ChannelMemberCountsByGroupFromJSON(r.Body), BuildResponse(r)
 }
 
 // RequestTrialLicense will request a trial license and install it in the server
@@ -5821,7 +5821,7 @@ func (c *Client4) GetGroupStats(groupID string) (*GroupStats, *Response) {
 		return nil, BuildErrorResponse(r, appErr)
 	}
 	defer closeBody(r)
-	return GroupStatsFromJson(r.Body), BuildResponse(r)
+	return GroupStatsFromJSON(r.Body), BuildResponse(r)
 }
 
 func (c *Client4) GetSidebarCategoriesForTeamForUser(userID, teamID, etag string) (*OrderedSidebarCategories, *Response) {
@@ -5830,7 +5830,7 @@ func (c *Client4) GetSidebarCategoriesForTeamForUser(userID, teamID, etag string
 	if appErr != nil {
 		return nil, BuildErrorResponse(r, appErr)
 	}
-	cat, err := OrderedSidebarCategoriesFromJson(r.Body)
+	cat, err := OrderedSidebarCategoriesFromJSON(r.Body)
 	if err != nil {
 		return nil, BuildErrorResponse(r, NewAppError("Client4.GetSidebarCategoriesForTeamForUser", "model.utils.decode_json.app_error", nil, err.Error(), r.StatusCode))
 	}
@@ -5845,7 +5845,7 @@ func (c *Client4) CreateSidebarCategoryForTeamForUser(userID, teamID string, cat
 		return nil, BuildErrorResponse(r, appErr)
 	}
 	defer closeBody(r)
-	cat, err := SidebarCategoryFromJson(r.Body)
+	cat, err := SidebarCategoryFromJSON(r.Body)
 	if err != nil {
 		return nil, BuildErrorResponse(r, NewAppError("Client4.CreateSidebarCategoryForTeamForUser", "model.utils.decode_json.app_error", nil, err.Error(), r.StatusCode))
 	}
@@ -5862,7 +5862,7 @@ func (c *Client4) UpdateSidebarCategoriesForTeamForUser(userID, teamID string, c
 	}
 	defer closeBody(r)
 
-	categories, err := SidebarCategoriesFromJson(r.Body)
+	categories, err := SidebarCategoriesFromJSON(r.Body)
 	if err != nil {
 		return nil, BuildErrorResponse(r, NewAppError("Client4.UpdateSidebarCategoriesForTeamForUser", "model.utils.decode_json.app_error", nil, err.Error(), r.StatusCode))
 	}
@@ -5877,7 +5877,7 @@ func (c *Client4) GetSidebarCategoryOrderForTeamForUser(userID, teamID, etag str
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ArrayFromJson(r.Body), BuildResponse(r)
+	return ArrayFromJSON(r.Body), BuildResponse(r)
 }
 
 func (c *Client4) UpdateSidebarCategoryOrderForTeamForUser(userID, teamID string, order []string) ([]string, *Response) {
@@ -5888,7 +5888,7 @@ func (c *Client4) UpdateSidebarCategoryOrderForTeamForUser(userID, teamID string
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ArrayFromJson(r.Body), BuildResponse(r)
+	return ArrayFromJSON(r.Body), BuildResponse(r)
 }
 
 func (c *Client4) GetSidebarCategoryForTeamForUser(userID, teamID, categoryID, etag string) (*SidebarCategoryWithChannels, *Response) {
@@ -5898,7 +5898,7 @@ func (c *Client4) GetSidebarCategoryForTeamForUser(userID, teamID, categoryID, e
 		return nil, BuildErrorResponse(r, appErr)
 	}
 	defer closeBody(r)
-	cat, err := SidebarCategoryFromJson(r.Body)
+	cat, err := SidebarCategoryFromJSON(r.Body)
 	if err != nil {
 		return nil, BuildErrorResponse(r, NewAppError("Client4.UpdateSidebarCategoriesForTeamForUser", "model.utils.decode_json.app_error", nil, err.Error(), r.StatusCode))
 	}
@@ -5914,7 +5914,7 @@ func (c *Client4) UpdateSidebarCategoryForTeamForUser(userID, teamID, categoryID
 		return nil, BuildErrorResponse(r, appErr)
 	}
 	defer closeBody(r)
-	cat, err := SidebarCategoryFromJson(r.Body)
+	cat, err := SidebarCategoryFromJSON(r.Body)
 	if err != nil {
 		return nil, BuildErrorResponse(r, NewAppError("Client4.UpdateSidebarCategoriesForTeamForUser", "model.utils.decode_json.app_error", nil, err.Error(), r.StatusCode))
 	}
@@ -5952,7 +5952,7 @@ func (c *Client4) GetNotices(lastViewed int64, teamID string, client NoticeClien
 }
 
 func (c *Client4) MarkNoticesViewed(ids []string) *Response {
-	r, err := c.DoApiPut("/system/notices/view", ArrayToJson(ids))
+	r, err := c.DoApiPut("/system/notices/view", ArrayToJSON(ids))
 	if err != nil {
 		return BuildErrorResponse(r, err)
 	}
@@ -5962,12 +5962,12 @@ func (c *Client4) MarkNoticesViewed(ids []string) *Response {
 
 // CreateUpload creates a new upload session.
 func (c *Client4) CreateUpload(us *UploadSession) (*UploadSession, *Response) {
-	r, err := c.DoApiPost(c.GetUploadsRoute(), us.ToJson())
+	r, err := c.DoApiPost(c.GetUploadsRoute(), us.ToJSON())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UploadSessionFromJson(r.Body), BuildResponse(r)
+	return UploadSessionFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUpload returns the upload session for the specified uploadId.
@@ -5977,7 +5977,7 @@ func (c *Client4) GetUpload(uploadID string) (*UploadSession, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UploadSessionFromJson(r.Body), BuildResponse(r)
+	return UploadSessionFromJSON(r.Body), BuildResponse(r)
 }
 
 // GetUploadsForUser returns the upload sessions created by the specified
@@ -5988,7 +5988,7 @@ func (c *Client4) GetUploadsForUser(userID string) ([]*UploadSession, *Response)
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return UploadSessionsFromJson(r.Body), BuildResponse(r)
+	return UploadSessionsFromJSON(r.Body), BuildResponse(r)
 }
 
 // UploadData performs an upload. On success it returns
@@ -6000,12 +6000,12 @@ func (c *Client4) UploadData(uploadID string, data io.Reader) (*FileInfo, *Respo
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return FileInfoFromJson(r.Body), BuildResponse(r)
+	return FileInfoFromJSON(r.Body), BuildResponse(r)
 }
 
 func (c *Client4) UpdatePassword(userID, currentPassword, newPassword string) *Response {
 	requestBody := map[string]string{"current_password": currentPassword, "new_password": newPassword}
-	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/password", MapToJson(requestBody))
+	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/password", MapToJSON(requestBody))
 	if err != nil {
 		return BuildErrorResponse(r, err)
 	}
@@ -6140,7 +6140,7 @@ func (c *Client4) ListImports() ([]string, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ArrayFromJson(r.Body), BuildResponse(r)
+	return ArrayFromJSON(r.Body), BuildResponse(r)
 }
 
 func (c *Client4) ListExports() ([]string, *Response) {
@@ -6149,7 +6149,7 @@ func (c *Client4) ListExports() ([]string, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return ArrayFromJson(r.Body), BuildResponse(r)
+	return ArrayFromJSON(r.Body), BuildResponse(r)
 }
 
 func (c *Client4) DeleteExport(name string) (bool, *Response) {

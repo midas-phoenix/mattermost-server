@@ -158,14 +158,14 @@ type UserChannelIDPair struct {
 	ChannelID string
 }
 
-func GroupSyncableFromJson(data io.Reader) *GroupSyncable {
+func GroupSyncableFromJSON(data io.Reader) *GroupSyncable {
 	groupSyncable := &GroupSyncable{}
 	bodyBytes, _ := ioutil.ReadAll(data)
 	json.Unmarshal(bodyBytes, groupSyncable)
 	return groupSyncable
 }
 
-func GroupSyncablesFromJson(data io.Reader) []*GroupSyncable {
+func GroupSyncablesFromJSON(data io.Reader) []*GroupSyncable {
 	groupSyncables := []*GroupSyncable{}
 	bodyBytes, _ := ioutil.ReadAll(data)
 	json.Unmarshal(bodyBytes, &groupSyncables)

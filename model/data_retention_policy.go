@@ -74,29 +74,29 @@ type RetentionPolicyCursor struct {
 	GlobalPoliciesDone  bool
 }
 
-func (rp *GlobalRetentionPolicy) ToJson() []byte {
+func (rp *GlobalRetentionPolicy) ToJSON() []byte {
 	b, _ := json.Marshal(rp)
 	return b
 }
 
-func GlobalRetentionPolicyFromJson(data io.Reader) *GlobalRetentionPolicy {
+func GlobalRetentionPolicyFromJSON(data io.Reader) *GlobalRetentionPolicy {
 	var grp *GlobalRetentionPolicy
 	json.NewDecoder(data).Decode(&grp)
 	return grp
 }
 
-func RetentionPolicyWithTeamAndChannelCountsFromJson(data io.Reader) (*RetentionPolicyWithTeamAndChannelCounts, error) {
+func RetentionPolicyWithTeamAndChannelCountsFromJSON(data io.Reader) (*RetentionPolicyWithTeamAndChannelCounts, error) {
 	var rp RetentionPolicyWithTeamAndChannelCounts
 	err := json.NewDecoder(data).Decode(&rp)
 	return &rp, err
 }
 
-func (rp *RetentionPolicyWithTeamAndChannelCounts) ToJson() []byte {
+func (rp *RetentionPolicyWithTeamAndChannelCounts) ToJSON() []byte {
 	b, _ := json.Marshal(rp)
 	return b
 }
 
-func RetentionPolicyWithTeamAndChannelCountsListFromJson(data io.Reader) (*RetentionPolicyWithTeamAndChannelCountsList, error) {
+func RetentionPolicyWithTeamAndChannelCountsListFromJSON(data io.Reader) (*RetentionPolicyWithTeamAndChannelCountsList, error) {
 	var rpList *RetentionPolicyWithTeamAndChannelCountsList
 	err := json.NewDecoder(data).Decode(&rpList)
 	if err != nil {
@@ -105,28 +105,28 @@ func RetentionPolicyWithTeamAndChannelCountsListFromJson(data io.Reader) (*Reten
 	return rpList, nil
 }
 
-func (rpList *RetentionPolicyWithTeamAndChannelCountsList) ToJson() []byte {
+func (rpList *RetentionPolicyWithTeamAndChannelCountsList) ToJSON() []byte {
 	b, _ := json.Marshal(rpList)
 	return b
 }
 
-func RetentionPolicyWithTeamAndChannelIDsFromJson(data io.Reader) (*RetentionPolicyWithTeamAndChannelIDs, error) {
+func RetentionPolicyWithTeamAndChannelIDsFromJSON(data io.Reader) (*RetentionPolicyWithTeamAndChannelIDs, error) {
 	var rp *RetentionPolicyWithTeamAndChannelIDs
 	err := json.NewDecoder(data).Decode(&rp)
 	return rp, err
 }
 
-func (rp *RetentionPolicyWithTeamAndChannelIDs) ToJson() []byte {
+func (rp *RetentionPolicyWithTeamAndChannelIDs) ToJSON() []byte {
 	b, _ := json.Marshal(rp)
 	return b
 }
 
-func (lst *RetentionPolicyForTeamList) ToJson() []byte {
+func (lst *RetentionPolicyForTeamList) ToJSON() []byte {
 	b, _ := json.Marshal(lst)
 	return b
 }
 
-func (lst *RetentionPolicyForChannelList) ToJson() []byte {
+func (lst *RetentionPolicyForChannelList) ToJSON() []byte {
 	b, _ := json.Marshal(lst)
 	return b
 }

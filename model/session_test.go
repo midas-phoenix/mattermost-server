@@ -41,11 +41,11 @@ func TestSessionDeepCopy(t *testing.T) {
 	assert.Equal(t, 0, len(copySession.TeamMembers))
 }
 
-func TestSessionJson(t *testing.T) {
+func TestSessionJSON(t *testing.T) {
 	session := Session{}
 	session.PreSave()
-	json := session.ToJson()
-	rsession := SessionFromJson(strings.NewReader(json))
+	json := session.ToJSON()
+	rsession := SessionFromJSON(strings.NewReader(json))
 
 	require.Equal(t, rsession.ID, session.ID, "Ids do not match")
 

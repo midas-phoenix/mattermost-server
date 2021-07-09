@@ -82,34 +82,34 @@ func (o *OutgoingWebhookPayload) ToFormValues() string {
 	return v.Encode()
 }
 
-func (o *OutgoingWebhook) ToJson() string {
+func (o *OutgoingWebhook) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func OutgoingWebhookFromJson(data io.Reader) *OutgoingWebhook {
+func OutgoingWebhookFromJSON(data io.Reader) *OutgoingWebhook {
 	var o *OutgoingWebhook
 	json.NewDecoder(data).Decode(&o)
 	return o
 }
 
-func OutgoingWebhookListToJson(l []*OutgoingWebhook) string {
+func OutgoingWebhookListToJSON(l []*OutgoingWebhook) string {
 	b, _ := json.Marshal(l)
 	return string(b)
 }
 
-func OutgoingWebhookListFromJson(data io.Reader) []*OutgoingWebhook {
+func OutgoingWebhookListFromJSON(data io.Reader) []*OutgoingWebhook {
 	var o []*OutgoingWebhook
 	json.NewDecoder(data).Decode(&o)
 	return o
 }
 
-func (o *OutgoingWebhookResponse) ToJson() string {
+func (o *OutgoingWebhookResponse) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func OutgoingWebhookResponseFromJson(data io.Reader) (*OutgoingWebhookResponse, error) {
+func OutgoingWebhookResponseFromJSON(data io.Reader) (*OutgoingWebhookResponse, error) {
 	var o *OutgoingWebhookResponse
 	err := json.NewDecoder(data).Decode(&o)
 	if err == io.EOF {

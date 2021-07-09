@@ -18,7 +18,7 @@ func (o Audits) Etag() string {
 	return ""
 }
 
-func (o Audits) ToJson() string {
+func (o Audits) ToJSON() string {
 	b, err := json.Marshal(o)
 	if err != nil {
 		return "[]"
@@ -26,7 +26,7 @@ func (o Audits) ToJson() string {
 	return string(b)
 }
 
-func AuditsFromJson(data io.Reader) Audits {
+func AuditsFromJSON(data io.Reader) Audits {
 	var o Audits
 	json.NewDecoder(data).Decode(&o)
 	return o

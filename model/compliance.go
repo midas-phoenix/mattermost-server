@@ -50,7 +50,7 @@ type ComplianceExportCursor struct {
 	DirectMessagesQueryCompleted        bool
 }
 
-func (c *Compliance) ToJson() string {
+func (c *Compliance) ToJSON() string {
 	b, _ := json.Marshal(c)
 	return string(b)
 }
@@ -116,13 +116,13 @@ func (c *Compliance) IsValid() *AppError {
 	return nil
 }
 
-func ComplianceFromJson(data io.Reader) *Compliance {
+func ComplianceFromJSON(data io.Reader) *Compliance {
 	var c *Compliance
 	json.NewDecoder(data).Decode(&c)
 	return c
 }
 
-func (c Compliances) ToJson() string {
+func (c Compliances) ToJSON() string {
 	b, err := json.Marshal(c)
 	if err != nil {
 		return "[]"
@@ -130,7 +130,7 @@ func (c Compliances) ToJson() string {
 	return string(b)
 }
 
-func CompliancesFromJson(data io.Reader) Compliances {
+func CompliancesFromJSON(data io.Reader) Compliances {
 	var o Compliances
 	json.NewDecoder(data).Decode(&o)
 	return o

@@ -27,7 +27,7 @@ func (t *TeamSearch) IsPaginated() bool {
 }
 
 // ToJson convert a TeamSearch to json string
-func (t *TeamSearch) ToJson() string {
+func (t *TeamSearch) ToJSON() string {
 	b, err := json.Marshal(t)
 	if err != nil {
 		return ""
@@ -37,7 +37,7 @@ func (t *TeamSearch) ToJson() string {
 }
 
 // TeamSearchFromJson decodes the input and returns a TeamSearch
-func TeamSearchFromJson(data io.Reader) *TeamSearch {
+func TeamSearchFromJSON(data io.Reader) *TeamSearch {
 	decoder := json.NewDecoder(data)
 	var cs TeamSearch
 	err := decoder.Decode(&cs)

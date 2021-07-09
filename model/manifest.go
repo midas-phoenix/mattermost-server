@@ -314,23 +314,23 @@ type ManifestWebapp struct {
 	BundleHash []byte `json:"-"`
 }
 
-func (m *Manifest) ToJson() string {
+func (m *Manifest) ToJSON() string {
 	b, _ := json.Marshal(m)
 	return string(b)
 }
 
-func ManifestListToJson(m []*Manifest) string {
+func ManifestListToJSON(m []*Manifest) string {
 	b, _ := json.Marshal(m)
 	return string(b)
 }
 
-func ManifestFromJson(data io.Reader) *Manifest {
+func ManifestFromJSON(data io.Reader) *Manifest {
 	var m *Manifest
 	json.NewDecoder(data).Decode(&m)
 	return m
 }
 
-func ManifestListFromJson(data io.Reader) []*Manifest {
+func ManifestListFromJSON(data io.Reader) []*Manifest {
 	var manifests []*Manifest
 	json.NewDecoder(data).Decode(&manifests)
 	return manifests

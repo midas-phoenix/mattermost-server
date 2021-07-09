@@ -10,10 +10,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMfaSecretJson(t *testing.T) {
+func TestMfaSecretJSON(t *testing.T) {
 	secret := MfaSecret{Secret: NewID(), QRCode: NewID()}
-	json := secret.ToJson()
-	result := MfaSecretFromJson(strings.NewReader(json))
+	json := secret.ToJSON()
+	result := MfaSecretFromJSON(strings.NewReader(json))
 
 	require.Equal(t, secret.Secret, result.Secret, "Secrets do not match")
 }

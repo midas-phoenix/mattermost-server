@@ -12,27 +12,27 @@ type ClusterInfo struct {
 	ID         string `json:"id"`
 	Version    string `json:"version"`
 	ConfigHash string `json:"config_hash"`
-	IpAddress  string `json:"ipaddress"`
+	IDAddress  string `json:"ipaddress"`
 	Hostname   string `json:"hostname"`
 }
 
-func (ci *ClusterInfo) ToJson() string {
+func (ci *ClusterInfo) ToJSON() string {
 	b, _ := json.Marshal(ci)
 	return string(b)
 }
 
-func ClusterInfoFromJson(data io.Reader) *ClusterInfo {
+func ClusterInfoFromJSON(data io.Reader) *ClusterInfo {
 	var ci *ClusterInfo
 	json.NewDecoder(data).Decode(&ci)
 	return ci
 }
 
-func ClusterInfosToJson(objmap []*ClusterInfo) string {
+func ClusterInfosToJSON(objmap []*ClusterInfo) string {
 	b, _ := json.Marshal(objmap)
 	return string(b)
 }
 
-func ClusterInfosFromJson(data io.Reader) []*ClusterInfo {
+func ClusterInfosFromJSON(data io.Reader) []*ClusterInfo {
 	decoder := json.NewDecoder(data)
 
 	var objmap []*ClusterInfo

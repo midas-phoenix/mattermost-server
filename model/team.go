@@ -68,7 +68,7 @@ type TeamsWithCount struct {
 	TotalCount int64   `json:"total_count"`
 }
 
-func InvitesFromJson(data io.Reader) *Invites {
+func InvitesFromJSON(data io.Reader) *Invites {
 	var o *Invites
 	json.NewDecoder(data).Decode(&o)
 	return o
@@ -82,50 +82,50 @@ func (o *Invites) ToEmailList() []string {
 	return emailList
 }
 
-func (o *Invites) ToJson() string {
+func (o *Invites) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func (o *Team) ToJson() string {
+func (o *Team) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func TeamFromJson(data io.Reader) *Team {
+func TeamFromJSON(data io.Reader) *Team {
 	var o *Team
 	json.NewDecoder(data).Decode(&o)
 	return o
 }
 
-func TeamMapToJson(u map[string]*Team) string {
+func TeamMapToJSON(u map[string]*Team) string {
 	b, _ := json.Marshal(u)
 	return string(b)
 }
 
-func TeamMapFromJson(data io.Reader) map[string]*Team {
+func TeamMapFromJSON(data io.Reader) map[string]*Team {
 	var teams map[string]*Team
 	json.NewDecoder(data).Decode(&teams)
 	return teams
 }
 
-func TeamListToJson(t []*Team) string {
+func TeamListToJSON(t []*Team) string {
 	b, _ := json.Marshal(t)
 	return string(b)
 }
 
-func TeamsWithCountToJson(tlc *TeamsWithCount) []byte {
+func TeamsWithCountToJSON(tlc *TeamsWithCount) []byte {
 	b, _ := json.Marshal(tlc)
 	return b
 }
 
-func TeamsWithCountFromJson(data io.Reader) *TeamsWithCount {
+func TeamsWithCountFromJSON(data io.Reader) *TeamsWithCount {
 	var twc *TeamsWithCount
 	json.NewDecoder(data).Decode(&twc)
 	return twc
 }
 
-func TeamListFromJson(data io.Reader) []*Team {
+func TeamListFromJSON(data io.Reader) []*Team {
 	var teams []*Team
 	json.NewDecoder(data).Decode(&teams)
 	return teams
@@ -310,7 +310,7 @@ func (o *Team) IsGroupConstrained() bool {
 	return o.GroupConstrained != nil && *o.GroupConstrained
 }
 
-func (t *TeamPatch) ToJson() string {
+func (t *TeamPatch) ToJSON() string {
 	b, err := json.Marshal(t)
 	if err != nil {
 		return ""
@@ -319,7 +319,7 @@ func (t *TeamPatch) ToJson() string {
 	return string(b)
 }
 
-func TeamPatchFromJson(data io.Reader) *TeamPatch {
+func TeamPatchFromJSON(data io.Reader) *TeamPatch {
 	decoder := json.NewDecoder(data)
 	var team TeamPatch
 	err := decoder.Decode(&team)

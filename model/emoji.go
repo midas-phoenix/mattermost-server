@@ -96,23 +96,23 @@ func (emoji *Emoji) PreSave() {
 	emoji.UpdateAt = emoji.CreateAt
 }
 
-func (emoji *Emoji) ToJson() string {
+func (emoji *Emoji) ToJSON() string {
 	b, _ := json.Marshal(emoji)
 	return string(b)
 }
 
-func EmojiFromJson(data io.Reader) *Emoji {
+func EmojiFromJSON(data io.Reader) *Emoji {
 	var emoji *Emoji
 	json.NewDecoder(data).Decode(&emoji)
 	return emoji
 }
 
-func EmojiListToJson(emojiList []*Emoji) string {
+func EmojiListToJSON(emojiList []*Emoji) string {
 	b, _ := json.Marshal(emojiList)
 	return string(b)
 }
 
-func EmojiListFromJson(data io.Reader) []*Emoji {
+func EmojiListFromJSON(data io.Reader) []*Emoji {
 	var emojiList []*Emoji
 	json.NewDecoder(data).Decode(&emojiList)
 	return emojiList

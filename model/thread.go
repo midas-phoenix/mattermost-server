@@ -56,28 +56,28 @@ type GetUserThreadsOpts struct {
 	Unread bool
 }
 
-func (o *ThreadResponse) ToJson() string {
+func (o *ThreadResponse) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func ThreadResponseFromJson(s string) (*ThreadResponse, error) {
+func ThreadResponseFromJSON(s string) (*ThreadResponse, error) {
 	var t ThreadResponse
 	err := json.Unmarshal([]byte(s), &t)
 	return &t, err
 }
 
-func (o *Threads) ToJson() string {
+func (o *Threads) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func (o *Thread) ToJson() string {
+func (o *Thread) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func ThreadFromJson(s string) (*Thread, error) {
+func ThreadFromJSON(s string) (*Thread, error) {
 	var t Thread
 	err := json.Unmarshal([]byte(s), &t)
 	return &t, err
@@ -96,7 +96,7 @@ type ThreadMembership struct {
 	UnreadMentions int64  `json:"unread_mentions"`
 }
 
-func (o *ThreadMembership) ToJson() string {
+func (o *ThreadMembership) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }

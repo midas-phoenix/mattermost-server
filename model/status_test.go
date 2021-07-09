@@ -13,8 +13,8 @@ import (
 
 func TestStatus(t *testing.T) {
 	status := Status{NewID(), StatusOnline, true, 0, "123", 0, ""}
-	json := status.ToJson()
-	status2 := StatusFromJson(strings.NewReader(json))
+	json := status.ToJSON()
+	status2 := StatusFromJSON(strings.NewReader(json))
 
 	assert.Equal(t, status.UserID, status2.UserID, "UserId should have matched")
 	assert.Equal(t, status.Status, status2.Status, "Status should have matched")
@@ -22,15 +22,15 @@ func TestStatus(t *testing.T) {
 	assert.Equal(t, status.Manual, status2.Manual, "Manual should have matched")
 	assert.Equal(t, "", status2.ActiveChannel)
 
-	json = status.ToClusterJson()
-	status2 = StatusFromJson(strings.NewReader(json))
+	json = status.ToClusterJSON()
+	status2 = StatusFromJSON(strings.NewReader(json))
 
 	assert.Equal(t, status.ActiveChannel, status2.ActiveChannel)
 }
 
-func TestStatusListToJson(t *testing.T) {
+func TestStatusListToJSON(t *testing.T) {
 	statuses := []*Status{{NewID(), StatusOnline, true, 0, "123", 0, ""}, {NewID(), StatusOffline, true, 0, "", 0, ""}}
-	jsonStatuses := StatusListToJson(statuses)
+	jsonStatuses := StatusListToJSON(statuses)
 
 	var dat []map[string]interface{}
 	if err := json.Unmarshal([]byte(jsonStatuses), &dat); err != nil {
@@ -46,7 +46,7 @@ func TestStatusListToJson(t *testing.T) {
 	assert.Equal(t, statuses[1].UserID, dat[1]["user_id"])
 }
 
-func TestStatusListFromJson(t *testing.T) {
+func TestStatusListFromJSON(t *testing.T) {
 	const jsonStream = `
     		 [{"user_id":"k39fowpzhfffjxeaw8ecyrygme","status":"online","manual":true,"last_activity_at":0},{"user_id":"e9f1bbg8wfno7b3k7yk79bbwfy","status":"offline","manual":true,"last_activity_at":0}]
     	`
@@ -56,8 +56,8 @@ func TestStatusListFromJson(t *testing.T) {
 	}
 
 	toDec := strings.NewReader(jsonStream)
-	statusesFromJson := StatusListFromJson(toDec)
+	statusesFromJSON := StatusListFromJSON(toDec)
 
-	assert.Equal(t, statusesFromJson[0].UserID, dat[0]["user_id"], "UserId should be equal")
-	assert.Equal(t, statusesFromJson[1].UserID, dat[1]["user_id"], "UserId should be equal")
+	assert.Equal(t, statusesFromJSON[0].UserID, dat[0]["user_id"], "UserId should be equal")
+	assert.Equal(t, statusesFromJSON[1].UserID, dat[1]["user_id"], "UserId should be equal")
 }

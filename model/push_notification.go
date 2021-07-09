@@ -70,7 +70,7 @@ type PushNotification struct {
 	IsIDLoaded       bool   `json:"is_id_loaded"`
 }
 
-func (pn *PushNotification) ToJson() string {
+func (pn *PushNotification) ToJSON() string {
 	b, _ := json.Marshal(pn)
 	return string(b)
 }
@@ -90,7 +90,7 @@ func (pn *PushNotification) SetDeviceIDAndPlatform(deviceID string) {
 	}
 }
 
-func PushNotificationFromJson(data io.Reader) (*PushNotification, error) {
+func PushNotificationFromJSON(data io.Reader) (*PushNotification, error) {
 	if data == nil {
 		return nil, errors.New("push notification data can't be nil")
 	}
@@ -101,7 +101,7 @@ func PushNotificationFromJson(data io.Reader) (*PushNotification, error) {
 	return pn, nil
 }
 
-func PushNotificationAckFromJson(data io.Reader) (*PushNotificationAck, error) {
+func PushNotificationAckFromJSON(data io.Reader) (*PushNotificationAck, error) {
 	if data == nil {
 		return nil, errors.New("push notification data can't be nil")
 	}
@@ -112,7 +112,7 @@ func PushNotificationAckFromJson(data io.Reader) (*PushNotificationAck, error) {
 	return ack, nil
 }
 
-func (ack *PushNotificationAck) ToJson() string {
+func (ack *PushNotificationAck) ToJSON() string {
 	b, _ := json.Marshal(ack)
 	return string(b)
 }

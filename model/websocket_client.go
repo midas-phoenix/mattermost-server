@@ -224,7 +224,7 @@ func (wsc *WebSocketClient) Listen() {
 				return
 			}
 
-			event := WebSocketEventFromJson(bytes.NewReader(buf.Bytes()))
+			event := WebSocketEventFromJSON(bytes.NewReader(buf.Bytes()))
 			if event == nil {
 				continue
 			}

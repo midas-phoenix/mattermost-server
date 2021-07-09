@@ -18,12 +18,12 @@ type InitialLoad struct {
 	NoAccounts  bool              `json:"no_accounts"`
 }
 
-func (il *InitialLoad) ToJson() string {
+func (il *InitialLoad) ToJSON() string {
 	b, _ := json.Marshal(il)
 	return string(b)
 }
 
-func InitialLoadFromJson(data io.Reader) *InitialLoad {
+func InitialLoadFromJSON(data io.Reader) *InitialLoad {
 	var il *InitialLoad
 	json.NewDecoder(data).Decode(&il)
 	return il

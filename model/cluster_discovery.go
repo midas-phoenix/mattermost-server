@@ -46,13 +46,13 @@ func (o *ClusterDiscovery) AutoFillHostname() {
 	}
 }
 
-func (o *ClusterDiscovery) AutoFillIpAddress(iface string, ipAddress string) {
+func (o *ClusterDiscovery) AutoFillIDAddress(iface string, ipAddress string) {
 	// attempt to set the hostname to the first non-local IP address
 	if o.Hostname == "" {
 		if ipAddress != "" {
 			o.Hostname = ipAddress
 		} else {
-			o.Hostname = GetServerIpAddress(iface)
+			o.Hostname = GetServerIDAddress(iface)
 		}
 	}
 }
@@ -116,7 +116,7 @@ func (o *ClusterDiscovery) IsValid() *AppError {
 	return nil
 }
 
-func (o *ClusterDiscovery) ToJson() string {
+func (o *ClusterDiscovery) ToJSON() string {
 	b, err := json.Marshal(o)
 	if err != nil {
 		return ""
@@ -125,7 +125,7 @@ func (o *ClusterDiscovery) ToJson() string {
 	return string(b)
 }
 
-func ClusterDiscoveryFromJson(data io.Reader) *ClusterDiscovery {
+func ClusterDiscoveryFromJSON(data io.Reader) *ClusterDiscovery {
 	decoder := json.NewDecoder(data)
 	var me ClusterDiscovery
 	err := decoder.Decode(&me)

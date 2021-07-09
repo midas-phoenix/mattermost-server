@@ -10,22 +10,22 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAuthJson(t *testing.T) {
+func TestAuthJSON(t *testing.T) {
 	a1 := AuthData{}
 	a1.ClientID = NewID()
 	a1.UserID = NewID()
 	a1.Code = NewID()
 
-	json := a1.ToJson()
-	ra1 := AuthDataFromJson(strings.NewReader(json))
+	json := a1.ToJSON()
+	ra1 := AuthDataFromJSON(strings.NewReader(json))
 	require.Equal(t, a1.Code, ra1.Code, "codes didn't match")
 
 	a2 := AuthorizeRequest{}
 	a2.ClientID = NewID()
 	a2.Scope = NewID()
 
-	json = a2.ToJson()
-	ra2 := AuthorizeRequestFromJson(strings.NewReader(json))
+	json = a2.ToJSON()
+	ra2 := AuthorizeRequestFromJSON(strings.NewReader(json))
 
 	require.Equal(t, a2.ClientID, ra2.ClientID, "client ids didn't match")
 }
@@ -90,15 +90,15 @@ func TestAuthIsValid(t *testing.T) {
 	ad.Scope = NewRandomString(128)
 	require.NotNil(t, ad.IsValid())
 
-	ad.RedirectUri = ""
+	ad.RedirectURI = ""
 	require.NotNil(t, ad.IsValid(), "Should have failed Redirect URI not set")
 
-	ad.RedirectUri = NewRandomString(28)
+	ad.RedirectURI = NewRandomString(28)
 	require.NotNil(t, ad.IsValid(), "Should have failed invalid URL")
 
-	ad.RedirectUri = NewRandomString(257)
+	ad.RedirectURI = NewRandomString(257)
 	require.NotNil(t, ad.IsValid(), "Should have failed invalid URL")
 
-	ad.RedirectUri = "http://example.com"
+	ad.RedirectURI = "http://example.com"
 	require.Nil(t, ad.IsValid())
 }

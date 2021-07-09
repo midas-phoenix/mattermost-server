@@ -163,52 +163,52 @@ func (o *Channel) DeepCopy() *Channel {
 	return &copy
 }
 
-func (o *Channel) ToJson() string {
+func (o *Channel) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func (o *ChannelPatch) ToJson() string {
+func (o *ChannelPatch) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func (o *ChannelsWithCount) ToJson() []byte {
+func (o *ChannelsWithCount) ToJSON() []byte {
 	b, _ := json.Marshal(o)
 	return b
 }
 
-func ChannelsWithCountFromJson(data io.Reader) *ChannelsWithCount {
+func ChannelsWithCountFromJSON(data io.Reader) *ChannelsWithCount {
 	var o *ChannelsWithCount
 	json.NewDecoder(data).Decode(&o)
 	return o
 }
 
-func ChannelFromJson(data io.Reader) *Channel {
+func ChannelFromJSON(data io.Reader) *Channel {
 	var o *Channel
 	json.NewDecoder(data).Decode(&o)
 	return o
 }
 
-func ChannelPatchFromJson(data io.Reader) *ChannelPatch {
+func ChannelPatchFromJSON(data io.Reader) *ChannelPatch {
 	var o *ChannelPatch
 	json.NewDecoder(data).Decode(&o)
 	return o
 }
 
-func ChannelModerationsFromJson(data io.Reader) []*ChannelModeration {
+func ChannelModerationsFromJSON(data io.Reader) []*ChannelModeration {
 	var o []*ChannelModeration
 	json.NewDecoder(data).Decode(&o)
 	return o
 }
 
-func ChannelModerationsPatchFromJson(data io.Reader) []*ChannelModerationPatch {
+func ChannelModerationsPatchFromJSON(data io.Reader) []*ChannelModerationPatch {
 	var o []*ChannelModerationPatch
 	json.NewDecoder(data).Decode(&o)
 	return o
 }
 
-func ChannelMemberCountsByGroupFromJson(data io.Reader) []*ChannelMemberCountByGroup {
+func ChannelMemberCountsByGroupFromJSON(data io.Reader) []*ChannelMemberCountByGroup {
 	var o []*ChannelMemberCountByGroup
 	json.NewDecoder(data).Decode(&o)
 	return o

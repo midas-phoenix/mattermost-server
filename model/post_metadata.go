@@ -39,7 +39,7 @@ type PostImage struct {
 	FrameCount int `json:"frame_count"`
 }
 
-func (o *PostImage) ToJson() string {
+func (o *PostImage) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }

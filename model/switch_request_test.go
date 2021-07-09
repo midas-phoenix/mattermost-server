@@ -10,10 +10,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestSwitchRequestJson(t *testing.T) {
+func TestSwitchRequestJSON(t *testing.T) {
 	o := SwitchRequest{Email: NewID(), Password: NewID()}
-	json := o.ToJson()
-	ro := SwitchRequestFromJson(strings.NewReader(json))
+	json := o.ToJSON()
+	ro := SwitchRequestFromJSON(strings.NewReader(json))
 
 	require.Equal(t, o.Email, ro.Email, "Emails do not match")
 }

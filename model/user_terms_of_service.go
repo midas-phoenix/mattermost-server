@@ -32,7 +32,7 @@ func (ut *UserTermsOfService) IsValid() *AppError {
 	return nil
 }
 
-func (ut *UserTermsOfService) ToJson() string {
+func (ut *UserTermsOfService) ToJSON() string {
 	b, _ := json.Marshal(ut)
 	return string(b)
 }
@@ -45,7 +45,7 @@ func (ut *UserTermsOfService) PreSave() {
 	ut.CreateAt = GetMillis()
 }
 
-func UserTermsOfServiceFromJson(data io.Reader) *UserTermsOfService {
+func UserTermsOfServiceFromJSON(data io.Reader) *UserTermsOfService {
 	var userTermsOfService *UserTermsOfService
 	json.NewDecoder(data).Decode(&userTermsOfService)
 	return userTermsOfService

@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPluginsResponseJson(t *testing.T) {
+func TestPluginsResponseJSON(t *testing.T) {
 	manifest := &Manifest{
 		ID: "theid",
 		Server: &ManifestServer{
@@ -26,9 +26,9 @@ func TestPluginsResponseJson(t *testing.T) {
 		Inactive: []*PluginInfo{},
 	}
 
-	json := response.ToJson()
-	newResponse := PluginsResponseFromJson(strings.NewReader(json))
+	json := response.ToJSON()
+	newResponse := PluginsResponseFromJSON(strings.NewReader(json))
 	assert.Equal(t, newResponse, response)
-	assert.Equal(t, newResponse.ToJson(), json)
-	assert.Equal(t, PluginsResponseFromJson(strings.NewReader("junk")), (*PluginsResponse)(nil))
+	assert.Equal(t, newResponse.ToJSON(), json)
+	assert.Equal(t, PluginsResponseFromJSON(strings.NewReader("junk")), (*PluginsResponse)(nil))
 }

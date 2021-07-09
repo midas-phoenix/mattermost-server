@@ -29,26 +29,26 @@ type Status struct {
 	PrevStatus     string `json:"-"`
 }
 
-func (o *Status) ToJson() string {
+func (o *Status) ToJSON() string {
 	oCopy := *o
 	oCopy.ActiveChannel = ""
 	b, _ := json.Marshal(oCopy)
 	return string(b)
 }
 
-func (o *Status) ToClusterJson() string {
+func (o *Status) ToClusterJSON() string {
 	oCopy := *o
 	b, _ := json.Marshal(oCopy)
 	return string(b)
 }
 
-func StatusFromJson(data io.Reader) *Status {
+func StatusFromJSON(data io.Reader) *Status {
 	var o *Status
 	json.NewDecoder(data).Decode(&o)
 	return o
 }
 
-func StatusListToJson(u []*Status) string {
+func StatusListToJSON(u []*Status) string {
 	uCopy := make([]Status, len(u))
 	for i, s := range u {
 		sCopy := *s
@@ -60,7 +60,7 @@ func StatusListToJson(u []*Status) string {
 	return string(b)
 }
 
-func StatusListFromJson(data io.Reader) []*Status {
+func StatusListFromJSON(data io.Reader) []*Status {
 	var statuses []*Status
 	json.NewDecoder(data).Decode(&statuses)
 	return statuses

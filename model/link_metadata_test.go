@@ -162,7 +162,7 @@ func TestLinkMetadataDeserializeDataToConcreteType(t *testing.T) {
 
 		metadata := &LinkMetadata{
 			Type: LinkMetadataTypeImage,
-			Data: []byte(image.ToJson()),
+			Data: []byte(image.ToJSON()),
 		}
 
 		require.IsType(t, []byte{}, metadata.Data)

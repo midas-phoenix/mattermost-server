@@ -37,12 +37,12 @@ func NewErrorPushResponse(message string) PushResponse {
 	return m
 }
 
-func (pr *PushResponse) ToJson() string {
+func (pr *PushResponse) ToJSON() string {
 	b, _ := json.Marshal(pr)
 	return string(b)
 }
 
-func PushResponseFromJson(data io.Reader) PushResponse {
+func PushResponseFromJSON(data io.Reader) PushResponse {
 	decoder := json.NewDecoder(data)
 
 	var objmap PushResponse

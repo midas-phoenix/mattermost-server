@@ -1338,7 +1338,7 @@ func TestConfigToJSONFiltered(t *testing.T) {
 	c := Config{}
 	c.SetDefaults()
 
-	jsonCfgFiltered := c.ToJsonFiltered(ConfigAccessTagType, ConfigAccessTagCloudRestrictable)
+	jsonCfgFiltered := c.ToJSONFiltered(ConfigAccessTagType, ConfigAccessTagCloudRestrictable)
 
 	unmarshaledCfg := make(map[string]json.RawMessage)
 	err := json.Unmarshal([]byte(jsonCfgFiltered), &unmarshaledCfg)

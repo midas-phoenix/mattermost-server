@@ -14,12 +14,12 @@ type TeamStats struct {
 	ActiveMemberCount int64  `json:"active_member_count"`
 }
 
-func (o *TeamStats) ToJson() string {
+func (o *TeamStats) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func TeamStatsFromJson(data io.Reader) *TeamStats {
+func TeamStatsFromJSON(data io.Reader) *TeamStats {
 	var o *TeamStats
 	json.NewDecoder(data).Decode(&o)
 	return o

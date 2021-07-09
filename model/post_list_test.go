@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPostListJson(t *testing.T) {
+func TestPostListJSON(t *testing.T) {
 
 	pl := PostList{}
 	p1 := &Post{ID: NewID(), Message: NewID()}
@@ -21,8 +21,8 @@ func TestPostListJson(t *testing.T) {
 	pl.AddOrder(p1.ID)
 	pl.AddOrder(p2.ID)
 
-	json := pl.ToJson()
-	rpl := PostListFromJson(strings.NewReader(json))
+	json := pl.ToJSON()
+	rpl := PostListFromJSON(strings.NewReader(json))
 
 	assert.Equal(t, p1.Message, rpl.Posts[p1.ID].Message, "failed to serialize p1 message")
 	assert.Equal(t, p2.Message, rpl.Posts[p2.ID].Message, "failed to serialize p2 message")

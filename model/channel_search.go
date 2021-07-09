@@ -27,13 +27,13 @@ type ChannelSearch struct {
 }
 
 // ToJson convert a Channel to a json string
-func (c *ChannelSearch) ToJson() string {
+func (c *ChannelSearch) ToJSON() string {
 	b, _ := json.Marshal(c)
 	return string(b)
 }
 
 // ChannelSearchFromJson will decode the input and return a Channel
-func ChannelSearchFromJson(data io.Reader) *ChannelSearch {
+func ChannelSearchFromJSON(data io.Reader) *ChannelSearch {
 	var cs *ChannelSearch
 	json.NewDecoder(data).Decode(&cs)
 	return cs

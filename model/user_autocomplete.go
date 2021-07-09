@@ -22,12 +22,12 @@ type UserAutocomplete struct {
 	OutOfChannel []*User `json:"out_of_channel,omitempty"`
 }
 
-func (o *UserAutocomplete) ToJson() string {
+func (o *UserAutocomplete) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func UserAutocompleteFromJson(data io.Reader) *UserAutocomplete {
+func UserAutocompleteFromJSON(data io.Reader) *UserAutocomplete {
 	decoder := json.NewDecoder(data)
 	autocomplete := new(UserAutocomplete)
 	err := decoder.Decode(&autocomplete)
@@ -37,23 +37,23 @@ func UserAutocompleteFromJson(data io.Reader) *UserAutocomplete {
 	return autocomplete
 }
 
-func (o *UserAutocompleteInChannel) ToJson() string {
+func (o *UserAutocompleteInChannel) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func UserAutocompleteInChannelFromJson(data io.Reader) *UserAutocompleteInChannel {
+func UserAutocompleteInChannelFromJSON(data io.Reader) *UserAutocompleteInChannel {
 	var o *UserAutocompleteInChannel
 	json.NewDecoder(data).Decode(&o)
 	return o
 }
 
-func (o *UserAutocompleteInTeam) ToJson() string {
+func (o *UserAutocompleteInTeam) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func UserAutocompleteInTeamFromJson(data io.Reader) *UserAutocompleteInTeam {
+func UserAutocompleteInTeamFromJSON(data io.Reader) *UserAutocompleteInTeam {
 	var o *UserAutocompleteInTeam
 	json.NewDecoder(data).Decode(&o)
 	return o

@@ -10,7 +10,7 @@ import (
 
 type ChannelList []*Channel
 
-func (o *ChannelList) ToJson() string {
+func (o *ChannelList) ToJSON() string {
 	b, err := json.Marshal(o)
 	if err != nil {
 		return "[]"
@@ -40,13 +40,13 @@ func (o *ChannelList) Etag() string {
 	return Etag(id, t, delta, len(*o))
 }
 
-func ChannelListFromJson(data io.Reader) *ChannelList {
+func ChannelListFromJSON(data io.Reader) *ChannelList {
 	var o *ChannelList
 	json.NewDecoder(data).Decode(&o)
 	return o
 }
 
-func ChannelSliceFromJson(data io.Reader) []*Channel {
+func ChannelSliceFromJSON(data io.Reader) []*Channel {
 	var o []*Channel
 	json.NewDecoder(data).Decode(&o)
 	return o
@@ -54,7 +54,7 @@ func ChannelSliceFromJson(data io.Reader) []*Channel {
 
 type ChannelListWithTeamData []*ChannelWithTeamData
 
-func (o *ChannelListWithTeamData) ToJson() string {
+func (o *ChannelListWithTeamData) ToJSON() string {
 	b, err := json.Marshal(o)
 	if err != nil {
 		return "[]"
@@ -88,7 +88,7 @@ func (o *ChannelListWithTeamData) Etag() string {
 	return Etag(id, t, delta, len(*o))
 }
 
-func ChannelListWithTeamDataFromJson(data io.Reader) *ChannelListWithTeamData {
+func ChannelListWithTeamDataFromJSON(data io.Reader) *ChannelListWithTeamData {
 	var o *ChannelListWithTeamData
 	json.NewDecoder(data).Decode(&o)
 	return o

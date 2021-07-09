@@ -179,7 +179,7 @@ const (
 
 	AnnouncementSettingsDefaultBannerColor                  = "#f2a93b"
 	AnnouncementSettingsDefaultBannerTextColor              = "#333333"
-	AnnouncementSettingsDefaultNoticesJsonUrl               = "https://notices.mattermost.com/"
+	AnnouncementSettingsDefaultNoticesJSONUrl               = "https://notices.mattermost.com/"
 	AnnouncementSettingsDefaultNoticesFetchFrequencySeconds = 3600
 
 	TeamSettingsDefaultTeamText = "default"
@@ -531,7 +531,7 @@ func (s *ServiceSettings) SetDefaults(isUpdate bool) {
 	if isUpdate {
 		// When updating an existing configuration, ensure that defaults are set.
 		if s.TrustedProxyIPHeader == nil {
-			s.TrustedProxyIPHeader = []string{HeaderForwarded, HeaderRealIp}
+			s.TrustedProxyIPHeader = []string{HeaderForwarded, HeaderRealID}
 		}
 	} else {
 		// When generating a blank configuration, leave the list empty.
@@ -834,7 +834,7 @@ type ClusterSettings struct {
 	NetworkInterface                            *string `access:"environment_high_availability,write_restrictable,cloud_restrictable"`
 	BindAddress                                 *string `access:"environment_high_availability,write_restrictable,cloud_restrictable"`
 	AdvertiseAddress                            *string `access:"environment_high_availability,write_restrictable,cloud_restrictable"`
-	UseIpAddress                                *bool   `access:"environment_high_availability,write_restrictable,cloud_restrictable"`
+	UseIDAddress                                *bool   `access:"environment_high_availability,write_restrictable,cloud_restrictable"`
 	DEPRECATED_DO_NOT_USE_UseExperimentalGossip *bool   `json:"UseExperimentalGossip" access:"environment_high_availability,write_restrictable,cloud_restrictable"` // Deprecated: do not use
 	EnableGossipCompression                     *bool   `access:"environment_high_availability,write_restrictable,cloud_restrictable"`
 	EnableExperimentalGossipEncryption          *bool   `access:"environment_high_availability,write_restrictable,cloud_restrictable"`
@@ -871,8 +871,8 @@ func (s *ClusterSettings) SetDefaults() {
 		s.AdvertiseAddress = NewString("")
 	}
 
-	if s.UseIpAddress == nil {
-		s.UseIpAddress = NewBool(true)
+	if s.UseIDAddress == nil {
+		s.UseIDAddress = NewBool(true)
 	}
 
 	if s.DEPRECATED_DO_NOT_USE_UseExperimentalGossip == nil {
@@ -1201,11 +1201,11 @@ func (s *SqlSettings) SetDefaults(isUpdate bool) {
 type LogSettings struct {
 	EnableConsole          *bool   `access:"environment_logging,write_restrictable,cloud_restrictable"`
 	ConsoleLevel           *string `access:"environment_logging,write_restrictable,cloud_restrictable"`
-	ConsoleJson            *bool   `access:"environment_logging,write_restrictable,cloud_restrictable"`
+	ConsoleJSON            *bool   `access:"environment_logging,write_restrictable,cloud_restrictable"`
 	EnableColor            *bool   `access:"environment_logging,write_restrictable,cloud_restrictable"` // telemetry: none
 	EnableFile             *bool   `access:"environment_logging,write_restrictable,cloud_restrictable"`
 	FileLevel              *string `access:"environment_logging,write_restrictable,cloud_restrictable"`
-	FileJson               *bool   `access:"environment_logging,write_restrictable,cloud_restrictable"`
+	FileJSON               *bool   `access:"environment_logging,write_restrictable,cloud_restrictable"`
 	FileLocation           *string `access:"environment_logging,write_restrictable,cloud_restrictable"`
 	EnableWebhookDebugging *bool   `access:"environment_logging,write_restrictable,cloud_restrictable"`
 	EnableDiagnostics      *bool   `access:"environment_logging,write_restrictable,cloud_restrictable"` // telemetry: none
@@ -1250,12 +1250,12 @@ func (s *LogSettings) SetDefaults() {
 		s.EnableSentry = NewBool(*s.EnableDiagnostics)
 	}
 
-	if s.ConsoleJson == nil {
-		s.ConsoleJson = NewBool(true)
+	if s.ConsoleJSON == nil {
+		s.ConsoleJSON = NewBool(true)
 	}
 
-	if s.FileJson == nil {
-		s.FileJson = NewBool(true)
+	if s.FileJSON == nil {
+		s.FileJSON = NewBool(true)
 	}
 
 	if s.AdvancedLoggingConfig == nil {
@@ -1311,11 +1311,11 @@ func (s *ExperimentalAuditSettings) SetDefaults() {
 type NotificationLogSettings struct {
 	EnableConsole         *bool   `access:"write_restrictable,cloud_restrictable"`
 	ConsoleLevel          *string `access:"write_restrictable,cloud_restrictable"`
-	ConsoleJson           *bool   `access:"write_restrictable,cloud_restrictable"`
+	ConsoleJSON           *bool   `access:"write_restrictable,cloud_restrictable"`
 	EnableColor           *bool   `access:"write_restrictable,cloud_restrictable"` // telemetry: none
 	EnableFile            *bool   `access:"write_restrictable,cloud_restrictable"`
 	FileLevel             *string `access:"write_restrictable,cloud_restrictable"`
-	FileJson              *bool   `access:"write_restrictable,cloud_restrictable"`
+	FileJSON              *bool   `access:"write_restrictable,cloud_restrictable"`
 	FileLocation          *string `access:"write_restrictable,cloud_restrictable"`
 	AdvancedLoggingConfig *string `access:"write_restrictable,cloud_restrictable"`
 }
@@ -1341,16 +1341,16 @@ func (s *NotificationLogSettings) SetDefaults() {
 		s.FileLocation = NewString("")
 	}
 
-	if s.ConsoleJson == nil {
-		s.ConsoleJson = NewBool(true)
+	if s.ConsoleJSON == nil {
+		s.ConsoleJSON = NewBool(true)
 	}
 
 	if s.EnableColor == nil {
 		s.EnableColor = NewBool(false)
 	}
 
-	if s.FileJson == nil {
-		s.FileJson = NewBool(true)
+	if s.FileJSON == nil {
+		s.FileJSON = NewBool(true)
 	}
 
 	if s.AdvancedLoggingConfig == nil {
@@ -1867,7 +1867,7 @@ func (s *AnnouncementSettings) SetDefaults() {
 		s.UserNoticesEnabled = NewBool(true)
 	}
 	if s.NoticesURL == nil {
-		s.NoticesURL = NewString(AnnouncementSettingsDefaultNoticesJsonUrl)
+		s.NoticesURL = NewString(AnnouncementSettingsDefaultNoticesJSONUrl)
 	}
 	if s.NoticesSkipCache == nil {
 		s.NoticesSkipCache = NewBool(false)
@@ -3155,18 +3155,18 @@ type Config struct {
 
 func (o *Config) Clone() *Config {
 	var ret Config
-	if err := json.Unmarshal([]byte(o.ToJson()), &ret); err != nil {
+	if err := json.Unmarshal([]byte(o.ToJSON()), &ret); err != nil {
 		panic(err)
 	}
 	return &ret
 }
 
-func (o *Config) ToJson() string {
+func (o *Config) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func (o *Config) ToJsonFiltered(tagType, tagValue string) string {
+func (o *Config) ToJSONFiltered(tagType, tagValue string) string {
 	filteredConfigMap := structToMapFilteredByTag(*o, tagType, tagValue)
 	for key, value := range filteredConfigMap {
 		v, ok := value.(map[string]interface{})
@@ -3193,7 +3193,7 @@ func (o *Config) GetSSOService(service string) *SSOSettings {
 	return nil
 }
 
-func ConfigFromJson(data io.Reader) *Config {
+func ConfigFromJSON(data io.Reader) *Config {
 	var o *Config
 	json.NewDecoder(data).Decode(&o)
 	return o

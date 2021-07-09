@@ -18,12 +18,12 @@ type SwitchRequest struct {
 	LdapLoginID    string `json:"ldap_id"`
 }
 
-func (o *SwitchRequest) ToJson() string {
+func (o *SwitchRequest) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func SwitchRequestFromJson(data io.Reader) *SwitchRequest {
+func SwitchRequestFromJSON(data io.Reader) *SwitchRequest {
 	var o *SwitchRequest
 	json.NewDecoder(data).Decode(&o)
 	return o

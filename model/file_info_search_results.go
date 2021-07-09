@@ -22,7 +22,7 @@ func MakeFileInfoSearchResults(fileInfos *FileInfoList, matches FileInfoSearchMa
 	}
 }
 
-func (o *FileInfoSearchResults) ToJson() string {
+func (o *FileInfoSearchResults) ToJSON() string {
 	b, err := json.Marshal(o)
 	if err != nil {
 		return ""
@@ -30,7 +30,7 @@ func (o *FileInfoSearchResults) ToJson() string {
 	return string(b)
 }
 
-func FileInfoSearchResultsFromJson(data io.Reader) *FileInfoSearchResults {
+func FileInfoSearchResultsFromJSON(data io.Reader) *FileInfoSearchResults {
 	var o *FileInfoSearchResults
 	json.NewDecoder(data).Decode(&o)
 	return o

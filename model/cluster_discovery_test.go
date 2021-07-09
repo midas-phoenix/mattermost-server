@@ -17,14 +17,14 @@ func TestClusterDiscovery(t *testing.T) {
 		Hostname:    "test_hostname",
 	}
 
-	json := o.ToJson()
-	result1 := ClusterDiscoveryFromJson(strings.NewReader(json))
+	json := o.ToJSON()
+	result1 := ClusterDiscoveryFromJSON(strings.NewReader(json))
 
 	assert.NotNil(t, result1)
 	assert.Equal(t, "cluster_name", result1.ClusterName)
 
-	result2 := ClusterDiscoveryFromJson(strings.NewReader(json))
-	result3 := ClusterDiscoveryFromJson(strings.NewReader(json))
+	result2 := ClusterDiscoveryFromJSON(strings.NewReader(json))
+	result3 := ClusterDiscoveryFromJSON(strings.NewReader(json))
 
 	o.ID = "0"
 	result1.ID = "1"
@@ -50,7 +50,7 @@ func TestClusterDiscovery(t *testing.T) {
 	o.Hostname = ""
 	o.AutoFillHostname()
 
-	o.AutoFillIpAddress("", "")
+	o.AutoFillIDAddress("", "")
 	o.Hostname = ""
-	o.AutoFillIpAddress("", "")
+	o.AutoFillIDAddress("", "")
 }

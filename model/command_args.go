@@ -27,12 +27,12 @@ type CommandArgs struct {
 	Session Session `json:"-"`
 }
 
-func (o *CommandArgs) ToJson() string {
+func (o *CommandArgs) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func CommandArgsFromJson(data io.Reader) *CommandArgs {
+func CommandArgsFromJSON(data io.Reader) *CommandArgs {
 	var o *CommandArgs
 	json.NewDecoder(data).Decode(&o)
 	return o

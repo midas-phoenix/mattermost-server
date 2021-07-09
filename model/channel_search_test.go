@@ -10,10 +10,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestChannelSearchJson(t *testing.T) {
+func TestChannelSearchJSON(t *testing.T) {
 	channelSearch := ChannelSearch{Term: NewID()}
-	json := channelSearch.ToJson()
-	rchannelSearch := ChannelSearchFromJson(strings.NewReader(json))
+	json := channelSearch.ToJSON()
+	rchannelSearch := ChannelSearchFromJSON(strings.NewReader(json))
 
 	assert.Equal(t, channelSearch.Term, rchannelSearch.Term)
 }

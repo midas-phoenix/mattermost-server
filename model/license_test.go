@@ -143,7 +143,7 @@ func TestLicenseIsStarted(t *testing.T) {
 	assert.False(t, l1.IsStarted())
 }
 
-func TestLicenseToFromJson(t *testing.T) {
+func TestLicenseToFromJSON(t *testing.T) {
 	f := Features{}
 	f.SetDefaults()
 
@@ -162,9 +162,9 @@ func TestLicenseToFromJson(t *testing.T) {
 		IsTrial:  true,
 	}
 
-	j := l.ToJson()
+	j := l.ToJSON()
 
-	l1 := LicenseFromJson(strings.NewReader(j))
+	l1 := LicenseFromJSON(strings.NewReader(j))
 	assert.NotNil(t, l1)
 
 	CheckString(t, l1.ID, l.ID)
@@ -203,7 +203,7 @@ func TestLicenseToFromJson(t *testing.T) {
 	CheckBool(t, *f1.FutureFeatures, *f.FutureFeatures)
 
 	invalid := `{"asdf`
-	l2 := LicenseFromJson(strings.NewReader(invalid))
+	l2 := LicenseFromJSON(strings.NewReader(invalid))
 	assert.Nil(t, l2)
 }
 

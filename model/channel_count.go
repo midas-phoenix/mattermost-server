@@ -43,12 +43,12 @@ func (o *ChannelCounts) Etag() string {
 	return Etag(md5Counts, update)
 }
 
-func (o *ChannelCounts) ToJson() string {
+func (o *ChannelCounts) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func ChannelCountsFromJson(data io.Reader) *ChannelCounts {
+func ChannelCountsFromJSON(data io.Reader) *ChannelCounts {
 	var o *ChannelCounts
 	json.NewDecoder(data).Decode(&o)
 	return o

@@ -80,12 +80,12 @@ func (s *Session) DeepCopy() *Session {
 	return &copySession
 }
 
-func (s *Session) ToJson() string {
+func (s *Session) ToJSON() string {
 	b, _ := json.Marshal(s)
 	return string(b)
 }
 
-func SessionFromJson(data io.Reader) *Session {
+func SessionFromJSON(data io.Reader) *Session {
 	var s *Session
 	json.NewDecoder(data).Decode(&s)
 	return s
@@ -220,7 +220,7 @@ func (s *Session) GetCSRF() string {
 	return s.Props["csrf"]
 }
 
-func SessionsToJson(o []*Session) string {
+func SessionsToJSON(o []*Session) string {
 	b, err := json.Marshal(o)
 	if err != nil {
 		return "[]"
@@ -228,7 +228,7 @@ func SessionsToJson(o []*Session) string {
 	return string(b)
 }
 
-func SessionsFromJson(data io.Reader) []*Session {
+func SessionsFromJSON(data io.Reader) []*Session {
 	var o []*Session
 	json.NewDecoder(data).Decode(&o)
 	return o

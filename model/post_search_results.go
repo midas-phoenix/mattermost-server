@@ -22,7 +22,7 @@ func MakePostSearchResults(posts *PostList, matches PostSearchMatches) *PostSear
 	}
 }
 
-func (o *PostSearchResults) ToJson() string {
+func (o *PostSearchResults) ToJSON() string {
 	copy := *o
 	copy.PostList.StripActionIntegrations()
 	b, err := json.Marshal(&copy)
@@ -32,7 +32,7 @@ func (o *PostSearchResults) ToJson() string {
 	return string(b)
 }
 
-func PostSearchResultsFromJson(data io.Reader) *PostSearchResults {
+func PostSearchResultsFromJSON(data io.Reader) *PostSearchResults {
 	var o *PostSearchResults
 	json.NewDecoder(data).Decode(&o)
 	return o

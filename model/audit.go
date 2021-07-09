@@ -14,16 +14,16 @@ type Audit struct {
 	UserID    string `json:"user_id"`
 	Action    string `json:"action"`
 	ExtraInfo string `json:"extra_info"`
-	IpAddress string `json:"ip_address"`
+	IDAddress string `json:"ip_address"`
 	SessionID string `json:"session_id"`
 }
 
-func (o *Audit) ToJson() string {
+func (o *Audit) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func AuditFromJson(data io.Reader) *Audit {
+func AuditFromJSON(data io.Reader) *Audit {
 	var o *Audit
 	json.NewDecoder(data).Decode(&o)
 	return o

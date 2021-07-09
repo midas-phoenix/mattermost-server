@@ -10,12 +10,12 @@ import (
 
 type Preferences []Preference
 
-func (o *Preferences) ToJson() string {
+func (o *Preferences) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func PreferencesFromJson(data io.Reader) (Preferences, error) {
+func PreferencesFromJSON(data io.Reader) (Preferences, error) {
 	decoder := json.NewDecoder(data)
 	var o Preferences
 	err := decoder.Decode(&o)

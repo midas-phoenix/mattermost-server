@@ -49,7 +49,7 @@ func (cs *CustomStatus) PreSave() {
 	}
 }
 
-func (cs *CustomStatus) ToJson() string {
+func (cs *CustomStatus) ToJSON() string {
 	csCopy := *cs
 	b, _ := json.Marshal(csCopy)
 	return string(b)
@@ -67,7 +67,7 @@ func (cs *CustomStatus) AreDurationAndExpirationTimeValid() bool {
 	return false
 }
 
-func CustomStatusFromJson(data io.Reader) *CustomStatus {
+func CustomStatusFromJSON(data io.Reader) *CustomStatus {
 	var cs *CustomStatus
 	_ = json.NewDecoder(data).Decode(&cs)
 	return cs
@@ -80,7 +80,7 @@ func RuneToHexadecimalString(r rune) string {
 type RecentCustomStatuses []CustomStatus
 
 func (rcs *RecentCustomStatuses) Contains(cs *CustomStatus) bool {
-	var csJSON = cs.ToJson()
+	var csJSON = cs.ToJSON()
 
 	// status is empty
 	if cs == nil || csJSON == "" || (cs.Emoji == "" && cs.Text == "") {
@@ -88,7 +88,7 @@ func (rcs *RecentCustomStatuses) Contains(cs *CustomStatus) bool {
 	}
 
 	for _, status := range *rcs {
-		if status.ToJson() == csJSON {
+		if status.ToJSON() == csJSON {
 			return true
 		}
 	}
@@ -113,14 +113,14 @@ func (rcs *RecentCustomStatuses) Add(cs *CustomStatus) *RecentCustomStatuses {
 }
 
 func (rcs *RecentCustomStatuses) Remove(cs *CustomStatus) *RecentCustomStatuses {
-	var csJSON = cs.ToJson()
+	var csJSON = cs.ToJSON()
 	if csJSON == "" || (cs.Emoji == "" && cs.Text == "") {
 		return rcs
 	}
 
 	newRCS := (*rcs)[:0]
 	for _, status := range *rcs {
-		if status.ToJson() != csJSON {
+		if status.ToJSON() != csJSON {
 			newRCS = append(newRCS, status)
 		}
 	}
@@ -128,13 +128,13 @@ func (rcs *RecentCustomStatuses) Remove(cs *CustomStatus) *RecentCustomStatuses 
 	return &newRCS
 }
 
-func (rcs *RecentCustomStatuses) ToJson() string {
+func (rcs *RecentCustomStatuses) ToJSON() string {
 	rcsCopy := *rcs
 	b, _ := json.Marshal(rcsCopy)
 	return string(b)
 }
 
-func RecentCustomStatusesFromJson(data io.Reader) *RecentCustomStatuses {
+func RecentCustomStatusesFromJSON(data io.Reader) *RecentCustomStatuses {
 	var rcs *RecentCustomStatuses
 	_ = json.NewDecoder(data).Decode(&rcs)
 	return rcs

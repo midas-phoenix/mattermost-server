@@ -13,12 +13,12 @@ type PluginEventData struct {
 	ID string `json:"id"`
 }
 
-func (p *PluginEventData) ToJson() string {
+func (p *PluginEventData) ToJSON() string {
 	b, _ := json.Marshal(p)
 	return string(b)
 }
 
-func PluginEventDataFromJson(data io.Reader) PluginEventData {
+func PluginEventDataFromJSON(data io.Reader) PluginEventData {
 	var m PluginEventData
 	json.NewDecoder(data).Decode(&m)
 	return m

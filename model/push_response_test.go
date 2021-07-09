@@ -24,10 +24,10 @@ func TestNewErrorPushResponse(t *testing.T) {
 	CheckString(t, r["error"], "error message")
 }
 
-func TestPushResponseToFromJson(t *testing.T) {
+func TestPushResponseToFromJSON(t *testing.T) {
 	r := NewErrorPushResponse("error message")
-	j := r.ToJson()
-	r1 := PushResponseFromJson(strings.NewReader(j))
+	j := r.ToJSON()
+	r1 := PushResponseFromJSON(strings.NewReader(j))
 
 	CheckString(t, r1["status"], r["status"])
 	CheckString(t, r1["error"], r["error"])

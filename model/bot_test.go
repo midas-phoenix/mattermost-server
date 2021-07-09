@@ -352,7 +352,7 @@ func TestBotEtag(t *testing.T) {
 	})
 }
 
-func TestBotToAndFromJson(t *testing.T) {
+func TestBotToAndFromJSON(t *testing.T) {
 	bot1 := &Bot{
 		UserID:         NewID(),
 		Username:       "username",
@@ -377,8 +377,8 @@ func TestBotToAndFromJson(t *testing.T) {
 		DeleteAt:       8,
 	}
 
-	assert.Equal(t, bot1, BotFromJson(bytes.NewReader(bot1.ToJson())))
-	assert.Equal(t, bot2, BotFromJson(bytes.NewReader(bot2.ToJson())))
+	assert.Equal(t, bot1, BotFromJSON(bytes.NewReader(bot1.ToJSON())))
+	assert.Equal(t, bot2, BotFromJSON(bytes.NewReader(bot2.ToJSON())))
 }
 
 func sToP(s string) *string {
@@ -525,7 +525,7 @@ func TestBotWouldPatch(t *testing.T) {
 	})
 }
 
-func TestBotPatchToAndFromJson(t *testing.T) {
+func TestBotPatchToAndFromJSON(t *testing.T) {
 	botPatch1 := &BotPatch{
 		Username:    sToP("username"),
 		DisplayName: sToP("display name"),
@@ -538,8 +538,8 @@ func TestBotPatchToAndFromJson(t *testing.T) {
 		Description: sToP("description 2"),
 	}
 
-	assert.Equal(t, botPatch1, BotPatchFromJson(bytes.NewReader(botPatch1.ToJson())))
-	assert.Equal(t, botPatch2, BotPatchFromJson(bytes.NewReader(botPatch2.ToJson())))
+	assert.Equal(t, botPatch1, BotPatchFromJSON(bytes.NewReader(botPatch1.ToJSON())))
+	assert.Equal(t, botPatch2, BotPatchFromJSON(bytes.NewReader(botPatch2.ToJSON())))
 }
 
 func TestUserFromBot(t *testing.T) {
@@ -600,7 +600,7 @@ func TestBotFromUser(t *testing.T) {
 	}, BotFromUser(user))
 }
 
-func TestBotListToAndFromJson(t *testing.T) {
+func TestBotListToAndFromJSON(t *testing.T) {
 	testCases := []struct {
 		Description string
 		BotList     BotList
@@ -657,7 +657,7 @@ func TestBotListToAndFromJson(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(testCase.Description, func(t *testing.T) {
-			assert.Equal(t, testCase.BotList, BotListFromJson(bytes.NewReader(testCase.BotList.ToJson())))
+			assert.Equal(t, testCase.BotList, BotListFromJSON(bytes.NewReader(testCase.BotList.ToJSON())))
 		})
 	}
 }

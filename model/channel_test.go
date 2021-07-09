@@ -10,17 +10,17 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestChannelJson(t *testing.T) {
+func TestChannelJSON(t *testing.T) {
 	o := Channel{ID: NewID(), Name: NewID()}
-	json := o.ToJson()
-	ro := ChannelFromJson(strings.NewReader(json))
+	json := o.ToJSON()
+	ro := ChannelFromJSON(strings.NewReader(json))
 
 	require.Equal(t, o.ID, ro.ID)
 
 	p := ChannelPatch{Name: new(string)}
 	*p.Name = NewID()
-	json = p.ToJson()
-	rp := ChannelPatchFromJson(strings.NewReader(json))
+	json = p.ToJSON()
+	rp := ChannelPatchFromJSON(strings.NewReader(json))
 
 	require.Equal(t, *p.Name, *rp.Name)
 }

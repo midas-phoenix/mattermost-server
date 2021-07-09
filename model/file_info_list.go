@@ -33,7 +33,7 @@ func (o *FileInfoList) ToSlice() []*FileInfo {
 	return fileInfos
 }
 
-func (o *FileInfoList) ToJson() string {
+func (o *FileInfoList) ToJSON() string {
 	b, err := json.Marshal(o)
 	if err != nil {
 		return ""
@@ -121,7 +121,7 @@ func (o *FileInfoList) Etag() string {
 	return Etag(orderID, id, t)
 }
 
-func FileInfoListFromJson(data io.Reader) *FileInfoList {
+func FileInfoListFromJSON(data io.Reader) *FileInfoList {
 	var o *FileInfoList
 	json.NewDecoder(data).Decode(&o)
 	return o

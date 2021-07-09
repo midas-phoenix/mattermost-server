@@ -14,12 +14,12 @@ type ChannelView struct {
 	CollapsedThreadsSupported bool   `json:"collapsed_threads_supported"`
 }
 
-func (o *ChannelView) ToJson() string {
+func (o *ChannelView) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func ChannelViewFromJson(data io.Reader) *ChannelView {
+func ChannelViewFromJSON(data io.Reader) *ChannelView {
 	var o *ChannelView
 	json.NewDecoder(data).Decode(&o)
 	return o
@@ -30,12 +30,12 @@ type ChannelViewResponse struct {
 	LastViewedAtTimes map[string]int64 `json:"last_viewed_at_times"`
 }
 
-func (o *ChannelViewResponse) ToJson() string {
+func (o *ChannelViewResponse) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func ChannelViewResponseFromJson(data io.Reader) *ChannelViewResponse {
+func ChannelViewResponseFromJSON(data io.Reader) *ChannelViewResponse {
 	var o *ChannelViewResponse
 	json.NewDecoder(data).Decode(&o)
 	return o

@@ -223,14 +223,14 @@ func (o *Post) Clone() *Post {
 	return copy
 }
 
-func (o *Post) ToJson() string {
+func (o *Post) ToJSON() string {
 	copy := o.Clone()
 	copy.StripActionIntegrations()
 	b, _ := json.Marshal(copy)
 	return string(b)
 }
 
-func (o *Post) ToUnsanitizedJson() string {
+func (o *Post) ToUnsanitizedJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
@@ -267,7 +267,7 @@ type GetPostsOptions struct {
 	CollapsedThreadsExtended bool
 }
 
-func PostFromJson(data io.Reader) *Post {
+func PostFromJSON(data io.Reader) *Post {
 	var o *Post
 	json.NewDecoder(data).Decode(&o)
 	return o
@@ -357,15 +357,15 @@ func (o *Post) IsValid(maxPostSize int) *AppError {
 		}
 	}
 
-	if utf8.RuneCountInString(ArrayToJson(o.Filenames)) > PostFilenamesMaxRunes {
+	if utf8.RuneCountInString(ArrayToJSON(o.Filenames)) > PostFilenamesMaxRunes {
 		return NewAppError("Post.IsValid", "model.post.is_valid.filenames.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
-	if utf8.RuneCountInString(ArrayToJson(o.FileIDs)) > PostFileidsMaxRunes {
+	if utf8.RuneCountInString(ArrayToJSON(o.FileIDs)) > PostFileidsMaxRunes {
 		return NewAppError("Post.IsValid", "model.post.is_valid.file_ids.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
-	if utf8.RuneCountInString(StringInterfaceToJson(o.GetProps())) > PostPropsMaxRunes {
+	if utf8.RuneCountInString(StringInterfaceToJSON(o.GetProps())) > PostPropsMaxRunes {
 		return NewAppError("Post.IsValid", "model.post.is_valid.props.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
@@ -523,7 +523,7 @@ func (o *Post) Patch(patch *PostPatch) {
 	}
 }
 
-func (o *PostPatch) ToJson() string {
+func (o *PostPatch) ToJSON() string {
 	b, err := json.Marshal(o)
 	if err != nil {
 		return ""
@@ -532,7 +532,7 @@ func (o *PostPatch) ToJson() string {
 	return string(b)
 }
 
-func PostPatchFromJson(data io.Reader) *PostPatch {
+func PostPatchFromJSON(data io.Reader) *PostPatch {
 	decoder := json.NewDecoder(data)
 	var post PostPatch
 	err := decoder.Decode(&post)
@@ -543,7 +543,7 @@ func PostPatchFromJson(data io.Reader) *PostPatch {
 	return &post
 }
 
-func (o *SearchParameter) SearchParameterToJson() string {
+func (o *SearchParameter) SearchParameterToJSON() string {
 	b, err := json.Marshal(o)
 	if err != nil {
 		return ""
@@ -552,7 +552,7 @@ func (o *SearchParameter) SearchParameterToJson() string {
 	return string(b)
 }
 
-func SearchParameterFromJson(data io.Reader) (*SearchParameter, error) {
+func SearchParameterFromJSON(data io.Reader) (*SearchParameter, error) {
 	decoder := json.NewDecoder(data)
 	var searchParam SearchParameter
 	if err := decoder.Decode(&searchParam); err != nil {
@@ -659,7 +659,7 @@ func (o *Post) WithRewrittenImageURLs(f func(string) string) *Post {
 	return copy
 }
 
-func (o *PostEphemeral) ToUnsanitizedJson() string {
+func (o *PostEphemeral) ToUnsanitizedJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }

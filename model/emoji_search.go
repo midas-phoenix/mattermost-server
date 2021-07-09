@@ -13,12 +13,12 @@ type EmojiSearch struct {
 	PrefixOnly bool   `json:"prefix_only"`
 }
 
-func (es *EmojiSearch) ToJson() string {
+func (es *EmojiSearch) ToJSON() string {
 	b, _ := json.Marshal(es)
 	return string(b)
 }
 
-func EmojiSearchFromJson(data io.Reader) *EmojiSearch {
+func EmojiSearchFromJSON(data io.Reader) *EmojiSearch {
 	var es *EmojiSearch
 	json.NewDecoder(data).Decode(&es)
 	return es

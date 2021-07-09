@@ -68,7 +68,7 @@ type TrialLicenseRequest struct {
 	ReceiveEmailsAccepted bool   `json:"receive_emails_accepted"`
 }
 
-func (tlr *TrialLicenseRequest) ToJson() string {
+func (tlr *TrialLicenseRequest) ToJSON() string {
 	b, _ := json.Marshal(tlr)
 	return string(b)
 }
@@ -286,7 +286,7 @@ func (l *License) IsStarted() bool {
 	return l.StartsAt < GetMillis()
 }
 
-func (l *License) ToJson() string {
+func (l *License) ToJSON() string {
 	b, _ := json.Marshal(l)
 	return string(b)
 }
@@ -315,13 +315,13 @@ func NewTestLicense(features ...string) *License {
 	for _, feature := range features {
 		featureMap[feature] = true
 	}
-	featureJson, _ := json.Marshal(featureMap)
-	json.Unmarshal(featureJson, &ret.Features)
+	featureJSON, _ := json.Marshal(featureMap)
+	json.Unmarshal(featureJSON, &ret.Features)
 
 	return ret
 }
 
-func LicenseFromJson(data io.Reader) *License {
+func LicenseFromJSON(data io.Reader) *License {
 	var o *License
 	json.NewDecoder(data).Decode(&o)
 	return o

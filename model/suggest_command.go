@@ -13,12 +13,12 @@ type SuggestCommand struct {
 	Description string `json:"description"`
 }
 
-func (o *SuggestCommand) ToJson() string {
+func (o *SuggestCommand) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func SuggestCommandFromJson(data io.Reader) *SuggestCommand {
+func SuggestCommandFromJSON(data io.Reader) *SuggestCommand {
 	var o *SuggestCommand
 	json.NewDecoder(data).Decode(&o)
 	return o

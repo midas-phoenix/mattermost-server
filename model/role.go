@@ -399,34 +399,34 @@ type RolePermissions struct {
 	Permissions []string
 }
 
-func (r *Role) ToJson() string {
+func (r *Role) ToJSON() string {
 	b, _ := json.Marshal(r)
 	return string(b)
 }
 
-func RoleFromJson(data io.Reader) *Role {
+func RoleFromJSON(data io.Reader) *Role {
 	var r *Role
 	json.NewDecoder(data).Decode(&r)
 	return r
 }
 
-func RoleListToJson(r []*Role) string {
+func RoleListToJSON(r []*Role) string {
 	b, _ := json.Marshal(r)
 	return string(b)
 }
 
-func RoleListFromJson(data io.Reader) []*Role {
+func RoleListFromJSON(data io.Reader) []*Role {
 	var roles []*Role
 	json.NewDecoder(data).Decode(&roles)
 	return roles
 }
 
-func (r *RolePatch) ToJson() string {
+func (r *RolePatch) ToJSON() string {
 	b, _ := json.Marshal(r)
 	return string(b)
 }
 
-func RolePatchFromJson(data io.Reader) *RolePatch {
+func RolePatchFromJSON(data io.Reader) *RolePatch {
 	var rolePatch *RolePatch
 	json.NewDecoder(data).Decode(&rolePatch)
 	return rolePatch

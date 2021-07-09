@@ -171,7 +171,7 @@ func (group *Group) IsValidForUpdate() *AppError {
 	return nil
 }
 
-func (group *Group) ToJson() string {
+func (group *Group) ToJSON() string {
 	b, _ := json.Marshal(group)
 	return string(b)
 }
@@ -196,25 +196,25 @@ func (group *Group) IsValidName() *AppError {
 	return nil
 }
 
-func GroupFromJson(data io.Reader) *Group {
+func GroupFromJSON(data io.Reader) *Group {
 	var group *Group
 	json.NewDecoder(data).Decode(&group)
 	return group
 }
 
-func GroupsFromJson(data io.Reader) []*Group {
+func GroupsFromJSON(data io.Reader) []*Group {
 	var groups []*Group
 	json.NewDecoder(data).Decode(&groups)
 	return groups
 }
 
-func GroupPatchFromJson(data io.Reader) *GroupPatch {
+func GroupPatchFromJSON(data io.Reader) *GroupPatch {
 	var groupPatch *GroupPatch
 	json.NewDecoder(data).Decode(&groupPatch)
 	return groupPatch
 }
 
-func GroupStatsFromJson(data io.Reader) *GroupStats {
+func GroupStatsFromJSON(data io.Reader) *GroupStats {
 	var groupStats *GroupStats
 	json.NewDecoder(data).Decode(&groupStats)
 	return groupStats

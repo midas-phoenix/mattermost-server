@@ -10,24 +10,24 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestSecurityBulletinToFromJson(t *testing.T) {
+func TestSecurityBulletinToFromJSON(t *testing.T) {
 	b := SecurityBulletin{
 		ID:               NewID(),
 		AppliesToVersion: NewID(),
 	}
 
-	j := b.ToJson()
-	b1 := SecurityBulletinFromJson(strings.NewReader(j))
+	j := b.ToJSON()
+	b1 := SecurityBulletinFromJSON(strings.NewReader(j))
 
 	require.Equal(t, b, *b1)
 
 	// Malformed JSON
 	s2 := `{"wat"`
-	b2 := SecurityBulletinFromJson(strings.NewReader(s2))
+	b2 := SecurityBulletinFromJSON(strings.NewReader(s2))
 	require.Nil(t, b2)
 }
 
-func TestSecurityBulletinsToFromJson(t *testing.T) {
+func TestSecurityBulletinsToFromJSON(t *testing.T) {
 	b := SecurityBulletins{
 		{
 			ID:               NewID(),
@@ -39,15 +39,15 @@ func TestSecurityBulletinsToFromJson(t *testing.T) {
 		},
 	}
 
-	j := b.ToJson()
+	j := b.ToJSON()
 
-	b1 := SecurityBulletinsFromJson(strings.NewReader(j))
+	b1 := SecurityBulletinsFromJSON(strings.NewReader(j))
 
 	require.Len(t, b1, 2)
 
 	// Malformed JSON
 	s2 := `{"wat"`
-	b2 := SecurityBulletinsFromJson(strings.NewReader(s2))
+	b2 := SecurityBulletinsFromJSON(strings.NewReader(s2))
 
 	require.Empty(t, b2)
 }

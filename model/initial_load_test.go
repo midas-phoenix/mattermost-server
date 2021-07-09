@@ -10,11 +10,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestInitialLoadJson(t *testing.T) {
+func TestInitialLoadJSON(t *testing.T) {
 	u := &User{ID: NewID()}
 	o := InitialLoad{User: u}
-	json := o.ToJson()
-	ro := InitialLoadFromJson(strings.NewReader(json))
+	json := o.ToJSON()
+	ro := InitialLoadFromJSON(strings.NewReader(json))
 
 	require.Equal(t, o.User.ID, ro.User.ID, "Ids do not match")
 }

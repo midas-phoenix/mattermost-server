@@ -13,12 +13,12 @@ type TypingRequest struct {
 	ParentID  string `json:"parent_id"`
 }
 
-func (o *TypingRequest) ToJson() string {
+func (o *TypingRequest) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func TypingRequestFromJson(data io.Reader) *TypingRequest {
+func TypingRequestFromJSON(data io.Reader) *TypingRequest {
 	var o *TypingRequest
 	json.NewDecoder(data).Decode(&o)
 	return o

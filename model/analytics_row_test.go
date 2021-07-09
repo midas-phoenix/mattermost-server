@@ -15,14 +15,14 @@ var a1 = AnalyticsRow{
 	Value: 12345.0,
 }
 
-func TestAnalyticsRowJson(t *testing.T) {
-	ra1 := AnalyticsRowFromJson(strings.NewReader(a1.ToJson()))
+func TestAnalyticsRowJSON(t *testing.T) {
+	ra1 := AnalyticsRowFromJSON(strings.NewReader(a1.ToJSON()))
 	require.Equal(t, a1.Name, ra1.Name, "days didn't match")
 }
 
-func TestAnalyticsRowsJson(t *testing.T) {
+func TestAnalyticsRowsJSON(t *testing.T) {
 	var a1s AnalyticsRows = make([]*AnalyticsRow, 1)
 	a1s[0] = &a1
-	results := AnalyticsRowsFromJson(strings.NewReader(a1s.ToJson()))
+	results := AnalyticsRowsFromJSON(strings.NewReader(a1s.ToJSON()))
 	require.Equal(t, a1s[0].Name, results[0].Name, "Ids do not match")
 }

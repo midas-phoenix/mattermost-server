@@ -70,7 +70,7 @@ type ChannelMemberForExport struct {
 	Username    string
 }
 
-func (o *ChannelMembers) ToJson() string {
+func (o *ChannelMembers) ToJSON() string {
 	b, err := json.Marshal(o)
 	if err != nil {
 		return "[]"
@@ -78,40 +78,40 @@ func (o *ChannelMembers) ToJson() string {
 	return string(b)
 }
 
-func (o *ChannelUnread) ToJson() string {
+func (o *ChannelUnread) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func (o *ChannelUnreadAt) ToJson() string {
+func (o *ChannelUnreadAt) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func ChannelMembersFromJson(data io.Reader) *ChannelMembers {
+func ChannelMembersFromJSON(data io.Reader) *ChannelMembers {
 	var o *ChannelMembers
 	json.NewDecoder(data).Decode(&o)
 	return o
 }
 
-func ChannelUnreadFromJson(data io.Reader) *ChannelUnread {
+func ChannelUnreadFromJSON(data io.Reader) *ChannelUnread {
 	var o *ChannelUnread
 	json.NewDecoder(data).Decode(&o)
 	return o
 }
 
-func ChannelUnreadAtFromJson(data io.Reader) *ChannelUnreadAt {
+func ChannelUnreadAtFromJSON(data io.Reader) *ChannelUnreadAt {
 	var o *ChannelUnreadAt
 	json.NewDecoder(data).Decode(&o)
 	return o
 }
 
-func (o *ChannelMember) ToJson() string {
+func (o *ChannelMember) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func ChannelMemberFromJson(data io.Reader) *ChannelMember {
+func ChannelMemberFromJSON(data io.Reader) *ChannelMember {
 	var o *ChannelMember
 	json.NewDecoder(data).Decode(&o)
 	return o

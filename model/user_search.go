@@ -30,13 +30,13 @@ type UserSearch struct {
 }
 
 // ToJson convert a User to a json string
-func (u *UserSearch) ToJson() []byte {
+func (u *UserSearch) ToJSON() []byte {
 	b, _ := json.Marshal(u)
 	return b
 }
 
 // UserSearchFromJson will decode the input and return a User
-func UserSearchFromJson(data io.Reader) *UserSearch {
+func UserSearchFromJSON(data io.Reader) *UserSearch {
 	us := UserSearch{}
 	json.NewDecoder(data).Decode(&us)
 

@@ -11,19 +11,19 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestSystemJson(t *testing.T) {
+func TestSystemJSON(t *testing.T) {
 	system := System{Name: "test", Value: NewID()}
-	json := system.ToJson()
-	result := SystemFromJson(strings.NewReader(json))
+	json := system.ToJSON()
+	result := SystemFromJSON(strings.NewReader(json))
 
 	require.Equal(t, "test", result.Name, "ids do not match")
 }
 
-func TestServerBusyJson(t *testing.T) {
+func TestServerBusyJSON(t *testing.T) {
 	now := time.Now()
 	sbs := ServerBusyState{Busy: true, Expires: now.Unix()}
-	json := sbs.ToJson()
-	result := ServerBusyStateFromJson(strings.NewReader(json))
+	json := sbs.ToJSON()
+	result := ServerBusyStateFromJSON(strings.NewReader(json))
 
 	require.Equal(t, sbs.Busy, result.Busy, "busy state does not match")
 	require.Equal(t, sbs.Expires, result.Expires, "expiry does not match")

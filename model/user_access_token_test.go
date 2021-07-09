@@ -10,19 +10,19 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestUserAccessTokenJson(t *testing.T) {
+func TestUserAccessTokenJSON(t *testing.T) {
 	a1 := UserAccessToken{}
 	a1.UserID = NewID()
 	a1.Token = NewID()
 
-	json := a1.ToJson()
-	ra1 := UserAccessTokenFromJson(strings.NewReader(json))
+	json := a1.ToJSON()
+	ra1 := UserAccessTokenFromJSON(strings.NewReader(json))
 
 	require.Equal(t, a1.Token, ra1.Token, "tokens didn't match")
 
 	tokens := []*UserAccessToken{&a1}
-	json = UserAccessTokenListToJson(tokens)
-	tokens = UserAccessTokenListFromJson(strings.NewReader(json))
+	json = UserAccessTokenListToJSON(tokens)
+	tokens = UserAccessTokenListFromJSON(strings.NewReader(json))
 
 	require.Equal(t, tokens[0].Token, ra1.Token, "tokens didn't match")
 }

@@ -20,7 +20,7 @@ type AccessData struct {
 	UserID       string `json:"user_id"`
 	Token        string `json:"token"`
 	RefreshToken string `json:"refresh_token"`
-	RedirectUri  string `json:"redirect_uri"`
+	RedirectURI  string `json:"redirect_uri"`
 	ExpiresAt    int64  `json:"expires_at"`
 	Scope        string `json:"scope"`
 }
@@ -54,7 +54,7 @@ func (ad *AccessData) IsValid() *AppError {
 		return NewAppError("AccessData.IsValid", "model.access.is_valid.refresh_token.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if ad.RedirectUri == "" || len(ad.RedirectUri) > 256 || !IsValidHttpUrl(ad.RedirectUri) {
+	if ad.RedirectURI == "" || len(ad.RedirectURI) > 256 || !IsValidHttpUrl(ad.RedirectURI) {
 		return NewAppError("AccessData.IsValid", "model.access.is_valid.redirect_uri.app_error", nil, "", http.StatusBadRequest)
 	}
 
@@ -74,23 +74,23 @@ func (ad *AccessData) IsExpired() bool {
 	return false
 }
 
-func (ad *AccessData) ToJson() string {
+func (ad *AccessData) ToJSON() string {
 	b, _ := json.Marshal(ad)
 	return string(b)
 }
 
-func AccessDataFromJson(data io.Reader) *AccessData {
+func AccessDataFromJSON(data io.Reader) *AccessData {
 	var ad *AccessData
 	json.NewDecoder(data).Decode(&ad)
 	return ad
 }
 
-func (ar *AccessResponse) ToJson() string {
+func (ar *AccessResponse) ToJSON() string {
 	b, _ := json.Marshal(ar)
 	return string(b)
 }
 
-func AccessResponseFromJson(data io.Reader) *AccessResponse {
+func AccessResponseFromJSON(data io.Reader) *AccessResponse {
 	var ar *AccessResponse
 	json.NewDecoder(data).Decode(&ar)
 	return ar

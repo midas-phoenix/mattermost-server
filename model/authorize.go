@@ -22,7 +22,7 @@ type AuthData struct {
 	Code        string `json:"code"`
 	ExpiresIn   int32  `json:"expires_in"`
 	CreateAt    int64  `json:"create_at"`
-	RedirectUri string `json:"redirect_uri"`
+	RedirectURI string `json:"redirect_uri"`
 	State       string `json:"state"`
 	Scope       string `json:"scope"`
 }
@@ -30,7 +30,7 @@ type AuthData struct {
 type AuthorizeRequest struct {
 	ResponseType string `json:"response_type"`
 	ClientID     string `json:"client_id"`
-	RedirectUri  string `json:"redirect_uri"`
+	RedirectURI  string `json:"redirect_uri"`
 	Scope        string `json:"scope"`
 	State        string `json:"state"`
 }
@@ -59,7 +59,7 @@ func (ad *AuthData) IsValid() *AppError {
 		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.create_at.app_error", nil, "client_id="+ad.ClientID, http.StatusBadRequest)
 	}
 
-	if len(ad.RedirectUri) > 256 || !IsValidHttpUrl(ad.RedirectUri) {
+	if len(ad.RedirectURI) > 256 || !IsValidHttpUrl(ad.RedirectURI) {
 		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.redirect_uri.app_error", nil, "client_id="+ad.ClientID, http.StatusBadRequest)
 	}
 
@@ -86,7 +86,7 @@ func (ar *AuthorizeRequest) IsValid() *AppError {
 		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.response_type.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if ar.RedirectUri == "" || len(ar.RedirectUri) > 256 || !IsValidHttpUrl(ar.RedirectUri) {
+	if ar.RedirectURI == "" || len(ar.RedirectURI) > 256 || !IsValidHttpUrl(ar.RedirectURI) {
 		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.redirect_uri.app_error", nil, "client_id="+ar.ClientID, http.StatusBadRequest)
 	}
 
@@ -115,23 +115,23 @@ func (ad *AuthData) PreSave() {
 	}
 }
 
-func (ad *AuthData) ToJson() string {
+func (ad *AuthData) ToJSON() string {
 	b, _ := json.Marshal(ad)
 	return string(b)
 }
 
-func AuthDataFromJson(data io.Reader) *AuthData {
+func AuthDataFromJSON(data io.Reader) *AuthData {
 	var ad *AuthData
 	json.NewDecoder(data).Decode(&ad)
 	return ad
 }
 
-func (ar *AuthorizeRequest) ToJson() string {
+func (ar *AuthorizeRequest) ToJSON() string {
 	b, _ := json.Marshal(ar)
 	return string(b)
 }
 
-func AuthorizeRequestFromJson(data io.Reader) *AuthorizeRequest {
+func AuthorizeRequestFromJSON(data io.Reader) *AuthorizeRequest {
 	var ar *AuthorizeRequest
 	json.NewDecoder(data).Decode(&ar)
 	return ar

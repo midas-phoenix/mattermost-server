@@ -323,12 +323,12 @@ func (r *OpenDialogRequest) DecodeAndVerifyTriggerID(s *ecdsa.PrivateKey) (strin
 	return DecodeAndVerifyTriggerID(r.TriggerID, s)
 }
 
-func (r *PostActionIntegrationRequest) ToJson() []byte {
+func (r *PostActionIntegrationRequest) ToJSON() []byte {
 	b, _ := json.Marshal(r)
 	return b
 }
 
-func PostActionIntegrationRequestFromJson(data io.Reader) *PostActionIntegrationRequest {
+func PostActionIntegrationRequestFromJSON(data io.Reader) *PostActionIntegrationRequest {
 	var o *PostActionIntegrationRequest
 	err := json.NewDecoder(data).Decode(&o)
 	if err != nil {
@@ -337,12 +337,12 @@ func PostActionIntegrationRequestFromJson(data io.Reader) *PostActionIntegration
 	return o
 }
 
-func (r *PostActionIntegrationResponse) ToJson() []byte {
+func (r *PostActionIntegrationResponse) ToJSON() []byte {
 	b, _ := json.Marshal(r)
 	return b
 }
 
-func PostActionIntegrationResponseFromJson(data io.Reader) *PostActionIntegrationResponse {
+func PostActionIntegrationResponseFromJSON(data io.Reader) *PostActionIntegrationResponse {
 	var o *PostActionIntegrationResponse
 	err := json.NewDecoder(data).Decode(&o)
 	if err != nil {
@@ -351,7 +351,7 @@ func PostActionIntegrationResponseFromJson(data io.Reader) *PostActionIntegratio
 	return o
 }
 
-func SubmitDialogRequestFromJson(data io.Reader) *SubmitDialogRequest {
+func SubmitDialogRequestFromJSON(data io.Reader) *SubmitDialogRequest {
 	var o *SubmitDialogRequest
 	err := json.NewDecoder(data).Decode(&o)
 	if err != nil {
@@ -360,12 +360,12 @@ func SubmitDialogRequestFromJson(data io.Reader) *SubmitDialogRequest {
 	return o
 }
 
-func (r *SubmitDialogRequest) ToJson() []byte {
+func (r *SubmitDialogRequest) ToJSON() []byte {
 	b, _ := json.Marshal(r)
 	return b
 }
 
-func SubmitDialogResponseFromJson(data io.Reader) *SubmitDialogResponse {
+func SubmitDialogResponseFromJSON(data io.Reader) *SubmitDialogResponse {
 	var o *SubmitDialogResponse
 	err := json.NewDecoder(data).Decode(&o)
 	if err != nil {
@@ -374,7 +374,7 @@ func SubmitDialogResponseFromJson(data io.Reader) *SubmitDialogResponse {
 	return o
 }
 
-func (r *SubmitDialogResponse) ToJson() []byte {
+func (r *SubmitDialogResponse) ToJSON() []byte {
 	b, _ := json.Marshal(r)
 	return b
 }
@@ -525,7 +525,7 @@ func DecryptPostActionCookie(encoded string, secret []byte) (string, error) {
 	return string(plain), nil
 }
 
-func DoPostActionRequestFromJson(data io.Reader) *DoPostActionRequest {
+func DoPostActionRequestFromJSON(data io.Reader) *DoPostActionRequest {
 	var o *DoPostActionRequest
 	json.NewDecoder(data).Decode(&o)
 	return o

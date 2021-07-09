@@ -34,15 +34,15 @@ func TestTermsOfServiceIsValid(t *testing.T) {
 	assert.Nil(t, s.IsValid(), "should be valid")
 }
 
-func TestTermsOfServiceJson(t *testing.T) {
+func TestTermsOfServiceJSON(t *testing.T) {
 	o := TermsOfService{
 		ID:       NewID(),
 		Text:     NewID(),
 		CreateAt: GetMillis(),
 		UserID:   NewID(),
 	}
-	j := o.ToJson()
-	ro := TermsOfServiceFromJson(strings.NewReader(j))
+	j := o.ToJSON()
+	ro := TermsOfServiceFromJSON(strings.NewReader(j))
 
 	assert.NotNil(t, ro)
 	assert.Equal(t, o, *ro)

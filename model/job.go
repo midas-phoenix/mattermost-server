@@ -114,12 +114,12 @@ func (j *Job) IsValid() *AppError {
 	return nil
 }
 
-func (j *Job) ToJson() string {
+func (j *Job) ToJSON() string {
 	b, _ := json.Marshal(j)
 	return string(b)
 }
 
-func JobFromJson(data io.Reader) *Job {
+func JobFromJSON(data io.Reader) *Job {
 	var job Job
 	if err := json.NewDecoder(data).Decode(&job); err == nil {
 		return &job
@@ -127,12 +127,12 @@ func JobFromJson(data io.Reader) *Job {
 	return nil
 }
 
-func JobsToJson(jobs []*Job) string {
+func JobsToJSON(jobs []*Job) string {
 	b, _ := json.Marshal(jobs)
 	return string(b)
 }
 
-func JobsFromJson(data io.Reader) []*Job {
+func JobsFromJSON(data io.Reader) []*Job {
 	var jobs []*Job
 	if err := json.NewDecoder(data).Decode(&jobs); err == nil {
 		return jobs
@@ -140,7 +140,7 @@ func JobsFromJson(data io.Reader) []*Job {
 	return nil
 }
 
-func (j *Job) DataToJson() string {
+func (j *Job) DataToJSON() string {
 	b, _ := json.Marshal(j.Data)
 	return string(b)
 }

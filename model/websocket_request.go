@@ -23,12 +23,12 @@ type WebSocketRequest struct {
 	Locale  string             `json:"-"`
 }
 
-func (o *WebSocketRequest) ToJson() string {
+func (o *WebSocketRequest) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func WebSocketRequestFromJson(data io.Reader) *WebSocketRequest {
+func WebSocketRequestFromJSON(data io.Reader) *WebSocketRequest {
 	var o *WebSocketRequest
 	json.NewDecoder(data).Decode(&o)
 	return o

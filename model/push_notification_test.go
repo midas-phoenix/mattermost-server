@@ -13,21 +13,21 @@ import (
 func TestPushNotification(t *testing.T) {
 	t.Run("should build a push notification from JSON", func(t *testing.T) {
 		msg := PushNotification{Platform: "test"}
-		json := msg.ToJson()
-		result, err := PushNotificationFromJson(strings.NewReader(json))
+		json := msg.ToJSON()
+		result, err := PushNotificationFromJSON(strings.NewReader(json))
 
 		require.NoError(t, err)
 		require.Equal(t, msg.Platform, result.Platform, "ids do not match")
 	})
 
 	t.Run("should throw an error when the message is nil", func(t *testing.T) {
-		_, err := PushNotificationFromJson(nil)
+		_, err := PushNotificationFromJSON(nil)
 		require.Error(t, err)
 		require.Equal(t, "push notification data can't be nil", err.Error())
 	})
 
 	t.Run("should throw an error when the message parsing fails", func(t *testing.T) {
-		_, err := PushNotificationFromJson(strings.NewReader(""))
+		_, err := PushNotificationFromJSON(strings.NewReader(""))
 		require.Error(t, err)
 		require.Equal(t, "EOF", err.Error())
 	})
@@ -36,21 +36,21 @@ func TestPushNotification(t *testing.T) {
 func TestPushNotificationAck(t *testing.T) {
 	t.Run("should build a push notification ack from JSON", func(t *testing.T) {
 		msg := PushNotificationAck{ClientPlatform: "test"}
-		json := msg.ToJson()
-		result, err := PushNotificationAckFromJson(strings.NewReader(json))
+		json := msg.ToJSON()
+		result, err := PushNotificationAckFromJSON(strings.NewReader(json))
 
 		require.NoError(t, err)
 		require.Equal(t, msg.ClientPlatform, result.ClientPlatform, "ids do not match")
 	})
 
 	t.Run("should throw an error when the message is nil", func(t *testing.T) {
-		_, err := PushNotificationAckFromJson(nil)
+		_, err := PushNotificationAckFromJSON(nil)
 		require.Error(t, err)
 		require.Equal(t, "push notification data can't be nil", err.Error())
 	})
 
 	t.Run("should throw an error when the message parsing fails", func(t *testing.T) {
-		_, err := PushNotificationAckFromJson(strings.NewReader(""))
+		_, err := PushNotificationAckFromJSON(strings.NewReader(""))
 		require.Error(t, err)
 		require.Equal(t, "EOF", err.Error())
 	})

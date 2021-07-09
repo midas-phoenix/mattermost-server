@@ -10,15 +10,15 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAccessJson(t *testing.T) {
+func TestAccessJSON(t *testing.T) {
 	a1 := AccessData{}
 	a1.ClientID = NewID()
 	a1.UserID = NewID()
 	a1.Token = NewID()
 	a1.RefreshToken = NewID()
 
-	json := a1.ToJson()
-	ra1 := AccessDataFromJson(strings.NewReader(json))
+	json := a1.ToJSON()
+	ra1 := AccessDataFromJSON(strings.NewReader(json))
 
 	require.Equal(t, a1.Token, ra1.Token)
 }
@@ -58,12 +58,12 @@ func TestAccessIsValid(t *testing.T) {
 	ad.RefreshToken = NewID()
 	require.NotNil(t, ad.IsValid())
 
-	ad.RedirectUri = ""
+	ad.RedirectURI = ""
 	require.NotNil(t, ad.IsValid())
 
-	ad.RedirectUri = NewRandomString(28)
+	ad.RedirectURI = NewRandomString(28)
 	require.NotNil(t, ad.IsValid())
 
-	ad.RedirectUri = "http://example.com"
+	ad.RedirectURI = "http://example.com"
 	require.Nil(t, ad.IsValid())
 }

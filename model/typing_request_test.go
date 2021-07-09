@@ -10,10 +10,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestTypingRequestJson(t *testing.T) {
+func TestTypingRequestJSON(t *testing.T) {
 	o := TypingRequest{ChannelID: NewID(), ParentID: NewID()}
-	json := o.ToJson()
-	ro := TypingRequestFromJson(strings.NewReader(json))
+	json := o.ToJSON()
+	ro := TypingRequestFromJSON(strings.NewReader(json))
 
 	require.Equal(t, o.ChannelID, ro.ChannelID, "ChannelIds do not match")
 	require.Equal(t, o.ParentID, ro.ParentID, "ParentIds do not match")

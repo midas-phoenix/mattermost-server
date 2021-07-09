@@ -58,12 +58,12 @@ type FileInfo struct {
 	RemoteID        *string `json:"remote_id"`
 }
 
-func (fi *FileInfo) ToJson() string {
+func (fi *FileInfo) ToJSON() string {
 	b, _ := json.Marshal(fi)
 	return string(b)
 }
 
-func FileInfoFromJson(data io.Reader) *FileInfo {
+func FileInfoFromJSON(data io.Reader) *FileInfo {
 	decoder := json.NewDecoder(data)
 
 	var fi FileInfo
@@ -73,12 +73,12 @@ func FileInfoFromJson(data io.Reader) *FileInfo {
 	return &fi
 }
 
-func FileInfosToJson(infos []*FileInfo) string {
+func FileInfosToJSON(infos []*FileInfo) string {
 	b, _ := json.Marshal(infos)
 	return string(b)
 }
 
-func FileInfosFromJson(data io.Reader) []*FileInfo {
+func FileInfosFromJSON(data io.Reader) []*FileInfo {
 	decoder := json.NewDecoder(data)
 
 	var infos []*FileInfo

@@ -16,12 +16,12 @@ func TestClusterMessage(t *testing.T) {
 		SendType: ClusterSendBestEffort,
 		Data:     "hello",
 	}
-	json := m.ToJson()
-	result := ClusterMessageFromJson(strings.NewReader(json))
+	json := m.ToJSON()
+	result := ClusterMessageFromJSON(strings.NewReader(json))
 
 	require.Equal(t, "hello", result.Data)
 
-	badresult := ClusterMessageFromJson(strings.NewReader("junk"))
+	badresult := ClusterMessageFromJSON(strings.NewReader("junk"))
 
 	require.Nil(t, badresult, "should not have parsed")
 }

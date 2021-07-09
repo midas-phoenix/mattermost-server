@@ -35,12 +35,12 @@ func TestCommandResponseFromPlainText(t *testing.T) {
 	assert.Equal(t, "foo", response.Text)
 }
 
-func TestCommandResponseFromJson(t *testing.T) {
+func TestCommandResponseFromJSON(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
 		Description             string
-		Json                    string
+		JSON                    string
 		ExpectedCommandResponse *CommandResponse
 		ShouldError             bool
 	}{
@@ -208,7 +208,7 @@ func TestCommandResponseFromJson(t *testing.T) {
 		t.Run(testCase.Description, func(t *testing.T) {
 			t.Parallel()
 
-			response, err := CommandResponseFromJson(strings.NewReader(testCase.Json))
+			response, err := CommandResponseFromJSON(strings.NewReader(testCase.JSON))
 			if testCase.ShouldError {
 				assert.Nil(t, response)
 			} else {

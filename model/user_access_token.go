@@ -42,23 +42,23 @@ func (t *UserAccessToken) PreSave() {
 	t.IsActive = true
 }
 
-func (t *UserAccessToken) ToJson() string {
+func (t *UserAccessToken) ToJSON() string {
 	b, _ := json.Marshal(t)
 	return string(b)
 }
 
-func UserAccessTokenFromJson(data io.Reader) *UserAccessToken {
+func UserAccessTokenFromJSON(data io.Reader) *UserAccessToken {
 	var t *UserAccessToken
 	json.NewDecoder(data).Decode(&t)
 	return t
 }
 
-func UserAccessTokenListToJson(t []*UserAccessToken) string {
+func UserAccessTokenListToJSON(t []*UserAccessToken) string {
 	b, _ := json.Marshal(t)
 	return string(b)
 }
 
-func UserAccessTokenListFromJson(data io.Reader) []*UserAccessToken {
+func UserAccessTokenListFromJSON(data io.Reader) []*UserAccessToken {
 	var t []*UserAccessToken
 	json.NewDecoder(data).Decode(&t)
 	return t

@@ -12,8 +12,8 @@ import (
 
 func TestCompliance(t *testing.T) {
 	o := Compliance{Desc: "test", CreateAt: GetMillis()}
-	json := o.ToJson()
-	result := ComplianceFromJson(strings.NewReader(json))
+	json := o.ToJSON()
+	result := ComplianceFromJSON(strings.NewReader(json))
 
 	require.Equal(t, o.Desc, result.Desc, "JobName do not match")
 }

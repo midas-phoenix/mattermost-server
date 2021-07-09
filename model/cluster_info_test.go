@@ -10,20 +10,20 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestClusterInfoJson(t *testing.T) {
-	cluster := ClusterInfo{IpAddress: NewID(), Hostname: NewID()}
-	json := cluster.ToJson()
-	result := ClusterInfoFromJson(strings.NewReader(json))
+func TestClusterInfoJSON(t *testing.T) {
+	cluster := ClusterInfo{IDAddress: NewID(), Hostname: NewID()}
+	json := cluster.ToJSON()
+	result := ClusterInfoFromJSON(strings.NewReader(json))
 
-	assert.Equal(t, cluster.IpAddress, result.IpAddress, "Ids do not match")
+	assert.Equal(t, cluster.IDAddress, result.IDAddress, "Ids do not match")
 }
 
-func TestClusterInfosJson(t *testing.T) {
-	cluster := ClusterInfo{IpAddress: NewID(), Hostname: NewID()}
+func TestClusterInfosJSON(t *testing.T) {
+	cluster := ClusterInfo{IDAddress: NewID(), Hostname: NewID()}
 	clusterInfos := make([]*ClusterInfo, 1)
 	clusterInfos[0] = &cluster
-	json := ClusterInfosToJson(clusterInfos)
-	result := ClusterInfosFromJson(strings.NewReader(json))
+	json := ClusterInfosToJSON(clusterInfos)
+	result := ClusterInfosFromJSON(strings.NewReader(json))
 
-	assert.Equal(t, clusterInfos[0].IpAddress, result[0].IpAddress, "Ids do not match")
+	assert.Equal(t, clusterInfos[0].IDAddress, result[0].IDAddress, "Ids do not match")
 }

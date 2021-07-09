@@ -10,9 +10,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAuditJson(t *testing.T) {
+func TestAuditJSON(t *testing.T) {
 	audit := Audit{ID: NewID(), UserID: NewID(), CreateAt: GetMillis()}
-	json := audit.ToJson()
-	result := AuditFromJson(strings.NewReader(json))
+	json := audit.ToJSON()
+	result := AuditFromJSON(strings.NewReader(json))
 	require.Equal(t, audit.ID, result.ID, "Ids do not match")
 }

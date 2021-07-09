@@ -20,12 +20,12 @@ type Reaction struct {
 	RemoteID  *string `json:"remote_id"`
 }
 
-func (o *Reaction) ToJson() string {
+func (o *Reaction) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func ReactionFromJson(data io.Reader) *Reaction {
+func ReactionFromJSON(data io.Reader) *Reaction {
 	var o Reaction
 
 	if err := json.NewDecoder(data).Decode(&o); err != nil {
@@ -34,17 +34,17 @@ func ReactionFromJson(data io.Reader) *Reaction {
 	return &o
 }
 
-func ReactionsToJson(o []*Reaction) string {
+func ReactionsToJSON(o []*Reaction) string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func MapPostIDToReactionsToJson(o map[string][]*Reaction) string {
+func MapPostIDToReactionsToJSON(o map[string][]*Reaction) string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func MapPostIDToReactionsFromJson(data io.Reader) map[string][]*Reaction {
+func MapPostIDToReactionsFromJSON(data io.Reader) map[string][]*Reaction {
 	decoder := json.NewDecoder(data)
 
 	var objmap map[string][]*Reaction
@@ -54,7 +54,7 @@ func MapPostIDToReactionsFromJson(data io.Reader) map[string][]*Reaction {
 	return objmap
 }
 
-func ReactionsFromJson(data io.Reader) []*Reaction {
+func ReactionsFromJSON(data io.Reader) []*Reaction {
 	var o []*Reaction
 
 	if err := json.NewDecoder(data).Decode(&o); err != nil {

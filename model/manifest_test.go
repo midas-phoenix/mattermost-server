@@ -441,7 +441,7 @@ func TestFindManifest_FolderPermission(t *testing.T) {
 	}
 }
 
-func TestManifestJson(t *testing.T) {
+func TestManifestJSON(t *testing.T) {
 	manifest := &Manifest{
 		ID: "theid",
 		Server: &ManifestServer{
@@ -484,17 +484,17 @@ func TestManifestJson(t *testing.T) {
 		},
 	}
 
-	json := manifest.ToJson()
-	newManifest := ManifestFromJson(strings.NewReader(json))
+	json := manifest.ToJSON()
+	newManifest := ManifestFromJSON(strings.NewReader(json))
 	assert.Equal(t, newManifest, manifest)
-	assert.Equal(t, newManifest.ToJson(), json)
-	assert.Equal(t, ManifestFromJson(strings.NewReader("junk")), (*Manifest)(nil))
+	assert.Equal(t, newManifest.ToJSON(), json)
+	assert.Equal(t, ManifestFromJSON(strings.NewReader("junk")), (*Manifest)(nil))
 
 	manifestList := []*Manifest{manifest}
-	json = ManifestListToJson(manifestList)
-	newManifestList := ManifestListFromJson(strings.NewReader(json))
+	json = ManifestListToJSON(manifestList)
+	newManifestList := ManifestListFromJSON(strings.NewReader(json))
 	assert.Equal(t, newManifestList, manifestList)
-	assert.Equal(t, ManifestListToJson(newManifestList), json)
+	assert.Equal(t, ManifestListToJSON(newManifestList), json)
 }
 
 func TestManifestHasClient(t *testing.T) {

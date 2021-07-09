@@ -41,23 +41,23 @@ type IncomingWebhookRequest struct {
 	IconEmoji   string             `json:"icon_emoji"`
 }
 
-func (o *IncomingWebhook) ToJson() string {
+func (o *IncomingWebhook) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func IncomingWebhookFromJson(data io.Reader) *IncomingWebhook {
+func IncomingWebhookFromJSON(data io.Reader) *IncomingWebhook {
 	var o *IncomingWebhook
 	json.NewDecoder(data).Decode(&o)
 	return o
 }
 
-func IncomingWebhookListToJson(l []*IncomingWebhook) string {
+func IncomingWebhookListToJSON(l []*IncomingWebhook) string {
 	b, _ := json.Marshal(l)
 	return string(b)
 }
 
-func IncomingWebhookListFromJson(data io.Reader) []*IncomingWebhook {
+func IncomingWebhookListFromJSON(data io.Reader) []*IncomingWebhook {
 	var o []*IncomingWebhook
 	json.NewDecoder(data).Decode(&o)
 	return o
@@ -186,7 +186,7 @@ func decodeIncomingWebhookRequest(by []byte) (*IncomingWebhookRequest, error) {
 	return nil, err
 }
 
-func IncomingWebhookRequestFromJson(data io.Reader) (*IncomingWebhookRequest, *AppError) {
+func IncomingWebhookRequestFromJSON(data io.Reader) (*IncomingWebhookRequest, *AppError) {
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(data)
 	by := buf.Bytes()
@@ -206,7 +206,7 @@ func IncomingWebhookRequestFromJson(data io.Reader) (*IncomingWebhookRequest, *A
 	return o, nil
 }
 
-func (o *IncomingWebhookRequest) ToJson() string {
+func (o *IncomingWebhookRequest) ToJSON() string {
 	b, err := json.Marshal(o)
 	if err != nil {
 		return ""

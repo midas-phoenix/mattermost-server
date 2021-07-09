@@ -177,23 +177,23 @@ type EntityDescriptor struct {
 	ContactPerson     ContactPerson      `xml:"ContactPerson"`
 }
 
-func (s *SamlCertificateStatus) ToJson() string {
+func (s *SamlCertificateStatus) ToJSON() string {
 	b, _ := json.Marshal(s)
 	return string(b)
 }
 
-func SamlCertificateStatusFromJson(data io.Reader) *SamlCertificateStatus {
+func SamlCertificateStatusFromJSON(data io.Reader) *SamlCertificateStatus {
 	var status *SamlCertificateStatus
 	json.NewDecoder(data).Decode(&status)
 	return status
 }
 
-func (s *SamlMetadataResponse) ToJson() string {
+func (s *SamlMetadataResponse) ToJSON() string {
 	b, _ := json.Marshal(s)
 	return string(b)
 }
 
-func SamlMetadataResponseFromJson(data io.Reader) *SamlMetadataResponse {
+func SamlMetadataResponseFromJSON(data io.Reader) *SamlMetadataResponse {
 	var status *SamlMetadataResponse
 	json.NewDecoder(data).Decode(&status)
 	return status

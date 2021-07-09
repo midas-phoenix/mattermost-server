@@ -74,30 +74,30 @@ type SidebarChannel struct {
 type SidebarChannels []*SidebarChannel
 type SidebarCategoriesWithChannels []*SidebarCategoryWithChannels
 
-func SidebarCategoryFromJson(data io.Reader) (*SidebarCategoryWithChannels, error) {
+func SidebarCategoryFromJSON(data io.Reader) (*SidebarCategoryWithChannels, error) {
 	var o *SidebarCategoryWithChannels
 	err := json.NewDecoder(data).Decode(&o)
 	return o, err
 }
 
-func SidebarCategoriesFromJson(data io.Reader) ([]*SidebarCategoryWithChannels, error) {
+func SidebarCategoriesFromJSON(data io.Reader) ([]*SidebarCategoryWithChannels, error) {
 	var o []*SidebarCategoryWithChannels
 	err := json.NewDecoder(data).Decode(&o)
 	return o, err
 }
 
-func OrderedSidebarCategoriesFromJson(data io.Reader) (*OrderedSidebarCategories, error) {
+func OrderedSidebarCategoriesFromJSON(data io.Reader) (*OrderedSidebarCategories, error) {
 	var o *OrderedSidebarCategories
 	err := json.NewDecoder(data).Decode(&o)
 	return o, err
 }
 
-func (o SidebarCategoryWithChannels) ToJson() []byte {
+func (o SidebarCategoryWithChannels) ToJSON() []byte {
 	b, _ := json.Marshal(o)
 	return b
 }
 
-func SidebarCategoriesWithChannelsToJson(o []*SidebarCategoryWithChannels) []byte {
+func SidebarCategoriesWithChannelsToJSON(o []*SidebarCategoryWithChannels) []byte {
 	b, err := json.Marshal(o)
 	if err != nil {
 		return []byte("[]")
@@ -105,7 +105,7 @@ func SidebarCategoriesWithChannelsToJson(o []*SidebarCategoryWithChannels) []byt
 	return b
 }
 
-func (o OrderedSidebarCategories) ToJson() []byte {
+func (o OrderedSidebarCategories) ToJSON() []byte {
 	b, err := json.Marshal(o)
 	if err != nil {
 		return []byte("[]")

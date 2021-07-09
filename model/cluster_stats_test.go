@@ -10,10 +10,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestClusterStatsJson(t *testing.T) {
+func TestClusterStatsJSON(t *testing.T) {
 	cluster := ClusterStats{ID: NewID(), TotalWebsocketConnections: 1, TotalReadDbConnections: 1}
-	json := cluster.ToJson()
-	result := ClusterStatsFromJson(strings.NewReader(json))
+	json := cluster.ToJSON()
+	result := ClusterStatsFromJSON(strings.NewReader(json))
 
 	require.Equal(t, cluster.ID, result.ID, "Ids do not match")
 }

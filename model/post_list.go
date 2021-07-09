@@ -57,7 +57,7 @@ func (o *PostList) StripActionIntegrations() {
 	}
 }
 
-func (o *PostList) ToJson() string {
+func (o *PostList) ToJSON() string {
 	copy := *o
 	copy.StripActionIntegrations()
 	b, err := json.Marshal(&copy)
@@ -163,7 +163,7 @@ func (o *PostList) IsChannelID(channelID string) bool {
 	return true
 }
 
-func PostListFromJson(data io.Reader) *PostList {
+func PostListFromJSON(data io.Reader) *PostList {
 	var o *PostList
 	json.NewDecoder(data).Decode(&o)
 	return o

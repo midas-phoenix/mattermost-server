@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestOAuthAppJson(t *testing.T) {
+func TestOAuthAppJSON(t *testing.T) {
 	a1 := OAuthApp{}
 	a1.ID = NewID()
 	a1.Name = "TestOAuthApp" + NewID()
@@ -19,8 +19,8 @@ func TestOAuthAppJson(t *testing.T) {
 	a1.IconURL = "https://nowhere.com/icon_image.png"
 	a1.ClientSecret = NewID()
 
-	json := a1.ToJson()
-	ra1 := OAuthAppFromJson(strings.NewReader(json))
+	json := a1.ToJSON()
+	ra1 := OAuthAppFromJSON(strings.NewReader(json))
 
 	require.Equal(t, a1.ID, ra1.ID, "ids did not match")
 }

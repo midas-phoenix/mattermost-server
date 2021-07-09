@@ -10,9 +10,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestUserAccessTokenSearchJson(t *testing.T) {
+func TestUserAccessTokenSearchJSON(t *testing.T) {
 	userAccessTokenSearch := UserAccessTokenSearch{Term: NewID()}
-	json := userAccessTokenSearch.ToJson()
-	ruserAccessTokenSearch := UserAccessTokenSearchFromJson(strings.NewReader(json))
+	json := userAccessTokenSearch.ToJSON()
+	ruserAccessTokenSearch := UserAccessTokenSearchFromJSON(strings.NewReader(json))
 	require.Equal(t, userAccessTokenSearch.Term, ruserAccessTokenSearch.Term, "Terms do not match")
 }

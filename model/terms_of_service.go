@@ -38,12 +38,12 @@ func (t *TermsOfService) IsValid() *AppError {
 	return nil
 }
 
-func (t *TermsOfService) ToJson() string {
+func (t *TermsOfService) ToJSON() string {
 	b, _ := json.Marshal(t)
 	return string(b)
 }
 
-func TermsOfServiceFromJson(data io.Reader) *TermsOfService {
+func TermsOfServiceFromJSON(data io.Reader) *TermsOfService {
 	var termsOfService *TermsOfService
 	json.NewDecoder(data).Decode(&termsOfService)
 	return termsOfService

@@ -56,12 +56,12 @@ type System struct {
 	Value string `json:"value"`
 }
 
-func (o *System) ToJson() string {
+func (o *System) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func SystemFromJson(data io.Reader) *System {
+func SystemFromJSON(data io.Reader) *System {
 	var o *System
 	json.NewDecoder(data).Decode(&o)
 	return o
@@ -105,12 +105,12 @@ type FileData struct {
 	Body     []byte
 }
 
-func (sbs *ServerBusyState) ToJson() string {
+func (sbs *ServerBusyState) ToJSON() string {
 	b, _ := json.Marshal(sbs)
 	return string(b)
 }
 
-func ServerBusyStateFromJson(r io.Reader) *ServerBusyState {
+func ServerBusyStateFromJSON(r io.Reader) *ServerBusyState {
 	var sbs *ServerBusyState
 	json.NewDecoder(r).Decode(&sbs)
 	return sbs
@@ -201,12 +201,12 @@ type WarnMetricStatus struct {
 	StoreStatus string `json:"store_status,omitempty"`
 }
 
-func (wms *WarnMetricStatus) ToJson() string {
+func (wms *WarnMetricStatus) ToJSON() string {
 	b, _ := json.Marshal(wms)
 	return string(b)
 }
 
-func WarnMetricStatusFromJson(data io.Reader) *WarnMetricStatus {
+func WarnMetricStatusFromJSON(data io.Reader) *WarnMetricStatus {
 	var o WarnMetricStatus
 	if err := json.NewDecoder(data).Decode(&o); err != nil {
 		return nil
@@ -214,7 +214,7 @@ func WarnMetricStatusFromJson(data io.Reader) *WarnMetricStatus {
 	return &o
 }
 
-func MapWarnMetricStatusToJson(o map[string]*WarnMetricStatus) string {
+func MapWarnMetricStatusToJSON(o map[string]*WarnMetricStatus) string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
@@ -223,12 +223,12 @@ type SendWarnMetricAck struct {
 	ForceAck bool `json:"forceAck"`
 }
 
-func (swma *SendWarnMetricAck) ToJson() string {
+func (swma *SendWarnMetricAck) ToJSON() string {
 	b, _ := json.Marshal(swma)
 	return string(b)
 }
 
-func SendWarnMetricAckFromJson(r io.Reader) *SendWarnMetricAck {
+func SendWarnMetricAckFromJSON(r io.Reader) *SendWarnMetricAck {
 	var swma *SendWarnMetricAck
 	json.NewDecoder(r).Decode(&swma)
 	return swma

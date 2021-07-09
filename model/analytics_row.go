@@ -15,18 +15,18 @@ type AnalyticsRow struct {
 
 type AnalyticsRows []*AnalyticsRow
 
-func (ar *AnalyticsRow) ToJson() string {
+func (ar *AnalyticsRow) ToJSON() string {
 	b, _ := json.Marshal(ar)
 	return string(b)
 }
 
-func AnalyticsRowFromJson(data io.Reader) *AnalyticsRow {
+func AnalyticsRowFromJSON(data io.Reader) *AnalyticsRow {
 	var ar *AnalyticsRow
 	json.NewDecoder(data).Decode(&ar)
 	return ar
 }
 
-func (ar AnalyticsRows) ToJson() string {
+func (ar AnalyticsRows) ToJSON() string {
 	b, err := json.Marshal(ar)
 	if err != nil {
 		return "[]"
@@ -34,7 +34,7 @@ func (ar AnalyticsRows) ToJson() string {
 	return string(b)
 }
 
-func AnalyticsRowsFromJson(data io.Reader) AnalyticsRows {
+func AnalyticsRowsFromJSON(data io.Reader) AnalyticsRows {
 	var ar AnalyticsRows
 	json.NewDecoder(data).Decode(&ar)
 	return ar

@@ -13,12 +13,12 @@ type MfaSecret struct {
 	QRCode string `json:"qr_code"`
 }
 
-func (mfa *MfaSecret) ToJson() string {
+func (mfa *MfaSecret) ToJSON() string {
 	b, _ := json.Marshal(mfa)
 	return string(b)
 }
 
-func MfaSecretFromJson(data io.Reader) *MfaSecret {
+func MfaSecretFromJSON(data io.Reader) *MfaSecret {
 	var mfa *MfaSecret
 	json.NewDecoder(data).Decode(&mfa)
 	return mfa

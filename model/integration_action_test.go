@@ -85,35 +85,35 @@ func TestTriggerIDDecodeAndVerification(t *testing.T) {
 	})
 }
 
-func TestPostActionIntegrationRequestToJson(t *testing.T) {
+func TestPostActionIntegrationRequestToJSON(t *testing.T) {
 	o := PostActionIntegrationRequest{UserID: NewID(), Context: StringInterface{"a": "abc"}}
-	j := o.ToJson()
-	ro := PostActionIntegrationRequestFromJson(bytes.NewReader(j))
+	j := o.ToJSON()
+	ro := PostActionIntegrationRequestFromJSON(bytes.NewReader(j))
 
 	assert.NotNil(t, ro)
 	assert.Equal(t, o, *ro)
 }
 
-func TestPostActionIntegrationRequestFromJsonError(t *testing.T) {
-	ro := PostActionIntegrationRequestFromJson(strings.NewReader(""))
+func TestPostActionIntegrationRequestFromJSONError(t *testing.T) {
+	ro := PostActionIntegrationRequestFromJSON(strings.NewReader(""))
 	assert.Nil(t, ro)
 }
 
-func TestPostActionIntegrationResponseToJson(t *testing.T) {
+func TestPostActionIntegrationResponseToJSON(t *testing.T) {
 	o := PostActionIntegrationResponse{Update: &Post{ID: NewID(), Message: NewID()}, EphemeralText: NewID()}
-	j := o.ToJson()
-	ro := PostActionIntegrationResponseFromJson(bytes.NewReader(j))
+	j := o.ToJSON()
+	ro := PostActionIntegrationResponseFromJSON(bytes.NewReader(j))
 
 	assert.NotNil(t, ro)
 	assert.Equal(t, o, *ro)
 }
 
-func TestPostActionIntegrationResponseFromJsonError(t *testing.T) {
-	ro := PostActionIntegrationResponseFromJson(strings.NewReader(""))
+func TestPostActionIntegrationResponseFromJSONError(t *testing.T) {
+	ro := PostActionIntegrationResponseFromJSON(strings.NewReader(""))
 	assert.Nil(t, ro)
 }
 
-func TestSubmitDialogRequestToJson(t *testing.T) {
+func TestSubmitDialogRequestToJSON(t *testing.T) {
 	t.Run("all fine", func(t *testing.T) {
 		request := SubmitDialogRequest{
 			URL:        "http://example.org",
@@ -129,19 +129,19 @@ func TestSubmitDialogRequestToJson(t *testing.T) {
 			},
 			Cancelled: true,
 		}
-		jsonRequest := request.ToJson()
-		r := SubmitDialogRequestFromJson(bytes.NewReader(jsonRequest))
+		jsonRequest := request.ToJSON()
+		r := SubmitDialogRequestFromJSON(bytes.NewReader(jsonRequest))
 
 		require.NotNil(t, r)
 		assert.Equal(t, request, *r)
 	})
 	t.Run("error", func(t *testing.T) {
-		r := SubmitDialogRequestFromJson(strings.NewReader(""))
+		r := SubmitDialogRequestFromJSON(strings.NewReader(""))
 		assert.Nil(t, r)
 	})
 }
 
-func TestSubmitDialogResponseToJson(t *testing.T) {
+func TestSubmitDialogResponseToJSON(t *testing.T) {
 	t.Run("all fine", func(t *testing.T) {
 		request := SubmitDialogResponse{
 			Error: "some generic error",
@@ -151,14 +151,14 @@ func TestSubmitDialogResponseToJson(t *testing.T) {
 				"bool":  "true",
 			},
 		}
-		jsonRequest := request.ToJson()
-		r := SubmitDialogResponseFromJson(bytes.NewReader(jsonRequest))
+		jsonRequest := request.ToJSON()
+		r := SubmitDialogResponseFromJSON(bytes.NewReader(jsonRequest))
 
 		require.NotNil(t, r)
 		assert.Equal(t, request, *r)
 	})
 	t.Run("error", func(t *testing.T) {
-		r := SubmitDialogResponseFromJson(strings.NewReader(""))
+		r := SubmitDialogResponseFromJSON(strings.NewReader(""))
 		assert.Nil(t, r)
 	})
 }

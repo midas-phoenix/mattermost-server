@@ -67,12 +67,12 @@ type ClusterMessage struct {
 	Props            map[string]string `json:"props,omitempty"`
 }
 
-func (o *ClusterMessage) ToJson() string {
+func (o *ClusterMessage) ToJSON() string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func ClusterMessageFromJson(data io.Reader) *ClusterMessage {
+func ClusterMessageFromJSON(data io.Reader) *ClusterMessage {
 	var o *ClusterMessage
 	json.NewDecoder(data).Decode(&o)
 	return o

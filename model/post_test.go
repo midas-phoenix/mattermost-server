@@ -13,17 +13,17 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestPostToJson(t *testing.T) {
+func TestPostToJSON(t *testing.T) {
 	o := Post{ID: NewID(), Message: NewID()}
-	j := o.ToJson()
-	ro := PostFromJson(strings.NewReader(j))
+	j := o.ToJSON()
+	ro := PostFromJSON(strings.NewReader(j))
 
 	assert.NotNil(t, ro)
 	assert.Equal(t, &o, ro.Clone())
 }
 
-func TestPostFromJsonError(t *testing.T) {
-	ro := PostFromJson(strings.NewReader(""))
+func TestPostFromJSONError(t *testing.T) {
+	ro := PostFromJSON(strings.NewReader(""))
 	assert.Nil(t, ro)
 }
 
@@ -858,28 +858,28 @@ func TestPostPatchDisableMentionHighlights(t *testing.T) {
 	})
 }
 
-func TestSearchParameterFromJson(t *testing.T) {
+func TestSearchParameterFromJSON(t *testing.T) {
 	t.Run("empty input", func(t *testing.T) {
-		params, err := SearchParameterFromJson(strings.NewReader(""))
+		params, err := SearchParameterFromJSON(strings.NewReader(""))
 		require.Nil(t, params)
 		require.Error(t, err)
 	})
 
 	t.Run("invalid json", func(t *testing.T) {
-		params, err := SearchParameterFromJson(strings.NewReader("invalid"))
+		params, err := SearchParameterFromJSON(strings.NewReader("invalid"))
 		require.Nil(t, params)
 		require.Error(t, err)
 	})
 
 	t.Run("valid empty input", func(t *testing.T) {
-		params, err := SearchParameterFromJson(strings.NewReader("{}"))
+		params, err := SearchParameterFromJSON(strings.NewReader("{}"))
 		require.NoError(t, err)
 		require.NotNil(t, params)
 		require.Equal(t, &SearchParameter{}, params)
 	})
 
 	t.Run("valid non-empty input", func(t *testing.T) {
-		params, err := SearchParameterFromJson(strings.NewReader("{\"terms\": \"test\"}"))
+		params, err := SearchParameterFromJSON(strings.NewReader("{\"terms\": \"test\"}"))
 		require.NoError(t, err)
 		require.NotNil(t, params)
 		require.Equal(t, "test", *params.Terms)
