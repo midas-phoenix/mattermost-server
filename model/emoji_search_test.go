@@ -11,7 +11,7 @@ import (
 )
 
 func TestEmojiSearchJson(t *testing.T) {
-	emojiSearch := EmojiSearch{Term: NewId()}
+	emojiSearch := EmojiSearch{Term: NewID()}
 	json := emojiSearch.ToJson()
 	remojiSearch := EmojiSearchFromJson(strings.NewReader(json))
 

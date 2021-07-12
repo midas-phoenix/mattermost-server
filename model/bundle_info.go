@@ -17,7 +17,7 @@ type BundleInfo struct {
 
 func (b *BundleInfo) WrapLogger(logger *mlog.Logger) *mlog.Logger {
 	if b.Manifest != nil {
-		return logger.With(mlog.String("plugin_id", b.Manifest.Id))
+		return logger.With(mlog.String("plugin_id", b.Manifest.ID))
 	}
 	return logger.With(mlog.String("plugin_path", b.Path))
 }

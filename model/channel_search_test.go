@@ -11,7 +11,7 @@ import (
 )
 
 func TestChannelSearchJson(t *testing.T) {
-	channelSearch := ChannelSearch{Term: NewId()}
+	channelSearch := ChannelSearch{Term: NewID()}
 	json := channelSearch.ToJson()
 	rchannelSearch := ChannelSearchFromJson(strings.NewReader(json))
 

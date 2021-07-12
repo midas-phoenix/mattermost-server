@@ -58,7 +58,7 @@ const (
 )
 
 type Preference struct {
-	UserId   string `json:"user_id"`
+	UserID   string `json:"user_id"`
 	Category string `json:"category"`
 	Name     string `json:"name"`
 	Value    string `json:"value"`
@@ -76,8 +76,8 @@ func PreferenceFromJson(data io.Reader) *Preference {
 }
 
 func (o *Preference) IsValid() *AppError {
-	if !IsValidId(o.UserId) {
-		return NewAppError("Preference.IsValid", "model.preference.is_valid.id.app_error", nil, "user_id="+o.UserId, http.StatusBadRequest)
+	if !IsValidID(o.UserID) {
+		return NewAppError("Preference.IsValid", "model.preference.is_valid.id.app_error", nil, "user_id="+o.UserID, http.StatusBadRequest)
 	}
 
 	if o.Category == "" || len(o.Category) > 32 {

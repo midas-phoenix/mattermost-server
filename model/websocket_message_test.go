@@ -12,24 +12,24 @@ import (
 )
 
 func TestWebSocketEvent(t *testing.T) {
-	userId := NewId()
-	m := NewWebSocketEvent("some_event", NewId(), NewId(), userId, nil)
-	m.Add("RootId", NewId())
+	userID := NewID()
+	m := NewWebSocketEvent("some_event", NewID(), NewID(), userID, nil)
+	m.Add("RootId", NewID())
 	user := &User{
-		Id: userId,
+		ID: userID,
 	}
 	m.Add("user", user)
 	json := m.ToJson()
 	result := WebSocketEventFromJson(strings.NewReader(json))
 
 	require.True(t, m.IsValid(), "should be valid")
-	require.Equal(t, m.GetBroadcast().TeamId, result.GetBroadcast().TeamId, "Team ids do not match")
+	require.Equal(t, m.GetBroadcast().TeamID, result.GetBroadcast().TeamID, "Team ids do not match")
 	require.Equal(t, m.GetData()["RootId"], result.GetData()["RootId"], "Root ids do not match")
-	require.Equal(t, m.GetData()["user"].(*User).Id, result.GetData()["user"].(*User).Id, "User ids do not match")
+	require.Equal(t, m.GetData()["user"].(*User).ID, result.GetData()["user"].(*User).ID, "User ids do not match")
 }
 
 func TestWebSocketEventImmutable(t *testing.T) {
-	m := NewWebSocketEvent("some_event", NewId(), NewId(), NewId(), nil)
+	m := NewWebSocketEvent("some_event", NewID(), NewID(), NewID(), nil)
 
 	new := m.SetEvent("new_event")
 	if new == m {
@@ -84,13 +84,13 @@ func TestWebSocketEventFromJson(t *testing.T) {
 	require.Equal(t, ev.Event, "test")
 	require.Equal(t, ev.Sequence, int64(45))
 	require.Equal(t, ev.Data, map[string]interface{}{"key": "val"})
-	require.Equal(t, ev.Broadcast, &WebsocketBroadcast{UserId: "userid"})
+	require.Equal(t, ev.Broadcast, &WebsocketBroadcast{UserID: "userid"})
 }
 
 func TestWebSocketResponse(t *testing.T) {
 	m := NewWebSocketResponse("OK", 1, map[string]interface{}{})
 	e := NewWebSocketError(1, &AppError{})
-	m.Add("RootId", NewId())
+	m.Add("RootId", NewID())
 	json := m.ToJson()
 	result := WebSocketResponseFromJson(strings.NewReader(json))
 	json2 := e.ToJson()
@@ -120,7 +120,7 @@ var stringSink string
 func BenchmarkWebSocketEvent_ToJson(b *testing.B) {
 	event := NewWebSocketEvent(WebsocketEventPosted, "foo", "bar", "baz", nil)
 	for i := 0; i < 100; i++ {
-		event.GetData()[NewId()] = NewId()
+		event.GetData()[NewID()] = NewID()
 	}
 
 	b.Run("SerializedNTimes", func(b *testing.B) {

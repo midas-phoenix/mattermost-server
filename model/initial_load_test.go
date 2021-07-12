@@ -11,10 +11,10 @@ import (
 )
 
 func TestInitialLoadJson(t *testing.T) {
-	u := &User{Id: NewId()}
+	u := &User{ID: NewID()}
 	o := InitialLoad{User: u}
 	json := o.ToJson()
 	ro := InitialLoadFromJson(strings.NewReader(json))
 
-	require.Equal(t, o.User.Id, ro.User.Id, "Ids do not match")
+	require.Equal(t, o.User.ID, ro.User.ID, "Ids do not match")
 }

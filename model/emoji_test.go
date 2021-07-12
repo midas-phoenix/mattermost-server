@@ -12,20 +12,20 @@ import (
 
 func TestEmojiIsValid(t *testing.T) {
 	emoji := Emoji{
-		Id:        NewId(),
+		ID:        NewID(),
 		CreateAt:  1234,
 		UpdateAt:  1234,
 		DeleteAt:  0,
-		CreatorId: NewId(),
+		CreatorID: NewID(),
 		Name:      "name",
 	}
 
 	require.Nil(t, emoji.IsValid())
 
-	emoji.Id = "1234"
+	emoji.ID = "1234"
 	require.NotNil(t, emoji.IsValid())
 
-	emoji.Id = NewId()
+	emoji.ID = NewID()
 	emoji.CreateAt = 0
 	require.NotNil(t, emoji.IsValid())
 
@@ -34,10 +34,10 @@ func TestEmojiIsValid(t *testing.T) {
 	require.NotNil(t, emoji.IsValid())
 
 	emoji.UpdateAt = 1234
-	emoji.CreatorId = strings.Repeat("1", 27)
+	emoji.CreatorID = strings.Repeat("1", 27)
 	require.NotNil(t, emoji.IsValid())
 
-	emoji.CreatorId = NewId()
+	emoji.CreatorID = NewID()
 	emoji.Name = strings.Repeat("1", 65)
 	require.NotNil(t, emoji.IsValid())
 

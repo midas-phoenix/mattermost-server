@@ -21,12 +21,12 @@ func (z *TeamMember) DecodeMsg(dc *msgp.Reader) (err error) {
 		err = msgp.ArrayError{Wanted: 8, Got: zb0001}
 		return
 	}
-	z.TeamId, err = dc.ReadString()
+	z.TeamID, err = dc.ReadString()
 	if err != nil {
 		err = msgp.WrapError(err, "TeamId")
 		return
 	}
-	z.UserId, err = dc.ReadString()
+	z.UserID, err = dc.ReadString()
 	if err != nil {
 		err = msgp.WrapError(err, "UserId")
 		return
@@ -71,12 +71,12 @@ func (z *TeamMember) EncodeMsg(en *msgp.Writer) (err error) {
 	if err != nil {
 		return
 	}
-	err = en.WriteString(z.TeamId)
+	err = en.WriteString(z.TeamID)
 	if err != nil {
 		err = msgp.WrapError(err, "TeamId")
 		return
 	}
-	err = en.WriteString(z.UserId)
+	err = en.WriteString(z.UserID)
 	if err != nil {
 		err = msgp.WrapError(err, "UserId")
 		return
@@ -119,8 +119,8 @@ func (z *TeamMember) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
 	// array header, size 8
 	o = append(o, 0x98)
-	o = msgp.AppendString(o, z.TeamId)
-	o = msgp.AppendString(o, z.UserId)
+	o = msgp.AppendString(o, z.TeamID)
+	o = msgp.AppendString(o, z.UserID)
 	o = msgp.AppendString(o, z.Roles)
 	o = msgp.AppendInt64(o, z.DeleteAt)
 	o = msgp.AppendBool(o, z.SchemeGuest)
@@ -142,12 +142,12 @@ func (z *TeamMember) UnmarshalMsg(bts []byte) (o []byte, err error) {
 		err = msgp.ArrayError{Wanted: 8, Got: zb0001}
 		return
 	}
-	z.TeamId, bts, err = msgp.ReadStringBytes(bts)
+	z.TeamID, bts, err = msgp.ReadStringBytes(bts)
 	if err != nil {
 		err = msgp.WrapError(err, "TeamId")
 		return
 	}
-	z.UserId, bts, err = msgp.ReadStringBytes(bts)
+	z.UserID, bts, err = msgp.ReadStringBytes(bts)
 	if err != nil {
 		err = msgp.WrapError(err, "UserId")
 		return
@@ -188,6 +188,6 @@ func (z *TeamMember) UnmarshalMsg(bts []byte) (o []byte, err error) {
 
 // Msgsize returns an upper bound estimate of the number of bytes occupied by the serialized message
 func (z *TeamMember) Msgsize() (s int) {
-	s = 1 + msgp.StringPrefixSize + len(z.TeamId) + msgp.StringPrefixSize + len(z.UserId) + msgp.StringPrefixSize + len(z.Roles) + msgp.Int64Size + msgp.BoolSize + msgp.BoolSize + msgp.BoolSize + msgp.StringPrefixSize + len(z.ExplicitRoles)
+	s = 1 + msgp.StringPrefixSize + len(z.TeamID) + msgp.StringPrefixSize + len(z.UserID) + msgp.StringPrefixSize + len(z.Roles) + msgp.Int64Size + msgp.BoolSize + msgp.BoolSize + msgp.BoolSize + msgp.StringPrefixSize + len(z.ExplicitRoles)
 	return
 }

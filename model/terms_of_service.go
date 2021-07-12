@@ -12,27 +12,27 @@ import (
 )
 
 type TermsOfService struct {
-	Id       string `json:"id"`
+	ID       string `json:"id"`
 	CreateAt int64  `json:"create_at"`
-	UserId   string `json:"user_id"`
+	UserID   string `json:"user_id"`
 	Text     string `json:"text"`
 }
 
 func (t *TermsOfService) IsValid() *AppError {
-	if !IsValidId(t.Id) {
+	if !IsValidID(t.ID) {
 		return InvalidTermsOfServiceError("id", "")
 	}
 
 	if t.CreateAt == 0 {
-		return InvalidTermsOfServiceError("create_at", t.Id)
+		return InvalidTermsOfServiceError("create_at", t.ID)
 	}
 
-	if !IsValidId(t.UserId) {
-		return InvalidTermsOfServiceError("user_id", t.Id)
+	if !IsValidID(t.UserID) {
+		return InvalidTermsOfServiceError("user_id", t.ID)
 	}
 
 	if utf8.RuneCountInString(t.Text) > PostMessageMaxRunesV2 {
-		return InvalidTermsOfServiceError("text", t.Id)
+		return InvalidTermsOfServiceError("text", t.ID)
 	}
 
 	return nil
@@ -49,18 +49,18 @@ func TermsOfServiceFromJson(data io.Reader) *TermsOfService {
 	return termsOfService
 }
 
-func InvalidTermsOfServiceError(fieldName string, termsOfServiceId string) *AppError {
+func InvalidTermsOfServiceError(fieldName string, termsOfServiceID string) *AppError {
 	id := fmt.Sprintf("model.terms_of_service.is_valid.%s.app_error", fieldName)
 	details := ""
-	if termsOfServiceId != "" {
-		details = "terms_of_service_id=" + termsOfServiceId
+	if termsOfServiceID != "" {
+		details = "terms_of_service_id=" + termsOfServiceID
 	}
 	return NewAppError("TermsOfService.IsValid", id, map[string]interface{}{"MaxLength": PostMessageMaxRunesV2}, details, http.StatusBadRequest)
 }
 
 func (t *TermsOfService) PreSave() {
-	if t.Id == "" {
-		t.Id = NewId()
+	if t.ID == "" {
+		t.ID = NewID()
 	}
 
 	t.CreateAt = GetMillis()

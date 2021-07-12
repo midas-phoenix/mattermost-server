@@ -12,16 +12,16 @@ import (
 type FileInfoList struct {
 	Order          []string             `json:"order"`
 	FileInfos      map[string]*FileInfo `json:"file_infos"`
-	NextFileInfoId string               `json:"next_file_info_id"`
-	PrevFileInfoId string               `json:"prev_file_info_id"`
+	NextFileInfoID string               `json:"next_file_info_id"`
+	PrevFileInfoID string               `json:"prev_file_info_id"`
 }
 
 func NewFileInfoList() *FileInfoList {
 	return &FileInfoList{
 		Order:          make([]string, 0),
 		FileInfos:      make(map[string]*FileInfo),
-		NextFileInfoId: "",
-		PrevFileInfoId: "",
+		NextFileInfoID: "",
+		PrevFileInfoID: "",
 	}
 }
 
@@ -65,16 +65,16 @@ func (o *FileInfoList) AddFileInfo(fileInfo *FileInfo) {
 		o.FileInfos = make(map[string]*FileInfo)
 	}
 
-	o.FileInfos[fileInfo.Id] = fileInfo
+	o.FileInfos[fileInfo.ID] = fileInfo
 }
 
 func (o *FileInfoList) UniqueOrder() {
 	keys := make(map[string]bool)
 	order := []string{}
-	for _, fileInfoId := range o.Order {
-		if _, value := keys[fileInfoId]; !value {
-			keys[fileInfoId] = true
-			order = append(order, fileInfoId)
+	for _, fileInfoID := range o.Order {
+		if _, value := keys[fileInfoID]; !value {
+			keys[fileInfoID] = true
+			order = append(order, fileInfoID)
 		}
 	}
 
@@ -82,12 +82,12 @@ func (o *FileInfoList) UniqueOrder() {
 }
 
 func (o *FileInfoList) Extend(other *FileInfoList) {
-	for fileInfoId := range other.FileInfos {
-		o.AddFileInfo(other.FileInfos[fileInfoId])
+	for fileInfoID := range other.FileInfos {
+		o.AddFileInfo(other.FileInfos[fileInfoID])
 	}
 
-	for _, fileInfoId := range other.Order {
-		o.AddOrder(fileInfoId)
+	for _, fileInfoID := range other.Order {
+		o.AddOrder(fileInfoID)
 	}
 
 	o.UniqueOrder()
@@ -106,19 +106,19 @@ func (o *FileInfoList) Etag() string {
 	for _, v := range o.FileInfos {
 		if v.UpdateAt > t {
 			t = v.UpdateAt
-			id = v.Id
-		} else if v.UpdateAt == t && v.Id > id {
+			id = v.ID
+		} else if v.UpdateAt == t && v.ID > id {
 			t = v.UpdateAt
-			id = v.Id
+			id = v.ID
 		}
 	}
 
-	orderId := ""
+	orderID := ""
 	if len(o.Order) > 0 {
-		orderId = o.Order[0]
+		orderID = o.Order[0]
 	}
 
-	return Etag(orderId, id, t)
+	return Etag(orderID, id, t)
 }
 
 func FileInfoListFromJson(data io.Reader) *FileInfoList {

@@ -37,37 +37,37 @@ const (
 )
 
 type PushNotificationAck struct {
-	Id               string `json:"id"`
+	ID               string `json:"id"`
 	ClientReceivedAt int64  `json:"received_at"`
 	ClientPlatform   string `json:"platform"`
 	NotificationType string `json:"type"`
-	PostId           string `json:"post_id,omitempty"`
-	IsIdLoaded       bool   `json:"is_id_loaded"`
+	PostID           string `json:"post_id,omitempty"`
+	IsIDLoaded       bool   `json:"is_id_loaded"`
 }
 
 type PushNotification struct {
-	AckId            string `json:"ack_id"`
+	AckID            string `json:"ack_id"`
 	Platform         string `json:"platform"`
-	ServerId         string `json:"server_id"`
-	DeviceId         string `json:"device_id"`
-	PostId           string `json:"post_id"`
+	ServerID         string `json:"server_id"`
+	DeviceID         string `json:"device_id"`
+	PostID           string `json:"post_id"`
 	Category         string `json:"category,omitempty"`
 	Sound            string `json:"sound,omitempty"`
 	Message          string `json:"message,omitempty"`
 	Badge            int    `json:"badge,omitempty"`
 	ContentAvailable int    `json:"cont_ava,omitempty"`
-	TeamId           string `json:"team_id,omitempty"`
-	ChannelId        string `json:"channel_id,omitempty"`
-	RootId           string `json:"root_id,omitempty"`
+	TeamID           string `json:"team_id,omitempty"`
+	ChannelID        string `json:"channel_id,omitempty"`
+	RootID           string `json:"root_id,omitempty"`
 	ChannelName      string `json:"channel_name,omitempty"`
 	Type             string `json:"type,omitempty"`
-	SenderId         string `json:"sender_id,omitempty"`
+	SenderID         string `json:"sender_id,omitempty"`
 	SenderName       string `json:"sender_name,omitempty"`
 	OverrideUsername string `json:"override_username,omitempty"`
 	OverrideIconUrl  string `json:"override_icon_url,omitempty"`
 	FromWebhook      string `json:"from_webhook,omitempty"`
 	Version          string `json:"version,omitempty"`
-	IsIdLoaded       bool   `json:"is_id_loaded"`
+	IsIDLoaded       bool   `json:"is_id_loaded"`
 }
 
 func (pn *PushNotification) ToJson() string {
@@ -80,13 +80,13 @@ func (pn *PushNotification) DeepCopy() *PushNotification {
 	return &copy
 }
 
-func (pn *PushNotification) SetDeviceIdAndPlatform(deviceId string) {
+func (pn *PushNotification) SetDeviceIDAndPlatform(deviceID string) {
 
-	index := strings.Index(deviceId, ":")
+	index := strings.Index(deviceID, ":")
 
 	if index > -1 {
-		pn.Platform = deviceId[:index]
-		pn.DeviceId = deviceId[index+1:]
+		pn.Platform = deviceID[:index]
+		pn.DeviceID = deviceID[index+1:]
 	}
 }
 

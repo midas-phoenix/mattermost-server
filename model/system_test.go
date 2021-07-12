@@ -12,7 +12,7 @@ import (
 )
 
 func TestSystemJson(t *testing.T) {
-	system := System{Name: "test", Value: NewId()}
+	system := System{Name: "test", Value: NewID()}
 	json := system.ToJson()
 	result := SystemFromJson(strings.NewReader(json))
 

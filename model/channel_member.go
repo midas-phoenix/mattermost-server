@@ -24,8 +24,8 @@ const (
 )
 
 type ChannelUnread struct {
-	TeamId           string    `json:"team_id"`
-	ChannelId        string    `json:"channel_id"`
+	TeamID           string    `json:"team_id"`
+	ChannelID        string    `json:"channel_id"`
 	MsgCount         int64     `json:"msg_count"`
 	MentionCount     int64     `json:"mention_count"`
 	MentionCountRoot int64     `json:"mention_count_root"`
@@ -34,9 +34,9 @@ type ChannelUnread struct {
 }
 
 type ChannelUnreadAt struct {
-	TeamId           string    `json:"team_id"`
-	UserId           string    `json:"user_id"`
-	ChannelId        string    `json:"channel_id"`
+	TeamID           string    `json:"team_id"`
+	UserID           string    `json:"user_id"`
+	ChannelID        string    `json:"channel_id"`
 	MsgCount         int64     `json:"msg_count"`
 	MentionCount     int64     `json:"mention_count"`
 	MentionCountRoot int64     `json:"mention_count_root"`
@@ -46,8 +46,8 @@ type ChannelUnreadAt struct {
 }
 
 type ChannelMember struct {
-	ChannelId        string    `json:"channel_id"`
-	UserId           string    `json:"user_id"`
+	ChannelID        string    `json:"channel_id"`
+	UserID           string    `json:"user_id"`
 	Roles            string    `json:"roles"`
 	LastViewedAt     int64     `json:"last_viewed_at"`
 	MsgCount         int64     `json:"msg_count"`
@@ -119,11 +119,11 @@ func ChannelMemberFromJson(data io.Reader) *ChannelMember {
 
 func (o *ChannelMember) IsValid() *AppError {
 
-	if !IsValidId(o.ChannelId) {
+	if !IsValidID(o.ChannelID) {
 		return NewAppError("ChannelMember.IsValid", "model.channel_member.is_valid.channel_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if !IsValidId(o.UserId) {
+	if !IsValidID(o.UserID) {
 		return NewAppError("ChannelMember.IsValid", "model.channel_member.is_valid.user_id.app_error", nil, "", http.StatusBadRequest)
 	}
 

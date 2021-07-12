@@ -21,41 +21,41 @@ func TestPasswordHash(t *testing.T) {
 }
 
 func TestUserDeepCopy(t *testing.T) {
-	id := NewId()
+	id := NewID()
 	authData := "authdata"
 	mapKey := "key"
 	mapValue := "key"
 
-	user := &User{Id: id, AuthData: NewString(authData), Props: map[string]string{}, NotifyProps: map[string]string{}, Timezone: map[string]string{}}
+	user := &User{ID: id, AuthData: NewString(authData), Props: map[string]string{}, NotifyProps: map[string]string{}, Timezone: map[string]string{}}
 	user.Props[mapKey] = mapValue
 	user.NotifyProps[mapKey] = mapValue
 	user.Timezone[mapKey] = mapValue
 
 	copyUser := user.DeepCopy()
-	copyUser.Id = "someid"
+	copyUser.ID = "someid"
 	*copyUser.AuthData = "changed"
 	copyUser.Props[mapKey] = "changed"
 	copyUser.NotifyProps[mapKey] = "changed"
 	copyUser.Timezone[mapKey] = "changed"
 
-	assert.Equal(t, id, user.Id)
+	assert.Equal(t, id, user.ID)
 	assert.Equal(t, authData, *user.AuthData)
 	assert.Equal(t, mapValue, user.Props[mapKey])
 	assert.Equal(t, mapValue, user.NotifyProps[mapKey])
 	assert.Equal(t, mapValue, user.Timezone[mapKey])
 
-	user = &User{Id: id}
+	user = &User{ID: id}
 	copyUser = user.DeepCopy()
 
-	assert.Equal(t, id, copyUser.Id)
+	assert.Equal(t, id, copyUser.ID)
 }
 
 func TestUserJson(t *testing.T) {
-	user := User{Id: NewId(), Username: NewId()}
+	user := User{ID: NewID(), Username: NewID()}
 	json := user.ToJson()
 	ruser := UserFromJson(strings.NewReader(json))
 
-	assert.Equal(t, user.Id, ruser.Id, "Ids do not match")
+	assert.Equal(t, user.ID, ruser.ID, "Ids do not match")
 }
 
 func TestUserPreSave(t *testing.T) {
@@ -94,35 +94,35 @@ func TestUserIsValid(t *testing.T) {
 	err := user.IsValid()
 	require.True(t, HasExpectedUserIsValidError(err, "id", ""), "expected user is valid error: %s", err.Error())
 
-	user.Id = NewId()
+	user.ID = NewID()
 	err = user.IsValid()
-	require.True(t, HasExpectedUserIsValidError(err, "create_at", user.Id), "expected user is valid error: %s", err.Error())
+	require.True(t, HasExpectedUserIsValidError(err, "create_at", user.ID), "expected user is valid error: %s", err.Error())
 
 	user.CreateAt = GetMillis()
 	err = user.IsValid()
-	require.True(t, HasExpectedUserIsValidError(err, "update_at", user.Id), "expected user is valid error: %s", err.Error())
+	require.True(t, HasExpectedUserIsValidError(err, "update_at", user.ID), "expected user is valid error: %s", err.Error())
 
 	user.UpdateAt = GetMillis()
 	err = user.IsValid()
-	require.True(t, HasExpectedUserIsValidError(err, "username", user.Id), "expected user is valid error: %s", err.Error())
+	require.True(t, HasExpectedUserIsValidError(err, "username", user.ID), "expected user is valid error: %s", err.Error())
 
-	user.Username = NewId() + "^hello#"
+	user.Username = NewID() + "^hello#"
 	err = user.IsValid()
-	require.True(t, HasExpectedUserIsValidError(err, "username", user.Id), "expected user is valid error: %s", err.Error())
+	require.True(t, HasExpectedUserIsValidError(err, "username", user.ID), "expected user is valid error: %s", err.Error())
 
-	user.Username = NewId()
+	user.Username = NewID()
 	err = user.IsValid()
-	require.True(t, HasExpectedUserIsValidError(err, "email", user.Id), "expected user is valid error: %s", err.Error())
+	require.True(t, HasExpectedUserIsValidError(err, "email", user.ID), "expected user is valid error: %s", err.Error())
 
 	user.Email = strings.Repeat("01234567890", 20)
 	err = user.IsValid()
-	require.True(t, HasExpectedUserIsValidError(err, "email", user.Id), "expected user is valid error: %s", err.Error())
+	require.True(t, HasExpectedUserIsValidError(err, "email", user.ID), "expected user is valid error: %s", err.Error())
 
 	user.Email = "user@example.com"
 
 	user.Nickname = strings.Repeat("a", 65)
 	err = user.IsValid()
-	require.True(t, HasExpectedUserIsValidError(err, "nickname", user.Id), "expected user is valid error: %s", err.Error())
+	require.True(t, HasExpectedUserIsValidError(err, "nickname", user.ID), "expected user is valid error: %s", err.Error())
 
 	user.Nickname = strings.Repeat("a", 64)
 	require.Nil(t, user.IsValid())
@@ -133,12 +133,12 @@ func TestUserIsValid(t *testing.T) {
 
 	user.FirstName = strings.Repeat("a", 65)
 	err = user.IsValid()
-	require.True(t, HasExpectedUserIsValidError(err, "first_name", user.Id), "expected user is valid error: %s", err.Error())
+	require.True(t, HasExpectedUserIsValidError(err, "first_name", user.ID), "expected user is valid error: %s", err.Error())
 
 	user.FirstName = strings.Repeat("a", 64)
 	user.LastName = strings.Repeat("a", 65)
 	err = user.IsValid()
-	require.True(t, HasExpectedUserIsValidError(err, "last_name", user.Id), "expected user is valid error: %s", err.Error())
+	require.True(t, HasExpectedUserIsValidError(err, "last_name", user.ID), "expected user is valid error: %s", err.Error())
 
 	user.LastName = strings.Repeat("a", 64)
 	user.Position = strings.Repeat("a", 128)
@@ -146,18 +146,18 @@ func TestUserIsValid(t *testing.T) {
 
 	user.Position = strings.Repeat("a", 129)
 	err = user.IsValid()
-	require.True(t, HasExpectedUserIsValidError(err, "position", user.Id), "expected user is valid error: %s", err.Error())
+	require.True(t, HasExpectedUserIsValidError(err, "position", user.ID), "expected user is valid error: %s", err.Error())
 }
 
-func HasExpectedUserIsValidError(err *AppError, fieldName string, userId string) bool {
+func HasExpectedUserIsValidError(err *AppError, fieldName string, userID string) bool {
 	if err == nil {
 		return false
 	}
 
 	return err.Where == "User.IsValid" &&
-		err.Id == fmt.Sprintf("model.user.is_valid.%s.app_error", fieldName) &&
+		err.ID == fmt.Sprintf("model.user.is_valid.%s.app_error", fieldName) &&
 		err.StatusCode == http.StatusBadRequest &&
-		(userId == "" || err.DetailedError == "user_id="+userId)
+		(userID == "" || err.DetailedError == "user_id="+userID)
 }
 
 func TestUserGetFullName(t *testing.T) {
@@ -337,9 +337,9 @@ func TestIsValidLocale(t *testing.T) {
 
 func TestUserSlice(t *testing.T) {
 	t.Run("FilterByActive", func(t *testing.T) {
-		user0 := &User{Id: "user0", DeleteAt: 0, IsBot: true}
-		user1 := &User{Id: "user1", DeleteAt: 0, IsBot: true}
-		user2 := &User{Id: "user2", DeleteAt: 1, IsBot: false}
+		user0 := &User{ID: "user0", DeleteAt: 0, IsBot: true}
+		user1 := &User{ID: "user1", DeleteAt: 0, IsBot: true}
+		user2 := &User{ID: "user2", DeleteAt: 1, IsBot: false}
 
 		slice := UserSlice([]*User{user0, user1, user2})
 

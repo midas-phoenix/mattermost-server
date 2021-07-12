@@ -36,7 +36,7 @@ type DoPostActionRequest struct {
 
 type PostAction struct {
 	// A unique Action ID. If not set, generated automatically.
-	Id string `json:"id,omitempty"`
+	ID string `json:"id,omitempty"`
 
 	// The type of the interactive element. Currently supported are
 	// "select" and "button".
@@ -75,7 +75,7 @@ type PostAction struct {
 }
 
 func (p *PostAction) Equals(input *PostAction) bool {
-	if p.Id != input.Id {
+	if p.ID != input.ID {
 		return false
 	}
 
@@ -151,9 +151,9 @@ func (p *PostAction) Equals(input *PostAction) bool {
 // posts.
 type PostActionCookie struct {
 	Type        string                 `json:"type,omitempty"`
-	PostId      string                 `json:"post_id,omitempty"`
-	RootPostId  string                 `json:"root_post_id,omitempty"`
-	ChannelId   string                 `json:"channel_id,omitempty"`
+	PostID      string                 `json:"post_id,omitempty"`
+	RootPostID  string                 `json:"root_post_id,omitempty"`
+	ChannelID   string                 `json:"channel_id,omitempty"`
 	DataSource  string                 `json:"data_source,omitempty"`
 	Integration *PostActionIntegration `json:"integration,omitempty"`
 	RetainProps map[string]interface{} `json:"retain_props,omitempty"`
@@ -171,14 +171,14 @@ type PostActionIntegration struct {
 }
 
 type PostActionIntegrationRequest struct {
-	UserId      string                 `json:"user_id"`
+	UserID      string                 `json:"user_id"`
 	UserName    string                 `json:"user_name"`
-	ChannelId   string                 `json:"channel_id"`
+	ChannelID   string                 `json:"channel_id"`
 	ChannelName string                 `json:"channel_name"`
-	TeamId      string                 `json:"team_id"`
+	TeamID      string                 `json:"team_id"`
 	TeamName    string                 `json:"team_domain"`
-	PostId      string                 `json:"post_id"`
-	TriggerId   string                 `json:"trigger_id"`
+	PostID      string                 `json:"post_id"`
+	TriggerID   string                 `json:"trigger_id"`
 	Type        string                 `json:"type"`
 	DataSource  string                 `json:"data_source"`
 	Context     map[string]interface{} `json:"context,omitempty"`
@@ -192,11 +192,11 @@ type PostActionIntegrationResponse struct {
 
 type PostActionAPIResponse struct {
 	Status    string `json:"status"` // needed to maintain backwards compatibility
-	TriggerId string `json:"trigger_id"`
+	TriggerID string `json:"trigger_id"`
 }
 
 type Dialog struct {
-	CallbackId       string          `json:"callback_id"`
+	CallbackID       string          `json:"callback_id"`
 	Title            string          `json:"title"`
 	IntroductionText string          `json:"introduction_text"`
 	IconURL          string          `json:"icon_url"`
@@ -222,7 +222,7 @@ type DialogElement struct {
 }
 
 type OpenDialogRequest struct {
-	TriggerId string `json:"trigger_id"`
+	TriggerID string `json:"trigger_id"`
 	URL       string `json:"url"`
 	Dialog    Dialog `json:"dialog"`
 }
@@ -230,11 +230,11 @@ type OpenDialogRequest struct {
 type SubmitDialogRequest struct {
 	Type       string                 `json:"type"`
 	URL        string                 `json:"url,omitempty"`
-	CallbackId string                 `json:"callback_id"`
+	CallbackID string                 `json:"callback_id"`
 	State      string                 `json:"state"`
-	UserId     string                 `json:"user_id"`
-	ChannelId  string                 `json:"channel_id"`
-	TeamId     string                 `json:"team_id"`
+	UserID     string                 `json:"user_id"`
+	ChannelID  string                 `json:"channel_id"`
+	TeamID     string                 `json:"team_id"`
 	Submission map[string]interface{} `json:"submission"`
 	Cancelled  bool                   `json:"cancelled"`
 }
@@ -244,9 +244,9 @@ type SubmitDialogResponse struct {
 	Errors map[string]string `json:"errors,omitempty"`
 }
 
-func GenerateTriggerId(userId string, s crypto.Signer) (string, string, *AppError) {
-	clientTriggerId := NewId()
-	triggerData := strings.Join([]string{clientTriggerId, userId, strconv.FormatInt(GetMillis(), 10)}, ":") + ":"
+func GenerateTriggerID(userID string, s crypto.Signer) (string, string, *AppError) {
+	clientTriggerID := NewID()
+	triggerData := strings.Join([]string{clientTriggerID, userID, strconv.FormatInt(GetMillis(), 10)}, ":") + ":"
 
 	h := crypto.SHA256
 	sum := h.New()
@@ -258,33 +258,33 @@ func GenerateTriggerId(userId string, s crypto.Signer) (string, string, *AppErro
 
 	base64Sig := base64.StdEncoding.EncodeToString(signature)
 
-	triggerId := base64.StdEncoding.EncodeToString([]byte(triggerData + base64Sig))
-	return clientTriggerId, triggerId, nil
+	triggerID := base64.StdEncoding.EncodeToString([]byte(triggerData + base64Sig))
+	return clientTriggerID, triggerID, nil
 }
 
-func (r *PostActionIntegrationRequest) GenerateTriggerId(s crypto.Signer) (string, string, *AppError) {
-	clientTriggerId, triggerId, err := GenerateTriggerId(r.UserId, s)
+func (r *PostActionIntegrationRequest) GenerateTriggerID(s crypto.Signer) (string, string, *AppError) {
+	clientTriggerID, triggerID, err := GenerateTriggerID(r.UserID, s)
 	if err != nil {
 		return "", "", err
 	}
 
-	r.TriggerId = triggerId
-	return clientTriggerId, triggerId, nil
+	r.TriggerID = triggerID
+	return clientTriggerID, triggerID, nil
 }
 
-func DecodeAndVerifyTriggerId(triggerId string, s *ecdsa.PrivateKey) (string, string, *AppError) {
-	triggerIdBytes, err := base64.StdEncoding.DecodeString(triggerId)
+func DecodeAndVerifyTriggerID(triggerID string, s *ecdsa.PrivateKey) (string, string, *AppError) {
+	triggerIDBytes, err := base64.StdEncoding.DecodeString(triggerID)
 	if err != nil {
 		return "", "", NewAppError("DecodeAndVerifyTriggerId", "interactive_message.decode_trigger_id.base64_decode_failed", nil, err.Error(), http.StatusBadRequest)
 	}
 
-	split := strings.Split(string(triggerIdBytes), ":")
+	split := strings.Split(string(triggerIDBytes), ":")
 	if len(split) != 4 {
 		return "", "", NewAppError("DecodeAndVerifyTriggerId", "interactive_message.decode_trigger_id.missing_data", nil, "", http.StatusBadRequest)
 	}
 
-	clientTriggerId := split[0]
-	userId := split[1]
+	clientTriggerID := split[0]
+	userID := split[1]
 	timestampStr := split[2]
 	timestamp, _ := strconv.ParseInt(timestampStr, 10, 64)
 
@@ -306,7 +306,7 @@ func DecodeAndVerifyTriggerId(triggerId string, s *ecdsa.PrivateKey) (string, st
 		return "", "", NewAppError("DecodeAndVerifyTriggerId", "interactive_message.decode_trigger_id.signature_decode_failed", nil, err.Error(), http.StatusBadRequest)
 	}
 
-	triggerData := strings.Join([]string{clientTriggerId, userId, timestampStr}, ":") + ":"
+	triggerData := strings.Join([]string{clientTriggerID, userID, timestampStr}, ":") + ":"
 
 	h := crypto.SHA256
 	sum := h.New()
@@ -316,11 +316,11 @@ func DecodeAndVerifyTriggerId(triggerId string, s *ecdsa.PrivateKey) (string, st
 		return "", "", NewAppError("DecodeAndVerifyTriggerId", "interactive_message.decode_trigger_id.verify_signature_failed", nil, "", http.StatusBadRequest)
 	}
 
-	return clientTriggerId, userId, nil
+	return clientTriggerID, userID, nil
 }
 
-func (r *OpenDialogRequest) DecodeAndVerifyTriggerId(s *ecdsa.PrivateKey) (string, string, *AppError) {
-	return DecodeAndVerifyTriggerId(r.TriggerId, s)
+func (r *OpenDialogRequest) DecodeAndVerifyTriggerID(s *ecdsa.PrivateKey) (string, string, *AppError) {
+	return DecodeAndVerifyTriggerID(r.TriggerID, s)
 }
 
 func (r *PostActionIntegrationRequest) ToJson() []byte {
@@ -394,7 +394,7 @@ func (o *Post) StripActionIntegrations() {
 func (o *Post) GetAction(id string) *PostAction {
 	for _, attachment := range o.Attachments() {
 		for _, action := range attachment.Actions {
-			if action != nil && action.Id == id {
+			if action != nil && action.ID == id {
 				return action
 			}
 		}
@@ -402,15 +402,15 @@ func (o *Post) GetAction(id string) *PostAction {
 	return nil
 }
 
-func (o *Post) GenerateActionIds() {
+func (o *Post) GenerateActionIDs() {
 	if o.GetProp("attachments") != nil {
 		o.AddProp("attachments", o.Attachments())
 	}
 	if attachments, ok := o.GetProp("attachments").([]*SlackAttachment); ok {
 		for _, attachment := range attachments {
 			for _, action := range attachment.Actions {
-				if action != nil && action.Id == "" {
-					action.Id = NewId()
+				if action != nil && action.ID == "" {
+					action.ID = NewID()
 				}
 			}
 		}
@@ -437,18 +437,18 @@ func AddPostActionCookies(o *Post, secret []byte) *Post {
 		for _, action := range attachment.Actions {
 			c := &PostActionCookie{
 				Type:        action.Type,
-				ChannelId:   p.ChannelId,
+				ChannelID:   p.ChannelID,
 				DataSource:  action.DataSource,
 				Integration: action.Integration,
 				RetainProps: retainProps,
 				RemoveProps: removeProps,
 			}
 
-			c.PostId = p.Id
-			if p.RootId == "" {
-				c.RootPostId = p.Id
+			c.PostID = p.ID
+			if p.RootID == "" {
+				c.RootPostID = p.ID
 			} else {
-				c.RootPostId = p.RootId
+				c.RootPostID = p.RootID
 			}
 
 			b, _ := json.Marshal(c)

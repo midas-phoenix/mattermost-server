@@ -28,8 +28,8 @@ var (
 )
 
 type RemoteCluster struct {
-	RemoteId     string `json:"remote_id"`
-	RemoteTeamId string `json:"remote_team_id"`
+	RemoteID     string `json:"remote_id"`
+	RemoteTeamID string `json:"remote_team_id"`
 	Name         string `json:"name"`
 	DisplayName  string `json:"display_name"`
 	SiteURL      string `json:"site_url"`
@@ -38,12 +38,12 @@ type RemoteCluster struct {
 	Token        string `json:"token"`
 	RemoteToken  string `json:"remote_token"`
 	Topics       string `json:"topics"`
-	CreatorId    string `json:"creator_id"`
+	CreatorID    string `json:"creator_id"`
 }
 
 func (rc *RemoteCluster) PreSave() {
-	if rc.RemoteId == "" {
-		rc.RemoteId = NewId()
+	if rc.RemoteID == "" {
+		rc.RemoteID = NewID()
 	}
 
 	if rc.DisplayName == "" {
@@ -55,7 +55,7 @@ func (rc *RemoteCluster) PreSave() {
 	rc.Name = NormalizeRemoteName(rc.Name)
 
 	if rc.Token == "" {
-		rc.Token = NewId()
+		rc.Token = NewID()
 	}
 
 	if rc.CreateAt == 0 {
@@ -65,8 +65,8 @@ func (rc *RemoteCluster) PreSave() {
 }
 
 func (rc *RemoteCluster) IsValid() *AppError {
-	if !IsValidId(rc.RemoteId) {
-		return NewAppError("RemoteCluster.IsValid", "model.cluster.is_valid.id.app_error", nil, "id="+rc.RemoteId, http.StatusBadRequest)
+	if !IsValidID(rc.RemoteID) {
+		return NewAppError("RemoteCluster.IsValid", "model.cluster.is_valid.id.app_error", nil, "id="+rc.RemoteID, http.StatusBadRequest)
 	}
 
 	if !IsValidRemoteName(rc.Name) {
@@ -77,8 +77,8 @@ func (rc *RemoteCluster) IsValid() *AppError {
 		return NewAppError("RemoteCluster.IsValid", "model.cluster.is_valid.create_at.app_error", nil, "create_at=0", http.StatusBadRequest)
 	}
 
-	if !IsValidId(rc.CreatorId) {
-		return NewAppError("RemoteCluster.IsValid", "model.cluster.is_valid.id.app_error", nil, "creator_id="+rc.CreatorId, http.StatusBadRequest)
+	if !IsValidID(rc.CreatorID) {
+		return NewAppError("RemoteCluster.IsValid", "model.cluster.is_valid.id.app_error", nil, "creator_id="+rc.CreatorID, http.StatusBadRequest)
 	}
 	return nil
 }
@@ -167,13 +167,13 @@ type RemoteClusterInfo struct {
 
 // RemoteClusterFrame wraps a `RemoteClusterMsg` with credentials specific to a remote cluster.
 type RemoteClusterFrame struct {
-	RemoteId string           `json:"remote_id"`
+	RemoteID string           `json:"remote_id"`
 	Msg      RemoteClusterMsg `json:"msg"`
 }
 
 func (f *RemoteClusterFrame) IsValid() *AppError {
-	if !IsValidId(f.RemoteId) {
-		return NewAppError("RemoteClusterFrame.IsValid", "api.remote_cluster.invalid_id.app_error", nil, "RemoteId="+f.RemoteId, http.StatusBadRequest)
+	if !IsValidID(f.RemoteID) {
+		return NewAppError("RemoteClusterFrame.IsValid", "api.remote_cluster.invalid_id.app_error", nil, "RemoteId="+f.RemoteID, http.StatusBadRequest)
 	}
 
 	if err := f.Msg.IsValid(); err != nil {
@@ -195,7 +195,7 @@ func RemoteClusterFrameFromJSON(data io.Reader) (*RemoteClusterFrame, *AppError)
 // RemoteClusterMsg represents a message that is sent and received between clusters.
 // These are processed and routed via the RemoteClusters service.
 type RemoteClusterMsg struct {
-	Id       string          `json:"id"`
+	ID       string          `json:"id"`
 	Topic    string          `json:"topic"`
 	CreateAt int64           `json:"create_at"`
 	Payload  json.RawMessage `json:"payload"`
@@ -203,7 +203,7 @@ type RemoteClusterMsg struct {
 
 func NewRemoteClusterMsg(topic string, payload json.RawMessage) RemoteClusterMsg {
 	return RemoteClusterMsg{
-		Id:       NewId(),
+		ID:       NewID(),
 		Topic:    topic,
 		CreateAt: GetMillis(),
 		Payload:  payload,
@@ -211,8 +211,8 @@ func NewRemoteClusterMsg(topic string, payload json.RawMessage) RemoteClusterMsg
 }
 
 func (m RemoteClusterMsg) IsValid() *AppError {
-	if !IsValidId(m.Id) {
-		return NewAppError("RemoteClusterMsg.IsValid", "api.remote_cluster.invalid_id.app_error", nil, "Id="+m.Id, http.StatusBadRequest)
+	if !IsValidID(m.ID) {
+		return NewAppError("RemoteClusterMsg.IsValid", "api.remote_cluster.invalid_id.app_error", nil, "Id="+m.ID, http.StatusBadRequest)
 	}
 
 	if m.Topic == "" {
@@ -253,8 +253,8 @@ func RemoteClusterPingFromRawJSON(raw json.RawMessage) (RemoteClusterPing, *AppE
 
 // RemoteClusterInvite represents an invitation to establish a simple trust with a remote cluster.
 type RemoteClusterInvite struct {
-	RemoteId     string `json:"remote_id"`
-	RemoteTeamId string `json:"remote_team_id"`
+	RemoteID     string `json:"remote_id"`
+	RemoteTeamID string `json:"remote_team_id"`
 	SiteURL      string `json:"site_url"`
 	Token        string `json:"token"`
 }
@@ -350,6 +350,6 @@ type RemoteClusterQueryFilter struct {
 	InChannel      string
 	NotInChannel   string
 	Topic          string
-	CreatorId      string
+	CreatorID      string
 	OnlyConfirmed  bool
 }

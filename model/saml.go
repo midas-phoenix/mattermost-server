@@ -25,15 +25,15 @@ type SamlAuthRequest struct {
 }
 
 type SamlCertificateStatus struct {
-	IdpCertificateFile    bool `json:"idp_certificate_file"`
+	IDpCertificateFile    bool `json:"idp_certificate_file"`
 	PrivateKeyFile        bool `json:"private_key_file"`
 	PublicCertificateFile bool `json:"public_certificate_file"`
 }
 
 type SamlMetadataResponse struct {
-	IdpDescriptorUrl     string `json:"idp_descriptor_url"`
-	IdpUrl               string `json:"idp_url"`
-	IdpPublicCertificate string `json:"idp_public_certificate"`
+	IDpDescriptorUrl     string `json:"idp_descriptor_url"`
+	IDpUrl               string `json:"idp_url"`
+	IDpPublicCertificate string `json:"idp_public_certificate"`
 }
 
 type NameIDFormat struct {

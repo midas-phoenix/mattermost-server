@@ -24,7 +24,7 @@ func TestUserMentionMapFromURLValues(t *testing.T) {
 		{
 			url.Values{
 				userMentionsKey:    []string{},
-				userMentionsIdsKey: []string{},
+				userMentionsIDsKey: []string{},
 			},
 			UserMentionMap{},
 			false,
@@ -32,7 +32,7 @@ func TestUserMentionMapFromURLValues(t *testing.T) {
 		{
 			url.Values{
 				userMentionsKey:    []string{"one", "two", "three"},
-				userMentionsIdsKey: []string{"oneId", "twoId", "threeId"},
+				userMentionsIDsKey: []string{"oneId", "twoId", "threeId"},
 			},
 			UserMentionMap{
 				"one":   "oneId",
@@ -44,7 +44,7 @@ func TestUserMentionMapFromURLValues(t *testing.T) {
 		{
 			url.Values{
 				"wrongKey":         []string{"one", "two", "three"},
-				userMentionsIdsKey: []string{"oneId", "twoId", "threeId"},
+				userMentionsIDsKey: []string{"oneId", "twoId", "threeId"},
 			},
 			nil,
 			true,
@@ -60,7 +60,7 @@ func TestUserMentionMapFromURLValues(t *testing.T) {
 		{
 			url.Values{
 				userMentionsKey:    []string{"one", "two"},
-				userMentionsIdsKey: []string{"justone"},
+				userMentionsIDsKey: []string{"justone"},
 			},
 			nil,
 			true,
@@ -92,14 +92,14 @@ func TestUserMentionMap_ToURLValues(t *testing.T) {
 			UserMentionMap{"user": "id"},
 			url.Values{
 				userMentionsKey:    []string{"user"},
-				userMentionsIdsKey: []string{"id"},
+				userMentionsIDsKey: []string{"id"},
 			},
 		},
 		{
 			UserMentionMap{"one": "id1", "two": "id2", "three": "id3"},
 			url.Values{
 				userMentionsKey:    []string{"one", "two", "three"},
-				userMentionsIdsKey: []string{"id1", "id2", "id3"},
+				userMentionsIDsKey: []string{"id1", "id2", "id3"},
 			},
 		},
 	}
@@ -136,7 +136,7 @@ func TestChannelMentionMapFromURLValues(t *testing.T) {
 		{
 			url.Values{
 				channelMentionsKey:    []string{},
-				channelMentionsIdsKey: []string{},
+				channelMentionsIDsKey: []string{},
 			},
 			ChannelMentionMap{},
 			false,
@@ -144,7 +144,7 @@ func TestChannelMentionMapFromURLValues(t *testing.T) {
 		{
 			url.Values{
 				channelMentionsKey:    []string{"one", "two", "three"},
-				channelMentionsIdsKey: []string{"oneId", "twoId", "threeId"},
+				channelMentionsIDsKey: []string{"oneId", "twoId", "threeId"},
 			},
 			ChannelMentionMap{
 				"one":   "oneId",
@@ -156,7 +156,7 @@ func TestChannelMentionMapFromURLValues(t *testing.T) {
 		{
 			url.Values{
 				"wrongKey":            []string{"one", "two", "three"},
-				channelMentionsIdsKey: []string{"oneId", "twoId", "threeId"},
+				channelMentionsIDsKey: []string{"oneId", "twoId", "threeId"},
 			},
 			nil,
 			true,
@@ -172,7 +172,7 @@ func TestChannelMentionMapFromURLValues(t *testing.T) {
 		{
 			url.Values{
 				channelMentionsKey:    []string{"one", "two"},
-				channelMentionsIdsKey: []string{"justone"},
+				channelMentionsIDsKey: []string{"justone"},
 			},
 			nil,
 			true,
@@ -204,14 +204,14 @@ func TestChannelMentionMap_ToURLValues(t *testing.T) {
 			ChannelMentionMap{"user": "id"},
 			url.Values{
 				channelMentionsKey:    []string{"user"},
-				channelMentionsIdsKey: []string{"id"},
+				channelMentionsIDsKey: []string{"id"},
 			},
 		},
 		{
 			ChannelMentionMap{"one": "id1", "two": "id2", "three": "id3"},
 			url.Values{
 				channelMentionsKey:    []string{"one", "two", "three"},
-				channelMentionsIdsKey: []string{"id1", "id2", "id3"},
+				channelMentionsIDsKey: []string{"id1", "id2", "id3"},
 			},
 		},
 	}

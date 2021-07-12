@@ -5,15 +5,15 @@ package model
 
 type UserGetOptions struct {
 	// Filters the users in the team
-	InTeamId string
+	InTeamID string
 	// Filters the users not in the team
-	NotInTeamId string
+	NotInTeamID string
 	// Filters the users in the channel
-	InChannelId string
+	InChannelID string
 	// Filters the users not in the channel
-	NotInChannelId string
+	NotInChannelID string
 	// Filters the users in the group
-	InGroupId string
+	InGroupID string
 	// Filters the users group constrained
 	GroupConstrained bool
 	// Filters the users without a team
@@ -40,7 +40,7 @@ type UserGetOptions struct {
 	PerPage int
 }
 
-type UserGetByIdsOptions struct {
+type UserGetByIDsOptions struct {
 	// Since filters the users based on their UpdateAt timestamp.
 	Since int64
 }

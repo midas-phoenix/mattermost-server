@@ -17,8 +17,8 @@ const (
 )
 
 type AuthData struct {
-	ClientId    string `json:"client_id"`
-	UserId      string `json:"user_id"`
+	ClientID    string `json:"client_id"`
+	UserID      string `json:"user_id"`
 	Code        string `json:"code"`
 	ExpiresIn   int32  `json:"expires_in"`
 	CreateAt    int64  `json:"create_at"`
@@ -29,7 +29,7 @@ type AuthData struct {
 
 type AuthorizeRequest struct {
 	ResponseType string `json:"response_type"`
-	ClientId     string `json:"client_id"`
+	ClientID     string `json:"client_id"`
 	RedirectUri  string `json:"redirect_uri"`
 	Scope        string `json:"scope"`
 	State        string `json:"state"`
@@ -39,16 +39,16 @@ type AuthorizeRequest struct {
 // correctly.
 func (ad *AuthData) IsValid() *AppError {
 
-	if !IsValidId(ad.ClientId) {
+	if !IsValidID(ad.ClientID) {
 		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.client_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if !IsValidId(ad.UserId) {
+	if !IsValidID(ad.UserID) {
 		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.user_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
 	if ad.Code == "" || len(ad.Code) > 128 {
-		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.auth_code.app_error", nil, "client_id="+ad.ClientId, http.StatusBadRequest)
+		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.auth_code.app_error", nil, "client_id="+ad.ClientID, http.StatusBadRequest)
 	}
 
 	if ad.ExpiresIn == 0 {
@@ -56,19 +56,19 @@ func (ad *AuthData) IsValid() *AppError {
 	}
 
 	if ad.CreateAt <= 0 {
-		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.create_at.app_error", nil, "client_id="+ad.ClientId, http.StatusBadRequest)
+		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.create_at.app_error", nil, "client_id="+ad.ClientID, http.StatusBadRequest)
 	}
 
 	if len(ad.RedirectUri) > 256 || !IsValidHttpUrl(ad.RedirectUri) {
-		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.redirect_uri.app_error", nil, "client_id="+ad.ClientId, http.StatusBadRequest)
+		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.redirect_uri.app_error", nil, "client_id="+ad.ClientID, http.StatusBadRequest)
 	}
 
 	if len(ad.State) > 1024 {
-		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.state.app_error", nil, "client_id="+ad.ClientId, http.StatusBadRequest)
+		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.state.app_error", nil, "client_id="+ad.ClientID, http.StatusBadRequest)
 	}
 
 	if len(ad.Scope) > 128 {
-		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.scope.app_error", nil, "client_id="+ad.ClientId, http.StatusBadRequest)
+		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.scope.app_error", nil, "client_id="+ad.ClientID, http.StatusBadRequest)
 	}
 
 	return nil
@@ -78,7 +78,7 @@ func (ad *AuthData) IsValid() *AppError {
 // correctly.
 func (ar *AuthorizeRequest) IsValid() *AppError {
 
-	if !IsValidId(ar.ClientId) {
+	if !IsValidID(ar.ClientID) {
 		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.client_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
@@ -87,15 +87,15 @@ func (ar *AuthorizeRequest) IsValid() *AppError {
 	}
 
 	if ar.RedirectUri == "" || len(ar.RedirectUri) > 256 || !IsValidHttpUrl(ar.RedirectUri) {
-		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.redirect_uri.app_error", nil, "client_id="+ar.ClientId, http.StatusBadRequest)
+		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.redirect_uri.app_error", nil, "client_id="+ar.ClientID, http.StatusBadRequest)
 	}
 
 	if len(ar.State) > 1024 {
-		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.state.app_error", nil, "client_id="+ar.ClientId, http.StatusBadRequest)
+		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.state.app_error", nil, "client_id="+ar.ClientID, http.StatusBadRequest)
 	}
 
 	if len(ar.Scope) > 128 {
-		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.scope.app_error", nil, "client_id="+ar.ClientId, http.StatusBadRequest)
+		return NewAppError("AuthData.IsValid", "model.authorize.is_valid.scope.app_error", nil, "client_id="+ar.ClientID, http.StatusBadRequest)
 	}
 
 	return nil

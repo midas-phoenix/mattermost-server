@@ -10,15 +10,15 @@ import (
 )
 
 type UserAccessToken struct {
-	Id          string `json:"id"`
+	ID          string `json:"id"`
 	Token       string `json:"token,omitempty"`
-	UserId      string `json:"user_id"`
+	UserID      string `json:"user_id"`
 	Description string `json:"description"`
 	IsActive    bool   `json:"is_active"`
 }
 
 func (t *UserAccessToken) IsValid() *AppError {
-	if !IsValidId(t.Id) {
+	if !IsValidID(t.ID) {
 		return NewAppError("UserAccessToken.IsValid", "model.user_access_token.is_valid.id.app_error", nil, "", http.StatusBadRequest)
 	}
 
@@ -26,7 +26,7 @@ func (t *UserAccessToken) IsValid() *AppError {
 		return NewAppError("UserAccessToken.IsValid", "model.user_access_token.is_valid.token.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if !IsValidId(t.UserId) {
+	if !IsValidID(t.UserID) {
 		return NewAppError("UserAccessToken.IsValid", "model.user_access_token.is_valid.user_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
@@ -38,7 +38,7 @@ func (t *UserAccessToken) IsValid() *AppError {
 }
 
 func (t *UserAccessToken) PreSave() {
-	t.Id = NewId()
+	t.ID = NewID()
 	t.IsActive = true
 }
 

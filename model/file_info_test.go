@@ -18,11 +18,11 @@ import (
 
 func TestFileInfoIsValid(t *testing.T) {
 	info := &FileInfo{
-		Id:        NewId(),
-		CreatorId: NewId(),
+		ID:        NewID(),
+		CreatorID: NewID(),
 		CreateAt:  1234,
 		UpdateAt:  1234,
-		PostId:    "",
+		PostID:    "",
 		Path:      "fake/path.png",
 	}
 
@@ -31,9 +31,9 @@ func TestFileInfoIsValid(t *testing.T) {
 	})
 
 	t.Run("Empty ID is not valid", func(t *testing.T) {
-		info.Id = ""
+		info.ID = ""
 		assert.NotNil(t, info.IsValid(), "empty Id isn't valid")
-		info.Id = NewId()
+		info.ID = NewID()
 	})
 
 	t.Run("CreateAt 0 is not valid", func(t *testing.T) {
@@ -49,7 +49,7 @@ func TestFileInfoIsValid(t *testing.T) {
 	})
 
 	t.Run("New Post ID is valid", func(t *testing.T) {
-		info.PostId = NewId()
+		info.PostID = NewID()
 		assert.Nil(t, info.IsValid())
 	})
 

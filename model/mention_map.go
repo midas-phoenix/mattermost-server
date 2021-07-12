@@ -13,25 +13,25 @@ type ChannelMentionMap map[string]string
 
 const (
 	userMentionsKey       = "user_mentions"
-	userMentionsIdsKey    = "user_mentions_ids"
+	userMentionsIDsKey    = "user_mentions_ids"
 	channelMentionsKey    = "channel_mentions"
-	channelMentionsIdsKey = "channel_mentions_ids"
+	channelMentionsIDsKey = "channel_mentions_ids"
 )
 
 func UserMentionMapFromURLValues(values url.Values) (UserMentionMap, error) {
-	return mentionsFromURLValues(values, userMentionsKey, userMentionsIdsKey)
+	return mentionsFromURLValues(values, userMentionsKey, userMentionsIDsKey)
 }
 
 func (m UserMentionMap) ToURLValues() url.Values {
-	return mentionsToURLValues(m, userMentionsKey, userMentionsIdsKey)
+	return mentionsToURLValues(m, userMentionsKey, userMentionsIDsKey)
 }
 
 func ChannelMentionMapFromURLValues(values url.Values) (ChannelMentionMap, error) {
-	return mentionsFromURLValues(values, channelMentionsKey, channelMentionsIdsKey)
+	return mentionsFromURLValues(values, channelMentionsKey, channelMentionsIDsKey)
 }
 
 func (m ChannelMentionMap) ToURLValues() url.Values {
-	return mentionsToURLValues(m, channelMentionsKey, channelMentionsIdsKey)
+	return mentionsToURLValues(m, channelMentionsKey, channelMentionsIDsKey)
 }
 
 func mentionsFromURLValues(values url.Values, mentionKey, idKey string) (map[string]string, error) {
@@ -58,8 +58,8 @@ func mentionsFromURLValues(values url.Values, mentionKey, idKey string) (map[str
 	for i, mention := range mentions {
 		id := ids[i]
 
-		if oldId, ok := mentionsMap[mention]; ok && oldId != id {
-			return nil, fmt.Errorf("key %s has two different values: %s and %s", mention, oldId, id)
+		if oldID, ok := mentionsMap[mention]; ok && oldID != id {
+			return nil, fmt.Errorf("key %s has two different values: %s and %s", mention, oldID, id)
 		}
 
 		mentionsMap[mention] = id

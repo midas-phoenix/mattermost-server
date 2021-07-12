@@ -19,8 +19,8 @@ const (
 // This struct's serializer methods are auto-generated. If a new field is added/removed,
 // please run make gen-serialized.
 type TeamMember struct {
-	TeamId        string `json:"team_id"`
-	UserId        string `json:"user_id"`
+	TeamID        string `json:"team_id"`
+	UserID        string `json:"user_id"`
 	Roles         string `json:"roles"`
 	DeleteAt      int64  `json:"delete_at"`
 	SchemeGuest   bool   `json:"scheme_guest"`
@@ -31,7 +31,7 @@ type TeamMember struct {
 
 //msgp:ignore TeamUnread
 type TeamUnread struct {
-	TeamId           string `json:"team_id"`
+	TeamID           string `json:"team_id"`
 	MsgCount         int64  `json:"msg_count"`
 	MentionCount     int64  `json:"mention_count"`
 	MentionCountRoot int64  `json:"mention_count_root"`
@@ -46,7 +46,7 @@ type TeamMemberForExport struct {
 
 //msgp:ignore TeamMemberWithError
 type TeamMemberWithError struct {
-	UserId string      `json:"user_id"`
+	UserID string      `json:"user_id"`
 	Member *TeamMember `json:"member"`
 	Error  *AppError   `json:"error"`
 }
@@ -138,7 +138,7 @@ func TeamMembersWithErrorToJson(o []*TeamMemberWithError) string {
 }
 
 func TeamMemberWithErrorToString(o *TeamMemberWithError) string {
-	return fmt.Sprintf("%s:%s", o.UserId, o.Error.Error())
+	return fmt.Sprintf("%s:%s", o.UserID, o.Error.Error())
 }
 
 func TeamMembersWithErrorFromJson(data io.Reader) []*TeamMemberWithError {
@@ -177,11 +177,11 @@ func TeamsUnreadFromJson(data io.Reader) []*TeamUnread {
 
 func (o *TeamMember) IsValid() *AppError {
 
-	if !IsValidId(o.TeamId) {
+	if !IsValidID(o.TeamID) {
 		return NewAppError("TeamMember.IsValid", "model.team_member.is_valid.team_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if !IsValidId(o.UserId) {
+	if !IsValidID(o.UserID) {
 		return NewAppError("TeamMember.IsValid", "model.team_member.is_valid.user_id.app_error", nil, "", http.StatusBadRequest)
 	}
 

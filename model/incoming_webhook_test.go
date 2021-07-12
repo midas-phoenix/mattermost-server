@@ -11,11 +11,11 @@ import (
 )
 
 func TestIncomingWebhookJson(t *testing.T) {
-	o := IncomingWebhook{Id: NewId()}
+	o := IncomingWebhook{ID: NewID()}
 	json := o.ToJson()
 	ro := IncomingWebhookFromJson(strings.NewReader(json))
 
-	require.Equal(t, o.Id, ro.Id)
+	require.Equal(t, o.ID, ro.ID)
 }
 
 func TestIncomingWebhookIsValid(t *testing.T) {
@@ -23,7 +23,7 @@ func TestIncomingWebhookIsValid(t *testing.T) {
 
 	require.NotNil(t, o.IsValid())
 
-	o.Id = NewId()
+	o.ID = NewID()
 	require.NotNil(t, o.IsValid())
 
 	o.CreateAt = GetMillis()
@@ -32,22 +32,22 @@ func TestIncomingWebhookIsValid(t *testing.T) {
 	o.UpdateAt = GetMillis()
 	require.NotNil(t, o.IsValid())
 
-	o.UserId = "123"
+	o.UserID = "123"
 	require.NotNil(t, o.IsValid())
 
-	o.UserId = NewId()
+	o.UserID = NewID()
 	require.NotNil(t, o.IsValid())
 
-	o.ChannelId = "123"
+	o.ChannelID = "123"
 	require.NotNil(t, o.IsValid())
 
-	o.ChannelId = NewId()
+	o.ChannelID = NewID()
 	require.NotNil(t, o.IsValid())
 
-	o.TeamId = "123"
+	o.TeamID = "123"
 	require.NotNil(t, o.IsValid())
 
-	o.TeamId = NewId()
+	o.TeamID = NewID()
 	require.Nil(t, o.IsValid())
 
 	o.DisplayName = strings.Repeat("1", 65)

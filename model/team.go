@@ -26,7 +26,7 @@ const (
 )
 
 type Team struct {
-	Id                 string  `json:"id"`
+	ID                 string  `json:"id"`
 	CreateAt           int64   `json:"create_at"`
 	UpdateAt           int64   `json:"update_at"`
 	DeleteAt           int64   `json:"delete_at"`
@@ -37,10 +37,10 @@ type Team struct {
 	Type               string  `json:"type"`
 	CompanyName        string  `json:"company_name"`
 	AllowedDomains     string  `json:"allowed_domains"`
-	InviteId           string  `json:"invite_id"`
+	InviteID           string  `json:"invite_id"`
 	AllowOpenInvite    bool    `json:"allow_open_invite"`
 	LastTeamIconUpdate int64   `json:"last_team_icon_update,omitempty"`
-	SchemeId           *string `json:"scheme_id"`
+	SchemeID           *string `json:"scheme_id"`
 	GroupConstrained   *bool   `json:"group_constrained"`
 	PolicyID           *string `json:"policy_id" db:"-"`
 }
@@ -132,73 +132,73 @@ func TeamListFromJson(data io.Reader) []*Team {
 }
 
 func (o *Team) Etag() string {
-	return Etag(o.Id, o.UpdateAt)
+	return Etag(o.ID, o.UpdateAt)
 }
 
 func (o *Team) IsValid() *AppError {
 
-	if !IsValidId(o.Id) {
+	if !IsValidID(o.ID) {
 		return NewAppError("Team.IsValid", "model.team.is_valid.id.app_error", nil, "", http.StatusBadRequest)
 	}
 
 	if o.CreateAt == 0 {
-		return NewAppError("Team.IsValid", "model.team.is_valid.create_at.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Team.IsValid", "model.team.is_valid.create_at.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if o.UpdateAt == 0 {
-		return NewAppError("Team.IsValid", "model.team.is_valid.update_at.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Team.IsValid", "model.team.is_valid.update_at.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if len(o.Email) > TeamEmailMaxLength {
-		return NewAppError("Team.IsValid", "model.team.is_valid.email.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Team.IsValid", "model.team.is_valid.email.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if o.Email != "" && !IsValidEmail(o.Email) {
-		return NewAppError("Team.IsValid", "model.team.is_valid.email.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Team.IsValid", "model.team.is_valid.email.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if utf8.RuneCountInString(o.DisplayName) == 0 || utf8.RuneCountInString(o.DisplayName) > TeamDisplayNameMaxRunes {
-		return NewAppError("Team.IsValid", "model.team.is_valid.name.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Team.IsValid", "model.team.is_valid.name.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if len(o.Name) > TeamNameMaxLength {
-		return NewAppError("Team.IsValid", "model.team.is_valid.url.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Team.IsValid", "model.team.is_valid.url.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if len(o.Description) > TeamDescriptionMaxLength {
-		return NewAppError("Team.IsValid", "model.team.is_valid.description.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Team.IsValid", "model.team.is_valid.description.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
-	if o.InviteId == "" {
-		return NewAppError("Team.IsValid", "model.team.is_valid.invite_id.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+	if o.InviteID == "" {
+		return NewAppError("Team.IsValid", "model.team.is_valid.invite_id.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if IsReservedTeamName(o.Name) {
-		return NewAppError("Team.IsValid", "model.team.is_valid.reserved.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Team.IsValid", "model.team.is_valid.reserved.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if !IsValidTeamName(o.Name) {
-		return NewAppError("Team.IsValid", "model.team.is_valid.characters.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Team.IsValid", "model.team.is_valid.characters.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if !(o.Type == TeamOpen || o.Type == TeamInvite) {
-		return NewAppError("Team.IsValid", "model.team.is_valid.type.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Team.IsValid", "model.team.is_valid.type.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if len(o.CompanyName) > TeamCompanyNameMaxLength {
-		return NewAppError("Team.IsValid", "model.team.is_valid.company.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Team.IsValid", "model.team.is_valid.company.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if len(o.AllowedDomains) > TeamAllowedDomainsMaxLength {
-		return NewAppError("Team.IsValid", "model.team.is_valid.domains.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Team.IsValid", "model.team.is_valid.domains.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	return nil
 }
 
 func (o *Team) PreSave() {
-	if o.Id == "" {
-		o.Id = NewId()
+	if o.ID == "" {
+		o.ID = NewID()
 	}
 
 	o.CreateAt = GetMillis()
@@ -209,8 +209,8 @@ func (o *Team) PreSave() {
 	o.Description = SanitizeUnicode(o.Description)
 	o.CompanyName = SanitizeUnicode(o.CompanyName)
 
-	if o.InviteId == "" {
-		o.InviteId = NewId()
+	if o.InviteID == "" {
+		o.InviteID = NewID()
 	}
 }
 
@@ -269,7 +269,7 @@ func CleanTeamName(s string) string {
 	s = strings.Trim(s, "-")
 
 	if !IsValidTeamName(s) {
-		s = NewId()
+		s = NewID()
 	}
 
 	return s
@@ -277,7 +277,7 @@ func CleanTeamName(s string) string {
 
 func (o *Team) Sanitize() {
 	o.Email = ""
-	o.InviteId = ""
+	o.InviteID = ""
 }
 
 func (o *Team) Patch(patch *TeamPatch) {

@@ -4,33 +4,33 @@
 package model
 
 type MessageExport struct {
-	TeamId          *string
+	TeamID          *string
 	TeamName        *string
 	TeamDisplayName *string
 
-	ChannelId          *string
+	ChannelID          *string
 	ChannelName        *string
 	ChannelDisplayName *string
 	ChannelType        *string
 
-	UserId    *string
+	UserID    *string
 	UserEmail *string
 	Username  *string
 	IsBot     bool
 
-	PostId         *string
+	PostID         *string
 	PostCreateAt   *int64
 	PostUpdateAt   *int64
 	PostDeleteAt   *int64
 	PostMessage    *string
 	PostType       *string
-	PostRootId     *string
+	PostRootID     *string
 	PostProps      *string
-	PostOriginalId *string
-	PostFileIds    StringArray
+	PostOriginalID *string
+	PostFileIDs    StringArray
 }
 
 type MessageExportCursor struct {
 	LastPostUpdateAt int64
-	LastPostId       string
+	LastPostID       string
 }

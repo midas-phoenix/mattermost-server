@@ -15,7 +15,7 @@ import (
 )
 
 func TestRemoteClusterJson(t *testing.T) {
-	o := RemoteCluster{RemoteId: NewId(), Name: "test"}
+	o := RemoteCluster{RemoteID: NewID(), Name: "test"}
 
 	json, err := o.ToJSON()
 	require.NoError(t, err)
@@ -23,13 +23,13 @@ func TestRemoteClusterJson(t *testing.T) {
 	ro, appErr := RemoteClusterFromJSON(strings.NewReader(json))
 	require.Nil(t, appErr)
 
-	require.Equal(t, o.RemoteId, ro.RemoteId)
+	require.Equal(t, o.RemoteID, ro.RemoteID)
 	require.Equal(t, o.Name, ro.Name)
 }
 
 func TestRemoteClusterIsValid(t *testing.T) {
-	id := NewId()
-	creator := NewId()
+	id := NewID()
+	creator := NewID()
 	now := GetMillis()
 	data := []struct {
 		name  string
@@ -37,14 +37,14 @@ func TestRemoteClusterIsValid(t *testing.T) {
 		valid bool
 	}{
 		{name: "Zero value", rc: &RemoteCluster{}, valid: false},
-		{name: "Missing cluster_name", rc: &RemoteCluster{RemoteId: id}, valid: false},
-		{name: "Missing host_name", rc: &RemoteCluster{RemoteId: id, Name: NewId()}, valid: false},
-		{name: "Missing create_at", rc: &RemoteCluster{RemoteId: id, Name: NewId(), SiteURL: "example.com"}, valid: false},
-		{name: "Missing last_ping_at", rc: &RemoteCluster{RemoteId: id, Name: NewId(), SiteURL: "example.com", CreatorId: creator, CreateAt: now}, valid: true},
-		{name: "Missing creator", rc: &RemoteCluster{RemoteId: id, Name: NewId(), SiteURL: "example.com", CreateAt: now, LastPingAt: now}, valid: false},
-		{name: "RemoteCluster valid", rc: &RemoteCluster{RemoteId: id, Name: NewId(), SiteURL: "example.com", CreateAt: now, LastPingAt: now, CreatorId: creator}, valid: true},
-		{name: "Include protocol", rc: &RemoteCluster{RemoteId: id, Name: NewId(), SiteURL: "http://example.com", CreateAt: now, LastPingAt: now, CreatorId: creator}, valid: true},
-		{name: "Include protocol & port", rc: &RemoteCluster{RemoteId: id, Name: NewId(), SiteURL: "http://example.com:8065", CreateAt: now, LastPingAt: now, CreatorId: creator}, valid: true},
+		{name: "Missing cluster_name", rc: &RemoteCluster{RemoteID: id}, valid: false},
+		{name: "Missing host_name", rc: &RemoteCluster{RemoteID: id, Name: NewID()}, valid: false},
+		{name: "Missing create_at", rc: &RemoteCluster{RemoteID: id, Name: NewID(), SiteURL: "example.com"}, valid: false},
+		{name: "Missing last_ping_at", rc: &RemoteCluster{RemoteID: id, Name: NewID(), SiteURL: "example.com", CreatorID: creator, CreateAt: now}, valid: true},
+		{name: "Missing creator", rc: &RemoteCluster{RemoteID: id, Name: NewID(), SiteURL: "example.com", CreateAt: now, LastPingAt: now}, valid: false},
+		{name: "RemoteCluster valid", rc: &RemoteCluster{RemoteID: id, Name: NewID(), SiteURL: "example.com", CreateAt: now, LastPingAt: now, CreatorID: creator}, valid: true},
+		{name: "Include protocol", rc: &RemoteCluster{RemoteID: id, Name: NewID(), SiteURL: "http://example.com", CreateAt: now, LastPingAt: now, CreatorID: creator}, valid: true},
+		{name: "Include protocol & port", rc: &RemoteCluster{RemoteID: id, Name: NewID(), SiteURL: "http://example.com:8065", CreateAt: now, LastPingAt: now, CreatorID: creator}, valid: true},
 	}
 
 	for _, item := range data {
@@ -60,7 +60,7 @@ func TestRemoteClusterIsValid(t *testing.T) {
 func TestRemoteClusterPreSave(t *testing.T) {
 	now := GetMillis()
 
-	o := RemoteCluster{RemoteId: NewId(), Name: NewId()}
+	o := RemoteCluster{RemoteID: NewID(), Name: NewID()}
 	o.PreSave()
 
 	require.GreaterOrEqual(t, o.CreateAt, now)
@@ -75,13 +75,13 @@ func TestRemoteClusterMsgJson(t *testing.T) {
 	ro, appErr := RemoteClusterMsgFromJSON(strings.NewReader(string(json)))
 	require.Nil(t, appErr)
 
-	require.Equal(t, o.Id, ro.Id)
+	require.Equal(t, o.ID, ro.ID)
 	require.Equal(t, o.CreateAt, ro.CreateAt)
 	require.Equal(t, o.Topic, ro.Topic)
 }
 
 func TestRemoteClusterMsgIsValid(t *testing.T) {
-	id := NewId()
+	id := NewID()
 	now := GetMillis()
 	data := []struct {
 		name  string
@@ -89,10 +89,10 @@ func TestRemoteClusterMsgIsValid(t *testing.T) {
 		valid bool
 	}{
 		{name: "Zero value", msg: &RemoteClusterMsg{}, valid: false},
-		{name: "Missing remote id", msg: &RemoteClusterMsg{Id: id}, valid: false},
-		{name: "Missing Topic", msg: &RemoteClusterMsg{Id: id}, valid: false},
-		{name: "Missing Payload", msg: &RemoteClusterMsg{Id: id, CreateAt: now, Topic: "shared_channel"}, valid: false},
-		{name: "RemoteClusterMsg valid", msg: &RemoteClusterMsg{Id: id, CreateAt: now, Topic: "shared_channel", Payload: []byte("{\"hello\":\"world\"}")}, valid: true},
+		{name: "Missing remote id", msg: &RemoteClusterMsg{ID: id}, valid: false},
+		{name: "Missing Topic", msg: &RemoteClusterMsg{ID: id}, valid: false},
+		{name: "Missing Payload", msg: &RemoteClusterMsg{ID: id, CreateAt: now, Topic: "shared_channel"}, valid: false},
+		{name: "RemoteClusterMsg valid", msg: &RemoteClusterMsg{ID: id, CreateAt: now, Topic: "shared_channel", Payload: []byte("{\"hello\":\"world\"}")}, valid: true},
 	}
 
 	for _, item := range data {
@@ -159,9 +159,9 @@ func TestRemoteClusterInviteEncryption(t *testing.T) {
 
 func makeInvite(url string) RemoteClusterInvite {
 	return RemoteClusterInvite{
-		RemoteId:     NewId(),
-		RemoteTeamId: NewId(),
+		RemoteID:     NewID(),
+		RemoteTeamID: NewID(),
 		SiteURL:      url,
-		Token:        NewId(),
+		Token:        NewID(),
 	}
 }

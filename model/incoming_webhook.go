@@ -16,13 +16,13 @@ const (
 )
 
 type IncomingWebhook struct {
-	Id            string `json:"id"`
+	ID            string `json:"id"`
 	CreateAt      int64  `json:"create_at"`
 	UpdateAt      int64  `json:"update_at"`
 	DeleteAt      int64  `json:"delete_at"`
-	UserId        string `json:"user_id"`
-	ChannelId     string `json:"channel_id"`
-	TeamId        string `json:"team_id"`
+	UserID        string `json:"user_id"`
+	ChannelID     string `json:"channel_id"`
+	TeamID        string `json:"team_id"`
 	DisplayName   string `json:"display_name"`
 	Description   string `json:"description"`
 	Username      string `json:"username"`
@@ -65,28 +65,28 @@ func IncomingWebhookListFromJson(data io.Reader) []*IncomingWebhook {
 
 func (o *IncomingWebhook) IsValid() *AppError {
 
-	if !IsValidId(o.Id) {
+	if !IsValidID(o.ID) {
 		return NewAppError("IncomingWebhook.IsValid", "model.incoming_hook.id.app_error", nil, "", http.StatusBadRequest)
 
 	}
 
 	if o.CreateAt == 0 {
-		return NewAppError("IncomingWebhook.IsValid", "model.incoming_hook.create_at.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("IncomingWebhook.IsValid", "model.incoming_hook.create_at.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if o.UpdateAt == 0 {
-		return NewAppError("IncomingWebhook.IsValid", "model.incoming_hook.update_at.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("IncomingWebhook.IsValid", "model.incoming_hook.update_at.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
-	if !IsValidId(o.UserId) {
+	if !IsValidID(o.UserID) {
 		return NewAppError("IncomingWebhook.IsValid", "model.incoming_hook.user_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if !IsValidId(o.ChannelId) {
+	if !IsValidID(o.ChannelID) {
 		return NewAppError("IncomingWebhook.IsValid", "model.incoming_hook.channel_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if !IsValidId(o.TeamId) {
+	if !IsValidID(o.TeamID) {
 		return NewAppError("IncomingWebhook.IsValid", "model.incoming_hook.team_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
@@ -110,8 +110,8 @@ func (o *IncomingWebhook) IsValid() *AppError {
 }
 
 func (o *IncomingWebhook) PreSave() {
-	if o.Id == "" {
-		o.Id = NewId()
+	if o.ID == "" {
+		o.ID = NewID()
 	}
 
 	o.CreateAt = GetMillis()

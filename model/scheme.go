@@ -19,7 +19,7 @@ const (
 )
 
 type Scheme struct {
-	Id                      string `json:"id"`
+	ID                      string `json:"id"`
 	Name                    string `json:"name"`
 	DisplayName             string `json:"display_name"`
 	Description             string `json:"description"`
@@ -106,7 +106,7 @@ func SchemesFromJson(data io.Reader) []*Scheme {
 }
 
 func (scheme *Scheme) IsValid() bool {
-	if !IsValidId(scheme.Id) {
+	if !IsValidID(scheme.ID) {
 		return false
 	}
 

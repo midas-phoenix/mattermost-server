@@ -11,7 +11,7 @@ const (
 // PluginClusterEvent is used to allow intra-cluster plugin communication.
 type PluginClusterEvent struct {
 	// Id is the unique identifier for the event.
-	Id string
+	ID string
 	// Data is the event payload.
 	Data []byte
 }
@@ -24,5 +24,5 @@ type PluginClusterEventSendOptions struct {
 	// TargetId identifies the cluster node to which the event should be sent.
 	// It should match the cluster id of the receiving instance.
 	// If empty, the event gets broadcasted to all other nodes.
-	TargetId string
+	TargetID string
 }

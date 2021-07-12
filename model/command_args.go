@@ -11,12 +11,12 @@ import (
 )
 
 type CommandArgs struct {
-	UserId          string             `json:"user_id"`
-	ChannelId       string             `json:"channel_id"`
-	TeamId          string             `json:"team_id"`
-	RootId          string             `json:"root_id"`
-	ParentId        string             `json:"parent_id"`
-	TriggerId       string             `json:"trigger_id,omitempty"`
+	UserID          string             `json:"user_id"`
+	ChannelID       string             `json:"channel_id"`
+	TeamID          string             `json:"team_id"`
+	RootID          string             `json:"root_id"`
+	ParentID        string             `json:"parent_id"`
+	TriggerID       string             `json:"trigger_id,omitempty"`
 	Command         string             `json:"command"`
 	SiteURL         string             `json:"-"`
 	T               i18n.TranslateFunc `json:"-"`
@@ -40,20 +40,20 @@ func CommandArgsFromJson(data io.Reader) *CommandArgs {
 
 // AddUserMention adds or overrides an entry in UserMentions with name username
 // and identifier userId
-func (o *CommandArgs) AddUserMention(username, userId string) {
+func (o *CommandArgs) AddUserMention(username, userID string) {
 	if o.UserMentions == nil {
 		o.UserMentions = make(UserMentionMap)
 	}
 
-	o.UserMentions[username] = userId
+	o.UserMentions[username] = userID
 }
 
 // AddChannelMention adds or overrides an entry in ChannelMentions with name
 // channelName and identifier channelId
-func (o *CommandArgs) AddChannelMention(channelName, channelId string) {
+func (o *CommandArgs) AddChannelMention(channelName, channelID string) {
 	if o.ChannelMentions == nil {
 		o.ChannelMentions = make(ChannelMentionMap)
 	}
 
-	o.ChannelMentions[channelName] = channelId
+	o.ChannelMentions[channelName] = channelID
 }

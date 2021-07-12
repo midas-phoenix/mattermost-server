@@ -10,13 +10,13 @@ import (
 )
 
 func TestPluginKeyIsValid(t *testing.T) {
-	kv := PluginKeyValue{PluginId: "someid", Key: "somekey", Value: []byte("somevalue")}
+	kv := PluginKeyValue{PluginID: "someid", Key: "somekey", Value: []byte("somevalue")}
 	assert.Nil(t, kv.IsValid())
 
-	kv.PluginId = ""
+	kv.PluginID = ""
 	assert.NotNil(t, kv.IsValid())
 
-	kv.PluginId = "someid"
+	kv.PluginID = "someid"
 	kv.Key = ""
 	assert.NotNil(t, kv.IsValid())
 

@@ -35,11 +35,11 @@ const (
 )
 
 type Channel struct {
-	Id                string                 `json:"id"`
+	ID                string                 `json:"id"`
 	CreateAt          int64                  `json:"create_at"`
 	UpdateAt          int64                  `json:"update_at"`
 	DeleteAt          int64                  `json:"delete_at"`
-	TeamId            string                 `json:"team_id"`
+	TeamID            string                 `json:"team_id"`
 	Type              string                 `json:"type"`
 	DisplayName       string                 `json:"display_name"`
 	Name              string                 `json:"name"`
@@ -48,8 +48,8 @@ type Channel struct {
 	LastPostAt        int64                  `json:"last_post_at"`
 	TotalMsgCount     int64                  `json:"total_msg_count"`
 	ExtraUpdateAt     int64                  `json:"extra_update_at"`
-	CreatorId         string                 `json:"creator_id"`
-	SchemeId          *string                `json:"scheme_id"`
+	CreatorID         string                 `json:"creator_id"`
+	SchemeID          *string                `json:"scheme_id"`
 	Props             map[string]interface{} `json:"props" db:"-"`
 	GroupConstrained  *bool                  `json:"group_constrained"`
 	Shared            *bool                  `json:"shared"`
@@ -129,7 +129,7 @@ type ChannelSearchOpts struct {
 	IncludeDeleted           bool
 	Deleted                  bool
 	ExcludeChannelNames      []string
-	TeamIds                  []string
+	TeamIDs                  []string
 	GroupConstrained         bool
 	ExcludeGroupConstrained  bool
 	PolicyID                 string
@@ -142,7 +142,7 @@ type ChannelSearchOpts struct {
 }
 
 type ChannelMemberCountByGroup struct {
-	GroupId                     string `db:"-" json:"group_id"`
+	GroupID                     string `db:"-" json:"group_id"`
 	ChannelMemberCount          int64  `db:"-" json:"channel_member_count"`
 	ChannelMemberTimezonesCount int64  `db:"-" json:"channel_member_timezones_count"`
 }
@@ -151,14 +151,14 @@ type ChannelOption func(channel *Channel)
 
 func WithID(ID string) ChannelOption {
 	return func(channel *Channel) {
-		channel.Id = ID
+		channel.ID = ID
 	}
 }
 
 func (o *Channel) DeepCopy() *Channel {
 	copy := *o
-	if copy.SchemeId != nil {
-		copy.SchemeId = NewString(*o.SchemeId)
+	if copy.SchemeID != nil {
+		copy.SchemeID = NewString(*o.SchemeID)
 	}
 	return &copy
 }
@@ -215,48 +215,48 @@ func ChannelMemberCountsByGroupFromJson(data io.Reader) []*ChannelMemberCountByG
 }
 
 func (o *Channel) Etag() string {
-	return Etag(o.Id, o.UpdateAt)
+	return Etag(o.ID, o.UpdateAt)
 }
 
 func (o *Channel) IsValid() *AppError {
-	if !IsValidId(o.Id) {
+	if !IsValidID(o.ID) {
 		return NewAppError("Channel.IsValid", "model.channel.is_valid.id.app_error", nil, "", http.StatusBadRequest)
 	}
 
 	if o.CreateAt == 0 {
-		return NewAppError("Channel.IsValid", "model.channel.is_valid.create_at.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Channel.IsValid", "model.channel.is_valid.create_at.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if o.UpdateAt == 0 {
-		return NewAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if utf8.RuneCountInString(o.DisplayName) > ChannelDisplayNameMaxRunes {
-		return NewAppError("Channel.IsValid", "model.channel.is_valid.display_name.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Channel.IsValid", "model.channel.is_valid.display_name.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
-	if !IsValidChannelIdentifier(o.Name) {
-		return NewAppError("Channel.IsValid", "model.channel.is_valid.2_or_more.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+	if !IsValidChannelIDentifier(o.Name) {
+		return NewAppError("Channel.IsValid", "model.channel.is_valid.2_or_more.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if !(o.Type == ChannelTypeOpen || o.Type == ChannelTypePrivate || o.Type == ChannelTypeDirect || o.Type == ChannelTypeGroup) {
-		return NewAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if utf8.RuneCountInString(o.Header) > ChannelHeaderMaxRunes {
-		return NewAppError("Channel.IsValid", "model.channel.is_valid.header.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Channel.IsValid", "model.channel.is_valid.header.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if utf8.RuneCountInString(o.Purpose) > ChannelPurposeMaxRunes {
-		return NewAppError("Channel.IsValid", "model.channel.is_valid.purpose.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Channel.IsValid", "model.channel.is_valid.purpose.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
-	if len(o.CreatorId) > 26 {
+	if len(o.CreatorID) > 26 {
 		return NewAppError("Channel.IsValid", "model.channel.is_valid.creator_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	userIds := strings.Split(o.Name, "__")
-	if o.Type != ChannelTypeDirect && len(userIds) == 2 && IsValidId(userIds[0]) && IsValidId(userIds[1]) {
+	userIDs := strings.Split(o.Name, "__")
+	if o.Type != ChannelTypeDirect && len(userIDs) == 2 && IsValidID(userIDs[0]) && IsValidID(userIDs[1]) {
 		return NewAppError("Channel.IsValid", "model.channel.is_valid.name.app_error", nil, "", http.StatusBadRequest)
 	}
 
@@ -264,8 +264,8 @@ func (o *Channel) IsValid() *AppError {
 }
 
 func (o *Channel) PreSave() {
-	if o.Id == "" {
-		o.Id = NewId()
+	if o.ID == "" {
+		o.ID = NewID()
 	}
 
 	o.Name = SanitizeUnicode(o.Name)
@@ -332,31 +332,31 @@ func (o *Channel) IsShared() bool {
 	return o.Shared != nil && *o.Shared
 }
 
-func (o *Channel) GetOtherUserIdForDM(userId string) string {
+func (o *Channel) GetOtherUserIDForDM(userID string) string {
 	if o.Type != ChannelTypeDirect {
 		return ""
 	}
 
-	userIds := strings.Split(o.Name, "__")
+	userIDs := strings.Split(o.Name, "__")
 
-	var otherUserId string
+	var otherUserID string
 
-	if userIds[0] != userIds[1] {
-		if userIds[0] == userId {
-			otherUserId = userIds[1]
+	if userIDs[0] != userIDs[1] {
+		if userIDs[0] == userID {
+			otherUserID = userIDs[1]
 		} else {
-			otherUserId = userIds[0]
+			otherUserID = userIDs[0]
 		}
 	}
 
-	return otherUserId
+	return otherUserID
 }
 
-func GetDMNameFromIds(userId1, userId2 string) string {
-	if userId1 > userId2 {
-		return userId2 + "__" + userId1
+func GetDMNameFromIDs(userID1, userID2 string) string {
+	if userID1 > userID2 {
+		return userID2 + "__" + userID1
 	}
-	return userId1 + "__" + userId2
+	return userID1 + "__" + userID2
 }
 
 func GetGroupDisplayNameFromUsers(users []*User, truncate bool) string {
@@ -376,11 +376,11 @@ func GetGroupDisplayNameFromUsers(users []*User, truncate bool) string {
 	return name
 }
 
-func GetGroupNameFromUserIds(userIds []string) string {
-	sort.Strings(userIds)
+func GetGroupNameFromUserIDs(userIDs []string) string {
+	sort.Strings(userIDs)
 
 	h := sha1.New()
-	for _, id := range userIds {
+	for _, id := range userIDs {
 		io.WriteString(h, id)
 	}
 

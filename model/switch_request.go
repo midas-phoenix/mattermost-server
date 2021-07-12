@@ -15,7 +15,7 @@ type SwitchRequest struct {
 	Password       string `json:"password"`
 	NewPassword    string `json:"new_password"`
 	MfaCode        string `json:"mfa_code"`
-	LdapLoginId    string `json:"ldap_id"`
+	LdapLoginID    string `json:"ldap_id"`
 }
 
 func (o *SwitchRequest) ToJson() string {

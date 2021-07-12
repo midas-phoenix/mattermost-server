@@ -14,7 +14,7 @@ func TestCompliancePostHeader(t *testing.T) {
 }
 
 func TestCompliancePost(t *testing.T) {
-	o := CompliancePost{TeamName: "test", PostFileIds: "files", PostCreateAt: GetMillis()}
+	o := CompliancePost{TeamName: "test", PostFileIDs: "files", PostCreateAt: GetMillis()}
 	r := o.Row()
 
 	require.Equal(t, "test", r[0])

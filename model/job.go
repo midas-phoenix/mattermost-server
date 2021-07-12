@@ -58,7 +58,7 @@ var AllJobTypes = [...]string{
 }
 
 type Job struct {
-	Id             string            `json:"id"`
+	ID             string            `json:"id"`
 	Type           string            `json:"type"`
 	Priority       int64             `json:"priority"`
 	CreateAt       int64             `json:"create_at"`
@@ -70,12 +70,12 @@ type Job struct {
 }
 
 func (j *Job) IsValid() *AppError {
-	if !IsValidId(j.Id) {
-		return NewAppError("Job.IsValid", "model.job.is_valid.id.app_error", nil, "id="+j.Id, http.StatusBadRequest)
+	if !IsValidID(j.ID) {
+		return NewAppError("Job.IsValid", "model.job.is_valid.id.app_error", nil, "id="+j.ID, http.StatusBadRequest)
 	}
 
 	if j.CreateAt == 0 {
-		return NewAppError("Job.IsValid", "model.job.is_valid.create_at.app_error", nil, "id="+j.Id, http.StatusBadRequest)
+		return NewAppError("Job.IsValid", "model.job.is_valid.create_at.app_error", nil, "id="+j.ID, http.StatusBadRequest)
 	}
 
 	switch j.Type {
@@ -97,7 +97,7 @@ func (j *Job) IsValid() *AppError {
 	case JobTypeCloud:
 	case JobTypeResendInvitationEmail:
 	default:
-		return NewAppError("Job.IsValid", "model.job.is_valid.type.app_error", nil, "id="+j.Id, http.StatusBadRequest)
+		return NewAppError("Job.IsValid", "model.job.is_valid.type.app_error", nil, "id="+j.ID, http.StatusBadRequest)
 	}
 
 	switch j.Status {
@@ -108,7 +108,7 @@ func (j *Job) IsValid() *AppError {
 	case JobStatusCancelRequested:
 	case JobStatusCanceled:
 	default:
-		return NewAppError("Job.IsValid", "model.job.is_valid.status.app_error", nil, "id="+j.Id, http.StatusBadRequest)
+		return NewAppError("Job.IsValid", "model.job.is_valid.status.app_error", nil, "id="+j.ID, http.StatusBadRequest)
 	}
 
 	return nil

@@ -19,9 +19,9 @@ import (
 )
 
 const (
-	HeaderRequestId          = "X-Request-ID"
-	HeaderVersionId          = "X-Version-ID"
-	HeaderClusterId          = "X-Cluster-ID"
+	HeaderRequestID          = "X-Request-ID"
+	HeaderVersionID          = "X-Version-ID"
+	HeaderClusterID          = "X-Cluster-ID"
 	HeaderEtagServer         = "ETag"
 	HeaderEtagClient         = "If-None-Match"
 	HeaderForwarded          = "X-Forwarded-For"
@@ -33,7 +33,7 @@ const (
 	HeaderAuth               = "Authorization"
 	HeaderCloudToken         = "X-Cloud-Token"
 	HeaderRemoteclusterToken = "X-RemoteCluster-Token"
-	HeaderRemoteclusterId    = "X-RemoteCluster-Id"
+	HeaderRemoteclusterID    = "X-RemoteCluster-Id"
 	HeaderRequestedWith      = "X-Requested-With"
 	HeaderRequestedWithXml   = "XMLHttpRequest"
 	HeaderRange              = "Range"
@@ -53,7 +53,7 @@ const (
 type Response struct {
 	StatusCode    int
 	Error         *AppError
-	RequestId     string
+	RequestID     string
 	Etag          string
 	ServerVersion string
 	Header        http.Header
@@ -157,9 +157,9 @@ func BuildErrorResponse(r *http.Response, err *AppError) *Response {
 func BuildResponse(r *http.Response) *Response {
 	return &Response{
 		StatusCode:    r.StatusCode,
-		RequestId:     r.Header.Get(HeaderRequestId),
+		RequestID:     r.Header.Get(HeaderRequestID),
 		Etag:          r.Header.Get(HeaderEtagServer),
-		ServerVersion: r.Header.Get(HeaderVersionId),
+		ServerVersion: r.Header.Get(HeaderVersionID),
 		Header:        r.Header,
 	}
 }
@@ -188,16 +188,16 @@ func (c *Client4) GetUsersRoute() string {
 	return "/users"
 }
 
-func (c *Client4) GetUserRoute(userId string) string {
-	return fmt.Sprintf(c.GetUsersRoute()+"/%v", userId)
+func (c *Client4) GetUserRoute(userID string) string {
+	return fmt.Sprintf(c.GetUsersRoute()+"/%v", userID)
 }
 
 func (c *Client4) GetUserThreadsRoute(userID, teamID string) string {
 	return c.GetUserRoute(userID) + c.GetTeamRoute(teamID) + "/threads"
 }
 
-func (c *Client4) GetUserThreadRoute(userId, teamId, threadId string) string {
-	return c.GetUserThreadsRoute(userId, teamId) + "/" + threadId
+func (c *Client4) GetUserThreadRoute(userID, teamID, threadID string) string {
+	return c.GetUserThreadsRoute(userID, teamID) + "/" + threadID
 }
 
 func (c *Client4) GetUserCategoryRoute(userID, teamID string) string {
@@ -208,8 +208,8 @@ func (c *Client4) GetUserAccessTokensRoute() string {
 	return fmt.Sprintf(c.GetUsersRoute() + "/tokens")
 }
 
-func (c *Client4) GetUserAccessTokenRoute(tokenId string) string {
-	return fmt.Sprintf(c.GetUsersRoute()+"/tokens/%v", tokenId)
+func (c *Client4) GetUserAccessTokenRoute(tokenID string) string {
+	return fmt.Sprintf(c.GetUsersRoute()+"/tokens/%v", tokenID)
 }
 
 func (c *Client4) GetUserByUsernameRoute(userName string) string {
@@ -224,60 +224,60 @@ func (c *Client4) GetBotsRoute() string {
 	return "/bots"
 }
 
-func (c *Client4) GetBotRoute(botUserId string) string {
-	return fmt.Sprintf("%s/%s", c.GetBotsRoute(), botUserId)
+func (c *Client4) GetBotRoute(botUserID string) string {
+	return fmt.Sprintf("%s/%s", c.GetBotsRoute(), botUserID)
 }
 
 func (c *Client4) GetTeamsRoute() string {
 	return "/teams"
 }
 
-func (c *Client4) GetTeamRoute(teamId string) string {
-	return fmt.Sprintf(c.GetTeamsRoute()+"/%v", teamId)
+func (c *Client4) GetTeamRoute(teamID string) string {
+	return fmt.Sprintf(c.GetTeamsRoute()+"/%v", teamID)
 }
 
-func (c *Client4) GetTeamAutoCompleteCommandsRoute(teamId string) string {
-	return fmt.Sprintf(c.GetTeamsRoute()+"/%v/commands/autocomplete", teamId)
+func (c *Client4) GetTeamAutoCompleteCommandsRoute(teamID string) string {
+	return fmt.Sprintf(c.GetTeamsRoute()+"/%v/commands/autocomplete", teamID)
 }
 
 func (c *Client4) GetTeamByNameRoute(teamName string) string {
 	return fmt.Sprintf(c.GetTeamsRoute()+"/name/%v", teamName)
 }
 
-func (c *Client4) GetTeamMemberRoute(teamId, userId string) string {
-	return fmt.Sprintf(c.GetTeamRoute(teamId)+"/members/%v", userId)
+func (c *Client4) GetTeamMemberRoute(teamID, userID string) string {
+	return fmt.Sprintf(c.GetTeamRoute(teamID)+"/members/%v", userID)
 }
 
-func (c *Client4) GetTeamMembersRoute(teamId string) string {
-	return fmt.Sprintf(c.GetTeamRoute(teamId) + "/members")
+func (c *Client4) GetTeamMembersRoute(teamID string) string {
+	return fmt.Sprintf(c.GetTeamRoute(teamID) + "/members")
 }
 
-func (c *Client4) GetTeamStatsRoute(teamId string) string {
-	return fmt.Sprintf(c.GetTeamRoute(teamId) + "/stats")
+func (c *Client4) GetTeamStatsRoute(teamID string) string {
+	return fmt.Sprintf(c.GetTeamRoute(teamID) + "/stats")
 }
 
-func (c *Client4) GetTeamImportRoute(teamId string) string {
-	return fmt.Sprintf(c.GetTeamRoute(teamId) + "/import")
+func (c *Client4) GetTeamImportRoute(teamID string) string {
+	return fmt.Sprintf(c.GetTeamRoute(teamID) + "/import")
 }
 
 func (c *Client4) GetChannelsRoute() string {
 	return "/channels"
 }
 
-func (c *Client4) GetChannelsForTeamRoute(teamId string) string {
-	return fmt.Sprintf(c.GetTeamRoute(teamId) + "/channels")
+func (c *Client4) GetChannelsForTeamRoute(teamID string) string {
+	return fmt.Sprintf(c.GetTeamRoute(teamID) + "/channels")
 }
 
-func (c *Client4) GetChannelRoute(channelId string) string {
-	return fmt.Sprintf(c.GetChannelsRoute()+"/%v", channelId)
+func (c *Client4) GetChannelRoute(channelID string) string {
+	return fmt.Sprintf(c.GetChannelsRoute()+"/%v", channelID)
 }
 
-func (c *Client4) GetChannelByNameRoute(channelName, teamId string) string {
-	return fmt.Sprintf(c.GetTeamRoute(teamId)+"/channels/name/%v", channelName)
+func (c *Client4) GetChannelByNameRoute(channelName, teamID string) string {
+	return fmt.Sprintf(c.GetTeamRoute(teamID)+"/channels/name/%v", channelName)
 }
 
-func (c *Client4) GetChannelsForTeamForUserRoute(teamId, userId string, includeDeleted bool) string {
-	route := fmt.Sprintf(c.GetUserRoute(userId) + c.GetTeamRoute(teamId) + "/channels")
+func (c *Client4) GetChannelsForTeamForUserRoute(teamID, userID string, includeDeleted bool) string {
+	route := fmt.Sprintf(c.GetUserRoute(userID) + c.GetTeamRoute(teamID) + "/channels")
 	if includeDeleted {
 		query := fmt.Sprintf("?include_deleted=%v", includeDeleted)
 		return route + query
@@ -289,12 +289,12 @@ func (c *Client4) GetChannelByNameForTeamNameRoute(channelName, teamName string)
 	return fmt.Sprintf(c.GetTeamByNameRoute(teamName)+"/channels/name/%v", channelName)
 }
 
-func (c *Client4) GetChannelMembersRoute(channelId string) string {
-	return fmt.Sprintf(c.GetChannelRoute(channelId) + "/members")
+func (c *Client4) GetChannelMembersRoute(channelID string) string {
+	return fmt.Sprintf(c.GetChannelRoute(channelID) + "/members")
 }
 
-func (c *Client4) GetChannelMemberRoute(channelId, userId string) string {
-	return fmt.Sprintf(c.GetChannelMembersRoute(channelId)+"/%v", userId)
+func (c *Client4) GetChannelMemberRoute(channelID, userID string) string {
+	return fmt.Sprintf(c.GetChannelMembersRoute(channelID)+"/%v", userID)
 }
 
 func (c *Client4) GetPostsRoute() string {
@@ -313,32 +313,32 @@ func (c *Client4) GetLicenseRoute() string {
 	return "/license"
 }
 
-func (c *Client4) GetPostRoute(postId string) string {
-	return fmt.Sprintf(c.GetPostsRoute()+"/%v", postId)
+func (c *Client4) GetPostRoute(postID string) string {
+	return fmt.Sprintf(c.GetPostsRoute()+"/%v", postID)
 }
 
 func (c *Client4) GetFilesRoute() string {
 	return "/files"
 }
 
-func (c *Client4) GetFileRoute(fileId string) string {
-	return fmt.Sprintf(c.GetFilesRoute()+"/%v", fileId)
+func (c *Client4) GetFileRoute(fileID string) string {
+	return fmt.Sprintf(c.GetFilesRoute()+"/%v", fileID)
 }
 
 func (c *Client4) GetUploadsRoute() string {
 	return "/uploads"
 }
 
-func (c *Client4) GetUploadRoute(uploadId string) string {
-	return fmt.Sprintf("%s/%s", c.GetUploadsRoute(), uploadId)
+func (c *Client4) GetUploadRoute(uploadID string) string {
+	return fmt.Sprintf("%s/%s", c.GetUploadsRoute(), uploadID)
 }
 
 func (c *Client4) GetPluginsRoute() string {
 	return "/plugins"
 }
 
-func (c *Client4) GetPluginRoute(pluginId string) string {
-	return fmt.Sprintf(c.GetPluginsRoute()+"/%v", pluginId)
+func (c *Client4) GetPluginRoute(pluginID string) string {
+	return fmt.Sprintf(c.GetPluginsRoute()+"/%v", pluginID)
 }
 
 func (c *Client4) GetSystemRoute() string {
@@ -385,12 +385,12 @@ func (c *Client4) GetComplianceReportsRoute() string {
 	return "/compliance/reports"
 }
 
-func (c *Client4) GetComplianceReportRoute(reportId string) string {
-	return fmt.Sprintf("%s/%s", c.GetComplianceReportsRoute(), reportId)
+func (c *Client4) GetComplianceReportRoute(reportID string) string {
+	return fmt.Sprintf("%s/%s", c.GetComplianceReportsRoute(), reportID)
 }
 
-func (c *Client4) GetComplianceReportDownloadRoute(reportId string) string {
-	return fmt.Sprintf("%s/%s/download", c.GetComplianceReportsRoute(), reportId)
+func (c *Client4) GetComplianceReportDownloadRoute(reportID string) string {
+	return fmt.Sprintf("%s/%s/download", c.GetComplianceReportsRoute(), reportID)
 }
 
 func (c *Client4) GetOutgoingWebhooksRoute() string {
@@ -401,12 +401,12 @@ func (c *Client4) GetOutgoingWebhookRoute(hookID string) string {
 	return fmt.Sprintf(c.GetOutgoingWebhooksRoute()+"/%v", hookID)
 }
 
-func (c *Client4) GetPreferencesRoute(userId string) string {
-	return fmt.Sprintf(c.GetUserRoute(userId) + "/preferences")
+func (c *Client4) GetPreferencesRoute(userID string) string {
+	return fmt.Sprintf(c.GetUserRoute(userID) + "/preferences")
 }
 
-func (c *Client4) GetUserStatusRoute(userId string) string {
-	return fmt.Sprintf(c.GetUserRoute(userId) + "/status")
+func (c *Client4) GetUserStatusRoute(userID string) string {
+	return fmt.Sprintf(c.GetUserRoute(userID) + "/status")
 }
 
 func (c *Client4) GetUserStatusesRoute() string {
@@ -445,20 +445,20 @@ func (c *Client4) GetCommandsRoute() string {
 	return "/commands"
 }
 
-func (c *Client4) GetCommandRoute(commandId string) string {
-	return fmt.Sprintf(c.GetCommandsRoute()+"/%v", commandId)
+func (c *Client4) GetCommandRoute(commandID string) string {
+	return fmt.Sprintf(c.GetCommandsRoute()+"/%v", commandID)
 }
 
-func (c *Client4) GetCommandMoveRoute(commandId string) string {
-	return fmt.Sprintf(c.GetCommandsRoute()+"/%v/move", commandId)
+func (c *Client4) GetCommandMoveRoute(commandID string) string {
+	return fmt.Sprintf(c.GetCommandsRoute()+"/%v/move", commandID)
 }
 
 func (c *Client4) GetEmojisRoute() string {
 	return "/emoji"
 }
 
-func (c *Client4) GetEmojiRoute(emojiId string) string {
-	return fmt.Sprintf(c.GetEmojisRoute()+"/%v", emojiId)
+func (c *Client4) GetEmojiRoute(emojiID string) string {
+	return fmt.Sprintf(c.GetEmojisRoute()+"/%v", emojiID)
 }
 
 func (c *Client4) GetEmojiByNameRoute(name string) string {
@@ -473,8 +473,8 @@ func (c *Client4) GetOAuthAppsRoute() string {
 	return "/oauth/apps"
 }
 
-func (c *Client4) GetOAuthAppRoute(appId string) string {
-	return fmt.Sprintf("/oauth/apps/%v", appId)
+func (c *Client4) GetOAuthAppRoute(appID string) string {
+	return fmt.Sprintf("/oauth/apps/%v", appID)
 }
 
 func (c *Client4) GetOpenGraphRoute() string {
@@ -505,12 +505,12 @@ func (c *Client4) GetTimezonesRoute() string {
 	return fmt.Sprintf(c.GetSystemRoute() + "/timezones")
 }
 
-func (c *Client4) GetChannelSchemeRoute(channelId string) string {
-	return fmt.Sprintf(c.GetChannelsRoute()+"/%v/scheme", channelId)
+func (c *Client4) GetChannelSchemeRoute(channelID string) string {
+	return fmt.Sprintf(c.GetChannelsRoute()+"/%v/scheme", channelID)
 }
 
-func (c *Client4) GetTeamSchemeRoute(teamId string) string {
-	return fmt.Sprintf(c.GetTeamsRoute()+"/%v/scheme", teamId)
+func (c *Client4) GetTeamSchemeRoute(teamID string) string {
+	return fmt.Sprintf(c.GetTeamsRoute()+"/%v/scheme", teamID)
 }
 
 func (c *Client4) GetTotalUsersStatsRoute() string {
@@ -525,8 +525,8 @@ func (c *Client4) GetServerBusyRoute() string {
 	return "/server_busy"
 }
 
-func (c *Client4) GetUserTermsOfServiceRoute(userId string) string {
-	return c.GetUserRoute(userId) + "/terms_of_service"
+func (c *Client4) GetUserTermsOfServiceRoute(userID string) string {
+	return c.GetUserRoute(userID) + "/terms_of_service"
 }
 
 func (c *Client4) GetTermsOfServiceRoute() string {
@@ -537,8 +537,8 @@ func (c *Client4) GetGroupsRoute() string {
 	return "/groups"
 }
 
-func (c *Client4) GetPublishUserTypingRoute(userId string) string {
-	return c.GetUserRoute(userId) + "/typing"
+func (c *Client4) GetPublishUserTypingRoute(userID string) string {
+	return c.GetUserRoute(userID) + "/typing"
 }
 
 func (c *Client4) GetGroupRoute(groupID string) string {
@@ -753,7 +753,7 @@ func CheckStatusOK(r *http.Response) bool {
 // Authentication Section
 
 // LoginById authenticates a user by user id and password.
-func (c *Client4) LoginById(id string, password string) (*User, *Response) {
+func (c *Client4) LoginByID(id string, password string) (*User, *Response) {
 	m := make(map[string]string)
 	m["id"] = id
 	m["password"] = password
@@ -762,17 +762,17 @@ func (c *Client4) LoginById(id string, password string) (*User, *Response) {
 
 // Login authenticates a user by login id, which can be username, email or some sort
 // of SSO identifier based on server configuration, and a password.
-func (c *Client4) Login(loginId string, password string) (*User, *Response) {
+func (c *Client4) Login(loginID string, password string) (*User, *Response) {
 	m := make(map[string]string)
-	m["login_id"] = loginId
+	m["login_id"] = loginID
 	m["password"] = password
 	return c.login(m)
 }
 
 // LoginByLdap authenticates a user by LDAP id and password.
-func (c *Client4) LoginByLdap(loginId string, password string) (*User, *Response) {
+func (c *Client4) LoginByLdap(loginID string, password string) (*User, *Response) {
 	m := make(map[string]string)
-	m["login_id"] = loginId
+	m["login_id"] = loginID
 	m["password"] = password
 	m["ldap_only"] = c.boolString(true)
 	return c.login(m)
@@ -781,18 +781,18 @@ func (c *Client4) LoginByLdap(loginId string, password string) (*User, *Response
 // LoginWithDevice authenticates a user by login id (username, email or some sort
 // of SSO identifier based on configuration), password and attaches a device id to
 // the session.
-func (c *Client4) LoginWithDevice(loginId string, password string, deviceId string) (*User, *Response) {
+func (c *Client4) LoginWithDevice(loginID string, password string, deviceID string) (*User, *Response) {
 	m := make(map[string]string)
-	m["login_id"] = loginId
+	m["login_id"] = loginID
 	m["password"] = password
-	m["device_id"] = deviceId
+	m["device_id"] = deviceID
 	return c.login(m)
 }
 
 // LoginWithMFA logs a user in with a MFA token
-func (c *Client4) LoginWithMFA(loginId, password, mfaToken string) (*User, *Response) {
+func (c *Client4) LoginWithMFA(loginID, password, mfaToken string) (*User, *Response) {
 	m := make(map[string]string)
-	m["login_id"] = loginId
+	m["login_id"] = loginID
 	m["password"] = password
 	m["token"] = mfaToken
 	return c.login(m)
@@ -844,13 +844,13 @@ func (c *Client4) CreateUser(user *User) (*User, *Response) {
 }
 
 // CreateUserWithToken creates a user in the system based on the provided tokenId.
-func (c *Client4) CreateUserWithToken(user *User, tokenId string) (*User, *Response) {
-	if tokenId == "" {
+func (c *Client4) CreateUserWithToken(user *User, tokenID string) (*User, *Response) {
+	if tokenID == "" {
 		err := NewAppError("MissingHashOrData", "api.user.create_user.missing_token.app_error", nil, "", http.StatusBadRequest)
 		return nil, &Response{StatusCode: err.StatusCode, Error: err}
 	}
 
-	query := fmt.Sprintf("?t=%v", tokenId)
+	query := fmt.Sprintf("?t=%v", tokenID)
 	r, err := c.DoApiPost(c.GetUsersRoute()+query, user.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -861,13 +861,13 @@ func (c *Client4) CreateUserWithToken(user *User, tokenId string) (*User, *Respo
 }
 
 // CreateUserWithInviteId creates a user in the system based on the provided invited id.
-func (c *Client4) CreateUserWithInviteId(user *User, inviteId string) (*User, *Response) {
-	if inviteId == "" {
+func (c *Client4) CreateUserWithInviteID(user *User, inviteID string) (*User, *Response) {
+	if inviteID == "" {
 		err := NewAppError("MissingInviteId", "api.user.create_user.missing_invite_id.app_error", nil, "", http.StatusBadRequest)
 		return nil, &Response{StatusCode: err.StatusCode, Error: err}
 	}
 
-	query := fmt.Sprintf("?iid=%v", url.QueryEscape(inviteId))
+	query := fmt.Sprintf("?iid=%v", url.QueryEscape(inviteID))
 	r, err := c.DoApiPost(c.GetUsersRoute()+query, user.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -888,8 +888,8 @@ func (c *Client4) GetMe(etag string) (*User, *Response) {
 }
 
 // GetUser returns a user based on the provided user id string.
-func (c *Client4) GetUser(userId, etag string) (*User, *Response) {
-	r, err := c.DoApiGet(c.GetUserRoute(userId), etag)
+func (c *Client4) GetUser(userID, etag string) (*User, *Response) {
+	r, err := c.DoApiGet(c.GetUserRoute(userID), etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -918,8 +918,8 @@ func (c *Client4) GetUserByEmail(email, etag string) (*User, *Response) {
 }
 
 // AutocompleteUsersInTeam returns the users on a team based on search term.
-func (c *Client4) AutocompleteUsersInTeam(teamId string, username string, limit int, etag string) (*UserAutocomplete, *Response) {
-	query := fmt.Sprintf("?in_team=%v&name=%v&limit=%d", teamId, username, limit)
+func (c *Client4) AutocompleteUsersInTeam(teamID string, username string, limit int, etag string) (*UserAutocomplete, *Response) {
+	query := fmt.Sprintf("?in_team=%v&name=%v&limit=%d", teamID, username, limit)
 	r, err := c.DoApiGet(c.GetUsersRoute()+"/autocomplete"+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -929,8 +929,8 @@ func (c *Client4) AutocompleteUsersInTeam(teamId string, username string, limit 
 }
 
 // AutocompleteUsersInChannel returns the users in a channel based on search term.
-func (c *Client4) AutocompleteUsersInChannel(teamId string, channelId string, username string, limit int, etag string) (*UserAutocomplete, *Response) {
-	query := fmt.Sprintf("?in_team=%v&in_channel=%v&name=%v&limit=%d", teamId, channelId, username, limit)
+func (c *Client4) AutocompleteUsersInChannel(teamID string, channelID string, username string, limit int, etag string) (*UserAutocomplete, *Response) {
+	query := fmt.Sprintf("?in_team=%v&in_channel=%v&name=%v&limit=%d", teamID, channelID, username, limit)
 	r, err := c.DoApiGet(c.GetUsersRoute()+"/autocomplete"+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -951,8 +951,8 @@ func (c *Client4) AutocompleteUsers(username string, limit int, etag string) (*U
 }
 
 // GetDefaultProfileImage gets the default user's profile image. Must be logged in.
-func (c *Client4) GetDefaultProfileImage(userId string) ([]byte, *Response) {
-	r, appErr := c.DoApiGet(c.GetUserRoute(userId)+"/image/default", "")
+func (c *Client4) GetDefaultProfileImage(userID string) ([]byte, *Response) {
+	r, appErr := c.DoApiGet(c.GetUserRoute(userID)+"/image/default", "")
 	if appErr != nil {
 		return nil, BuildErrorResponse(r, appErr)
 	}
@@ -967,8 +967,8 @@ func (c *Client4) GetDefaultProfileImage(userId string) ([]byte, *Response) {
 }
 
 // GetProfileImage gets user's profile image. Must be logged in.
-func (c *Client4) GetProfileImage(userId, etag string) ([]byte, *Response) {
-	r, appErr := c.DoApiGet(c.GetUserRoute(userId)+"/image", etag)
+func (c *Client4) GetProfileImage(userID, etag string) ([]byte, *Response) {
+	r, appErr := c.DoApiGet(c.GetUserRoute(userID)+"/image", etag)
 	if appErr != nil {
 		return nil, BuildErrorResponse(r, appErr)
 	}
@@ -993,8 +993,8 @@ func (c *Client4) GetUsers(page int, perPage int, etag string) ([]*User, *Respon
 }
 
 // GetUsersInTeam returns a page of users on a team. Page counting starts at 0.
-func (c *Client4) GetUsersInTeam(teamId string, page int, perPage int, etag string) ([]*User, *Response) {
-	query := fmt.Sprintf("?in_team=%v&page=%v&per_page=%v", teamId, page, perPage)
+func (c *Client4) GetUsersInTeam(teamID string, page int, perPage int, etag string) ([]*User, *Response) {
+	query := fmt.Sprintf("?in_team=%v&page=%v&per_page=%v", teamID, page, perPage)
 	r, err := c.DoApiGet(c.GetUsersRoute()+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -1004,8 +1004,8 @@ func (c *Client4) GetUsersInTeam(teamId string, page int, perPage int, etag stri
 }
 
 // GetNewUsersInTeam returns a page of users on a team. Page counting starts at 0.
-func (c *Client4) GetNewUsersInTeam(teamId string, page int, perPage int, etag string) ([]*User, *Response) {
-	query := fmt.Sprintf("?sort=create_at&in_team=%v&page=%v&per_page=%v", teamId, page, perPage)
+func (c *Client4) GetNewUsersInTeam(teamID string, page int, perPage int, etag string) ([]*User, *Response) {
+	query := fmt.Sprintf("?sort=create_at&in_team=%v&page=%v&per_page=%v", teamID, page, perPage)
 	r, err := c.DoApiGet(c.GetUsersRoute()+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -1015,8 +1015,8 @@ func (c *Client4) GetNewUsersInTeam(teamId string, page int, perPage int, etag s
 }
 
 // GetRecentlyActiveUsersInTeam returns a page of users on a team. Page counting starts at 0.
-func (c *Client4) GetRecentlyActiveUsersInTeam(teamId string, page int, perPage int, etag string) ([]*User, *Response) {
-	query := fmt.Sprintf("?sort=last_activity_at&in_team=%v&page=%v&per_page=%v", teamId, page, perPage)
+func (c *Client4) GetRecentlyActiveUsersInTeam(teamID string, page int, perPage int, etag string) ([]*User, *Response) {
+	query := fmt.Sprintf("?sort=last_activity_at&in_team=%v&page=%v&per_page=%v", teamID, page, perPage)
 	r, err := c.DoApiGet(c.GetUsersRoute()+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -1026,8 +1026,8 @@ func (c *Client4) GetRecentlyActiveUsersInTeam(teamId string, page int, perPage 
 }
 
 // GetActiveUsersInTeam returns a page of users on a team. Page counting starts at 0.
-func (c *Client4) GetActiveUsersInTeam(teamId string, page int, perPage int, etag string) ([]*User, *Response) {
-	query := fmt.Sprintf("?active=true&in_team=%v&page=%v&per_page=%v", teamId, page, perPage)
+func (c *Client4) GetActiveUsersInTeam(teamID string, page int, perPage int, etag string) ([]*User, *Response) {
+	query := fmt.Sprintf("?active=true&in_team=%v&page=%v&per_page=%v", teamID, page, perPage)
 	r, err := c.DoApiGet(c.GetUsersRoute()+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -1037,8 +1037,8 @@ func (c *Client4) GetActiveUsersInTeam(teamId string, page int, perPage int, eta
 }
 
 // GetUsersNotInTeam returns a page of users who are not in a team. Page counting starts at 0.
-func (c *Client4) GetUsersNotInTeam(teamId string, page int, perPage int, etag string) ([]*User, *Response) {
-	query := fmt.Sprintf("?not_in_team=%v&page=%v&per_page=%v", teamId, page, perPage)
+func (c *Client4) GetUsersNotInTeam(teamID string, page int, perPage int, etag string) ([]*User, *Response) {
+	query := fmt.Sprintf("?not_in_team=%v&page=%v&per_page=%v", teamID, page, perPage)
 	r, err := c.DoApiGet(c.GetUsersRoute()+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -1048,8 +1048,8 @@ func (c *Client4) GetUsersNotInTeam(teamId string, page int, perPage int, etag s
 }
 
 // GetUsersInChannel returns a page of users in a channel. Page counting starts at 0.
-func (c *Client4) GetUsersInChannel(channelId string, page int, perPage int, etag string) ([]*User, *Response) {
-	query := fmt.Sprintf("?in_channel=%v&page=%v&per_page=%v", channelId, page, perPage)
+func (c *Client4) GetUsersInChannel(channelID string, page int, perPage int, etag string) ([]*User, *Response) {
+	query := fmt.Sprintf("?in_channel=%v&page=%v&per_page=%v", channelID, page, perPage)
 	r, err := c.DoApiGet(c.GetUsersRoute()+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -1059,8 +1059,8 @@ func (c *Client4) GetUsersInChannel(channelId string, page int, perPage int, eta
 }
 
 // GetUsersInChannelByStatus returns a page of users in a channel. Page counting starts at 0. Sorted by Status
-func (c *Client4) GetUsersInChannelByStatus(channelId string, page int, perPage int, etag string) ([]*User, *Response) {
-	query := fmt.Sprintf("?in_channel=%v&page=%v&per_page=%v&sort=status", channelId, page, perPage)
+func (c *Client4) GetUsersInChannelByStatus(channelID string, page int, perPage int, etag string) ([]*User, *Response) {
+	query := fmt.Sprintf("?in_channel=%v&page=%v&per_page=%v&sort=status", channelID, page, perPage)
 	r, err := c.DoApiGet(c.GetUsersRoute()+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -1070,8 +1070,8 @@ func (c *Client4) GetUsersInChannelByStatus(channelId string, page int, perPage 
 }
 
 // GetUsersNotInChannel returns a page of users not in a channel. Page counting starts at 0.
-func (c *Client4) GetUsersNotInChannel(teamId, channelId string, page int, perPage int, etag string) ([]*User, *Response) {
-	query := fmt.Sprintf("?in_team=%v&not_in_channel=%v&page=%v&per_page=%v", teamId, channelId, page, perPage)
+func (c *Client4) GetUsersNotInChannel(teamID, channelID string, page int, perPage int, etag string) ([]*User, *Response) {
+	query := fmt.Sprintf("?in_team=%v&not_in_channel=%v&page=%v&per_page=%v", teamID, channelID, page, perPage)
 	r, err := c.DoApiGet(c.GetUsersRoute()+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -1103,8 +1103,8 @@ func (c *Client4) GetUsersInGroup(groupID string, page int, perPage int, etag st
 }
 
 // GetUsersByIds returns a list of users based on the provided user ids.
-func (c *Client4) GetUsersByIds(userIds []string) ([]*User, *Response) {
-	r, err := c.DoApiPost(c.GetUsersRoute()+"/ids", ArrayToJson(userIds))
+func (c *Client4) GetUsersByIDs(userIDs []string) ([]*User, *Response) {
+	r, err := c.DoApiPost(c.GetUsersRoute()+"/ids", ArrayToJson(userIDs))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1113,7 +1113,7 @@ func (c *Client4) GetUsersByIds(userIds []string) ([]*User, *Response) {
 }
 
 // GetUsersByIds returns a list of users based on the provided user ids.
-func (c *Client4) GetUsersByIdsWithOptions(userIds []string, options *UserGetByIdsOptions) ([]*User, *Response) {
+func (c *Client4) GetUsersByIDsWithOptions(userIDs []string, options *UserGetByIDsOptions) ([]*User, *Response) {
 	v := url.Values{}
 	if options.Since != 0 {
 		v.Set("since", fmt.Sprintf("%d", options.Since))
@@ -1124,7 +1124,7 @@ func (c *Client4) GetUsersByIdsWithOptions(userIds []string, options *UserGetByI
 		url += "?" + v.Encode()
 	}
 
-	r, err := c.DoApiPost(url, ArrayToJson(userIds))
+	r, err := c.DoApiPost(url, ArrayToJson(userIDs))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1144,16 +1144,16 @@ func (c *Client4) GetUsersByUsernames(usernames []string) ([]*User, *Response) {
 
 // GetUsersByGroupChannelIds returns a map with channel ids as keys
 // and a list of users as values based on the provided user ids.
-func (c *Client4) GetUsersByGroupChannelIds(groupChannelIds []string) (map[string][]*User, *Response) {
-	r, err := c.DoApiPost(c.GetUsersRoute()+"/group_channels", ArrayToJson(groupChannelIds))
+func (c *Client4) GetUsersByGroupChannelIDs(groupChannelIDs []string) (map[string][]*User, *Response) {
+	r, err := c.DoApiPost(c.GetUsersRoute()+"/group_channels", ArrayToJson(groupChannelIDs))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
 
-	usersByChannelId := map[string][]*User{}
-	json.NewDecoder(r.Body).Decode(&usersByChannelId)
-	return usersByChannelId, BuildResponse(r)
+	usersByChannelID := map[string][]*User{}
+	json.NewDecoder(r.Body).Decode(&usersByChannelID)
+	return usersByChannelID, BuildResponse(r)
 }
 
 // SearchUsers returns a list of users based on some search criteria.
@@ -1168,7 +1168,7 @@ func (c *Client4) SearchUsers(search *UserSearch) ([]*User, *Response) {
 
 // UpdateUser updates a user in the system based on the provided user struct.
 func (c *Client4) UpdateUser(user *User) (*User, *Response) {
-	r, err := c.DoApiPut(c.GetUserRoute(user.Id), user.ToJson())
+	r, err := c.DoApiPut(c.GetUserRoute(user.ID), user.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1177,8 +1177,8 @@ func (c *Client4) UpdateUser(user *User) (*User, *Response) {
 }
 
 // PatchUser partially updates a user in the system. Any missing fields are not updated.
-func (c *Client4) PatchUser(userId string, patch *UserPatch) (*User, *Response) {
-	r, err := c.DoApiPut(c.GetUserRoute(userId)+"/patch", patch.ToJson())
+func (c *Client4) PatchUser(userID string, patch *UserPatch) (*User, *Response) {
+	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/patch", patch.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1187,8 +1187,8 @@ func (c *Client4) PatchUser(userId string, patch *UserPatch) (*User, *Response) 
 }
 
 // UpdateUserAuth updates a user AuthData (uthData, authService and password) in the system.
-func (c *Client4) UpdateUserAuth(userId string, userAuth *UserAuth) (*UserAuth, *Response) {
-	r, err := c.DoApiPut(c.GetUserRoute(userId)+"/auth", userAuth.ToJson())
+func (c *Client4) UpdateUserAuth(userID string, userAuth *UserAuth) (*UserAuth, *Response) {
+	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/auth", userAuth.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1199,12 +1199,12 @@ func (c *Client4) UpdateUserAuth(userId string, userAuth *UserAuth) (*UserAuth, 
 // UpdateUserMfa activates multi-factor authentication for a user if activate
 // is true and a valid code is provided. If activate is false, then code is not
 // required and multi-factor authentication is disabled for the user.
-func (c *Client4) UpdateUserMfa(userId, code string, activate bool) (bool, *Response) {
+func (c *Client4) UpdateUserMfa(userID, code string, activate bool) (bool, *Response) {
 	requestBody := make(map[string]interface{})
 	requestBody["activate"] = activate
 	requestBody["code"] = code
 
-	r, err := c.DoApiPut(c.GetUserRoute(userId)+"/mfa", StringInterfaceToJson(requestBody))
+	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/mfa", StringInterfaceToJson(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1215,9 +1215,9 @@ func (c *Client4) UpdateUserMfa(userId, code string, activate bool) (bool, *Resp
 // CheckUserMfa checks whether a user has MFA active on their account or not based on the
 // provided login id.
 // Deprecated: Clients should use Login method and check for MFA Error
-func (c *Client4) CheckUserMfa(loginId string) (bool, *Response) {
+func (c *Client4) CheckUserMfa(loginID string) (bool, *Response) {
 	requestBody := make(map[string]interface{})
-	requestBody["login_id"] = loginId
+	requestBody["login_id"] = loginID
 	r, err := c.DoApiPost(c.GetUsersRoute()+"/mfa", StringInterfaceToJson(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
@@ -1234,8 +1234,8 @@ func (c *Client4) CheckUserMfa(loginId string) (bool, *Response) {
 
 // GenerateMfaSecret will generate a new MFA secret for a user and return it as a string and
 // as a base64 encoded image QR code.
-func (c *Client4) GenerateMfaSecret(userId string) (*MfaSecret, *Response) {
-	r, err := c.DoApiPost(c.GetUserRoute(userId)+"/mfa/generate", "")
+func (c *Client4) GenerateMfaSecret(userID string) (*MfaSecret, *Response) {
+	r, err := c.DoApiPost(c.GetUserRoute(userID)+"/mfa/generate", "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1244,9 +1244,9 @@ func (c *Client4) GenerateMfaSecret(userId string) (*MfaSecret, *Response) {
 }
 
 // UpdateUserPassword updates a user's password. Must be logged in as the user or be a system administrator.
-func (c *Client4) UpdateUserPassword(userId, currentPassword, newPassword string) (bool, *Response) {
+func (c *Client4) UpdateUserPassword(userID, currentPassword, newPassword string) (bool, *Response) {
 	requestBody := map[string]string{"current_password": currentPassword, "new_password": newPassword}
-	r, err := c.DoApiPut(c.GetUserRoute(userId)+"/password", MapToJson(requestBody))
+	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/password", MapToJson(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1255,9 +1255,9 @@ func (c *Client4) UpdateUserPassword(userId, currentPassword, newPassword string
 }
 
 // UpdateUserHashedPassword updates a user's password with an already-hashed password. Must be a system administrator.
-func (c *Client4) UpdateUserHashedPassword(userId, newHashedPassword string) (bool, *Response) {
+func (c *Client4) UpdateUserHashedPassword(userID, newHashedPassword string) (bool, *Response) {
 	requestBody := map[string]string{"already_hashed": "true", "new_password": newHashedPassword}
-	r, err := c.DoApiPut(c.GetUserRoute(userId)+"/password", MapToJson(requestBody))
+	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/password", MapToJson(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1266,8 +1266,8 @@ func (c *Client4) UpdateUserHashedPassword(userId, newHashedPassword string) (bo
 }
 
 // PromoteGuestToUser convert a guest into a regular user
-func (c *Client4) PromoteGuestToUser(guestId string) (bool, *Response) {
-	r, err := c.DoApiPost(c.GetUserRoute(guestId)+"/promote", "")
+func (c *Client4) PromoteGuestToUser(guestID string) (bool, *Response) {
+	r, err := c.DoApiPost(c.GetUserRoute(guestID)+"/promote", "")
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1276,8 +1276,8 @@ func (c *Client4) PromoteGuestToUser(guestId string) (bool, *Response) {
 }
 
 // DemoteUserToGuest convert a regular user into a guest
-func (c *Client4) DemoteUserToGuest(guestId string) (bool, *Response) {
-	r, err := c.DoApiPost(c.GetUserRoute(guestId)+"/demote", "")
+func (c *Client4) DemoteUserToGuest(guestID string) (bool, *Response) {
+	r, err := c.DoApiPost(c.GetUserRoute(guestID)+"/demote", "")
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1286,9 +1286,9 @@ func (c *Client4) DemoteUserToGuest(guestId string) (bool, *Response) {
 }
 
 // UpdateUserRoles updates a user's roles in the system. A user can have "system_user" and "system_admin" roles.
-func (c *Client4) UpdateUserRoles(userId, roles string) (bool, *Response) {
+func (c *Client4) UpdateUserRoles(userID, roles string) (bool, *Response) {
 	requestBody := map[string]string{"roles": roles}
-	r, err := c.DoApiPut(c.GetUserRoute(userId)+"/roles", MapToJson(requestBody))
+	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/roles", MapToJson(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1297,10 +1297,10 @@ func (c *Client4) UpdateUserRoles(userId, roles string) (bool, *Response) {
 }
 
 // UpdateUserActive updates status of a user whether active or not.
-func (c *Client4) UpdateUserActive(userId string, active bool) (bool, *Response) {
+func (c *Client4) UpdateUserActive(userID string, active bool) (bool, *Response) {
 	requestBody := make(map[string]interface{})
 	requestBody["active"] = active
-	r, err := c.DoApiPut(c.GetUserRoute(userId)+"/active", StringInterfaceToJson(requestBody))
+	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/active", StringInterfaceToJson(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1310,8 +1310,8 @@ func (c *Client4) UpdateUserActive(userId string, active bool) (bool, *Response)
 }
 
 // DeleteUser deactivates a user in the system based on the provided user id string.
-func (c *Client4) DeleteUser(userId string) (bool, *Response) {
-	r, err := c.DoApiDelete(c.GetUserRoute(userId))
+func (c *Client4) DeleteUser(userID string) (bool, *Response) {
+	r, err := c.DoApiDelete(c.GetUserRoute(userID))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1320,8 +1320,8 @@ func (c *Client4) DeleteUser(userId string) (bool, *Response) {
 }
 
 // PermanentDeleteUser deletes a user in the system based on the provided user id string.
-func (c *Client4) PermanentDeleteUser(userId string) (bool, *Response) {
-	r, err := c.DoApiDelete(c.GetUserRoute(userId) + "?permanent=" + c.boolString(true))
+func (c *Client4) PermanentDeleteUser(userID string) (bool, *Response) {
+	r, err := c.DoApiDelete(c.GetUserRoute(userID) + "?permanent=" + c.boolString(true))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1330,8 +1330,8 @@ func (c *Client4) PermanentDeleteUser(userId string) (bool, *Response) {
 }
 
 // ConvertUserToBot converts a user to a bot user.
-func (c *Client4) ConvertUserToBot(userId string) (*Bot, *Response) {
-	r, err := c.DoApiPost(c.GetUserRoute(userId)+"/convert_to_bot", "")
+func (c *Client4) ConvertUserToBot(userID string) (*Bot, *Response) {
+	r, err := c.DoApiPost(c.GetUserRoute(userID)+"/convert_to_bot", "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1340,12 +1340,12 @@ func (c *Client4) ConvertUserToBot(userId string) (*Bot, *Response) {
 }
 
 // ConvertBotToUser converts a bot user to a user.
-func (c *Client4) ConvertBotToUser(userId string, userPatch *UserPatch, setSystemAdmin bool) (*User, *Response) {
+func (c *Client4) ConvertBotToUser(userID string, userPatch *UserPatch, setSystemAdmin bool) (*User, *Response) {
 	var query string
 	if setSystemAdmin {
 		query = "?set_system_admin=true"
 	}
-	r, err := c.DoApiPost(c.GetBotRoute(userId)+"/convert_to_user"+query, userPatch.ToJson())
+	r, err := c.DoApiPost(c.GetBotRoute(userID)+"/convert_to_user"+query, userPatch.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1387,8 +1387,8 @@ func (c *Client4) ResetPassword(token, newPassword string) (bool, *Response) {
 }
 
 // GetSessions returns a list of sessions based on the provided user id string.
-func (c *Client4) GetSessions(userId, etag string) ([]*Session, *Response) {
-	r, err := c.DoApiGet(c.GetUserRoute(userId)+"/sessions", etag)
+func (c *Client4) GetSessions(userID, etag string) ([]*Session, *Response) {
+	r, err := c.DoApiGet(c.GetUserRoute(userID)+"/sessions", etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1397,9 +1397,9 @@ func (c *Client4) GetSessions(userId, etag string) ([]*Session, *Response) {
 }
 
 // RevokeSession revokes a user session based on the provided user id and session id strings.
-func (c *Client4) RevokeSession(userId, sessionId string) (bool, *Response) {
-	requestBody := map[string]string{"session_id": sessionId}
-	r, err := c.DoApiPost(c.GetUserRoute(userId)+"/sessions/revoke", MapToJson(requestBody))
+func (c *Client4) RevokeSession(userID, sessionID string) (bool, *Response) {
+	requestBody := map[string]string{"session_id": sessionID}
+	r, err := c.DoApiPost(c.GetUserRoute(userID)+"/sessions/revoke", MapToJson(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1408,8 +1408,8 @@ func (c *Client4) RevokeSession(userId, sessionId string) (bool, *Response) {
 }
 
 // RevokeAllSessions revokes all sessions for the provided user id string.
-func (c *Client4) RevokeAllSessions(userId string) (bool, *Response) {
-	r, err := c.DoApiPost(c.GetUserRoute(userId)+"/sessions/revoke/all", "")
+func (c *Client4) RevokeAllSessions(userID string) (bool, *Response) {
+	r, err := c.DoApiPost(c.GetUserRoute(userID)+"/sessions/revoke/all", "")
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1428,8 +1428,8 @@ func (c *Client4) RevokeSessionsFromAllUsers() (bool, *Response) {
 }
 
 // AttachDeviceId attaches a mobile device ID to the current session.
-func (c *Client4) AttachDeviceId(deviceId string) (bool, *Response) {
-	requestBody := map[string]string{"device_id": deviceId}
+func (c *Client4) AttachDeviceID(deviceID string) (bool, *Response) {
+	requestBody := map[string]string{"device_id": deviceID}
 	r, err := c.DoApiPut(c.GetUsersRoute()+"/sessions/device", MapToJson(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
@@ -1441,13 +1441,13 @@ func (c *Client4) AttachDeviceId(deviceId string) (bool, *Response) {
 // GetTeamsUnreadForUser will return an array with TeamUnread objects that contain the amount
 // of unread messages and mentions the current user has for the teams it belongs to.
 // An optional team ID can be set to exclude that team from the results. Must be authenticated.
-func (c *Client4) GetTeamsUnreadForUser(userId, teamIdToExclude string) ([]*TeamUnread, *Response) {
+func (c *Client4) GetTeamsUnreadForUser(userID, teamIDToExclude string) ([]*TeamUnread, *Response) {
 	var optional string
-	if teamIdToExclude != "" {
-		optional += fmt.Sprintf("?exclude_team=%s", url.QueryEscape(teamIdToExclude))
+	if teamIDToExclude != "" {
+		optional += fmt.Sprintf("?exclude_team=%s", url.QueryEscape(teamIDToExclude))
 	}
 
-	r, err := c.DoApiGet(c.GetUserRoute(userId)+"/teams/unread"+optional, "")
+	r, err := c.DoApiGet(c.GetUserRoute(userID)+"/teams/unread"+optional, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1456,9 +1456,9 @@ func (c *Client4) GetTeamsUnreadForUser(userId, teamIdToExclude string) ([]*Team
 }
 
 // GetUserAudits returns a list of audit based on the provided user id string.
-func (c *Client4) GetUserAudits(userId string, page int, perPage int, etag string) (Audits, *Response) {
+func (c *Client4) GetUserAudits(userID string, page int, perPage int, etag string) (Audits, *Response) {
 	query := fmt.Sprintf("?page=%v&per_page=%v", page, perPage)
-	r, err := c.DoApiGet(c.GetUserRoute(userId)+"/audits"+query, etag)
+	r, err := c.DoApiGet(c.GetUserRoute(userID)+"/audits"+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1478,8 +1478,8 @@ func (c *Client4) VerifyUserEmail(token string) (bool, *Response) {
 }
 
 // VerifyUserEmailWithoutToken will verify a user's email by its Id. (Requires manage system role)
-func (c *Client4) VerifyUserEmailWithoutToken(userId string) (*User, *Response) {
-	r, err := c.DoApiPost(c.GetUserRoute(userId)+"/email/verify/member", "")
+func (c *Client4) VerifyUserEmailWithoutToken(userID string) (*User, *Response) {
+	r, err := c.DoApiPost(c.GetUserRoute(userID)+"/email/verify/member", "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1501,8 +1501,8 @@ func (c *Client4) SendVerificationEmail(email string) (bool, *Response) {
 }
 
 // SetDefaultProfileImage resets the profile image to a default generated one.
-func (c *Client4) SetDefaultProfileImage(userId string) (bool, *Response) {
-	r, err := c.DoApiDelete(c.GetUserRoute(userId) + "/image")
+func (c *Client4) SetDefaultProfileImage(userID string) (bool, *Response) {
+	r, err := c.DoApiDelete(c.GetUserRoute(userID) + "/image")
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1510,7 +1510,7 @@ func (c *Client4) SetDefaultProfileImage(userId string) (bool, *Response) {
 }
 
 // SetProfileImage sets profile image of the user.
-func (c *Client4) SetProfileImage(userId string, data []byte) (bool, *Response) {
+func (c *Client4) SetProfileImage(userID string, data []byte) (bool, *Response) {
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 
@@ -1527,7 +1527,7 @@ func (c *Client4) SetProfileImage(userId string, data []byte) (bool, *Response) 
 		return false, &Response{Error: NewAppError("SetProfileImage", "model.client.set_profile_user.writer.app_error", nil, err.Error(), http.StatusBadRequest)}
 	}
 
-	rq, err := http.NewRequest("POST", c.ApiUrl+c.GetUserRoute(userId)+"/image", bytes.NewReader(body.Bytes()))
+	rq, err := http.NewRequest("POST", c.ApiUrl+c.GetUserRoute(userID)+"/image", bytes.NewReader(body.Bytes()))
 	if err != nil {
 		return false, &Response{Error: NewAppError("SetProfileImage", "model.client.connecting.app_error", nil, err.Error(), http.StatusBadRequest)}
 	}
@@ -1539,7 +1539,7 @@ func (c *Client4) SetProfileImage(userId string, data []byte) (bool, *Response) 
 
 	rp, err := c.HttpClient.Do(rq)
 	if err != nil || rp == nil {
-		return false, &Response{StatusCode: http.StatusForbidden, Error: NewAppError(c.GetUserRoute(userId)+"/image", "model.client.connecting.app_error", nil, err.Error(), http.StatusForbidden)}
+		return false, &Response{StatusCode: http.StatusForbidden, Error: NewAppError(c.GetUserRoute(userID)+"/image", "model.client.connecting.app_error", nil, err.Error(), http.StatusForbidden)}
 	}
 	defer closeBody(rp)
 
@@ -1554,9 +1554,9 @@ func (c *Client4) SetProfileImage(userId string, data []byte) (bool, *Response) 
 // of a session token to access the REST API. Must have the 'create_user_access_token'
 // permission and if generating for another user, must have the 'edit_other_users'
 // permission. A non-blank description is required.
-func (c *Client4) CreateUserAccessToken(userId, description string) (*UserAccessToken, *Response) {
+func (c *Client4) CreateUserAccessToken(userID, description string) (*UserAccessToken, *Response) {
 	requestBody := map[string]string{"description": description}
-	r, err := c.DoApiPost(c.GetUserRoute(userId)+"/tokens", MapToJson(requestBody))
+	r, err := c.DoApiPost(c.GetUserRoute(userID)+"/tokens", MapToJson(requestBody))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1581,8 +1581,8 @@ func (c *Client4) GetUserAccessTokens(page int, perPage int) ([]*UserAccessToken
 // and the user_id of the user it is for. The actual token will not be returned.
 // Must have the 'read_user_access_token' permission and if getting for another
 // user, must have the 'edit_other_users' permission.
-func (c *Client4) GetUserAccessToken(tokenId string) (*UserAccessToken, *Response) {
-	r, err := c.DoApiGet(c.GetUserAccessTokenRoute(tokenId), "")
+func (c *Client4) GetUserAccessToken(tokenID string) (*UserAccessToken, *Response) {
+	r, err := c.DoApiGet(c.GetUserAccessTokenRoute(tokenID), "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1594,9 +1594,9 @@ func (c *Client4) GetUserAccessToken(tokenId string) (*UserAccessToken, *Respons
 // description and user_id for each. The actual tokens will not be returned. Must have
 // the 'read_user_access_token' permission and if getting for another user, must have the
 // 'edit_other_users' permission.
-func (c *Client4) GetUserAccessTokensForUser(userId string, page, perPage int) ([]*UserAccessToken, *Response) {
+func (c *Client4) GetUserAccessTokensForUser(userID string, page, perPage int) ([]*UserAccessToken, *Response) {
 	query := fmt.Sprintf("?page=%v&per_page=%v", page, perPage)
-	r, err := c.DoApiGet(c.GetUserRoute(userId)+"/tokens"+query, "")
+	r, err := c.DoApiGet(c.GetUserRoute(userID)+"/tokens"+query, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1607,8 +1607,8 @@ func (c *Client4) GetUserAccessTokensForUser(userId string, page, perPage int) (
 // RevokeUserAccessToken will revoke a user access token by id. Must have the
 // 'revoke_user_access_token' permission and if revoking for another user, must have the
 // 'edit_other_users' permission.
-func (c *Client4) RevokeUserAccessToken(tokenId string) (bool, *Response) {
-	requestBody := map[string]string{"token_id": tokenId}
+func (c *Client4) RevokeUserAccessToken(tokenID string) (bool, *Response) {
+	requestBody := map[string]string{"token_id": tokenID}
 	r, err := c.DoApiPost(c.GetUsersRoute()+"/tokens/revoke", MapToJson(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
@@ -1630,8 +1630,8 @@ func (c *Client4) SearchUserAccessTokens(search *UserAccessTokenSearch) ([]*User
 // DisableUserAccessToken will disable a user access token by id. Must have the
 // 'revoke_user_access_token' permission and if disabling for another user, must have the
 // 'edit_other_users' permission.
-func (c *Client4) DisableUserAccessToken(tokenId string) (bool, *Response) {
-	requestBody := map[string]string{"token_id": tokenId}
+func (c *Client4) DisableUserAccessToken(tokenID string) (bool, *Response) {
+	requestBody := map[string]string{"token_id": tokenID}
 	r, err := c.DoApiPost(c.GetUsersRoute()+"/tokens/disable", MapToJson(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
@@ -1643,8 +1643,8 @@ func (c *Client4) DisableUserAccessToken(tokenId string) (bool, *Response) {
 // EnableUserAccessToken will enable a user access token by id. Must have the
 // 'create_user_access_token' permission and if enabling for another user, must have the
 // 'edit_other_users' permission.
-func (c *Client4) EnableUserAccessToken(tokenId string) (bool, *Response) {
-	requestBody := map[string]string{"token_id": tokenId}
+func (c *Client4) EnableUserAccessToken(tokenID string) (bool, *Response) {
+	requestBody := map[string]string{"token_id": tokenID}
 	r, err := c.DoApiPost(c.GetUsersRoute()+"/tokens/enable", MapToJson(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
@@ -1666,8 +1666,8 @@ func (c *Client4) CreateBot(bot *Bot) (*Bot, *Response) {
 }
 
 // PatchBot partially updates a bot. Any missing fields are not updated.
-func (c *Client4) PatchBot(userId string, patch *BotPatch) (*Bot, *Response) {
-	r, err := c.doApiPutBytes(c.GetBotRoute(userId), patch.ToJson())
+func (c *Client4) PatchBot(userID string, patch *BotPatch) (*Bot, *Response) {
+	r, err := c.doApiPutBytes(c.GetBotRoute(userID), patch.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1676,8 +1676,8 @@ func (c *Client4) PatchBot(userId string, patch *BotPatch) (*Bot, *Response) {
 }
 
 // GetBot fetches the given, undeleted bot.
-func (c *Client4) GetBot(userId string, etag string) (*Bot, *Response) {
-	r, err := c.DoApiGet(c.GetBotRoute(userId), etag)
+func (c *Client4) GetBot(userID string, etag string) (*Bot, *Response) {
+	r, err := c.DoApiGet(c.GetBotRoute(userID), etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1686,8 +1686,8 @@ func (c *Client4) GetBot(userId string, etag string) (*Bot, *Response) {
 }
 
 // GetBot fetches the given bot, even if it is deleted.
-func (c *Client4) GetBotIncludeDeleted(userId string, etag string) (*Bot, *Response) {
-	r, err := c.DoApiGet(c.GetBotRoute(userId)+"?include_deleted="+c.boolString(true), etag)
+func (c *Client4) GetBotIncludeDeleted(userID string, etag string) (*Bot, *Response) {
+	r, err := c.DoApiGet(c.GetBotRoute(userID)+"?include_deleted="+c.boolString(true), etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1729,8 +1729,8 @@ func (c *Client4) GetBotsOrphaned(page, perPage int, etag string) ([]*Bot, *Resp
 }
 
 // DisableBot disables the given bot in the system.
-func (c *Client4) DisableBot(botUserId string) (*Bot, *Response) {
-	r, err := c.doApiPostBytes(c.GetBotRoute(botUserId)+"/disable", nil)
+func (c *Client4) DisableBot(botUserID string) (*Bot, *Response) {
+	r, err := c.doApiPostBytes(c.GetBotRoute(botUserID)+"/disable", nil)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1739,8 +1739,8 @@ func (c *Client4) DisableBot(botUserId string) (*Bot, *Response) {
 }
 
 // EnableBot disables the given bot in the system.
-func (c *Client4) EnableBot(botUserId string) (*Bot, *Response) {
-	r, err := c.doApiPostBytes(c.GetBotRoute(botUserId)+"/enable", nil)
+func (c *Client4) EnableBot(botUserID string) (*Bot, *Response) {
+	r, err := c.doApiPostBytes(c.GetBotRoute(botUserID)+"/enable", nil)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1749,8 +1749,8 @@ func (c *Client4) EnableBot(botUserId string) (*Bot, *Response) {
 }
 
 // AssignBot assigns the given bot to the given user
-func (c *Client4) AssignBot(botUserId, newOwnerId string) (*Bot, *Response) {
-	r, err := c.doApiPostBytes(c.GetBotRoute(botUserId)+"/assign/"+newOwnerId, nil)
+func (c *Client4) AssignBot(botUserID, newOwnerID string) (*Bot, *Response) {
+	r, err := c.doApiPostBytes(c.GetBotRoute(botUserID)+"/assign/"+newOwnerID, nil)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1759,7 +1759,7 @@ func (c *Client4) AssignBot(botUserId, newOwnerId string) (*Bot, *Response) {
 }
 
 // SetBotIconImage sets LHS bot icon image.
-func (c *Client4) SetBotIconImage(botUserId string, data []byte) (bool, *Response) {
+func (c *Client4) SetBotIconImage(botUserID string, data []byte) (bool, *Response) {
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 
@@ -1776,7 +1776,7 @@ func (c *Client4) SetBotIconImage(botUserId string, data []byte) (bool, *Respons
 		return false, &Response{Error: NewAppError("SetBotIconImage", "model.client.set_bot_icon_image.writer.app_error", nil, err.Error(), http.StatusBadRequest)}
 	}
 
-	rq, err := http.NewRequest("POST", c.ApiUrl+c.GetBotRoute(botUserId)+"/icon", bytes.NewReader(body.Bytes()))
+	rq, err := http.NewRequest("POST", c.ApiUrl+c.GetBotRoute(botUserID)+"/icon", bytes.NewReader(body.Bytes()))
 	if err != nil {
 		return false, &Response{Error: NewAppError("SetBotIconImage", "model.client.connecting.app_error", nil, err.Error(), http.StatusBadRequest)}
 	}
@@ -1788,7 +1788,7 @@ func (c *Client4) SetBotIconImage(botUserId string, data []byte) (bool, *Respons
 
 	rp, err := c.HttpClient.Do(rq)
 	if err != nil || rp == nil {
-		return false, &Response{StatusCode: http.StatusForbidden, Error: NewAppError(c.GetBotRoute(botUserId)+"/icon", "model.client.connecting.app_error", nil, err.Error(), http.StatusForbidden)}
+		return false, &Response{StatusCode: http.StatusForbidden, Error: NewAppError(c.GetBotRoute(botUserID)+"/icon", "model.client.connecting.app_error", nil, err.Error(), http.StatusForbidden)}
 	}
 	defer closeBody(rp)
 
@@ -1800,8 +1800,8 @@ func (c *Client4) SetBotIconImage(botUserId string, data []byte) (bool, *Respons
 }
 
 // GetBotIconImage gets LHS bot icon image. Must be logged in.
-func (c *Client4) GetBotIconImage(botUserId string) ([]byte, *Response) {
-	r, appErr := c.DoApiGet(c.GetBotRoute(botUserId)+"/icon", "")
+func (c *Client4) GetBotIconImage(botUserID string) ([]byte, *Response) {
+	r, appErr := c.DoApiGet(c.GetBotRoute(botUserID)+"/icon", "")
 	if appErr != nil {
 		return nil, BuildErrorResponse(r, appErr)
 	}
@@ -1815,8 +1815,8 @@ func (c *Client4) GetBotIconImage(botUserId string) ([]byte, *Response) {
 }
 
 // DeleteBotIconImage deletes LHS bot icon image. Must be logged in.
-func (c *Client4) DeleteBotIconImage(botUserId string) (bool, *Response) {
-	r, appErr := c.DoApiDelete(c.GetBotRoute(botUserId) + "/icon")
+func (c *Client4) DeleteBotIconImage(botUserID string) (bool, *Response) {
+	r, appErr := c.DoApiDelete(c.GetBotRoute(botUserID) + "/icon")
 	if appErr != nil {
 		return false, BuildErrorResponse(r, appErr)
 	}
@@ -1837,8 +1837,8 @@ func (c *Client4) CreateTeam(team *Team) (*Team, *Response) {
 }
 
 // GetTeam returns a team based on the provided team id string.
-func (c *Client4) GetTeam(teamId, etag string) (*Team, *Response) {
-	r, err := c.DoApiGet(c.GetTeamRoute(teamId), etag)
+func (c *Client4) GetTeam(teamID, etag string) (*Team, *Response) {
+	r, err := c.DoApiGet(c.GetTeamRoute(teamID), etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1930,8 +1930,8 @@ func (c *Client4) TeamExists(name, etag string) (bool, *Response) {
 
 // GetTeamsForUser returns a list of teams a user is on. Must be logged in as the user
 // or be a system administrator.
-func (c *Client4) GetTeamsForUser(userId, etag string) ([]*Team, *Response) {
-	r, err := c.DoApiGet(c.GetUserRoute(userId)+"/teams", etag)
+func (c *Client4) GetTeamsForUser(userID, etag string) ([]*Team, *Response) {
+	r, err := c.DoApiGet(c.GetUserRoute(userID)+"/teams", etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1940,8 +1940,8 @@ func (c *Client4) GetTeamsForUser(userId, etag string) ([]*Team, *Response) {
 }
 
 // GetTeamMember returns a team member based on the provided team and user id strings.
-func (c *Client4) GetTeamMember(teamId, userId, etag string) (*TeamMember, *Response) {
-	r, err := c.DoApiGet(c.GetTeamMemberRoute(teamId, userId), etag)
+func (c *Client4) GetTeamMember(teamID, userID, etag string) (*TeamMember, *Response) {
+	r, err := c.DoApiGet(c.GetTeamMemberRoute(teamID, userID), etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1950,9 +1950,9 @@ func (c *Client4) GetTeamMember(teamId, userId, etag string) (*TeamMember, *Resp
 }
 
 // UpdateTeamMemberRoles will update the roles on a team for a user.
-func (c *Client4) UpdateTeamMemberRoles(teamId, userId, newRoles string) (bool, *Response) {
+func (c *Client4) UpdateTeamMemberRoles(teamID, userID, newRoles string) (bool, *Response) {
 	requestBody := map[string]string{"roles": newRoles}
-	r, err := c.DoApiPut(c.GetTeamMemberRoute(teamId, userId)+"/roles", MapToJson(requestBody))
+	r, err := c.DoApiPut(c.GetTeamMemberRoute(teamID, userID)+"/roles", MapToJson(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1961,8 +1961,8 @@ func (c *Client4) UpdateTeamMemberRoles(teamId, userId, newRoles string) (bool, 
 }
 
 // UpdateTeamMemberSchemeRoles will update the scheme-derived roles on a team for a user.
-func (c *Client4) UpdateTeamMemberSchemeRoles(teamId string, userId string, schemeRoles *SchemeRoles) (bool, *Response) {
-	r, err := c.DoApiPut(c.GetTeamMemberRoute(teamId, userId)+"/schemeRoles", schemeRoles.ToJson())
+func (c *Client4) UpdateTeamMemberSchemeRoles(teamID string, userID string, schemeRoles *SchemeRoles) (bool, *Response) {
+	r, err := c.DoApiPut(c.GetTeamMemberRoute(teamID, userID)+"/schemeRoles", schemeRoles.ToJson())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -1972,7 +1972,7 @@ func (c *Client4) UpdateTeamMemberSchemeRoles(teamId string, userId string, sche
 
 // UpdateTeam will update a team.
 func (c *Client4) UpdateTeam(team *Team) (*Team, *Response) {
-	r, err := c.DoApiPut(c.GetTeamRoute(team.Id), team.ToJson())
+	r, err := c.DoApiPut(c.GetTeamRoute(team.ID), team.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1981,8 +1981,8 @@ func (c *Client4) UpdateTeam(team *Team) (*Team, *Response) {
 }
 
 // PatchTeam partially updates a team. Any missing fields are not updated.
-func (c *Client4) PatchTeam(teamId string, patch *TeamPatch) (*Team, *Response) {
-	r, err := c.DoApiPut(c.GetTeamRoute(teamId)+"/patch", patch.ToJson())
+func (c *Client4) PatchTeam(teamID string, patch *TeamPatch) (*Team, *Response) {
+	r, err := c.DoApiPut(c.GetTeamRoute(teamID)+"/patch", patch.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -1991,8 +1991,8 @@ func (c *Client4) PatchTeam(teamId string, patch *TeamPatch) (*Team, *Response) 
 }
 
 // RestoreTeam restores a previously deleted team.
-func (c *Client4) RestoreTeam(teamId string) (*Team, *Response) {
-	r, err := c.DoApiPost(c.GetTeamRoute(teamId)+"/restore", "")
+func (c *Client4) RestoreTeam(teamID string) (*Team, *Response) {
+	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/restore", "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2001,8 +2001,8 @@ func (c *Client4) RestoreTeam(teamId string) (*Team, *Response) {
 }
 
 // RegenerateTeamInviteId requests a new invite ID to be generated.
-func (c *Client4) RegenerateTeamInviteId(teamId string) (*Team, *Response) {
-	r, err := c.DoApiPost(c.GetTeamRoute(teamId)+"/regenerate_invite_id", "")
+func (c *Client4) RegenerateTeamInviteID(teamID string) (*Team, *Response) {
+	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/regenerate_invite_id", "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2011,8 +2011,8 @@ func (c *Client4) RegenerateTeamInviteId(teamId string) (*Team, *Response) {
 }
 
 // SoftDeleteTeam deletes the team softly (archive only, not permanent delete).
-func (c *Client4) SoftDeleteTeam(teamId string) (bool, *Response) {
-	r, err := c.DoApiDelete(c.GetTeamRoute(teamId))
+func (c *Client4) SoftDeleteTeam(teamID string) (bool, *Response) {
+	r, err := c.DoApiDelete(c.GetTeamRoute(teamID))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2022,8 +2022,8 @@ func (c *Client4) SoftDeleteTeam(teamId string) (bool, *Response) {
 
 // PermanentDeleteTeam deletes the team, should only be used when needed for
 // compliance and the like.
-func (c *Client4) PermanentDeleteTeam(teamId string) (bool, *Response) {
-	r, err := c.DoApiDelete(c.GetTeamRoute(teamId) + "?permanent=" + c.boolString(true))
+func (c *Client4) PermanentDeleteTeam(teamID string) (bool, *Response) {
+	r, err := c.DoApiDelete(c.GetTeamRoute(teamID) + "?permanent=" + c.boolString(true))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2033,9 +2033,9 @@ func (c *Client4) PermanentDeleteTeam(teamId string) (bool, *Response) {
 
 // UpdateTeamPrivacy modifies the team type (model.TeamOpen <--> model.TeamInvite) and sets
 // the corresponding AllowOpenInvite appropriately.
-func (c *Client4) UpdateTeamPrivacy(teamId string, privacy string) (*Team, *Response) {
+func (c *Client4) UpdateTeamPrivacy(teamID string, privacy string) (*Team, *Response) {
 	requestBody := map[string]string{"privacy": privacy}
-	r, err := c.DoApiPut(c.GetTeamRoute(teamId)+"/privacy", MapToJson(requestBody))
+	r, err := c.DoApiPut(c.GetTeamRoute(teamID)+"/privacy", MapToJson(requestBody))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2044,9 +2044,9 @@ func (c *Client4) UpdateTeamPrivacy(teamId string, privacy string) (*Team, *Resp
 }
 
 // GetTeamMembers returns team members based on the provided team id string.
-func (c *Client4) GetTeamMembers(teamId string, page int, perPage int, etag string) ([]*TeamMember, *Response) {
+func (c *Client4) GetTeamMembers(teamID string, page int, perPage int, etag string) ([]*TeamMember, *Response) {
 	query := fmt.Sprintf("?page=%v&per_page=%v", page, perPage)
-	r, err := c.DoApiGet(c.GetTeamMembersRoute(teamId)+query, etag)
+	r, err := c.DoApiGet(c.GetTeamMembersRoute(teamID)+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2056,9 +2056,9 @@ func (c *Client4) GetTeamMembers(teamId string, page int, perPage int, etag stri
 
 // GetTeamMembersWithoutDeletedUsers returns team members based on the provided team id string. Additional parameters of sort and exclude_deleted_users accepted as well
 // Could not add it to above function due to it be a breaking change.
-func (c *Client4) GetTeamMembersSortAndWithoutDeletedUsers(teamId string, page int, perPage int, sort string, excludeDeletedUsers bool, etag string) ([]*TeamMember, *Response) {
+func (c *Client4) GetTeamMembersSortAndWithoutDeletedUsers(teamID string, page int, perPage int, sort string, excludeDeletedUsers bool, etag string) ([]*TeamMember, *Response) {
 	query := fmt.Sprintf("?page=%v&per_page=%v&sort=%v&exclude_deleted_users=%v", page, perPage, sort, excludeDeletedUsers)
-	r, err := c.DoApiGet(c.GetTeamMembersRoute(teamId)+query, etag)
+	r, err := c.DoApiGet(c.GetTeamMembersRoute(teamID)+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2067,8 +2067,8 @@ func (c *Client4) GetTeamMembersSortAndWithoutDeletedUsers(teamId string, page i
 }
 
 // GetTeamMembersForUser returns the team members for a user.
-func (c *Client4) GetTeamMembersForUser(userId string, etag string) ([]*TeamMember, *Response) {
-	r, err := c.DoApiGet(c.GetUserRoute(userId)+"/teams/members", etag)
+func (c *Client4) GetTeamMembersForUser(userID string, etag string) ([]*TeamMember, *Response) {
+	r, err := c.DoApiGet(c.GetUserRoute(userID)+"/teams/members", etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2078,8 +2078,8 @@ func (c *Client4) GetTeamMembersForUser(userId string, etag string) ([]*TeamMemb
 
 // GetTeamMembersByIds will return an array of team members based on the
 // team id and a list of user ids provided. Must be authenticated.
-func (c *Client4) GetTeamMembersByIds(teamId string, userIds []string) ([]*TeamMember, *Response) {
-	r, err := c.DoApiPost(fmt.Sprintf("/teams/%v/members/ids", teamId), ArrayToJson(userIds))
+func (c *Client4) GetTeamMembersByIDs(teamID string, userIDs []string) ([]*TeamMember, *Response) {
+	r, err := c.DoApiPost(fmt.Sprintf("/teams/%v/members/ids", teamID), ArrayToJson(userIDs))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2088,9 +2088,9 @@ func (c *Client4) GetTeamMembersByIds(teamId string, userIds []string) ([]*TeamM
 }
 
 // AddTeamMember adds user to a team and return a team member.
-func (c *Client4) AddTeamMember(teamId, userId string) (*TeamMember, *Response) {
-	member := &TeamMember{TeamId: teamId, UserId: userId}
-	r, err := c.DoApiPost(c.GetTeamMembersRoute(teamId), member.ToJson())
+func (c *Client4) AddTeamMember(teamID, userID string) (*TeamMember, *Response) {
+	member := &TeamMember{TeamID: teamID, UserID: userID}
+	r, err := c.DoApiPost(c.GetTeamMembersRoute(teamID), member.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2100,11 +2100,11 @@ func (c *Client4) AddTeamMember(teamId, userId string) (*TeamMember, *Response) 
 
 // AddTeamMemberFromInvite adds a user to a team and return a team member using an invite id
 // or an invite token/data pair.
-func (c *Client4) AddTeamMemberFromInvite(token, inviteId string) (*TeamMember, *Response) {
+func (c *Client4) AddTeamMemberFromInvite(token, inviteID string) (*TeamMember, *Response) {
 	var query string
 
-	if inviteId != "" {
-		query += fmt.Sprintf("?invite_id=%v", inviteId)
+	if inviteID != "" {
+		query += fmt.Sprintf("?invite_id=%v", inviteID)
 	}
 
 	if token != "" {
@@ -2120,14 +2120,14 @@ func (c *Client4) AddTeamMemberFromInvite(token, inviteId string) (*TeamMember, 
 }
 
 // AddTeamMembers adds a number of users to a team and returns the team members.
-func (c *Client4) AddTeamMembers(teamId string, userIds []string) ([]*TeamMember, *Response) {
+func (c *Client4) AddTeamMembers(teamID string, userIDs []string) ([]*TeamMember, *Response) {
 	var members []*TeamMember
-	for _, userId := range userIds {
-		member := &TeamMember{TeamId: teamId, UserId: userId}
+	for _, userID := range userIDs {
+		member := &TeamMember{TeamID: teamID, UserID: userID}
 		members = append(members, member)
 	}
 
-	r, err := c.DoApiPost(c.GetTeamMembersRoute(teamId)+"/batch", TeamMembersToJson(members))
+	r, err := c.DoApiPost(c.GetTeamMembersRoute(teamID)+"/batch", TeamMembersToJson(members))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2136,14 +2136,14 @@ func (c *Client4) AddTeamMembers(teamId string, userIds []string) ([]*TeamMember
 }
 
 // AddTeamMembers adds a number of users to a team and returns the team members.
-func (c *Client4) AddTeamMembersGracefully(teamId string, userIds []string) ([]*TeamMemberWithError, *Response) {
+func (c *Client4) AddTeamMembersGracefully(teamID string, userIDs []string) ([]*TeamMemberWithError, *Response) {
 	var members []*TeamMember
-	for _, userId := range userIds {
-		member := &TeamMember{TeamId: teamId, UserId: userId}
+	for _, userID := range userIDs {
+		member := &TeamMember{TeamID: teamID, UserID: userID}
 		members = append(members, member)
 	}
 
-	r, err := c.DoApiPost(c.GetTeamMembersRoute(teamId)+"/batch?graceful="+c.boolString(true), TeamMembersToJson(members))
+	r, err := c.DoApiPost(c.GetTeamMembersRoute(teamID)+"/batch?graceful="+c.boolString(true), TeamMembersToJson(members))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2152,8 +2152,8 @@ func (c *Client4) AddTeamMembersGracefully(teamId string, userIds []string) ([]*
 }
 
 // RemoveTeamMember will remove a user from a team.
-func (c *Client4) RemoveTeamMember(teamId, userId string) (bool, *Response) {
-	r, err := c.DoApiDelete(c.GetTeamMemberRoute(teamId, userId))
+func (c *Client4) RemoveTeamMember(teamID, userID string) (bool, *Response) {
+	r, err := c.DoApiDelete(c.GetTeamMemberRoute(teamID, userID))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2163,8 +2163,8 @@ func (c *Client4) RemoveTeamMember(teamId, userId string) (bool, *Response) {
 
 // GetTeamStats returns a team stats based on the team id string.
 // Must be authenticated.
-func (c *Client4) GetTeamStats(teamId, etag string) (*TeamStats, *Response) {
-	r, err := c.DoApiGet(c.GetTeamStatsRoute(teamId), etag)
+func (c *Client4) GetTeamStats(teamID, etag string) (*TeamStats, *Response) {
+	r, err := c.DoApiGet(c.GetTeamStatsRoute(teamID), etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2186,8 +2186,8 @@ func (c *Client4) GetTotalUsersStats(etag string) (*UsersStats, *Response) {
 // GetTeamUnread will return a TeamUnread object that contains the amount of
 // unread messages and mentions the user has for the specified team.
 // Must be authenticated.
-func (c *Client4) GetTeamUnread(teamId, userId string) (*TeamUnread, *Response) {
-	r, err := c.DoApiGet(c.GetUserRoute(userId)+c.GetTeamRoute(teamId)+"/unread", "")
+func (c *Client4) GetTeamUnread(teamID, userID string) (*TeamUnread, *Response) {
+	r, err := c.DoApiGet(c.GetUserRoute(userID)+c.GetTeamRoute(teamID)+"/unread", "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2196,7 +2196,7 @@ func (c *Client4) GetTeamUnread(teamId, userId string) (*TeamUnread, *Response) 
 }
 
 // ImportTeam will import an exported team from other app into a existing team.
-func (c *Client4) ImportTeam(data []byte, filesize int, importFrom, filename, teamId string) (map[string]string, *Response) {
+func (c *Client4) ImportTeam(data []byte, filesize int, importFrom, filename, teamID string) (map[string]string, *Response) {
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 
@@ -2231,12 +2231,12 @@ func (c *Client4) ImportTeam(data []byte, filesize int, importFrom, filename, te
 		return nil, &Response{Error: NewAppError("UploadImportTeam", "model.client.upload_post_attachment.writer.app_error", nil, err.Error(), http.StatusBadRequest)}
 	}
 
-	return c.DoUploadImportTeam(c.GetTeamImportRoute(teamId), body.Bytes(), writer.FormDataContentType())
+	return c.DoUploadImportTeam(c.GetTeamImportRoute(teamID), body.Bytes(), writer.FormDataContentType())
 }
 
 // InviteUsersToTeam invite users by email to the team.
-func (c *Client4) InviteUsersToTeam(teamId string, userEmails []string) (bool, *Response) {
-	r, err := c.DoApiPost(c.GetTeamRoute(teamId)+"/invite/email", ArrayToJson(userEmails))
+func (c *Client4) InviteUsersToTeam(teamID string, userEmails []string) (bool, *Response) {
+	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/invite/email", ArrayToJson(userEmails))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2245,13 +2245,13 @@ func (c *Client4) InviteUsersToTeam(teamId string, userEmails []string) (bool, *
 }
 
 // InviteGuestsToTeam invite guest by email to some channels in a team.
-func (c *Client4) InviteGuestsToTeam(teamId string, userEmails []string, channels []string, message string) (bool, *Response) {
+func (c *Client4) InviteGuestsToTeam(teamID string, userEmails []string, channels []string, message string) (bool, *Response) {
 	guestsInvite := GuestsInvite{
 		Emails:   userEmails,
 		Channels: channels,
 		Message:  message,
 	}
-	r, err := c.DoApiPost(c.GetTeamRoute(teamId)+"/invite-guests/email", guestsInvite.ToJson())
+	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/invite-guests/email", guestsInvite.ToJson())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2260,8 +2260,8 @@ func (c *Client4) InviteGuestsToTeam(teamId string, userEmails []string, channel
 }
 
 // InviteUsersToTeam invite users by email to the team.
-func (c *Client4) InviteUsersToTeamGracefully(teamId string, userEmails []string) ([]*EmailInviteWithError, *Response) {
-	r, err := c.DoApiPost(c.GetTeamRoute(teamId)+"/invite/email?graceful="+c.boolString(true), ArrayToJson(userEmails))
+func (c *Client4) InviteUsersToTeamGracefully(teamID string, userEmails []string) ([]*EmailInviteWithError, *Response) {
+	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/invite/email?graceful="+c.boolString(true), ArrayToJson(userEmails))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2270,13 +2270,13 @@ func (c *Client4) InviteUsersToTeamGracefully(teamId string, userEmails []string
 }
 
 // InviteGuestsToTeam invite guest by email to some channels in a team.
-func (c *Client4) InviteGuestsToTeamGracefully(teamId string, userEmails []string, channels []string, message string) ([]*EmailInviteWithError, *Response) {
+func (c *Client4) InviteGuestsToTeamGracefully(teamID string, userEmails []string, channels []string, message string) ([]*EmailInviteWithError, *Response) {
 	guestsInvite := GuestsInvite{
 		Emails:   userEmails,
 		Channels: channels,
 		Message:  message,
 	}
-	r, err := c.DoApiPost(c.GetTeamRoute(teamId)+"/invite-guests/email?graceful="+c.boolString(true), guestsInvite.ToJson())
+	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/invite-guests/email?graceful="+c.boolString(true), guestsInvite.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2295,8 +2295,8 @@ func (c *Client4) InvalidateEmailInvites() (bool, *Response) {
 }
 
 // GetTeamInviteInfo returns a team object from an invite id containing sanitized information.
-func (c *Client4) GetTeamInviteInfo(inviteId string) (*Team, *Response) {
-	r, err := c.DoApiGet(c.GetTeamsRoute()+"/invite/"+inviteId, "")
+func (c *Client4) GetTeamInviteInfo(inviteID string) (*Team, *Response) {
+	r, err := c.DoApiGet(c.GetTeamsRoute()+"/invite/"+inviteID, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2305,7 +2305,7 @@ func (c *Client4) GetTeamInviteInfo(inviteId string) (*Team, *Response) {
 }
 
 // SetTeamIcon sets team icon of the team.
-func (c *Client4) SetTeamIcon(teamId string, data []byte) (bool, *Response) {
+func (c *Client4) SetTeamIcon(teamID string, data []byte) (bool, *Response) {
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 
@@ -2322,7 +2322,7 @@ func (c *Client4) SetTeamIcon(teamId string, data []byte) (bool, *Response) {
 		return false, &Response{Error: NewAppError("SetTeamIcon", "model.client.set_team_icon.writer.app_error", nil, err.Error(), http.StatusBadRequest)}
 	}
 
-	rq, err := http.NewRequest("POST", c.ApiUrl+c.GetTeamRoute(teamId)+"/image", bytes.NewReader(body.Bytes()))
+	rq, err := http.NewRequest("POST", c.ApiUrl+c.GetTeamRoute(teamID)+"/image", bytes.NewReader(body.Bytes()))
 	if err != nil {
 		return false, &Response{Error: NewAppError("SetTeamIcon", "model.client.connecting.app_error", nil, err.Error(), http.StatusBadRequest)}
 	}
@@ -2335,7 +2335,7 @@ func (c *Client4) SetTeamIcon(teamId string, data []byte) (bool, *Response) {
 	rp, err := c.HttpClient.Do(rq)
 	if err != nil || rp == nil {
 		// set to http.StatusForbidden(403)
-		return false, &Response{StatusCode: http.StatusForbidden, Error: NewAppError(c.GetTeamRoute(teamId)+"/image", "model.client.connecting.app_error", nil, err.Error(), 403)}
+		return false, &Response{StatusCode: http.StatusForbidden, Error: NewAppError(c.GetTeamRoute(teamID)+"/image", "model.client.connecting.app_error", nil, err.Error(), 403)}
 	}
 	defer closeBody(rp)
 
@@ -2347,8 +2347,8 @@ func (c *Client4) SetTeamIcon(teamId string, data []byte) (bool, *Response) {
 }
 
 // GetTeamIcon gets the team icon of the team.
-func (c *Client4) GetTeamIcon(teamId, etag string) ([]byte, *Response) {
-	r, appErr := c.DoApiGet(c.GetTeamRoute(teamId)+"/image", etag)
+func (c *Client4) GetTeamIcon(teamID, etag string) ([]byte, *Response) {
+	r, appErr := c.DoApiGet(c.GetTeamRoute(teamID)+"/image", etag)
 	if appErr != nil {
 		return nil, BuildErrorResponse(r, appErr)
 	}
@@ -2362,8 +2362,8 @@ func (c *Client4) GetTeamIcon(teamId, etag string) ([]byte, *Response) {
 }
 
 // RemoveTeamIcon updates LastTeamIconUpdate to 0 which indicates team icon is removed.
-func (c *Client4) RemoveTeamIcon(teamId string) (bool, *Response) {
-	r, err := c.DoApiDelete(c.GetTeamRoute(teamId) + "/image")
+func (c *Client4) RemoveTeamIcon(teamID string) (bool, *Response) {
+	r, err := c.DoApiDelete(c.GetTeamRoute(teamID) + "/image")
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2424,7 +2424,7 @@ func (c *Client4) CreateChannel(channel *Channel) (*Channel, *Response) {
 
 // UpdateChannel updates a channel based on the provided channel struct.
 func (c *Client4) UpdateChannel(channel *Channel) (*Channel, *Response) {
-	r, err := c.DoApiPut(c.GetChannelRoute(channel.Id), channel.ToJson())
+	r, err := c.DoApiPut(c.GetChannelRoute(channel.ID), channel.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2433,8 +2433,8 @@ func (c *Client4) UpdateChannel(channel *Channel) (*Channel, *Response) {
 }
 
 // PatchChannel partially updates a channel. Any missing fields are not updated.
-func (c *Client4) PatchChannel(channelId string, patch *ChannelPatch) (*Channel, *Response) {
-	r, err := c.DoApiPut(c.GetChannelRoute(channelId)+"/patch", patch.ToJson())
+func (c *Client4) PatchChannel(channelID string, patch *ChannelPatch) (*Channel, *Response) {
+	r, err := c.DoApiPut(c.GetChannelRoute(channelID)+"/patch", patch.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2443,8 +2443,8 @@ func (c *Client4) PatchChannel(channelId string, patch *ChannelPatch) (*Channel,
 }
 
 // ConvertChannelToPrivate converts public to private channel.
-func (c *Client4) ConvertChannelToPrivate(channelId string) (*Channel, *Response) {
-	r, err := c.DoApiPost(c.GetChannelRoute(channelId)+"/convert", "")
+func (c *Client4) ConvertChannelToPrivate(channelID string) (*Channel, *Response) {
+	r, err := c.DoApiPost(c.GetChannelRoute(channelID)+"/convert", "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2453,9 +2453,9 @@ func (c *Client4) ConvertChannelToPrivate(channelId string) (*Channel, *Response
 }
 
 // UpdateChannelPrivacy updates channel privacy
-func (c *Client4) UpdateChannelPrivacy(channelId string, privacy string) (*Channel, *Response) {
+func (c *Client4) UpdateChannelPrivacy(channelID string, privacy string) (*Channel, *Response) {
 	requestBody := map[string]string{"privacy": privacy}
-	r, err := c.DoApiPut(c.GetChannelRoute(channelId)+"/privacy", MapToJson(requestBody))
+	r, err := c.DoApiPut(c.GetChannelRoute(channelID)+"/privacy", MapToJson(requestBody))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2464,8 +2464,8 @@ func (c *Client4) UpdateChannelPrivacy(channelId string, privacy string) (*Chann
 }
 
 // RestoreChannel restores a previously deleted channel. Any missing fields are not updated.
-func (c *Client4) RestoreChannel(channelId string) (*Channel, *Response) {
-	r, err := c.DoApiPost(c.GetChannelRoute(channelId)+"/restore", "")
+func (c *Client4) RestoreChannel(channelID string) (*Channel, *Response) {
+	r, err := c.DoApiPost(c.GetChannelRoute(channelID)+"/restore", "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2475,8 +2475,8 @@ func (c *Client4) RestoreChannel(channelId string) (*Channel, *Response) {
 
 // CreateDirectChannel creates a direct message channel based on the two user
 // ids provided.
-func (c *Client4) CreateDirectChannel(userId1, userId2 string) (*Channel, *Response) {
-	requestBody := []string{userId1, userId2}
+func (c *Client4) CreateDirectChannel(userID1, userID2 string) (*Channel, *Response) {
+	requestBody := []string{userID1, userID2}
 	r, err := c.DoApiPost(c.GetChannelsRoute()+"/direct", ArrayToJson(requestBody))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -2486,8 +2486,8 @@ func (c *Client4) CreateDirectChannel(userId1, userId2 string) (*Channel, *Respo
 }
 
 // CreateGroupChannel creates a group message channel based on userIds provided.
-func (c *Client4) CreateGroupChannel(userIds []string) (*Channel, *Response) {
-	r, err := c.DoApiPost(c.GetChannelsRoute()+"/group", ArrayToJson(userIds))
+func (c *Client4) CreateGroupChannel(userIDs []string) (*Channel, *Response) {
+	r, err := c.DoApiPost(c.GetChannelsRoute()+"/group", ArrayToJson(userIDs))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2496,8 +2496,8 @@ func (c *Client4) CreateGroupChannel(userIds []string) (*Channel, *Response) {
 }
 
 // GetChannel returns a channel based on the provided channel id string.
-func (c *Client4) GetChannel(channelId, etag string) (*Channel, *Response) {
-	r, err := c.DoApiGet(c.GetChannelRoute(channelId), etag)
+func (c *Client4) GetChannel(channelID, etag string) (*Channel, *Response) {
+	r, err := c.DoApiGet(c.GetChannelRoute(channelID), etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2506,8 +2506,8 @@ func (c *Client4) GetChannel(channelId, etag string) (*Channel, *Response) {
 }
 
 // GetChannelStats returns statistics for a channel.
-func (c *Client4) GetChannelStats(channelId string, etag string) (*ChannelStats, *Response) {
-	r, err := c.DoApiGet(c.GetChannelRoute(channelId)+"/stats", etag)
+func (c *Client4) GetChannelStats(channelID string, etag string) (*ChannelStats, *Response) {
+	r, err := c.DoApiGet(c.GetChannelRoute(channelID)+"/stats", etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2516,8 +2516,8 @@ func (c *Client4) GetChannelStats(channelId string, etag string) (*ChannelStats,
 }
 
 // GetChannelMembersTimezones gets a list of timezones for a channel.
-func (c *Client4) GetChannelMembersTimezones(channelId string) ([]string, *Response) {
-	r, err := c.DoApiGet(c.GetChannelRoute(channelId)+"/timezones", "")
+func (c *Client4) GetChannelMembersTimezones(channelID string) ([]string, *Response) {
+	r, err := c.DoApiGet(c.GetChannelRoute(channelID)+"/timezones", "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2526,8 +2526,8 @@ func (c *Client4) GetChannelMembersTimezones(channelId string) ([]string, *Respo
 }
 
 // GetPinnedPosts gets a list of pinned posts.
-func (c *Client4) GetPinnedPosts(channelId string, etag string) (*PostList, *Response) {
-	r, err := c.DoApiGet(c.GetChannelRoute(channelId)+"/pinned", etag)
+func (c *Client4) GetPinnedPosts(channelID string, etag string) (*PostList, *Response) {
+	r, err := c.DoApiGet(c.GetChannelRoute(channelID)+"/pinned", etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2536,9 +2536,9 @@ func (c *Client4) GetPinnedPosts(channelId string, etag string) (*PostList, *Res
 }
 
 // GetPrivateChannelsForTeam returns a list of private channels based on the provided team id string.
-func (c *Client4) GetPrivateChannelsForTeam(teamId string, page int, perPage int, etag string) ([]*Channel, *Response) {
+func (c *Client4) GetPrivateChannelsForTeam(teamID string, page int, perPage int, etag string) ([]*Channel, *Response) {
 	query := fmt.Sprintf("/private?page=%v&per_page=%v", page, perPage)
-	r, err := c.DoApiGet(c.GetChannelsForTeamRoute(teamId)+query, etag)
+	r, err := c.DoApiGet(c.GetChannelsForTeamRoute(teamID)+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2547,9 +2547,9 @@ func (c *Client4) GetPrivateChannelsForTeam(teamId string, page int, perPage int
 }
 
 // GetPublicChannelsForTeam returns a list of public channels based on the provided team id string.
-func (c *Client4) GetPublicChannelsForTeam(teamId string, page int, perPage int, etag string) ([]*Channel, *Response) {
+func (c *Client4) GetPublicChannelsForTeam(teamID string, page int, perPage int, etag string) ([]*Channel, *Response) {
 	query := fmt.Sprintf("?page=%v&per_page=%v", page, perPage)
-	r, err := c.DoApiGet(c.GetChannelsForTeamRoute(teamId)+query, etag)
+	r, err := c.DoApiGet(c.GetChannelsForTeamRoute(teamID)+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2558,9 +2558,9 @@ func (c *Client4) GetPublicChannelsForTeam(teamId string, page int, perPage int,
 }
 
 // GetDeletedChannelsForTeam returns a list of public channels based on the provided team id string.
-func (c *Client4) GetDeletedChannelsForTeam(teamId string, page int, perPage int, etag string) ([]*Channel, *Response) {
+func (c *Client4) GetDeletedChannelsForTeam(teamID string, page int, perPage int, etag string) ([]*Channel, *Response) {
 	query := fmt.Sprintf("/deleted?page=%v&per_page=%v", page, perPage)
-	r, err := c.DoApiGet(c.GetChannelsForTeamRoute(teamId)+query, etag)
+	r, err := c.DoApiGet(c.GetChannelsForTeamRoute(teamID)+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2569,8 +2569,8 @@ func (c *Client4) GetDeletedChannelsForTeam(teamId string, page int, perPage int
 }
 
 // GetPublicChannelsByIdsForTeam returns a list of public channels based on provided team id string.
-func (c *Client4) GetPublicChannelsByIdsForTeam(teamId string, channelIds []string) ([]*Channel, *Response) {
-	r, err := c.DoApiPost(c.GetChannelsForTeamRoute(teamId)+"/ids", ArrayToJson(channelIds))
+func (c *Client4) GetPublicChannelsByIDsForTeam(teamID string, channelIDs []string) ([]*Channel, *Response) {
+	r, err := c.DoApiPost(c.GetChannelsForTeamRoute(teamID)+"/ids", ArrayToJson(channelIDs))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2579,8 +2579,8 @@ func (c *Client4) GetPublicChannelsByIdsForTeam(teamId string, channelIds []stri
 }
 
 // GetChannelsForTeamForUser returns a list channels of on a team for a user.
-func (c *Client4) GetChannelsForTeamForUser(teamId, userId string, includeDeleted bool, etag string) ([]*Channel, *Response) {
-	r, err := c.DoApiGet(c.GetChannelsForTeamForUserRoute(teamId, userId, includeDeleted), etag)
+func (c *Client4) GetChannelsForTeamForUser(teamID, userID string, includeDeleted bool, etag string) ([]*Channel, *Response) {
+	r, err := c.DoApiGet(c.GetChannelsForTeamForUserRoute(teamID, userID, includeDeleted), etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2589,8 +2589,8 @@ func (c *Client4) GetChannelsForTeamForUser(teamId, userId string, includeDelete
 }
 
 // GetChannelsForTeamAndUserWithLastDeleteAt returns a list channels of a team for a user, additionally filtered with lastDeleteAt. This does not have any effect if includeDeleted is set to false.
-func (c *Client4) GetChannelsForTeamAndUserWithLastDeleteAt(teamId, userId string, includeDeleted bool, lastDeleteAt int, etag string) ([]*Channel, *Response) {
-	route := fmt.Sprintf(c.GetUserRoute(userId) + c.GetTeamRoute(teamId) + "/channels")
+func (c *Client4) GetChannelsForTeamAndUserWithLastDeleteAt(teamID, userID string, includeDeleted bool, lastDeleteAt int, etag string) ([]*Channel, *Response) {
+	route := fmt.Sprintf(c.GetUserRoute(userID) + c.GetTeamRoute(teamID) + "/channels")
 	route += fmt.Sprintf("?include_deleted=%v&last_delete_at=%d", includeDeleted, lastDeleteAt)
 	r, err := c.DoApiGet(route, etag)
 	if err != nil {
@@ -2601,8 +2601,8 @@ func (c *Client4) GetChannelsForTeamAndUserWithLastDeleteAt(teamId, userId strin
 }
 
 // SearchChannels returns the channels on a team matching the provided search term.
-func (c *Client4) SearchChannels(teamId string, search *ChannelSearch) ([]*Channel, *Response) {
-	r, err := c.DoApiPost(c.GetChannelsForTeamRoute(teamId)+"/search", search.ToJson())
+func (c *Client4) SearchChannels(teamID string, search *ChannelSearch) ([]*Channel, *Response) {
+	r, err := c.DoApiPost(c.GetChannelsForTeamRoute(teamID)+"/search", search.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2611,8 +2611,8 @@ func (c *Client4) SearchChannels(teamId string, search *ChannelSearch) ([]*Chann
 }
 
 // SearchArchivedChannels returns the archived channels on a team matching the provided search term.
-func (c *Client4) SearchArchivedChannels(teamId string, search *ChannelSearch) ([]*Channel, *Response) {
-	r, err := c.DoApiPost(c.GetChannelsForTeamRoute(teamId)+"/search_archived", search.ToJson())
+func (c *Client4) SearchArchivedChannels(teamID string, search *ChannelSearch) ([]*Channel, *Response) {
+	r, err := c.DoApiPost(c.GetChannelsForTeamRoute(teamID)+"/search_archived", search.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2651,8 +2651,8 @@ func (c *Client4) SearchGroupChannels(search *ChannelSearch) ([]*Channel, *Respo
 }
 
 // DeleteChannel deletes channel based on the provided channel id string.
-func (c *Client4) DeleteChannel(channelId string) (bool, *Response) {
-	r, err := c.DoApiDelete(c.GetChannelRoute(channelId))
+func (c *Client4) DeleteChannel(channelID string) (bool, *Response) {
+	r, err := c.DoApiDelete(c.GetChannelRoute(channelID))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2661,8 +2661,8 @@ func (c *Client4) DeleteChannel(channelId string) (bool, *Response) {
 }
 
 // PermanentDeleteChannel deletes a channel based on the provided channel id string.
-func (c *Client4) PermanentDeleteChannel(channelId string) (bool, *Response) {
-	r, err := c.DoApiDelete(c.GetChannelRoute(channelId) + "?permanent=" + c.boolString(true))
+func (c *Client4) PermanentDeleteChannel(channelID string) (bool, *Response) {
+	r, err := c.DoApiDelete(c.GetChannelRoute(channelID) + "?permanent=" + c.boolString(true))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2671,12 +2671,12 @@ func (c *Client4) PermanentDeleteChannel(channelId string) (bool, *Response) {
 }
 
 // MoveChannel moves the channel to the destination team.
-func (c *Client4) MoveChannel(channelId, teamId string, force bool) (*Channel, *Response) {
+func (c *Client4) MoveChannel(channelID, teamID string, force bool) (*Channel, *Response) {
 	requestBody := map[string]interface{}{
-		"team_id": teamId,
+		"team_id": teamID,
 		"force":   force,
 	}
-	r, err := c.DoApiPost(c.GetChannelRoute(channelId)+"/move", StringInterfaceToJson(requestBody))
+	r, err := c.DoApiPost(c.GetChannelRoute(channelID)+"/move", StringInterfaceToJson(requestBody))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2685,8 +2685,8 @@ func (c *Client4) MoveChannel(channelId, teamId string, force bool) (*Channel, *
 }
 
 // GetChannelByName returns a channel based on the provided channel name and team id strings.
-func (c *Client4) GetChannelByName(channelName, teamId string, etag string) (*Channel, *Response) {
-	r, err := c.DoApiGet(c.GetChannelByNameRoute(channelName, teamId), etag)
+func (c *Client4) GetChannelByName(channelName, teamID string, etag string) (*Channel, *Response) {
+	r, err := c.DoApiGet(c.GetChannelByNameRoute(channelName, teamID), etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2695,8 +2695,8 @@ func (c *Client4) GetChannelByName(channelName, teamId string, etag string) (*Ch
 }
 
 // GetChannelByNameIncludeDeleted returns a channel based on the provided channel name and team id strings. Other then GetChannelByName it will also return deleted channels.
-func (c *Client4) GetChannelByNameIncludeDeleted(channelName, teamId string, etag string) (*Channel, *Response) {
-	r, err := c.DoApiGet(c.GetChannelByNameRoute(channelName, teamId)+"?include_deleted="+c.boolString(true), etag)
+func (c *Client4) GetChannelByNameIncludeDeleted(channelName, teamID string, etag string) (*Channel, *Response) {
+	r, err := c.DoApiGet(c.GetChannelByNameRoute(channelName, teamID)+"?include_deleted="+c.boolString(true), etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2725,9 +2725,9 @@ func (c *Client4) GetChannelByNameForTeamNameIncludeDeleted(channelName, teamNam
 }
 
 // GetChannelMembers gets a page of channel members.
-func (c *Client4) GetChannelMembers(channelId string, page, perPage int, etag string) (*ChannelMembers, *Response) {
+func (c *Client4) GetChannelMembers(channelID string, page, perPage int, etag string) (*ChannelMembers, *Response) {
 	query := fmt.Sprintf("?page=%v&per_page=%v", page, perPage)
-	r, err := c.DoApiGet(c.GetChannelMembersRoute(channelId)+query, etag)
+	r, err := c.DoApiGet(c.GetChannelMembersRoute(channelID)+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2736,8 +2736,8 @@ func (c *Client4) GetChannelMembers(channelId string, page, perPage int, etag st
 }
 
 // GetChannelMembersByIds gets the channel members in a channel for a list of user ids.
-func (c *Client4) GetChannelMembersByIds(channelId string, userIds []string) (*ChannelMembers, *Response) {
-	r, err := c.DoApiPost(c.GetChannelMembersRoute(channelId)+"/ids", ArrayToJson(userIds))
+func (c *Client4) GetChannelMembersByIDs(channelID string, userIDs []string) (*ChannelMembers, *Response) {
+	r, err := c.DoApiPost(c.GetChannelMembersRoute(channelID)+"/ids", ArrayToJson(userIDs))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2746,8 +2746,8 @@ func (c *Client4) GetChannelMembersByIds(channelId string, userIds []string) (*C
 }
 
 // GetChannelMember gets a channel member.
-func (c *Client4) GetChannelMember(channelId, userId, etag string) (*ChannelMember, *Response) {
-	r, err := c.DoApiGet(c.GetChannelMemberRoute(channelId, userId), etag)
+func (c *Client4) GetChannelMember(channelID, userID, etag string) (*ChannelMember, *Response) {
+	r, err := c.DoApiGet(c.GetChannelMemberRoute(channelID, userID), etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2756,8 +2756,8 @@ func (c *Client4) GetChannelMember(channelId, userId, etag string) (*ChannelMemb
 }
 
 // GetChannelMembersForUser gets all the channel members for a user on a team.
-func (c *Client4) GetChannelMembersForUser(userId, teamId, etag string) (*ChannelMembers, *Response) {
-	r, err := c.DoApiGet(fmt.Sprintf(c.GetUserRoute(userId)+"/teams/%v/channels/members", teamId), etag)
+func (c *Client4) GetChannelMembersForUser(userID, teamID, etag string) (*ChannelMembers, *Response) {
+	r, err := c.DoApiGet(fmt.Sprintf(c.GetUserRoute(userID)+"/teams/%v/channels/members", teamID), etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2766,8 +2766,8 @@ func (c *Client4) GetChannelMembersForUser(userId, teamId, etag string) (*Channe
 }
 
 // ViewChannel performs a view action for a user. Synonymous with switching channels or marking channels as read by a user.
-func (c *Client4) ViewChannel(userId string, view *ChannelView) (*ChannelViewResponse, *Response) {
-	url := fmt.Sprintf(c.GetChannelsRoute()+"/members/%v/view", userId)
+func (c *Client4) ViewChannel(userID string, view *ChannelView) (*ChannelViewResponse, *Response) {
+	url := fmt.Sprintf(c.GetChannelsRoute()+"/members/%v/view", userID)
 	r, err := c.DoApiPost(url, view.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -2778,8 +2778,8 @@ func (c *Client4) ViewChannel(userId string, view *ChannelView) (*ChannelViewRes
 
 // GetChannelUnread will return a ChannelUnread object that contains the number of
 // unread messages and mentions for a user.
-func (c *Client4) GetChannelUnread(channelId, userId string) (*ChannelUnread, *Response) {
-	r, err := c.DoApiGet(c.GetUserRoute(userId)+c.GetChannelRoute(channelId)+"/unread", "")
+func (c *Client4) GetChannelUnread(channelID, userID string) (*ChannelUnread, *Response) {
+	r, err := c.DoApiGet(c.GetUserRoute(userID)+c.GetChannelRoute(channelID)+"/unread", "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2788,9 +2788,9 @@ func (c *Client4) GetChannelUnread(channelId, userId string) (*ChannelUnread, *R
 }
 
 // UpdateChannelRoles will update the roles on a channel for a user.
-func (c *Client4) UpdateChannelRoles(channelId, userId, roles string) (bool, *Response) {
+func (c *Client4) UpdateChannelRoles(channelID, userID, roles string) (bool, *Response) {
 	requestBody := map[string]string{"roles": roles}
-	r, err := c.DoApiPut(c.GetChannelMemberRoute(channelId, userId)+"/roles", MapToJson(requestBody))
+	r, err := c.DoApiPut(c.GetChannelMemberRoute(channelID, userID)+"/roles", MapToJson(requestBody))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2799,8 +2799,8 @@ func (c *Client4) UpdateChannelRoles(channelId, userId, roles string) (bool, *Re
 }
 
 // UpdateChannelMemberSchemeRoles will update the scheme-derived roles on a channel for a user.
-func (c *Client4) UpdateChannelMemberSchemeRoles(channelId string, userId string, schemeRoles *SchemeRoles) (bool, *Response) {
-	r, err := c.DoApiPut(c.GetChannelMemberRoute(channelId, userId)+"/schemeRoles", schemeRoles.ToJson())
+func (c *Client4) UpdateChannelMemberSchemeRoles(channelID string, userID string, schemeRoles *SchemeRoles) (bool, *Response) {
+	r, err := c.DoApiPut(c.GetChannelMemberRoute(channelID, userID)+"/schemeRoles", schemeRoles.ToJson())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2809,8 +2809,8 @@ func (c *Client4) UpdateChannelMemberSchemeRoles(channelId string, userId string
 }
 
 // UpdateChannelNotifyProps will update the notification properties on a channel for a user.
-func (c *Client4) UpdateChannelNotifyProps(channelId, userId string, props map[string]string) (bool, *Response) {
-	r, err := c.DoApiPut(c.GetChannelMemberRoute(channelId, userId)+"/notify_props", MapToJson(props))
+func (c *Client4) UpdateChannelNotifyProps(channelID, userID string, props map[string]string) (bool, *Response) {
+	r, err := c.DoApiPut(c.GetChannelMemberRoute(channelID, userID)+"/notify_props", MapToJson(props))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2819,9 +2819,9 @@ func (c *Client4) UpdateChannelNotifyProps(channelId, userId string, props map[s
 }
 
 // AddChannelMember adds user to channel and return a channel member.
-func (c *Client4) AddChannelMember(channelId, userId string) (*ChannelMember, *Response) {
-	requestBody := map[string]string{"user_id": userId}
-	r, err := c.DoApiPost(c.GetChannelMembersRoute(channelId)+"", MapToJson(requestBody))
+func (c *Client4) AddChannelMember(channelID, userID string) (*ChannelMember, *Response) {
+	requestBody := map[string]string{"user_id": userID}
+	r, err := c.DoApiPost(c.GetChannelMembersRoute(channelID)+"", MapToJson(requestBody))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2830,9 +2830,9 @@ func (c *Client4) AddChannelMember(channelId, userId string) (*ChannelMember, *R
 }
 
 // AddChannelMemberWithRootId adds user to channel and return a channel member. Post add to channel message has the postRootId.
-func (c *Client4) AddChannelMemberWithRootId(channelId, userId, postRootId string) (*ChannelMember, *Response) {
-	requestBody := map[string]string{"user_id": userId, "post_root_id": postRootId}
-	r, err := c.DoApiPost(c.GetChannelMembersRoute(channelId)+"", MapToJson(requestBody))
+func (c *Client4) AddChannelMemberWithRootID(channelID, userID, postRootID string) (*ChannelMember, *Response) {
+	requestBody := map[string]string{"user_id": userID, "post_root_id": postRootID}
+	r, err := c.DoApiPost(c.GetChannelMembersRoute(channelID)+"", MapToJson(requestBody))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2841,8 +2841,8 @@ func (c *Client4) AddChannelMemberWithRootId(channelId, userId, postRootId strin
 }
 
 // RemoveUserFromChannel will delete the channel member object for a user, effectively removing the user from a channel.
-func (c *Client4) RemoveUserFromChannel(channelId, userId string) (bool, *Response) {
-	r, err := c.DoApiDelete(c.GetChannelMemberRoute(channelId, userId))
+func (c *Client4) RemoveUserFromChannel(channelID, userID string) (bool, *Response) {
+	r, err := c.DoApiDelete(c.GetChannelMemberRoute(channelID, userID))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2851,9 +2851,9 @@ func (c *Client4) RemoveUserFromChannel(channelId, userId string) (bool, *Respon
 }
 
 // AutocompleteChannelsForTeam will return an ordered list of channels autocomplete suggestions.
-func (c *Client4) AutocompleteChannelsForTeam(teamId, name string) (*ChannelList, *Response) {
+func (c *Client4) AutocompleteChannelsForTeam(teamID, name string) (*ChannelList, *Response) {
 	query := fmt.Sprintf("?name=%v", name)
-	r, err := c.DoApiGet(c.GetChannelsForTeamRoute(teamId)+"/autocomplete"+query, "")
+	r, err := c.DoApiGet(c.GetChannelsForTeamRoute(teamID)+"/autocomplete"+query, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2862,9 +2862,9 @@ func (c *Client4) AutocompleteChannelsForTeam(teamId, name string) (*ChannelList
 }
 
 // AutocompleteChannelsForTeamForSearch will return an ordered list of your channels autocomplete suggestions.
-func (c *Client4) AutocompleteChannelsForTeamForSearch(teamId, name string) (*ChannelList, *Response) {
+func (c *Client4) AutocompleteChannelsForTeamForSearch(teamID, name string) (*ChannelList, *Response) {
 	query := fmt.Sprintf("?name=%v", name)
-	r, err := c.DoApiGet(c.GetChannelsForTeamRoute(teamId)+"/search_autocomplete"+query, "")
+	r, err := c.DoApiGet(c.GetChannelsForTeamRoute(teamID)+"/search_autocomplete"+query, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2895,8 +2895,8 @@ func (c *Client4) CreatePostEphemeral(post *PostEphemeral) (*Post, *Response) {
 }
 
 // UpdatePost updates a post based on the provided post struct.
-func (c *Client4) UpdatePost(postId string, post *Post) (*Post, *Response) {
-	r, err := c.DoApiPut(c.GetPostRoute(postId), post.ToUnsanitizedJson())
+func (c *Client4) UpdatePost(postID string, post *Post) (*Post, *Response) {
+	r, err := c.DoApiPut(c.GetPostRoute(postID), post.ToUnsanitizedJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2905,8 +2905,8 @@ func (c *Client4) UpdatePost(postId string, post *Post) (*Post, *Response) {
 }
 
 // PatchPost partially updates a post. Any missing fields are not updated.
-func (c *Client4) PatchPost(postId string, patch *PostPatch) (*Post, *Response) {
-	r, err := c.DoApiPut(c.GetPostRoute(postId)+"/patch", patch.ToJson())
+func (c *Client4) PatchPost(postID string, patch *PostPatch) (*Post, *Response) {
+	r, err := c.DoApiPut(c.GetPostRoute(postID)+"/patch", patch.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2915,9 +2915,9 @@ func (c *Client4) PatchPost(postId string, patch *PostPatch) (*Post, *Response) 
 }
 
 // SetPostUnread marks channel where post belongs as unread on the time of the provided post.
-func (c *Client4) SetPostUnread(userId string, postId string, collapsedThreadsSupported bool) *Response {
+func (c *Client4) SetPostUnread(userID string, postID string, collapsedThreadsSupported bool) *Response {
 	b, _ := json.Marshal(map[string]bool{"collapsed_threads_supported": collapsedThreadsSupported})
-	r, err := c.DoApiPost(c.GetUserRoute(userId)+c.GetPostRoute(postId)+"/set_unread", string(b))
+	r, err := c.DoApiPost(c.GetUserRoute(userID)+c.GetPostRoute(postID)+"/set_unread", string(b))
 	if err != nil {
 		return BuildErrorResponse(r, err)
 	}
@@ -2926,8 +2926,8 @@ func (c *Client4) SetPostUnread(userId string, postId string, collapsedThreadsSu
 }
 
 // PinPost pin a post based on provided post id string.
-func (c *Client4) PinPost(postId string) (bool, *Response) {
-	r, err := c.DoApiPost(c.GetPostRoute(postId)+"/pin", "")
+func (c *Client4) PinPost(postID string) (bool, *Response) {
+	r, err := c.DoApiPost(c.GetPostRoute(postID)+"/pin", "")
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2936,8 +2936,8 @@ func (c *Client4) PinPost(postId string) (bool, *Response) {
 }
 
 // UnpinPost unpin a post based on provided post id string.
-func (c *Client4) UnpinPost(postId string) (bool, *Response) {
-	r, err := c.DoApiPost(c.GetPostRoute(postId)+"/unpin", "")
+func (c *Client4) UnpinPost(postID string) (bool, *Response) {
+	r, err := c.DoApiPost(c.GetPostRoute(postID)+"/unpin", "")
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2946,8 +2946,8 @@ func (c *Client4) UnpinPost(postId string) (bool, *Response) {
 }
 
 // GetPost gets a single post.
-func (c *Client4) GetPost(postId string, etag string) (*Post, *Response) {
-	r, err := c.DoApiGet(c.GetPostRoute(postId), etag)
+func (c *Client4) GetPost(postID string, etag string) (*Post, *Response) {
+	r, err := c.DoApiGet(c.GetPostRoute(postID), etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2956,8 +2956,8 @@ func (c *Client4) GetPost(postId string, etag string) (*Post, *Response) {
 }
 
 // DeletePost deletes a post from the provided post id string.
-func (c *Client4) DeletePost(postId string) (bool, *Response) {
-	r, err := c.DoApiDelete(c.GetPostRoute(postId))
+func (c *Client4) DeletePost(postID string) (bool, *Response) {
+	r, err := c.DoApiDelete(c.GetPostRoute(postID))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -2966,8 +2966,8 @@ func (c *Client4) DeletePost(postId string) (bool, *Response) {
 }
 
 // GetPostThread gets a post with all the other posts in the same thread.
-func (c *Client4) GetPostThread(postId string, etag string, collapsedThreads bool) (*PostList, *Response) {
-	url := c.GetPostRoute(postId) + "/thread"
+func (c *Client4) GetPostThread(postID string, etag string, collapsedThreads bool) (*PostList, *Response) {
+	url := c.GetPostRoute(postID) + "/thread"
 	if collapsedThreads {
 		url += "?collapsedThreads=true"
 	}
@@ -2980,12 +2980,12 @@ func (c *Client4) GetPostThread(postId string, etag string, collapsedThreads boo
 }
 
 // GetPostsForChannel gets a page of posts with an array for ordering for a channel.
-func (c *Client4) GetPostsForChannel(channelId string, page, perPage int, etag string, collapsedThreads bool) (*PostList, *Response) {
+func (c *Client4) GetPostsForChannel(channelID string, page, perPage int, etag string, collapsedThreads bool) (*PostList, *Response) {
 	query := fmt.Sprintf("?page=%v&per_page=%v", page, perPage)
 	if collapsedThreads {
 		query += "&collapsedThreads=true"
 	}
-	r, err := c.DoApiGet(c.GetChannelRoute(channelId)+"/posts"+query, etag)
+	r, err := c.DoApiGet(c.GetChannelRoute(channelID)+"/posts"+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -2994,9 +2994,9 @@ func (c *Client4) GetPostsForChannel(channelId string, page, perPage int, etag s
 }
 
 // GetFlaggedPostsForUser returns flagged posts of a user based on user id string.
-func (c *Client4) GetFlaggedPostsForUser(userId string, page int, perPage int) (*PostList, *Response) {
+func (c *Client4) GetFlaggedPostsForUser(userID string, page int, perPage int) (*PostList, *Response) {
 	query := fmt.Sprintf("?page=%v&per_page=%v", page, perPage)
-	r, err := c.DoApiGet(c.GetUserRoute(userId)+"/posts/flagged"+query, "")
+	r, err := c.DoApiGet(c.GetUserRoute(userID)+"/posts/flagged"+query, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -3005,13 +3005,13 @@ func (c *Client4) GetFlaggedPostsForUser(userId string, page int, perPage int) (
 }
 
 // GetFlaggedPostsForUserInTeam returns flagged posts in team of a user based on user id string.
-func (c *Client4) GetFlaggedPostsForUserInTeam(userId string, teamId string, page int, perPage int) (*PostList, *Response) {
-	if !IsValidId(teamId) {
+func (c *Client4) GetFlaggedPostsForUserInTeam(userID string, teamID string, page int, perPage int) (*PostList, *Response) {
+	if !IsValidID(teamID) {
 		return nil, &Response{StatusCode: http.StatusBadRequest, Error: NewAppError("GetFlaggedPostsForUserInTeam", "model.client.get_flagged_posts_in_team.missing_parameter.app_error", nil, "", http.StatusBadRequest)}
 	}
 
-	query := fmt.Sprintf("?team_id=%v&page=%v&per_page=%v", teamId, page, perPage)
-	r, err := c.DoApiGet(c.GetUserRoute(userId)+"/posts/flagged"+query, "")
+	query := fmt.Sprintf("?team_id=%v&page=%v&per_page=%v", teamID, page, perPage)
+	r, err := c.DoApiGet(c.GetUserRoute(userID)+"/posts/flagged"+query, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -3020,13 +3020,13 @@ func (c *Client4) GetFlaggedPostsForUserInTeam(userId string, teamId string, pag
 }
 
 // GetFlaggedPostsForUserInChannel returns flagged posts in channel of a user based on user id string.
-func (c *Client4) GetFlaggedPostsForUserInChannel(userId string, channelId string, page int, perPage int) (*PostList, *Response) {
-	if !IsValidId(channelId) {
+func (c *Client4) GetFlaggedPostsForUserInChannel(userID string, channelID string, page int, perPage int) (*PostList, *Response) {
+	if !IsValidID(channelID) {
 		return nil, &Response{StatusCode: http.StatusBadRequest, Error: NewAppError("GetFlaggedPostsForUserInChannel", "model.client.get_flagged_posts_in_channel.missing_parameter.app_error", nil, "", http.StatusBadRequest)}
 	}
 
-	query := fmt.Sprintf("?channel_id=%v&page=%v&per_page=%v", channelId, page, perPage)
-	r, err := c.DoApiGet(c.GetUserRoute(userId)+"/posts/flagged"+query, "")
+	query := fmt.Sprintf("?channel_id=%v&page=%v&per_page=%v", channelID, page, perPage)
+	r, err := c.DoApiGet(c.GetUserRoute(userID)+"/posts/flagged"+query, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -3035,12 +3035,12 @@ func (c *Client4) GetFlaggedPostsForUserInChannel(userId string, channelId strin
 }
 
 // GetPostsSince gets posts created after a specified time as Unix time in milliseconds.
-func (c *Client4) GetPostsSince(channelId string, time int64, collapsedThreads bool) (*PostList, *Response) {
+func (c *Client4) GetPostsSince(channelID string, time int64, collapsedThreads bool) (*PostList, *Response) {
 	query := fmt.Sprintf("?since=%v", time)
 	if collapsedThreads {
 		query += "&collapsedThreads=true"
 	}
-	r, err := c.DoApiGet(c.GetChannelRoute(channelId)+"/posts"+query, "")
+	r, err := c.DoApiGet(c.GetChannelRoute(channelID)+"/posts"+query, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -3049,12 +3049,12 @@ func (c *Client4) GetPostsSince(channelId string, time int64, collapsedThreads b
 }
 
 // GetPostsAfter gets a page of posts that were posted after the post provided.
-func (c *Client4) GetPostsAfter(channelId, postId string, page, perPage int, etag string, collapsedThreads bool) (*PostList, *Response) {
-	query := fmt.Sprintf("?page=%v&per_page=%v&after=%v", page, perPage, postId)
+func (c *Client4) GetPostsAfter(channelID, postID string, page, perPage int, etag string, collapsedThreads bool) (*PostList, *Response) {
+	query := fmt.Sprintf("?page=%v&per_page=%v&after=%v", page, perPage, postID)
 	if collapsedThreads {
 		query += "&collapsedThreads=true"
 	}
-	r, err := c.DoApiGet(c.GetChannelRoute(channelId)+"/posts"+query, etag)
+	r, err := c.DoApiGet(c.GetChannelRoute(channelID)+"/posts"+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -3063,12 +3063,12 @@ func (c *Client4) GetPostsAfter(channelId, postId string, page, perPage int, eta
 }
 
 // GetPostsBefore gets a page of posts that were posted before the post provided.
-func (c *Client4) GetPostsBefore(channelId, postId string, page, perPage int, etag string, collapsedThreads bool) (*PostList, *Response) {
-	query := fmt.Sprintf("?page=%v&per_page=%v&before=%v", page, perPage, postId)
+func (c *Client4) GetPostsBefore(channelID, postID string, page, perPage int, etag string, collapsedThreads bool) (*PostList, *Response) {
+	query := fmt.Sprintf("?page=%v&per_page=%v&before=%v", page, perPage, postID)
 	if collapsedThreads {
 		query += "&collapsedThreads=true"
 	}
-	r, err := c.DoApiGet(c.GetChannelRoute(channelId)+"/posts"+query, etag)
+	r, err := c.DoApiGet(c.GetChannelRoute(channelID)+"/posts"+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -3077,12 +3077,12 @@ func (c *Client4) GetPostsBefore(channelId, postId string, page, perPage int, et
 }
 
 // GetPostsAroundLastUnread gets a list of posts around last unread post by a user in a channel.
-func (c *Client4) GetPostsAroundLastUnread(userId, channelId string, limitBefore, limitAfter int, collapsedThreads bool) (*PostList, *Response) {
+func (c *Client4) GetPostsAroundLastUnread(userID, channelID string, limitBefore, limitAfter int, collapsedThreads bool) (*PostList, *Response) {
 	query := fmt.Sprintf("?limit_before=%v&limit_after=%v", limitBefore, limitAfter)
 	if collapsedThreads {
 		query += "&collapsedThreads=true"
 	}
-	r, err := c.DoApiGet(c.GetUserRoute(userId)+c.GetChannelRoute(channelId)+"/posts/unread"+query, "")
+	r, err := c.DoApiGet(c.GetUserRoute(userID)+c.GetChannelRoute(channelID)+"/posts/unread"+query, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -3091,17 +3091,17 @@ func (c *Client4) GetPostsAroundLastUnread(userId, channelId string, limitBefore
 }
 
 // SearchFiles returns any posts with matching terms string.
-func (c *Client4) SearchFiles(teamId string, terms string, isOrSearch bool) (*FileInfoList, *Response) {
+func (c *Client4) SearchFiles(teamID string, terms string, isOrSearch bool) (*FileInfoList, *Response) {
 	params := SearchParameter{
 		Terms:      &terms,
 		IsOrSearch: &isOrSearch,
 	}
-	return c.SearchFilesWithParams(teamId, &params)
+	return c.SearchFilesWithParams(teamID, &params)
 }
 
 // SearchFilesWithParams returns any posts with matching terms string.
-func (c *Client4) SearchFilesWithParams(teamId string, params *SearchParameter) (*FileInfoList, *Response) {
-	r, err := c.DoApiPost(c.GetTeamRoute(teamId)+"/files/search", params.SearchParameterToJson())
+func (c *Client4) SearchFilesWithParams(teamID string, params *SearchParameter) (*FileInfoList, *Response) {
+	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/files/search", params.SearchParameterToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -3110,17 +3110,17 @@ func (c *Client4) SearchFilesWithParams(teamId string, params *SearchParameter) 
 }
 
 // SearchPosts returns any posts with matching terms string.
-func (c *Client4) SearchPosts(teamId string, terms string, isOrSearch bool) (*PostList, *Response) {
+func (c *Client4) SearchPosts(teamID string, terms string, isOrSearch bool) (*PostList, *Response) {
 	params := SearchParameter{
 		Terms:      &terms,
 		IsOrSearch: &isOrSearch,
 	}
-	return c.SearchPostsWithParams(teamId, &params)
+	return c.SearchPostsWithParams(teamID, &params)
 }
 
 // SearchPostsWithParams returns any posts with matching terms string.
-func (c *Client4) SearchPostsWithParams(teamId string, params *SearchParameter) (*PostList, *Response) {
-	r, err := c.DoApiPost(c.GetTeamRoute(teamId)+"/posts/search", params.SearchParameterToJson())
+func (c *Client4) SearchPostsWithParams(teamID string, params *SearchParameter) (*PostList, *Response) {
+	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/posts/search", params.SearchParameterToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -3129,9 +3129,9 @@ func (c *Client4) SearchPostsWithParams(teamId string, params *SearchParameter) 
 }
 
 // SearchPostsWithMatches returns any posts with matching terms string, including.
-func (c *Client4) SearchPostsWithMatches(teamId string, terms string, isOrSearch bool) (*PostSearchResults, *Response) {
+func (c *Client4) SearchPostsWithMatches(teamID string, terms string, isOrSearch bool) (*PostSearchResults, *Response) {
 	requestBody := map[string]interface{}{"terms": terms, "is_or_search": isOrSearch}
-	r, err := c.DoApiPost(c.GetTeamRoute(teamId)+"/posts/search", StringInterfaceToJson(requestBody))
+	r, err := c.DoApiPost(c.GetTeamRoute(teamID)+"/posts/search", StringInterfaceToJson(requestBody))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -3140,8 +3140,8 @@ func (c *Client4) SearchPostsWithMatches(teamId string, terms string, isOrSearch
 }
 
 // DoPostAction performs a post action.
-func (c *Client4) DoPostAction(postId, actionId string) (bool, *Response) {
-	r, err := c.DoApiPost(c.GetPostRoute(postId)+"/actions/"+actionId, "")
+func (c *Client4) DoPostAction(postID, actionID string) (bool, *Response) {
+	r, err := c.DoApiPost(c.GetPostRoute(postID)+"/actions/"+actionID, "")
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -3150,7 +3150,7 @@ func (c *Client4) DoPostAction(postId, actionId string) (bool, *Response) {
 }
 
 // DoPostActionWithCookie performs a post action with extra arguments
-func (c *Client4) DoPostActionWithCookie(postId, actionId, selected, cookieStr string) (bool, *Response) {
+func (c *Client4) DoPostActionWithCookie(postID, actionID, selected, cookieStr string) (bool, *Response) {
 	var body []byte
 	if selected != "" || cookieStr != "" {
 		body, _ = json.Marshal(DoPostActionRequest{
@@ -3158,7 +3158,7 @@ func (c *Client4) DoPostActionWithCookie(postId, actionId, selected, cookieStr s
 			Cookie:         cookieStr,
 		})
 	}
-	r, err := c.DoApiPost(c.GetPostRoute(postId)+"/actions/"+actionId, string(body))
+	r, err := c.DoApiPost(c.GetPostRoute(postID)+"/actions/"+actionID, string(body))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -3197,7 +3197,7 @@ func (c *Client4) SubmitInteractiveDialog(request SubmitDialogRequest) (*SubmitD
 
 // UploadFile will upload a file to a channel using a multipart request, to be later attached to a post.
 // This method is functionally equivalent to Client4.UploadFileAsRequestBody.
-func (c *Client4) UploadFile(data []byte, channelId string, filename string) (*FileUploadResponse, *Response) {
+func (c *Client4) UploadFile(data []byte, channelID string, filename string) (*FileUploadResponse, *Response) {
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 
@@ -3206,7 +3206,7 @@ func (c *Client4) UploadFile(data []byte, channelId string, filename string) (*F
 		return nil, &Response{Error: NewAppError("UploadPostAttachment", "model.client.upload_post_attachment.channel_id.app_error", nil, err.Error(), http.StatusBadRequest)}
 	}
 
-	_, err = io.Copy(part, strings.NewReader(channelId))
+	_, err = io.Copy(part, strings.NewReader(channelID))
 	if err != nil {
 		return nil, &Response{Error: NewAppError("UploadPostAttachment", "model.client.upload_post_attachment.channel_id.app_error", nil, err.Error(), http.StatusBadRequest)}
 	}
@@ -3230,13 +3230,13 @@ func (c *Client4) UploadFile(data []byte, channelId string, filename string) (*F
 
 // UploadFileAsRequestBody will upload a file to a channel as the body of a request, to be later attached
 // to a post. This method is functionally equivalent to Client4.UploadFile.
-func (c *Client4) UploadFileAsRequestBody(data []byte, channelId string, filename string) (*FileUploadResponse, *Response) {
-	return c.DoUploadFile(c.GetFilesRoute()+fmt.Sprintf("?channel_id=%v&filename=%v", url.QueryEscape(channelId), url.QueryEscape(filename)), data, http.DetectContentType(data))
+func (c *Client4) UploadFileAsRequestBody(data []byte, channelID string, filename string) (*FileUploadResponse, *Response) {
+	return c.DoUploadFile(c.GetFilesRoute()+fmt.Sprintf("?channel_id=%v&filename=%v", url.QueryEscape(channelID), url.QueryEscape(filename)), data, http.DetectContentType(data))
 }
 
 // GetFile gets the bytes for a file by id.
-func (c *Client4) GetFile(fileId string) ([]byte, *Response) {
-	r, appErr := c.DoApiGet(c.GetFileRoute(fileId), "")
+func (c *Client4) GetFile(fileID string) ([]byte, *Response) {
+	r, appErr := c.DoApiGet(c.GetFileRoute(fileID), "")
 	if appErr != nil {
 		return nil, BuildErrorResponse(r, appErr)
 	}
@@ -3250,8 +3250,8 @@ func (c *Client4) GetFile(fileId string) ([]byte, *Response) {
 }
 
 // DownloadFile gets the bytes for a file by id, optionally adding headers to force the browser to download it.
-func (c *Client4) DownloadFile(fileId string, download bool) ([]byte, *Response) {
-	r, appErr := c.DoApiGet(c.GetFileRoute(fileId)+fmt.Sprintf("?download=%v", download), "")
+func (c *Client4) DownloadFile(fileID string, download bool) ([]byte, *Response) {
+	r, appErr := c.DoApiGet(c.GetFileRoute(fileID)+fmt.Sprintf("?download=%v", download), "")
 	if appErr != nil {
 		return nil, BuildErrorResponse(r, appErr)
 	}
@@ -3265,8 +3265,8 @@ func (c *Client4) DownloadFile(fileId string, download bool) ([]byte, *Response)
 }
 
 // GetFileThumbnail gets the bytes for a file by id.
-func (c *Client4) GetFileThumbnail(fileId string) ([]byte, *Response) {
-	r, appErr := c.DoApiGet(c.GetFileRoute(fileId)+"/thumbnail", "")
+func (c *Client4) GetFileThumbnail(fileID string) ([]byte, *Response) {
+	r, appErr := c.DoApiGet(c.GetFileRoute(fileID)+"/thumbnail", "")
 	if appErr != nil {
 		return nil, BuildErrorResponse(r, appErr)
 	}
@@ -3280,8 +3280,8 @@ func (c *Client4) GetFileThumbnail(fileId string) ([]byte, *Response) {
 }
 
 // DownloadFileThumbnail gets the bytes for a file by id, optionally adding headers to force the browser to download it.
-func (c *Client4) DownloadFileThumbnail(fileId string, download bool) ([]byte, *Response) {
-	r, appErr := c.DoApiGet(c.GetFileRoute(fileId)+fmt.Sprintf("/thumbnail?download=%v", download), "")
+func (c *Client4) DownloadFileThumbnail(fileID string, download bool) ([]byte, *Response) {
+	r, appErr := c.DoApiGet(c.GetFileRoute(fileID)+fmt.Sprintf("/thumbnail?download=%v", download), "")
 	if appErr != nil {
 		return nil, BuildErrorResponse(r, appErr)
 	}
@@ -3295,8 +3295,8 @@ func (c *Client4) DownloadFileThumbnail(fileId string, download bool) ([]byte, *
 }
 
 // GetFileLink gets the public link of a file by id.
-func (c *Client4) GetFileLink(fileId string) (string, *Response) {
-	r, err := c.DoApiGet(c.GetFileRoute(fileId)+"/link", "")
+func (c *Client4) GetFileLink(fileID string) (string, *Response) {
+	r, err := c.DoApiGet(c.GetFileRoute(fileID)+"/link", "")
 	if err != nil {
 		return "", BuildErrorResponse(r, err)
 	}
@@ -3305,8 +3305,8 @@ func (c *Client4) GetFileLink(fileId string) (string, *Response) {
 }
 
 // GetFilePreview gets the bytes for a file by id.
-func (c *Client4) GetFilePreview(fileId string) ([]byte, *Response) {
-	r, appErr := c.DoApiGet(c.GetFileRoute(fileId)+"/preview", "")
+func (c *Client4) GetFilePreview(fileID string) ([]byte, *Response) {
+	r, appErr := c.DoApiGet(c.GetFileRoute(fileID)+"/preview", "")
 	if appErr != nil {
 		return nil, BuildErrorResponse(r, appErr)
 	}
@@ -3320,8 +3320,8 @@ func (c *Client4) GetFilePreview(fileId string) ([]byte, *Response) {
 }
 
 // DownloadFilePreview gets the bytes for a file by id.
-func (c *Client4) DownloadFilePreview(fileId string, download bool) ([]byte, *Response) {
-	r, appErr := c.DoApiGet(c.GetFileRoute(fileId)+fmt.Sprintf("/preview?download=%v", download), "")
+func (c *Client4) DownloadFilePreview(fileID string, download bool) ([]byte, *Response) {
+	r, appErr := c.DoApiGet(c.GetFileRoute(fileID)+fmt.Sprintf("/preview?download=%v", download), "")
 	if appErr != nil {
 		return nil, BuildErrorResponse(r, appErr)
 	}
@@ -3335,8 +3335,8 @@ func (c *Client4) DownloadFilePreview(fileId string, download bool) ([]byte, *Re
 }
 
 // GetFileInfo gets all the file info objects.
-func (c *Client4) GetFileInfo(fileId string) (*FileInfo, *Response) {
-	r, err := c.DoApiGet(c.GetFileRoute(fileId)+"/info", "")
+func (c *Client4) GetFileInfo(fileID string) (*FileInfo, *Response) {
+	r, err := c.DoApiGet(c.GetFileRoute(fileID)+"/info", "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -3345,8 +3345,8 @@ func (c *Client4) GetFileInfo(fileId string) (*FileInfo, *Response) {
 }
 
 // GetFileInfosForPost gets all the file info objects attached to a post.
-func (c *Client4) GetFileInfosForPost(postId string, etag string) ([]*FileInfo, *Response) {
-	r, err := c.DoApiGet(c.GetPostRoute(postId)+"/files/info", etag)
+func (c *Client4) GetFileInfosForPost(postID string, etag string) ([]*FileInfo, *Response) {
+	r, err := c.DoApiGet(c.GetPostRoute(postID)+"/files/info", etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -3600,8 +3600,8 @@ func (c *Client4) RemoveLicenseFile() (bool, *Response) {
 // available but the "/analytics" endpoint is reserved for it. The "name" argument is optional
 // and defaults to "standard". The "teamId" argument is optional and will limit results
 // to a specific team.
-func (c *Client4) GetAnalyticsOld(name, teamId string) (AnalyticsRows, *Response) {
-	query := fmt.Sprintf("?name=%v&team_id=%v", name, teamId)
+func (c *Client4) GetAnalyticsOld(name, teamID string) (AnalyticsRows, *Response) {
+	query := fmt.Sprintf("?name=%v&team_id=%v", name, teamID)
 	r, err := c.DoApiGet(c.GetAnalyticsRoute()+"/old"+query, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -3624,7 +3624,7 @@ func (c *Client4) CreateIncomingWebhook(hook *IncomingWebhook) (*IncomingWebhook
 
 // UpdateIncomingWebhook updates an incoming webhook for a channel.
 func (c *Client4) UpdateIncomingWebhook(hook *IncomingWebhook) (*IncomingWebhook, *Response) {
-	r, err := c.DoApiPut(c.GetIncomingWebhookRoute(hook.Id), hook.ToJson())
+	r, err := c.DoApiPut(c.GetIncomingWebhookRoute(hook.ID), hook.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -3644,8 +3644,8 @@ func (c *Client4) GetIncomingWebhooks(page int, perPage int, etag string) ([]*In
 }
 
 // GetIncomingWebhooksForTeam returns a page of incoming webhooks for a team. Page counting starts at 0.
-func (c *Client4) GetIncomingWebhooksForTeam(teamId string, page int, perPage int, etag string) ([]*IncomingWebhook, *Response) {
-	query := fmt.Sprintf("?page=%v&per_page=%v&team_id=%v", page, perPage, teamId)
+func (c *Client4) GetIncomingWebhooksForTeam(teamID string, page int, perPage int, etag string) ([]*IncomingWebhook, *Response) {
+	query := fmt.Sprintf("?page=%v&per_page=%v&team_id=%v", page, perPage, teamID)
 	r, err := c.DoApiGet(c.GetIncomingWebhooksRoute()+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -3686,7 +3686,7 @@ func (c *Client4) CreateOutgoingWebhook(hook *OutgoingWebhook) (*OutgoingWebhook
 
 // UpdateOutgoingWebhook creates an outgoing webhook for a team or channel.
 func (c *Client4) UpdateOutgoingWebhook(hook *OutgoingWebhook) (*OutgoingWebhook, *Response) {
-	r, err := c.DoApiPut(c.GetOutgoingWebhookRoute(hook.Id), hook.ToJson())
+	r, err := c.DoApiPut(c.GetOutgoingWebhookRoute(hook.ID), hook.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -3706,8 +3706,8 @@ func (c *Client4) GetOutgoingWebhooks(page int, perPage int, etag string) ([]*Ou
 }
 
 // GetOutgoingWebhook outgoing webhooks on the system requested by Hook Id.
-func (c *Client4) GetOutgoingWebhook(hookId string) (*OutgoingWebhook, *Response) {
-	r, err := c.DoApiGet(c.GetOutgoingWebhookRoute(hookId), "")
+func (c *Client4) GetOutgoingWebhook(hookID string) (*OutgoingWebhook, *Response) {
+	r, err := c.DoApiGet(c.GetOutgoingWebhookRoute(hookID), "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -3716,8 +3716,8 @@ func (c *Client4) GetOutgoingWebhook(hookId string) (*OutgoingWebhook, *Response
 }
 
 // GetOutgoingWebhooksForChannel returns a page of outgoing webhooks for a channel. Page counting starts at 0.
-func (c *Client4) GetOutgoingWebhooksForChannel(channelId string, page int, perPage int, etag string) ([]*OutgoingWebhook, *Response) {
-	query := fmt.Sprintf("?page=%v&per_page=%v&channel_id=%v", page, perPage, channelId)
+func (c *Client4) GetOutgoingWebhooksForChannel(channelID string, page int, perPage int, etag string) ([]*OutgoingWebhook, *Response) {
+	query := fmt.Sprintf("?page=%v&per_page=%v&channel_id=%v", page, perPage, channelID)
 	r, err := c.DoApiGet(c.GetOutgoingWebhooksRoute()+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -3727,8 +3727,8 @@ func (c *Client4) GetOutgoingWebhooksForChannel(channelId string, page int, perP
 }
 
 // GetOutgoingWebhooksForTeam returns a page of outgoing webhooks for a team. Page counting starts at 0.
-func (c *Client4) GetOutgoingWebhooksForTeam(teamId string, page int, perPage int, etag string) ([]*OutgoingWebhook, *Response) {
-	query := fmt.Sprintf("?page=%v&per_page=%v&team_id=%v", page, perPage, teamId)
+func (c *Client4) GetOutgoingWebhooksForTeam(teamID string, page int, perPage int, etag string) ([]*OutgoingWebhook, *Response) {
+	query := fmt.Sprintf("?page=%v&per_page=%v&team_id=%v", page, perPage, teamID)
 	r, err := c.DoApiGet(c.GetOutgoingWebhooksRoute()+query, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -3738,8 +3738,8 @@ func (c *Client4) GetOutgoingWebhooksForTeam(teamId string, page int, perPage in
 }
 
 // RegenOutgoingHookToken regenerate the outgoing webhook token.
-func (c *Client4) RegenOutgoingHookToken(hookId string) (*OutgoingWebhook, *Response) {
-	r, err := c.DoApiPost(c.GetOutgoingWebhookRoute(hookId)+"/regen_token", "")
+func (c *Client4) RegenOutgoingHookToken(hookID string) (*OutgoingWebhook, *Response) {
+	r, err := c.DoApiPost(c.GetOutgoingWebhookRoute(hookID)+"/regen_token", "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -3748,8 +3748,8 @@ func (c *Client4) RegenOutgoingHookToken(hookId string) (*OutgoingWebhook, *Resp
 }
 
 // DeleteOutgoingWebhook delete the outgoing webhook on the system requested by Hook Id.
-func (c *Client4) DeleteOutgoingWebhook(hookId string) (bool, *Response) {
-	r, err := c.DoApiDelete(c.GetOutgoingWebhookRoute(hookId))
+func (c *Client4) DeleteOutgoingWebhook(hookID string) (bool, *Response) {
+	r, err := c.DoApiDelete(c.GetOutgoingWebhookRoute(hookID))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -3760,8 +3760,8 @@ func (c *Client4) DeleteOutgoingWebhook(hookId string) (bool, *Response) {
 // Preferences Section
 
 // GetPreferences returns the user's preferences.
-func (c *Client4) GetPreferences(userId string) (Preferences, *Response) {
-	r, err := c.DoApiGet(c.GetPreferencesRoute(userId), "")
+func (c *Client4) GetPreferences(userID string) (Preferences, *Response) {
+	r, err := c.DoApiGet(c.GetPreferencesRoute(userID), "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -3771,8 +3771,8 @@ func (c *Client4) GetPreferences(userId string) (Preferences, *Response) {
 }
 
 // UpdatePreferences saves the user's preferences.
-func (c *Client4) UpdatePreferences(userId string, preferences *Preferences) (bool, *Response) {
-	r, err := c.DoApiPut(c.GetPreferencesRoute(userId), preferences.ToJson())
+func (c *Client4) UpdatePreferences(userID string, preferences *Preferences) (bool, *Response) {
+	r, err := c.DoApiPut(c.GetPreferencesRoute(userID), preferences.ToJson())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -3781,8 +3781,8 @@ func (c *Client4) UpdatePreferences(userId string, preferences *Preferences) (bo
 }
 
 // DeletePreferences deletes the user's preferences.
-func (c *Client4) DeletePreferences(userId string, preferences *Preferences) (bool, *Response) {
-	r, err := c.DoApiPost(c.GetPreferencesRoute(userId)+"/delete", preferences.ToJson())
+func (c *Client4) DeletePreferences(userID string, preferences *Preferences) (bool, *Response) {
+	r, err := c.DoApiPost(c.GetPreferencesRoute(userID)+"/delete", preferences.ToJson())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -3791,8 +3791,8 @@ func (c *Client4) DeletePreferences(userId string, preferences *Preferences) (bo
 }
 
 // GetPreferencesByCategory returns the user's preferences from the provided category string.
-func (c *Client4) GetPreferencesByCategory(userId string, category string) (Preferences, *Response) {
-	url := fmt.Sprintf(c.GetPreferencesRoute(userId)+"/%s", category)
+func (c *Client4) GetPreferencesByCategory(userID string, category string) (Preferences, *Response) {
+	url := fmt.Sprintf(c.GetPreferencesRoute(userID)+"/%s", category)
 	r, err := c.DoApiGet(url, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -3803,8 +3803,8 @@ func (c *Client4) GetPreferencesByCategory(userId string, category string) (Pref
 }
 
 // GetPreferenceByCategoryAndName returns the user's preferences from the provided category and preference name string.
-func (c *Client4) GetPreferenceByCategoryAndName(userId string, category string, preferenceName string) (*Preference, *Response) {
-	url := fmt.Sprintf(c.GetPreferencesRoute(userId)+"/%s/name/%v", category, preferenceName)
+func (c *Client4) GetPreferenceByCategoryAndName(userID string, category string, preferenceName string) (*Preference, *Response) {
+	url := fmt.Sprintf(c.GetPreferencesRoute(userID)+"/%s/name/%v", category, preferenceName)
 	r, err := c.DoApiGet(url, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -3849,7 +3849,7 @@ func fileToMultipart(data []byte, filename string) ([]byte, *multipart.Writer, e
 
 // UploadSamlIdpCertificate will upload an IDP certificate for SAML and set the config to use it.
 // The filename parameter is deprecated and ignored: the server will pick a hard-coded filename when writing to disk.
-func (c *Client4) UploadSamlIdpCertificate(data []byte, filename string) (bool, *Response) {
+func (c *Client4) UploadSamlIDpCertificate(data []byte, filename string) (bool, *Response) {
 	body, writer, err := fileToMultipart(data, filename)
 	if err != nil {
 		return false, &Response{Error: NewAppError("UploadSamlIdpCertificate", "model.client.upload_saml_cert.app_error", nil, err.Error(), http.StatusBadRequest)}
@@ -3884,7 +3884,7 @@ func (c *Client4) UploadSamlPrivateCertificate(data []byte, filename string) (bo
 }
 
 // DeleteSamlIdpCertificate deletes the SAML IDP certificate from the server and updates the config to not use it and disable SAML.
-func (c *Client4) DeleteSamlIdpCertificate() (bool, *Response) {
+func (c *Client4) DeleteSamlIDpCertificate() (bool, *Response) {
 	r, err := c.DoApiDelete(c.GetSamlRoute() + "/certificate/idp")
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
@@ -3923,7 +3923,7 @@ func (c *Client4) GetSamlCertificateStatus() (*SamlCertificateStatus, *Response)
 	return SamlCertificateStatusFromJson(r.Body), BuildResponse(r)
 }
 
-func (c *Client4) GetSamlMetadataFromIdp(samlMetadataURL string) (*SamlMetadataResponse, *Response) {
+func (c *Client4) GetSamlMetadataFromIDp(samlMetadataURL string) (*SamlMetadataResponse, *Response) {
 	requestBody := make(map[string]string)
 	requestBody["saml_metadata_url"] = samlMetadataURL
 	r, err := c.DoApiPost(c.GetSamlRoute()+"/metadatafromidp", MapToJson(requestBody))
@@ -3981,8 +3981,8 @@ func (c *Client4) GetComplianceReports(page, perPage int) (Compliances, *Respons
 }
 
 // GetComplianceReport returns a compliance report.
-func (c *Client4) GetComplianceReport(reportId string) (*Compliance, *Response) {
-	r, err := c.DoApiGet(c.GetComplianceReportRoute(reportId), "")
+func (c *Client4) GetComplianceReport(reportID string) (*Compliance, *Response) {
+	r, err := c.DoApiGet(c.GetComplianceReportRoute(reportID), "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -3991,8 +3991,8 @@ func (c *Client4) GetComplianceReport(reportId string) (*Compliance, *Response) 
 }
 
 // DownloadComplianceReport returns a full compliance report as a file.
-func (c *Client4) DownloadComplianceReport(reportId string) ([]byte, *Response) {
-	rq, err := http.NewRequest("GET", c.ApiUrl+c.GetComplianceReportDownloadRoute(reportId), nil)
+func (c *Client4) DownloadComplianceReport(reportID string) ([]byte, *Response) {
+	rq, err := http.NewRequest("GET", c.ApiUrl+c.GetComplianceReportDownloadRoute(reportID), nil)
 	if err != nil {
 		return nil, &Response{Error: NewAppError("DownloadComplianceReport", "model.client.connecting.app_error", nil, err.Error(), http.StatusBadRequest)}
 	}
@@ -4111,7 +4111,7 @@ func (c *Client4) UnlinkLdapGroup(dn string) (*Group, *Response) {
 }
 
 // MigrateIdLdap migrates the LDAP enabled users to given attribute
-func (c *Client4) MigrateIdLdap(toAttribute string) (bool, *Response) {
+func (c *Client4) MigrateIDLdap(toAttribute string) (bool, *Response) {
 	r, err := c.DoApiPost(c.GetLdapRoute()+"/migrateid", MapToJson(map[string]string{
 		"toAttribute": toAttribute,
 	}))
@@ -4123,8 +4123,8 @@ func (c *Client4) MigrateIdLdap(toAttribute string) (bool, *Response) {
 }
 
 // GetGroupsByChannel retrieves the Mattermost Groups associated with a given channel
-func (c *Client4) GetGroupsByChannel(channelId string, opts GroupSearchOpts) ([]*GroupWithSchemeAdmin, int, *Response) {
-	path := fmt.Sprintf("%s/groups?q=%v&include_member_count=%v&filter_allow_reference=%v", c.GetChannelRoute(channelId), opts.Q, opts.IncludeMemberCount, opts.FilterAllowReference)
+func (c *Client4) GetGroupsByChannel(channelID string, opts GroupSearchOpts) ([]*GroupWithSchemeAdmin, int, *Response) {
+	path := fmt.Sprintf("%s/groups?q=%v&include_member_count=%v&filter_allow_reference=%v", c.GetChannelRoute(channelID), opts.Q, opts.IncludeMemberCount, opts.FilterAllowReference)
 	if opts.PageOpts != nil {
 		path = fmt.Sprintf("%s&page=%v&per_page=%v", path, opts.PageOpts.Page, opts.PageOpts.PerPage)
 	}
@@ -4147,8 +4147,8 @@ func (c *Client4) GetGroupsByChannel(channelId string, opts GroupSearchOpts) ([]
 }
 
 // GetGroupsByTeam retrieves the Mattermost Groups associated with a given team
-func (c *Client4) GetGroupsByTeam(teamId string, opts GroupSearchOpts) ([]*GroupWithSchemeAdmin, int, *Response) {
-	path := fmt.Sprintf("%s/groups?q=%v&include_member_count=%v&filter_allow_reference=%v", c.GetTeamRoute(teamId), opts.Q, opts.IncludeMemberCount, opts.FilterAllowReference)
+func (c *Client4) GetGroupsByTeam(teamID string, opts GroupSearchOpts) ([]*GroupWithSchemeAdmin, int, *Response) {
+	path := fmt.Sprintf("%s/groups?q=%v&include_member_count=%v&filter_allow_reference=%v", c.GetTeamRoute(teamID), opts.Q, opts.IncludeMemberCount, opts.FilterAllowReference)
 	if opts.PageOpts != nil {
 		path = fmt.Sprintf("%s&page=%v&per_page=%v", path, opts.PageOpts.Page, opts.PageOpts.PerPage)
 	}
@@ -4171,8 +4171,8 @@ func (c *Client4) GetGroupsByTeam(teamId string, opts GroupSearchOpts) ([]*Group
 }
 
 // GetGroupsAssociatedToChannelsByTeam retrieves the Mattermost Groups associated with channels in a given team
-func (c *Client4) GetGroupsAssociatedToChannelsByTeam(teamId string, opts GroupSearchOpts) (map[string][]*GroupWithSchemeAdmin, *Response) {
-	path := fmt.Sprintf("%s/groups_by_channels?q=%v&filter_allow_reference=%v", c.GetTeamRoute(teamId), opts.Q, opts.FilterAllowReference)
+func (c *Client4) GetGroupsAssociatedToChannelsByTeam(teamID string, opts GroupSearchOpts) (map[string][]*GroupWithSchemeAdmin, *Response) {
+	path := fmt.Sprintf("%s/groups_by_channels?q=%v&filter_allow_reference=%v", c.GetTeamRoute(teamID), opts.Q, opts.FilterAllowReference)
 	if opts.PageOpts != nil {
 		path = fmt.Sprintf("%s&page=%v&per_page=%v", path, opts.PageOpts.Page, opts.PageOpts.PerPage)
 	}
@@ -4221,11 +4221,11 @@ func (c *Client4) GetGroups(opts GroupSearchOpts) ([]*Group, *Response) {
 }
 
 // GetGroupsByUserId retrieves Mattermost Groups for a user
-func (c *Client4) GetGroupsByUserId(userId string) ([]*Group, *Response) {
+func (c *Client4) GetGroupsByUserID(userID string) ([]*Group, *Response) {
 	path := fmt.Sprintf(
 		"%s/%v/groups",
 		c.GetUsersRoute(),
-		userId,
+		userID,
 	)
 
 	r, appErr := c.DoApiGet(path, "")
@@ -4428,7 +4428,7 @@ func (c *Client4) CreateOAuthApp(app *OAuthApp) (*OAuthApp, *Response) {
 
 // UpdateOAuthApp updates a page of registered OAuth 2.0 client applications with Mattermost acting as an OAuth 2.0 service provider.
 func (c *Client4) UpdateOAuthApp(app *OAuthApp) (*OAuthApp, *Response) {
-	r, err := c.DoApiPut(c.GetOAuthAppRoute(app.Id), app.ToJson())
+	r, err := c.DoApiPut(c.GetOAuthAppRoute(app.ID), app.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -4448,8 +4448,8 @@ func (c *Client4) GetOAuthApps(page, perPage int) ([]*OAuthApp, *Response) {
 }
 
 // GetOAuthApp gets a registered OAuth 2.0 client application with Mattermost acting as an OAuth 2.0 service provider.
-func (c *Client4) GetOAuthApp(appId string) (*OAuthApp, *Response) {
-	r, err := c.DoApiGet(c.GetOAuthAppRoute(appId), "")
+func (c *Client4) GetOAuthApp(appID string) (*OAuthApp, *Response) {
+	r, err := c.DoApiGet(c.GetOAuthAppRoute(appID), "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -4458,8 +4458,8 @@ func (c *Client4) GetOAuthApp(appId string) (*OAuthApp, *Response) {
 }
 
 // GetOAuthAppInfo gets a sanitized version of a registered OAuth 2.0 client application with Mattermost acting as an OAuth 2.0 service provider.
-func (c *Client4) GetOAuthAppInfo(appId string) (*OAuthApp, *Response) {
-	r, err := c.DoApiGet(c.GetOAuthAppRoute(appId)+"/info", "")
+func (c *Client4) GetOAuthAppInfo(appID string) (*OAuthApp, *Response) {
+	r, err := c.DoApiGet(c.GetOAuthAppRoute(appID)+"/info", "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -4468,8 +4468,8 @@ func (c *Client4) GetOAuthAppInfo(appId string) (*OAuthApp, *Response) {
 }
 
 // DeleteOAuthApp deletes a registered OAuth 2.0 client application.
-func (c *Client4) DeleteOAuthApp(appId string) (bool, *Response) {
-	r, err := c.DoApiDelete(c.GetOAuthAppRoute(appId))
+func (c *Client4) DeleteOAuthApp(appID string) (bool, *Response) {
+	r, err := c.DoApiDelete(c.GetOAuthAppRoute(appID))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -4478,8 +4478,8 @@ func (c *Client4) DeleteOAuthApp(appId string) (bool, *Response) {
 }
 
 // RegenerateOAuthAppSecret regenerates the client secret for a registered OAuth 2.0 client application.
-func (c *Client4) RegenerateOAuthAppSecret(appId string) (*OAuthApp, *Response) {
-	r, err := c.DoApiPost(c.GetOAuthAppRoute(appId)+"/regen_secret", "")
+func (c *Client4) RegenerateOAuthAppSecret(appID string) (*OAuthApp, *Response) {
+	r, err := c.DoApiPost(c.GetOAuthAppRoute(appID)+"/regen_secret", "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -4488,9 +4488,9 @@ func (c *Client4) RegenerateOAuthAppSecret(appId string) (*OAuthApp, *Response) 
 }
 
 // GetAuthorizedOAuthAppsForUser gets a page of OAuth 2.0 client applications the user has authorized to use access their account.
-func (c *Client4) GetAuthorizedOAuthAppsForUser(userId string, page, perPage int) ([]*OAuthApp, *Response) {
+func (c *Client4) GetAuthorizedOAuthAppsForUser(userID string, page, perPage int) ([]*OAuthApp, *Response) {
 	query := fmt.Sprintf("?page=%v&per_page=%v", page, perPage)
-	r, err := c.DoApiGet(c.GetUserRoute(userId)+"/oauth/apps/authorized"+query, "")
+	r, err := c.DoApiGet(c.GetUserRoute(userID)+"/oauth/apps/authorized"+query, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -4509,8 +4509,8 @@ func (c *Client4) AuthorizeOAuthApp(authRequest *AuthorizeRequest) (string, *Res
 }
 
 // DeauthorizeOAuthApp will deauthorize an OAuth 2.0 client application from accessing a user's account.
-func (c *Client4) DeauthorizeOAuthApp(appId string) (bool, *Response) {
-	requestData := map[string]string{"client_id": appId}
+func (c *Client4) DeauthorizeOAuthApp(appID string) (bool, *Response) {
+	requestData := map[string]string{"client_id": appID}
 	r, err := c.DoApiRequest(http.MethodPost, c.Url+"/oauth/deauthorize", MapToJson(requestData), "")
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
@@ -4827,7 +4827,7 @@ func (c *Client4) CreateCommand(cmd *Command) (*Command, *Response) {
 
 // UpdateCommand updates a command based on the provided Command struct.
 func (c *Client4) UpdateCommand(cmd *Command) (*Command, *Response) {
-	r, err := c.DoApiPut(c.GetCommandRoute(cmd.Id), cmd.ToJson())
+	r, err := c.DoApiPut(c.GetCommandRoute(cmd.ID), cmd.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -4836,9 +4836,9 @@ func (c *Client4) UpdateCommand(cmd *Command) (*Command, *Response) {
 }
 
 // MoveCommand moves a command to a different team.
-func (c *Client4) MoveCommand(teamId string, commandId string) (bool, *Response) {
-	cmr := CommandMoveRequest{TeamId: teamId}
-	r, err := c.DoApiPut(c.GetCommandMoveRoute(commandId), cmr.ToJson())
+func (c *Client4) MoveCommand(teamID string, commandID string) (bool, *Response) {
+	cmr := CommandMoveRequest{TeamID: teamID}
+	r, err := c.DoApiPut(c.GetCommandMoveRoute(commandID), cmr.ToJson())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -4847,8 +4847,8 @@ func (c *Client4) MoveCommand(teamId string, commandId string) (bool, *Response)
 }
 
 // DeleteCommand deletes a command based on the provided command id string.
-func (c *Client4) DeleteCommand(commandId string) (bool, *Response) {
-	r, err := c.DoApiDelete(c.GetCommandRoute(commandId))
+func (c *Client4) DeleteCommand(commandID string) (bool, *Response) {
+	r, err := c.DoApiDelete(c.GetCommandRoute(commandID))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -4857,8 +4857,8 @@ func (c *Client4) DeleteCommand(commandId string) (bool, *Response) {
 }
 
 // ListCommands will retrieve a list of commands available in the team.
-func (c *Client4) ListCommands(teamId string, customOnly bool) ([]*Command, *Response) {
-	query := fmt.Sprintf("?team_id=%v&custom_only=%v", teamId, customOnly)
+func (c *Client4) ListCommands(teamID string, customOnly bool) ([]*Command, *Response) {
+	query := fmt.Sprintf("?team_id=%v&custom_only=%v", teamID, customOnly)
 	r, err := c.DoApiGet(c.GetCommandsRoute()+query, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -4868,9 +4868,9 @@ func (c *Client4) ListCommands(teamId string, customOnly bool) ([]*Command, *Res
 }
 
 // ListCommandAutocompleteSuggestions will retrieve a list of suggestions for a userInput.
-func (c *Client4) ListCommandAutocompleteSuggestions(userInput, teamId string) ([]AutocompleteSuggestion, *Response) {
+func (c *Client4) ListCommandAutocompleteSuggestions(userInput, teamID string) ([]AutocompleteSuggestion, *Response) {
 	query := fmt.Sprintf("/commands/autocomplete_suggestions?user_input=%v", userInput)
-	r, err := c.DoApiGet(c.GetTeamRoute(teamId)+query, "")
+	r, err := c.DoApiGet(c.GetTeamRoute(teamID)+query, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -4879,8 +4879,8 @@ func (c *Client4) ListCommandAutocompleteSuggestions(userInput, teamId string) (
 }
 
 // GetCommandById will retrieve a command by id.
-func (c *Client4) GetCommandById(cmdId string) (*Command, *Response) {
-	url := fmt.Sprintf("%s/%s", c.GetCommandsRoute(), cmdId)
+func (c *Client4) GetCommandByID(cmdID string) (*Command, *Response) {
+	url := fmt.Sprintf("%s/%s", c.GetCommandsRoute(), cmdID)
 	r, err := c.DoApiGet(url, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -4890,9 +4890,9 @@ func (c *Client4) GetCommandById(cmdId string) (*Command, *Response) {
 }
 
 // ExecuteCommand executes a given slash command.
-func (c *Client4) ExecuteCommand(channelId, command string) (*CommandResponse, *Response) {
+func (c *Client4) ExecuteCommand(channelID, command string) (*CommandResponse, *Response) {
 	commandArgs := &CommandArgs{
-		ChannelId: channelId,
+		ChannelID: channelID,
 		Command:   command,
 	}
 	r, err := c.DoApiPost(c.GetCommandsRoute()+"/execute", commandArgs.ToJson())
@@ -4907,10 +4907,10 @@ func (c *Client4) ExecuteCommand(channelId, command string) (*CommandResponse, *
 
 // ExecuteCommandWithTeam executes a given slash command against the specified team.
 // Use this when executing slash commands in a DM/GM, since the team id cannot be inferred in that case.
-func (c *Client4) ExecuteCommandWithTeam(channelId, teamId, command string) (*CommandResponse, *Response) {
+func (c *Client4) ExecuteCommandWithTeam(channelID, teamID, command string) (*CommandResponse, *Response) {
 	commandArgs := &CommandArgs{
-		ChannelId: channelId,
-		TeamId:    teamId,
+		ChannelID: channelID,
+		TeamID:    teamID,
 		Command:   command,
 	}
 	r, err := c.DoApiPost(c.GetCommandsRoute()+"/execute", commandArgs.ToJson())
@@ -4924,8 +4924,8 @@ func (c *Client4) ExecuteCommandWithTeam(channelId, teamId, command string) (*Co
 }
 
 // ListAutocompleteCommands will retrieve a list of commands available in the team.
-func (c *Client4) ListAutocompleteCommands(teamId string) ([]*Command, *Response) {
-	r, err := c.DoApiGet(c.GetTeamAutoCompleteCommandsRoute(teamId), "")
+func (c *Client4) ListAutocompleteCommands(teamID string) ([]*Command, *Response) {
+	r, err := c.DoApiGet(c.GetTeamAutoCompleteCommandsRoute(teamID), "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -4934,8 +4934,8 @@ func (c *Client4) ListAutocompleteCommands(teamId string) ([]*Command, *Response
 }
 
 // RegenCommandToken will create a new token if the user have the right permissions.
-func (c *Client4) RegenCommandToken(commandId string) (string, *Response) {
-	r, err := c.DoApiPut(c.GetCommandRoute(commandId)+"/regen_token", "")
+func (c *Client4) RegenCommandToken(commandID string) (string, *Response) {
+	r, err := c.DoApiPut(c.GetCommandRoute(commandID)+"/regen_token", "")
 	if err != nil {
 		return "", BuildErrorResponse(r, err)
 	}
@@ -4946,8 +4946,8 @@ func (c *Client4) RegenCommandToken(commandId string) (string, *Response) {
 // Status Section
 
 // GetUserStatus returns a user based on the provided user id string.
-func (c *Client4) GetUserStatus(userId, etag string) (*Status, *Response) {
-	r, err := c.DoApiGet(c.GetUserStatusRoute(userId), etag)
+func (c *Client4) GetUserStatus(userID, etag string) (*Status, *Response) {
+	r, err := c.DoApiGet(c.GetUserStatusRoute(userID), etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -4956,8 +4956,8 @@ func (c *Client4) GetUserStatus(userId, etag string) (*Status, *Response) {
 }
 
 // GetUsersStatusesByIds returns a list of users status based on the provided user ids.
-func (c *Client4) GetUsersStatusesByIds(userIds []string) ([]*Status, *Response) {
-	r, err := c.DoApiPost(c.GetUserStatusesRoute()+"/ids", ArrayToJson(userIds))
+func (c *Client4) GetUsersStatusesByIDs(userIDs []string) ([]*Status, *Response) {
+	r, err := c.DoApiPost(c.GetUserStatusesRoute()+"/ids", ArrayToJson(userIDs))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -4966,8 +4966,8 @@ func (c *Client4) GetUsersStatusesByIds(userIds []string) ([]*Status, *Response)
 }
 
 // UpdateUserStatus sets a user's status based on the provided user id string.
-func (c *Client4) UpdateUserStatus(userId string, userStatus *Status) (*Status, *Response) {
-	r, err := c.DoApiPut(c.GetUserStatusRoute(userId), userStatus.ToJson())
+func (c *Client4) UpdateUserStatus(userID string, userStatus *Status) (*Status, *Response) {
+	r, err := c.DoApiPut(c.GetUserStatusRoute(userID), userStatus.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -5028,8 +5028,8 @@ func (c *Client4) GetSortedEmojiList(page, perPage int, sort string) ([]*Emoji, 
 }
 
 // DeleteEmoji delete an custom emoji on the provided emoji id string.
-func (c *Client4) DeleteEmoji(emojiId string) (bool, *Response) {
-	r, err := c.DoApiDelete(c.GetEmojiRoute(emojiId))
+func (c *Client4) DeleteEmoji(emojiID string) (bool, *Response) {
+	r, err := c.DoApiDelete(c.GetEmojiRoute(emojiID))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -5038,8 +5038,8 @@ func (c *Client4) DeleteEmoji(emojiId string) (bool, *Response) {
 }
 
 // GetEmoji returns a custom emoji based on the emojiId string.
-func (c *Client4) GetEmoji(emojiId string) (*Emoji, *Response) {
-	r, err := c.DoApiGet(c.GetEmojiRoute(emojiId), "")
+func (c *Client4) GetEmoji(emojiID string) (*Emoji, *Response) {
+	r, err := c.DoApiGet(c.GetEmojiRoute(emojiID), "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -5058,8 +5058,8 @@ func (c *Client4) GetEmojiByName(name string) (*Emoji, *Response) {
 }
 
 // GetEmojiImage returns the emoji image.
-func (c *Client4) GetEmojiImage(emojiId string) ([]byte, *Response) {
-	r, apErr := c.DoApiGet(c.GetEmojiRoute(emojiId)+"/image", "")
+func (c *Client4) GetEmojiImage(emojiID string) ([]byte, *Response) {
+	r, apErr := c.DoApiGet(c.GetEmojiRoute(emojiID)+"/image", "")
 	if apErr != nil {
 		return nil, BuildErrorResponse(r, apErr)
 	}
@@ -5107,8 +5107,8 @@ func (c *Client4) SaveReaction(reaction *Reaction) (*Reaction, *Response) {
 }
 
 // GetReactions returns a list of reactions to a post.
-func (c *Client4) GetReactions(postId string) ([]*Reaction, *Response) {
-	r, err := c.DoApiGet(c.GetPostRoute(postId)+"/reactions", "")
+func (c *Client4) GetReactions(postID string) ([]*Reaction, *Response) {
+	r, err := c.DoApiGet(c.GetPostRoute(postID)+"/reactions", "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -5118,7 +5118,7 @@ func (c *Client4) GetReactions(postId string) ([]*Reaction, *Response) {
 
 // DeleteReaction deletes reaction of a user in a post.
 func (c *Client4) DeleteReaction(reaction *Reaction) (bool, *Response) {
-	r, err := c.DoApiDelete(c.GetUserRoute(reaction.UserId) + c.GetPostRoute(reaction.PostId) + fmt.Sprintf("/reactions/%v", reaction.EmojiName))
+	r, err := c.DoApiDelete(c.GetUserRoute(reaction.UserID) + c.GetPostRoute(reaction.PostID) + fmt.Sprintf("/reactions/%v", reaction.EmojiName))
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -5127,13 +5127,13 @@ func (c *Client4) DeleteReaction(reaction *Reaction) (bool, *Response) {
 }
 
 // FetchBulkReactions returns a map of postIds and corresponding reactions
-func (c *Client4) GetBulkReactions(postIds []string) (map[string][]*Reaction, *Response) {
-	r, err := c.DoApiPost(c.GetPostsRoute()+"/ids/reactions", ArrayToJson(postIds))
+func (c *Client4) GetBulkReactions(postIDs []string) (map[string][]*Reaction, *Response) {
+	r, err := c.DoApiPost(c.GetPostsRoute()+"/ids/reactions", ArrayToJson(postIDs))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	return MapPostIdToReactionsFromJson(r.Body), BuildResponse(r)
+	return MapPostIDToReactionsFromJson(r.Body), BuildResponse(r)
 }
 
 // Timezone Section
@@ -5208,8 +5208,8 @@ func (c *Client4) CreateJob(job *Job) (*Job, *Response) {
 }
 
 // CancelJob requests the cancellation of the job with the provided Id.
-func (c *Client4) CancelJob(jobId string) (bool, *Response) {
-	r, err := c.DoApiPost(c.GetJobsRoute()+fmt.Sprintf("/%v/cancel", jobId), "")
+func (c *Client4) CancelJob(jobID string) (bool, *Response) {
+	r, err := c.DoApiPost(c.GetJobsRoute()+fmt.Sprintf("/%v/cancel", jobID), "")
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -5218,8 +5218,8 @@ func (c *Client4) CancelJob(jobId string) (bool, *Response) {
 }
 
 // DownloadJob downloads the results of the job
-func (c *Client4) DownloadJob(jobId string) ([]byte, *Response) {
-	r, appErr := c.DoApiGet(c.GetJobsRoute()+fmt.Sprintf("/%v/download", jobId), "")
+func (c *Client4) DownloadJob(jobID string) ([]byte, *Response) {
+	r, appErr := c.DoApiGet(c.GetJobsRoute()+fmt.Sprintf("/%v/download", jobID), "")
 	if appErr != nil {
 		return nil, BuildErrorResponse(r, appErr)
 	}
@@ -5265,8 +5265,8 @@ func (c *Client4) GetRolesByNames(roleNames []string) ([]*Role, *Response) {
 }
 
 // PatchRole partially updates a role in the system. Any missing fields are not updated.
-func (c *Client4) PatchRole(roleId string, patch *RolePatch) (*Role, *Response) {
-	r, err := c.DoApiPut(c.GetRolesRoute()+fmt.Sprintf("/%v/patch", roleId), patch.ToJson())
+func (c *Client4) PatchRole(roleID string, patch *RolePatch) (*Role, *Response) {
+	r, err := c.DoApiPut(c.GetRolesRoute()+fmt.Sprintf("/%v/patch", roleID), patch.ToJson())
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -5327,8 +5327,8 @@ func (c *Client4) PatchScheme(id string, patch *SchemePatch) (*Scheme, *Response
 }
 
 // GetTeamsForScheme gets the teams using this scheme, sorted alphabetically by display name.
-func (c *Client4) GetTeamsForScheme(schemeId string, page int, perPage int) ([]*Team, *Response) {
-	r, err := c.DoApiGet(c.GetSchemeRoute(schemeId)+fmt.Sprintf("/teams?page=%v&per_page=%v", page, perPage), "")
+func (c *Client4) GetTeamsForScheme(schemeID string, page int, perPage int) ([]*Team, *Response) {
+	r, err := c.DoApiGet(c.GetSchemeRoute(schemeID)+fmt.Sprintf("/teams?page=%v&per_page=%v", page, perPage), "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -5337,8 +5337,8 @@ func (c *Client4) GetTeamsForScheme(schemeId string, page int, perPage int) ([]*
 }
 
 // GetChannelsForScheme gets the channels using this scheme, sorted alphabetically by display name.
-func (c *Client4) GetChannelsForScheme(schemeId string, page int, perPage int) (ChannelList, *Response) {
-	r, err := c.DoApiGet(c.GetSchemeRoute(schemeId)+fmt.Sprintf("/channels?page=%v&per_page=%v", page, perPage), "")
+func (c *Client4) GetChannelsForScheme(schemeID string, page int, perPage int) (ChannelList, *Response) {
+	r, err := c.DoApiGet(c.GetSchemeRoute(schemeID)+fmt.Sprintf("/channels?page=%v&per_page=%v", page, perPage), "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -5525,9 +5525,9 @@ func (c *Client4) GetMarketplacePlugins(filter *MarketplacePluginFilter) ([]*Mar
 }
 
 // UpdateChannelScheme will update a channel's scheme.
-func (c *Client4) UpdateChannelScheme(channelId, schemeId string) (bool, *Response) {
-	sip := &SchemeIDPatch{SchemeID: &schemeId}
-	r, err := c.DoApiPut(c.GetChannelSchemeRoute(channelId), sip.ToJson())
+func (c *Client4) UpdateChannelScheme(channelID, schemeID string) (bool, *Response) {
+	sip := &SchemeIDPatch{SchemeID: &schemeID}
+	r, err := c.DoApiPut(c.GetChannelSchemeRoute(channelID), sip.ToJson())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -5536,9 +5536,9 @@ func (c *Client4) UpdateChannelScheme(channelId, schemeId string) (bool, *Respon
 }
 
 // UpdateTeamScheme will update a team's scheme.
-func (c *Client4) UpdateTeamScheme(teamId, schemeId string) (bool, *Response) {
-	sip := &SchemeIDPatch{SchemeID: &schemeId}
-	r, err := c.DoApiPut(c.GetTeamSchemeRoute(teamId), sip.ToJson())
+func (c *Client4) UpdateTeamScheme(teamID, schemeID string) (bool, *Response) {
+	sip := &SchemeIDPatch{SchemeID: &schemeID}
+	r, err := c.DoApiPut(c.GetTeamSchemeRoute(teamID), sip.ToJson())
 	if err != nil {
 		return false, BuildErrorResponse(r, err)
 	}
@@ -5608,9 +5608,9 @@ func (c *Client4) GetServerBusyExpires() (*time.Time, *Response) {
 }
 
 // RegisterTermsOfServiceAction saves action performed by a user against a specific terms of service.
-func (c *Client4) RegisterTermsOfServiceAction(userId, termsOfServiceId string, accepted bool) (*bool, *Response) {
-	url := c.GetUserTermsOfServiceRoute(userId)
-	data := map[string]interface{}{"termsOfServiceId": termsOfServiceId, "accepted": accepted}
+func (c *Client4) RegisterTermsOfServiceAction(userID, termsOfServiceID string, accepted bool) (*bool, *Response) {
+	url := c.GetUserTermsOfServiceRoute(userID)
+	data := map[string]interface{}{"termsOfServiceId": termsOfServiceID, "accepted": accepted}
 	r, err := c.DoApiPost(url, StringInterfaceToJson(data))
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -5631,8 +5631,8 @@ func (c *Client4) GetTermsOfService(etag string) (*TermsOfService, *Response) {
 }
 
 // GetUserTermsOfService fetches user's latest terms of service action if the latest action was for acceptance.
-func (c *Client4) GetUserTermsOfService(userId, etag string) (*UserTermsOfService, *Response) {
-	url := c.GetUserTermsOfServiceRoute(userId)
+func (c *Client4) GetUserTermsOfService(userID, etag string) (*UserTermsOfService, *Response) {
+	url := c.GetUserTermsOfServiceRoute(userID)
 	r, err := c.DoApiGet(url, etag)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -5642,7 +5642,7 @@ func (c *Client4) GetUserTermsOfService(userId, etag string) (*UserTermsOfServic
 }
 
 // CreateTermsOfService creates new terms of service.
-func (c *Client4) CreateTermsOfService(text, userId string) (*TermsOfService, *Response) {
+func (c *Client4) CreateTermsOfService(text, userID string) (*TermsOfService, *Response) {
 	url := c.GetTermsOfServiceRoute()
 	data := map[string]interface{}{"text": text}
 	r, err := c.DoApiPost(url, StringInterfaceToJson(data))
@@ -5779,9 +5779,9 @@ func (c *Client4) GetKnownUsers() ([]string, *Response) {
 		return nil, BuildErrorResponse(r, err)
 	}
 	defer closeBody(r)
-	var userIds []string
-	json.NewDecoder(r.Body).Decode(&userIds)
-	return userIds, BuildResponse(r)
+	var userIDs []string
+	json.NewDecoder(r.Body).Decode(&userIDs)
+	return userIDs, BuildResponse(r)
 }
 
 // PublishUserTyping publishes a user is typing websocket event based on the provided TypingRequest.
@@ -5937,8 +5937,8 @@ func (c *Client4) CheckIntegrity() ([]IntegrityCheckResult, *Response) {
 	return results, BuildResponse(r)
 }
 
-func (c *Client4) GetNotices(lastViewed int64, teamId string, client NoticeClientType, clientVersion, locale, etag string) (NoticeMessages, *Response) {
-	url := fmt.Sprintf("/system/notices/%s?lastViewed=%d&client=%s&clientVersion=%s&locale=%s", teamId, lastViewed, client, clientVersion, locale)
+func (c *Client4) GetNotices(lastViewed int64, teamID string, client NoticeClientType, clientVersion, locale, etag string) (NoticeMessages, *Response) {
+	url := fmt.Sprintf("/system/notices/%s?lastViewed=%d&client=%s&clientVersion=%s&locale=%s", teamID, lastViewed, client, clientVersion, locale)
 	r, appErr := c.DoApiGet(url, etag)
 	if appErr != nil {
 		return nil, BuildErrorResponse(r, appErr)
@@ -5971,8 +5971,8 @@ func (c *Client4) CreateUpload(us *UploadSession) (*UploadSession, *Response) {
 }
 
 // GetUpload returns the upload session for the specified uploadId.
-func (c *Client4) GetUpload(uploadId string) (*UploadSession, *Response) {
-	r, err := c.DoApiGet(c.GetUploadRoute(uploadId), "")
+func (c *Client4) GetUpload(uploadID string) (*UploadSession, *Response) {
+	r, err := c.DoApiGet(c.GetUploadRoute(uploadID), "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -5982,8 +5982,8 @@ func (c *Client4) GetUpload(uploadId string) (*UploadSession, *Response) {
 
 // GetUploadsForUser returns the upload sessions created by the specified
 // userId.
-func (c *Client4) GetUploadsForUser(userId string) ([]*UploadSession, *Response) {
-	r, err := c.DoApiGet(c.GetUserRoute(userId)+"/uploads", "")
+func (c *Client4) GetUploadsForUser(userID string) ([]*UploadSession, *Response) {
+	r, err := c.DoApiGet(c.GetUserRoute(userID)+"/uploads", "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}
@@ -5993,8 +5993,8 @@ func (c *Client4) GetUploadsForUser(userId string) ([]*UploadSession, *Response)
 
 // UploadData performs an upload. On success it returns
 // a FileInfo object.
-func (c *Client4) UploadData(uploadId string, data io.Reader) (*FileInfo, *Response) {
-	url := c.GetUploadRoute(uploadId)
+func (c *Client4) UploadData(uploadID string, data io.Reader) (*FileInfo, *Response) {
+	url := c.GetUploadRoute(uploadID)
 	r, err := c.doApiRequestReader("POST", c.ApiUrl+url, data, nil)
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -6003,9 +6003,9 @@ func (c *Client4) UploadData(uploadId string, data io.Reader) (*FileInfo, *Respo
 	return FileInfoFromJson(r.Body), BuildResponse(r)
 }
 
-func (c *Client4) UpdatePassword(userId, currentPassword, newPassword string) *Response {
+func (c *Client4) UpdatePassword(userID, currentPassword, newPassword string) *Response {
 	requestBody := map[string]string{"current_password": currentPassword, "new_password": newPassword}
-	r, err := c.DoApiPut(c.GetUserRoute(userId)+"/password", MapToJson(requestBody))
+	r, err := c.DoApiPut(c.GetUserRoute(userID)+"/password", MapToJson(requestBody))
 	if err != nil {
 		return BuildErrorResponse(r, err)
 	}
@@ -6180,7 +6180,7 @@ func (c *Client4) DownloadExport(name string, wr io.Writer, offset int64) (int64
 	return n, BuildResponse(r)
 }
 
-func (c *Client4) GetUserThreads(userId, teamId string, options GetUserThreadsOpts) (*Threads, *Response) {
+func (c *Client4) GetUserThreads(userID, teamID string, options GetUserThreadsOpts) (*Threads, *Response) {
 	v := url.Values{}
 	if options.Since != 0 {
 		v.Set("since", fmt.Sprintf("%d", options.Since))
@@ -6203,7 +6203,7 @@ func (c *Client4) GetUserThreads(userId, teamId string, options GetUserThreadsOp
 	if options.Unread {
 		v.Set("unread", "true")
 	}
-	url := c.GetUserThreadsRoute(userId, teamId)
+	url := c.GetUserThreadsRoute(userID, teamID)
 	if len(v) > 0 {
 		url += "?" + v.Encode()
 	}
@@ -6220,8 +6220,8 @@ func (c *Client4) GetUserThreads(userId, teamId string, options GetUserThreadsOp
 	return &threads, BuildResponse(r)
 }
 
-func (c *Client4) GetUserThread(userId, teamId, threadId string, extended bool) (*ThreadResponse, *Response) {
-	url := c.GetUserThreadRoute(userId, teamId, threadId)
+func (c *Client4) GetUserThread(userID, teamID, threadID string, extended bool) (*ThreadResponse, *Response) {
+	url := c.GetUserThreadRoute(userID, teamID, threadID)
 	if extended {
 		url += "?extended=true"
 	}
@@ -6237,8 +6237,8 @@ func (c *Client4) GetUserThread(userId, teamId, threadId string, extended bool) 
 	return &thread, BuildResponse(r)
 }
 
-func (c *Client4) UpdateThreadsReadForUser(userId, teamId string) *Response {
-	r, appErr := c.DoApiPut(fmt.Sprintf("%s/read", c.GetUserThreadsRoute(userId, teamId)), "")
+func (c *Client4) UpdateThreadsReadForUser(userID, teamID string) *Response {
+	r, appErr := c.DoApiPut(fmt.Sprintf("%s/read", c.GetUserThreadsRoute(userID, teamID)), "")
 	if appErr != nil {
 		return BuildErrorResponse(r, appErr)
 	}
@@ -6247,8 +6247,8 @@ func (c *Client4) UpdateThreadsReadForUser(userId, teamId string) *Response {
 	return BuildResponse(r)
 }
 
-func (c *Client4) UpdateThreadReadForUser(userId, teamId, threadId string, timestamp int64) (*ThreadResponse, *Response) {
-	r, appErr := c.DoApiPut(fmt.Sprintf("%s/read/%d", c.GetUserThreadRoute(userId, teamId, threadId), timestamp), "")
+func (c *Client4) UpdateThreadReadForUser(userID, teamID, threadID string, timestamp int64) (*ThreadResponse, *Response) {
+	r, appErr := c.DoApiPut(fmt.Sprintf("%s/read/%d", c.GetUserThreadRoute(userID, teamID, threadID), timestamp), "")
 	if appErr != nil {
 		return nil, BuildErrorResponse(r, appErr)
 	}
@@ -6259,13 +6259,13 @@ func (c *Client4) UpdateThreadReadForUser(userId, teamId, threadId string, times
 	return &thread, BuildResponse(r)
 }
 
-func (c *Client4) UpdateThreadFollowForUser(userId, teamId, threadId string, state bool) *Response {
+func (c *Client4) UpdateThreadFollowForUser(userID, teamID, threadID string, state bool) *Response {
 	var appErr *AppError
 	var r *http.Response
 	if state {
-		r, appErr = c.DoApiPut(c.GetUserThreadRoute(userId, teamId, threadId)+"/following", "")
+		r, appErr = c.DoApiPut(c.GetUserThreadRoute(userID, teamID, threadID)+"/following", "")
 	} else {
-		r, appErr = c.DoApiDelete(c.GetUserThreadRoute(userId, teamId, threadId) + "/following")
+		r, appErr = c.DoApiDelete(c.GetUserThreadRoute(userID, teamID, threadID) + "/following")
 	}
 	if appErr != nil {
 		return BuildErrorResponse(r, appErr)

@@ -12,17 +12,17 @@ import (
 )
 
 func TestSharedChannelJson(t *testing.T) {
-	o := SharedChannel{ChannelId: NewId(), ShareName: NewId()}
+	o := SharedChannel{ChannelID: NewID(), ShareName: NewID()}
 	json := o.ToJson()
 	ro, err := SharedChannelFromJson(strings.NewReader(json))
 
 	require.NoError(t, err)
-	require.Equal(t, o.ChannelId, ro.ChannelId)
+	require.Equal(t, o.ChannelID, ro.ChannelID)
 	require.Equal(t, o.ShareName, ro.ShareName)
 }
 
 func TestSharedChannelIsValid(t *testing.T) {
-	id := NewId()
+	id := NewID()
 	now := GetMillis()
 	data := []struct {
 		name  string
@@ -30,20 +30,20 @@ func TestSharedChannelIsValid(t *testing.T) {
 		valid bool
 	}{
 		{name: "Zero value", sc: &SharedChannel{}, valid: false},
-		{name: "Missing team_id", sc: &SharedChannel{ChannelId: id}, valid: false},
-		{name: "Missing create_at", sc: &SharedChannel{ChannelId: id, TeamId: id}, valid: false},
-		{name: "Missing update_at", sc: &SharedChannel{ChannelId: id, TeamId: id, CreateAt: now}, valid: false},
-		{name: "Missing share_name", sc: &SharedChannel{ChannelId: id, TeamId: id, CreateAt: now, UpdateAt: now}, valid: false},
-		{name: "Invalid share_name", sc: &SharedChannel{ChannelId: id, TeamId: id, CreateAt: now, UpdateAt: now,
+		{name: "Missing team_id", sc: &SharedChannel{ChannelID: id}, valid: false},
+		{name: "Missing create_at", sc: &SharedChannel{ChannelID: id, TeamID: id}, valid: false},
+		{name: "Missing update_at", sc: &SharedChannel{ChannelID: id, TeamID: id, CreateAt: now}, valid: false},
+		{name: "Missing share_name", sc: &SharedChannel{ChannelID: id, TeamID: id, CreateAt: now, UpdateAt: now}, valid: false},
+		{name: "Invalid share_name", sc: &SharedChannel{ChannelID: id, TeamID: id, CreateAt: now, UpdateAt: now,
 			ShareName: "@test@"}, valid: false},
-		{name: "Too long share_name", sc: &SharedChannel{ChannelId: id, TeamId: id, CreateAt: now, UpdateAt: now,
+		{name: "Too long share_name", sc: &SharedChannel{ChannelID: id, TeamID: id, CreateAt: now, UpdateAt: now,
 			ShareName: strings.Repeat("01234567890", 100)}, valid: false},
-		{name: "Missing creator_id", sc: &SharedChannel{ChannelId: id, TeamId: id, CreateAt: now, UpdateAt: now,
+		{name: "Missing creator_id", sc: &SharedChannel{ChannelID: id, TeamID: id, CreateAt: now, UpdateAt: now,
 			ShareName: "test"}, valid: false},
-		{name: "Missing remote_id", sc: &SharedChannel{ChannelId: id, TeamId: id, CreateAt: now, UpdateAt: now,
-			ShareName: "test", CreatorId: id}, valid: false},
-		{name: "Valid shared channel", sc: &SharedChannel{ChannelId: id, TeamId: id, CreateAt: now, UpdateAt: now,
-			ShareName: "test", CreatorId: id, RemoteId: id}, valid: true},
+		{name: "Missing remote_id", sc: &SharedChannel{ChannelID: id, TeamID: id, CreateAt: now, UpdateAt: now,
+			ShareName: "test", CreatorID: id}, valid: false},
+		{name: "Valid shared channel", sc: &SharedChannel{ChannelID: id, TeamID: id, CreateAt: now, UpdateAt: now,
+			ShareName: "test", CreatorID: id, RemoteID: id}, valid: true},
 	}
 
 	for _, item := range data {
@@ -59,7 +59,7 @@ func TestSharedChannelIsValid(t *testing.T) {
 func TestSharedChannelPreSave(t *testing.T) {
 	now := GetMillis()
 
-	o := SharedChannel{ChannelId: NewId(), ShareName: "test"}
+	o := SharedChannel{ChannelID: NewID(), ShareName: "test"}
 	o.PreSave()
 
 	require.GreaterOrEqual(t, o.CreateAt, now)
@@ -69,18 +69,18 @@ func TestSharedChannelPreSave(t *testing.T) {
 func TestSharedChannelPreUpdate(t *testing.T) {
 	now := GetMillis()
 
-	o := SharedChannel{ChannelId: NewId(), ShareName: "test"}
+	o := SharedChannel{ChannelID: NewID(), ShareName: "test"}
 	o.PreUpdate()
 
 	require.GreaterOrEqual(t, o.UpdateAt, now)
 }
 
 func TestSharedChannelRemoteJson(t *testing.T) {
-	o := SharedChannelRemote{Id: NewId(), ChannelId: NewId()}
+	o := SharedChannelRemote{ID: NewID(), ChannelID: NewID()}
 	json := o.ToJson()
 	ro, err := SharedChannelRemoteFromJson(strings.NewReader(json))
 
 	require.NoError(t, err)
-	require.Equal(t, o.Id, ro.Id)
-	require.Equal(t, o.ChannelId, ro.ChannelId)
+	require.Equal(t, o.ID, ro.ID)
+	require.Equal(t, o.ChannelID, ro.ChannelID)
 }

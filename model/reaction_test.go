@@ -21,8 +21,8 @@ func TestReactionIsValid(t *testing.T) {
 	}{
 		{
 			reaction: Reaction{
-				UserId:    NewId(),
-				PostId:    NewId(),
+				UserID:    NewID(),
+				PostID:    NewID(),
 				EmojiName: "emoji",
 				CreateAt:  GetMillis(),
 				UpdateAt:  GetMillis(),
@@ -32,8 +32,8 @@ func TestReactionIsValid(t *testing.T) {
 		},
 		{
 			reaction: Reaction{
-				UserId:    "",
-				PostId:    NewId(),
+				UserID:    "",
+				PostID:    NewID(),
 				EmojiName: "emoji",
 				CreateAt:  GetMillis(),
 				UpdateAt:  GetMillis(),
@@ -43,8 +43,8 @@ func TestReactionIsValid(t *testing.T) {
 		},
 		{
 			reaction: Reaction{
-				UserId:    "1234garbage",
-				PostId:    NewId(),
+				UserID:    "1234garbage",
+				PostID:    NewID(),
 				EmojiName: "emoji",
 				CreateAt:  GetMillis(),
 				UpdateAt:  GetMillis(),
@@ -54,8 +54,8 @@ func TestReactionIsValid(t *testing.T) {
 		},
 		{
 			reaction: Reaction{
-				UserId:    NewId(),
-				PostId:    "",
+				UserID:    NewID(),
+				PostID:    "",
 				EmojiName: "emoji",
 				CreateAt:  GetMillis(),
 				UpdateAt:  GetMillis(),
@@ -65,8 +65,8 @@ func TestReactionIsValid(t *testing.T) {
 		},
 		{
 			reaction: Reaction{
-				UserId:    NewId(),
-				PostId:    "1234garbage",
+				UserID:    NewID(),
+				PostID:    "1234garbage",
 				EmojiName: "emoji",
 				CreateAt:  GetMillis(),
 				UpdateAt:  GetMillis(),
@@ -76,8 +76,8 @@ func TestReactionIsValid(t *testing.T) {
 		},
 		{
 			reaction: Reaction{
-				UserId:    NewId(),
-				PostId:    NewId(),
+				UserID:    NewID(),
+				PostID:    NewID(),
 				EmojiName: strings.Repeat("a", 64),
 				CreateAt:  GetMillis(),
 				UpdateAt:  GetMillis(),
@@ -87,8 +87,8 @@ func TestReactionIsValid(t *testing.T) {
 		},
 		{
 			reaction: Reaction{
-				UserId:    NewId(),
-				PostId:    NewId(),
+				UserID:    NewID(),
+				PostID:    NewID(),
 				EmojiName: "emoji-",
 				CreateAt:  GetMillis(),
 				UpdateAt:  GetMillis(),
@@ -98,8 +98,8 @@ func TestReactionIsValid(t *testing.T) {
 		},
 		{
 			reaction: Reaction{
-				UserId:    NewId(),
-				PostId:    NewId(),
+				UserID:    NewID(),
+				PostID:    NewID(),
 				EmojiName: "emoji_",
 				CreateAt:  GetMillis(),
 				UpdateAt:  GetMillis(),
@@ -109,8 +109,8 @@ func TestReactionIsValid(t *testing.T) {
 		},
 		{
 			reaction: Reaction{
-				UserId:    NewId(),
-				PostId:    NewId(),
+				UserID:    NewID(),
+				PostID:    NewID(),
 				EmojiName: "+1",
 				CreateAt:  GetMillis(),
 				UpdateAt:  GetMillis(),
@@ -120,8 +120,8 @@ func TestReactionIsValid(t *testing.T) {
 		},
 		{
 			reaction: Reaction{
-				UserId:    NewId(),
-				PostId:    NewId(),
+				UserID:    NewID(),
+				PostID:    NewID(),
 				EmojiName: "emoji:",
 				CreateAt:  GetMillis(),
 				UpdateAt:  GetMillis(),
@@ -131,8 +131,8 @@ func TestReactionIsValid(t *testing.T) {
 		},
 		{
 			reaction: Reaction{
-				UserId:    NewId(),
-				PostId:    NewId(),
+				UserID:    NewID(),
+				PostID:    NewID(),
 				EmojiName: "",
 				CreateAt:  GetMillis(),
 				UpdateAt:  GetMillis(),
@@ -142,8 +142,8 @@ func TestReactionIsValid(t *testing.T) {
 		},
 		{
 			reaction: Reaction{
-				UserId:    NewId(),
-				PostId:    NewId(),
+				UserID:    NewID(),
+				PostID:    NewID(),
 				EmojiName: strings.Repeat("a", 65),
 				CreateAt:  GetMillis(),
 				UpdateAt:  GetMillis(),
@@ -153,8 +153,8 @@ func TestReactionIsValid(t *testing.T) {
 		},
 		{
 			reaction: Reaction{
-				UserId:    NewId(),
-				PostId:    NewId(),
+				UserID:    NewID(),
+				PostID:    NewID(),
 				EmojiName: "emoji",
 				CreateAt:  0,
 				UpdateAt:  GetMillis(),
@@ -164,8 +164,8 @@ func TestReactionIsValid(t *testing.T) {
 		},
 		{
 			reaction: Reaction{
-				UserId:    NewId(),
-				PostId:    NewId(),
+				UserID:    NewID(),
+				PostID:    NewID(),
 				EmojiName: "emoji",
 				CreateAt:  GetMillis(),
 				UpdateAt:  0,

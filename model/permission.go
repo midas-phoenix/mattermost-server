@@ -10,7 +10,7 @@ const (
 )
 
 type Permission struct {
-	Id          string `json:"id"`
+	ID          string `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Scope       string `json:"scope"`
@@ -125,13 +125,13 @@ var PermissionCreateLdapSyncJob *Permission
 var PermissionReadLdapSyncJob *Permission
 var PermissionTestLdap *Permission
 var PermissionInvalidateEmailInvite *Permission
-var PermissionGetSamlMetadataFromIdp *Permission
+var PermissionGetSamlMetadataFromIDp *Permission
 var PermissionAddSamlPublicCert *Permission
 var PermissionAddSamlPrivateCert *Permission
-var PermissionAddSamlIdpCert *Permission
+var PermissionAddSamlIDpCert *Permission
 var PermissionRemoveSamlPublicCert *Permission
 var PermissionRemoveSamlPrivateCert *Permission
-var PermissionRemoveSamlIdpCert *Permission
+var PermissionRemoveSamlIDpCert *Permission
 var PermissionGetSamlCertStatus *Permission
 var PermissionAddLdapPublicCert *Permission
 var PermissionAddLdapPrivateCert *Permission
@@ -791,7 +791,7 @@ func initializePermissions() {
 		"",
 		PermissionScopeSystem,
 	}
-	PermissionGetSamlMetadataFromIdp = &Permission{
+	PermissionGetSamlMetadataFromIDp = &Permission{
 		"get_saml_metadata_from_idp",
 		"",
 		"",
@@ -811,7 +811,7 @@ func initializePermissions() {
 		PermissionScopeSystem,
 	}
 
-	PermissionAddSamlIdpCert = &Permission{
+	PermissionAddSamlIDpCert = &Permission{
 		"add_saml_idp_cert",
 		"",
 		"",
@@ -832,7 +832,7 @@ func initializePermissions() {
 		PermissionScopeSystem,
 	}
 
-	PermissionRemoveSamlIdpCert = &Permission{
+	PermissionRemoveSamlIDpCert = &Permission{
 		"remove_saml_idp_cert",
 		"",
 		"",
@@ -2066,13 +2066,13 @@ func initializePermissions() {
 		PermissionReadLdapSyncJob,
 		PermissionTestLdap,
 		PermissionInvalidateEmailInvite,
-		PermissionGetSamlMetadataFromIdp,
+		PermissionGetSamlMetadataFromIDp,
 		PermissionAddSamlPublicCert,
 		PermissionAddSamlPrivateCert,
-		PermissionAddSamlIdpCert,
+		PermissionAddSamlIDpCert,
 		PermissionRemoveSamlPublicCert,
 		PermissionRemoveSamlPrivateCert,
-		PermissionRemoveSamlIdpCert,
+		PermissionRemoveSamlIDpCert,
 		PermissionGetSamlCertStatus,
 		PermissionAddLdapPublicCert,
 		PermissionAddLdapPrivateCert,
@@ -2171,19 +2171,19 @@ func initializePermissions() {
 	AllPermissions = append(AllPermissions, SysconsoleWritePermissions...)
 
 	ChannelModeratedPermissions = []string{
-		PermissionCreatePost.Id,
+		PermissionCreatePost.ID,
 		"create_reactions",
 		"manage_members",
-		PermissionUseChannelMentions.Id,
+		PermissionUseChannelMentions.ID,
 	}
 
 	ChannelModeratedPermissionsMap = map[string]string{
-		PermissionCreatePost.Id:                  ChannelModeratedPermissions[0],
-		PermissionAddReaction.Id:                 ChannelModeratedPermissions[1],
-		PermissionRemoveReaction.Id:              ChannelModeratedPermissions[1],
-		PermissionManagePublicChannelMembers.Id:  ChannelModeratedPermissions[2],
-		PermissionManagePrivateChannelMembers.Id: ChannelModeratedPermissions[2],
-		PermissionUseChannelMentions.Id:          ChannelModeratedPermissions[3],
+		PermissionCreatePost.ID:                  ChannelModeratedPermissions[0],
+		PermissionAddReaction.ID:                 ChannelModeratedPermissions[1],
+		PermissionRemoveReaction.ID:              ChannelModeratedPermissions[1],
+		PermissionManagePublicChannelMembers.ID:  ChannelModeratedPermissions[2],
+		PermissionManagePrivateChannelMembers.ID: ChannelModeratedPermissions[2],
+		PermissionUseChannelMentions.ID:          ChannelModeratedPermissions[3],
 	}
 }
 

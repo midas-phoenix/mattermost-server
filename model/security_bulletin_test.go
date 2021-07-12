@@ -12,8 +12,8 @@ import (
 
 func TestSecurityBulletinToFromJson(t *testing.T) {
 	b := SecurityBulletin{
-		Id:               NewId(),
-		AppliesToVersion: NewId(),
+		ID:               NewID(),
+		AppliesToVersion: NewID(),
 	}
 
 	j := b.ToJson()
@@ -30,12 +30,12 @@ func TestSecurityBulletinToFromJson(t *testing.T) {
 func TestSecurityBulletinsToFromJson(t *testing.T) {
 	b := SecurityBulletins{
 		{
-			Id:               NewId(),
-			AppliesToVersion: NewId(),
+			ID:               NewID(),
+			AppliesToVersion: NewID(),
 		},
 		{
-			Id:               NewId(),
-			AppliesToVersion: NewId(),
+			ID:               NewID(),
+			AppliesToVersion: NewID(),
 		},
 	}
 

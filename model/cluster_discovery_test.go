@@ -26,10 +26,10 @@ func TestClusterDiscovery(t *testing.T) {
 	result2 := ClusterDiscoveryFromJson(strings.NewReader(json))
 	result3 := ClusterDiscoveryFromJson(strings.NewReader(json))
 
-	o.Id = "0"
-	result1.Id = "1"
-	result2.Id = "2"
-	result3.Id = "3"
+	o.ID = "0"
+	result1.ID = "1"
+	result2.ID = "2"
+	result3.ID = "3"
 	result3.Hostname = "something_diff"
 
 	assert.True(t, o.IsEqual(result1))

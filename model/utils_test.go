@@ -16,9 +16,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestNewId(t *testing.T) {
+func TestNewID(t *testing.T) {
 	for i := 0; i < 1000; i++ {
-		id := NewId()
+		id := NewID()
 		require.LessOrEqual(t, len(id), 26, "ids shouldn't be longer than 26 chars")
 	}
 }
@@ -554,13 +554,13 @@ func TestIsValidAlphaNumHyphenUnderscorePlus(t *testing.T) {
 	}
 }
 
-func TestIsValidId(t *testing.T) {
+func TestIsValidID(t *testing.T) {
 	cases := []struct {
 		Input  string
 		Result bool
 	}{
 		{
-			Input:  NewId(),
+			Input:  NewID(),
 			Result: true,
 		},
 		{
@@ -576,13 +576,13 @@ func TestIsValidId(t *testing.T) {
 			Result: false,
 		},
 		{
-			Input:  NewId() + "}",
+			Input:  NewID() + "}",
 			Result: false,
 		},
 	}
 
 	for _, tc := range cases {
-		actual := IsValidId(tc.Input)
+		actual := IsValidID(tc.Input)
 		require.Equalf(t, actual, tc.Result, "case: %v\tshould returned: %#v", tc, tc.Result)
 	}
 }

@@ -24,15 +24,15 @@ const UploadNoUserID = "nouser"
 // UploadSession contains information used to keep track of a file upload.
 type UploadSession struct {
 	// The unique identifier for the session.
-	Id string `json:"id"`
+	ID string `json:"id"`
 	// The type of the upload.
 	Type UploadType `json:"type"`
 	// The timestamp of creation.
 	CreateAt int64 `json:"create_at"`
 	// The id of the user performing the upload.
-	UserId string `json:"user_id"`
+	UserID string `json:"user_id"`
 	// The id of the channel to upload to.
-	ChannelId string `json:"channel_id,omitempty"`
+	ChannelID string `json:"channel_id,omitempty"`
 	// The name of the file to upload.
 	Filename string `json:"filename"`
 	// The path where the file is stored.
@@ -43,9 +43,9 @@ type UploadSession struct {
 	// upload has finished.
 	FileOffset int64 `json:"file_offset"`
 	// Id of remote cluster if uploading for shared channel
-	RemoteId string `json:"remote_id"`
+	RemoteID string `json:"remote_id"`
 	// Requested file id if uploading for shared channel
-	ReqFileId string `json:"req_file_id"`
+	ReqFileID string `json:"req_file_id"`
 }
 
 // ToJson serializes the UploadSession into JSON and returns it as string.
@@ -83,8 +83,8 @@ func UploadSessionFromJson(data io.Reader) *UploadSession {
 
 // PreSave is a utility function used to fill required information.
 func (us *UploadSession) PreSave() {
-	if us.Id == "" {
-		us.Id = NewId()
+	if us.ID == "" {
+		us.ID = NewID()
 	}
 
 	if us.CreateAt == 0 {
@@ -108,7 +108,7 @@ func (t UploadType) IsValid() error {
 // IsValid validates an UploadSession. It returns an error in case of
 // failure.
 func (us *UploadSession) IsValid() *AppError {
-	if !IsValidId(us.Id) {
+	if !IsValidID(us.ID) {
 		return NewAppError("UploadSession.IsValid", "model.upload_session.is_valid.id.app_error", nil, "", http.StatusBadRequest)
 	}
 
@@ -116,32 +116,32 @@ func (us *UploadSession) IsValid() *AppError {
 		return NewAppError("UploadSession.IsValid", "model.upload_session.is_valid.type.app_error", nil, err.Error(), http.StatusBadRequest)
 	}
 
-	if !IsValidId(us.UserId) && us.UserId != UploadNoUserID {
-		return NewAppError("UploadSession.IsValid", "model.upload_session.is_valid.user_id.app_error", nil, "id="+us.Id, http.StatusBadRequest)
+	if !IsValidID(us.UserID) && us.UserID != UploadNoUserID {
+		return NewAppError("UploadSession.IsValid", "model.upload_session.is_valid.user_id.app_error", nil, "id="+us.ID, http.StatusBadRequest)
 	}
 
-	if us.Type == UploadTypeAttachment && !IsValidId(us.ChannelId) {
-		return NewAppError("UploadSession.IsValid", "model.upload_session.is_valid.channel_id.app_error", nil, "id="+us.Id, http.StatusBadRequest)
+	if us.Type == UploadTypeAttachment && !IsValidID(us.ChannelID) {
+		return NewAppError("UploadSession.IsValid", "model.upload_session.is_valid.channel_id.app_error", nil, "id="+us.ID, http.StatusBadRequest)
 	}
 
 	if us.CreateAt == 0 {
-		return NewAppError("UploadSession.IsValid", "model.upload_session.is_valid.create_at.app_error", nil, "id="+us.Id, http.StatusBadRequest)
+		return NewAppError("UploadSession.IsValid", "model.upload_session.is_valid.create_at.app_error", nil, "id="+us.ID, http.StatusBadRequest)
 	}
 
 	if us.Filename == "" {
-		return NewAppError("UploadSession.IsValid", "model.upload_session.is_valid.filename.app_error", nil, "id="+us.Id, http.StatusBadRequest)
+		return NewAppError("UploadSession.IsValid", "model.upload_session.is_valid.filename.app_error", nil, "id="+us.ID, http.StatusBadRequest)
 	}
 
 	if us.FileSize <= 0 {
-		return NewAppError("UploadSession.IsValid", "model.upload_session.is_valid.file_size.app_error", nil, "id="+us.Id, http.StatusBadRequest)
+		return NewAppError("UploadSession.IsValid", "model.upload_session.is_valid.file_size.app_error", nil, "id="+us.ID, http.StatusBadRequest)
 	}
 
 	if us.FileOffset < 0 || us.FileOffset > us.FileSize {
-		return NewAppError("UploadSession.IsValid", "model.upload_session.is_valid.file_offset.app_error", nil, "id="+us.Id, http.StatusBadRequest)
+		return NewAppError("UploadSession.IsValid", "model.upload_session.is_valid.file_offset.app_error", nil, "id="+us.ID, http.StatusBadRequest)
 	}
 
 	if us.Path == "" {
-		return NewAppError("UploadSession.IsValid", "model.upload_session.is_valid.path.app_error", nil, "id="+us.Id, http.StatusBadRequest)
+		return NewAppError("UploadSession.IsValid", "model.upload_session.is_valid.path.app_error", nil, "id="+us.ID, http.StatusBadRequest)
 	}
 
 	return nil

@@ -11,11 +11,11 @@ import (
 )
 
 func TestSamlCertificateStatusJson(t *testing.T) {
-	status := &SamlCertificateStatus{IdpCertificateFile: true, PrivateKeyFile: true, PublicCertificateFile: true}
+	status := &SamlCertificateStatus{IDpCertificateFile: true, PrivateKeyFile: true, PublicCertificateFile: true}
 	json := status.ToJson()
 	rstatus := SamlCertificateStatusFromJson(strings.NewReader(json))
 
-	require.Equal(t, status.IdpCertificateFile, rstatus.IdpCertificateFile, "IdpCertificateFile do not match")
+	require.Equal(t, status.IDpCertificateFile, rstatus.IDpCertificateFile, "IdpCertificateFile do not match")
 
 	rstatus = SamlCertificateStatusFromJson(strings.NewReader("junk"))
 	require.Nil(t, rstatus, "should be nil")

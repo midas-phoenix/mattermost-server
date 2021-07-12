@@ -13,14 +13,14 @@ import (
 
 func TestPreferenceIsValid(t *testing.T) {
 	preference := Preference{
-		UserId:   "1234garbage",
+		UserID:   "1234garbage",
 		Category: PreferenceCategoryDirectChannelShow,
-		Name:     NewId(),
+		Name:     NewID(),
 	}
 
 	require.NotNil(t, preference.IsValid())
 
-	preference.UserId = NewId()
+	preference.UserID = NewID()
 	require.Nil(t, preference.IsValid())
 
 	preference.Category = strings.Repeat("01234567890", 20)
@@ -32,7 +32,7 @@ func TestPreferenceIsValid(t *testing.T) {
 	preference.Name = strings.Repeat("01234567890", 20)
 	require.NotNil(t, preference.IsValid())
 
-	preference.Name = NewId()
+	preference.Name = NewID()
 	require.Nil(t, preference.IsValid())
 
 	preference.Value = strings.Repeat("01234567890", 201)

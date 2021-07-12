@@ -15,7 +15,7 @@ import (
 const (
 	BotDisplayNameMaxRunes   = UserFirstNameMaxRunes
 	BotDescriptionMaxRunes   = 1024
-	BotCreatorIdMaxRunes     = KeyValuePluginIdMaxRunes // UserId or PluginId
+	BotCreatorIDMaxRunes     = KeyValuePluginIDMaxRunes // UserId or PluginId
 	BotWarnMetricBotUsername = "mattermost-advisor"
 	BotSystemBotUsername     = "system-bot"
 )
@@ -24,11 +24,11 @@ const (
 // Note that the primary key of a bot is the UserId, and matches the primary key of the
 // corresponding user.
 type Bot struct {
-	UserId         string `json:"user_id"`
+	UserID         string `json:"user_id"`
 	Username       string `json:"username"`
 	DisplayName    string `json:"display_name,omitempty"`
 	Description    string `json:"description,omitempty"`
-	OwnerId        string `json:"owner_id"`
+	OwnerID        string `json:"owner_id"`
 	LastIconUpdate int64  `json:"last_icon_update,omitempty"`
 	CreateAt       int64  `json:"create_at"`
 	UpdateAt       int64  `json:"update_at"`
@@ -44,7 +44,7 @@ type BotPatch struct {
 
 // BotGetOptions acts as a filter on bulk bot fetching queries.
 type BotGetOptions struct {
-	OwnerId        string
+	OwnerID        string
 	IncludeDeleted bool
 	OnlyOrphaned   bool
 	Page           int
@@ -56,7 +56,7 @@ type BotList []*Bot
 
 // Trace describes the minimum information required to identify a bot for the purpose of logging.
 func (b *Bot) Trace() map[string]interface{} {
-	return map[string]interface{}{"user_id": b.UserId}
+	return map[string]interface{}{"user_id": b.UserID}
 }
 
 // Clone returns a shallow copy of the bot.
@@ -67,7 +67,7 @@ func (b *Bot) Clone() *Bot {
 
 // IsValid validates the bot and returns an error if it isn't configured correctly.
 func (b *Bot) IsValid() *AppError {
-	if !IsValidId(b.UserId) {
+	if !IsValidID(b.UserID) {
 		return NewAppError("Bot.IsValid", "model.bot.is_valid.user_id.app_error", b.Trace(), "", http.StatusBadRequest)
 	}
 
@@ -83,7 +83,7 @@ func (b *Bot) IsValid() *AppError {
 		return NewAppError("Bot.IsValid", "model.bot.is_valid.description.app_error", b.Trace(), "", http.StatusBadRequest)
 	}
 
-	if b.OwnerId == "" || utf8.RuneCountInString(b.OwnerId) > BotCreatorIdMaxRunes {
+	if b.OwnerID == "" || utf8.RuneCountInString(b.OwnerID) > BotCreatorIDMaxRunes {
 		return NewAppError("Bot.IsValid", "model.bot.is_valid.creator_id.app_error", b.Trace(), "", http.StatusBadRequest)
 	}
 
@@ -112,7 +112,7 @@ func (b *Bot) PreUpdate() {
 
 // Etag generates an etag for caching.
 func (b *Bot) Etag() string {
-	return Etag(b.UserId, b.UpdateAt)
+	return Etag(b.UserID, b.UpdateAt)
 }
 
 // ToJson serializes the bot to json.
@@ -187,19 +187,19 @@ func BotPatchFromJson(data io.Reader) *BotPatch {
 // UserFromBot returns a user model describing the bot fields stored in the User store.
 func UserFromBot(b *Bot) *User {
 	return &User{
-		Id:        b.UserId,
+		ID:        b.UserID,
 		Username:  b.Username,
 		Email:     NormalizeEmail(fmt.Sprintf("%s@localhost", b.Username)),
 		FirstName: b.DisplayName,
-		Roles:     SystemUserRoleId,
+		Roles:     SystemUserRoleID,
 	}
 }
 
 // BotFromUser returns a bot model given a user model
 func BotFromUser(u *User) *Bot {
 	return &Bot{
-		OwnerId:     u.Id,
-		UserId:      u.Id,
+		OwnerID:     u.ID,
+		UserID:      u.ID,
 		Username:    u.Username,
 		DisplayName: u.GetDisplayName(ShowUsername),
 	}
@@ -227,7 +227,7 @@ func (l *BotList) Etag() string {
 	for _, v := range *l {
 		if v.UpdateAt > t {
 			t = v.UpdateAt
-			id = v.UserId
+			id = v.UserID
 		}
 
 	}
@@ -237,8 +237,8 @@ func (l *BotList) Etag() string {
 
 // MakeBotNotFoundError creates the error returned when a bot does not exist, or when the user isn't allowed to query the bot.
 // The errors must the same in both cases to avoid leaking that a user is a bot.
-func MakeBotNotFoundError(userId string) *AppError {
-	return NewAppError("SqlBotStore.Get", "store.sql_bot.get.missing.app_error", map[string]interface{}{"user_id": userId}, "", http.StatusNotFound)
+func MakeBotNotFoundError(userID string) *AppError {
+	return NewAppError("SqlBotStore.Get", "store.sql_bot.get.missing.app_error", map[string]interface{}{"user_id": userID}, "", http.StatusNotFound)
 }
 
 func IsBotDMChannel(channel *Channel, botUserID string) bool {

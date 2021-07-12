@@ -22,19 +22,19 @@ func TestIsValid(t *testing.T) {
 		manifest    *Manifest
 		ExpectError bool
 	}{
-		{"Invalid Id", &Manifest{Id: "some id", Name: "some name"}, true},
-		{"Invalid Name", &Manifest{Id: "com.company.test", Name: "  "}, true},
-		{"Invalid homePageURL", &Manifest{Id: "com.company.test", Name: "some name", HomepageURL: "some url"}, true},
-		{"Invalid supportURL", &Manifest{Id: "com.company.test", Name: "some name", SupportURL: "some url"}, true},
-		{"Invalid ReleaseNotesURL", &Manifest{Id: "com.company.test", Name: "some name", ReleaseNotesURL: "some url"}, true},
-		{"Invalid version", &Manifest{Id: "com.company.test", Name: "some name", HomepageURL: "http://someurl.com", SupportURL: "http://someotherurl.com", Version: "version"}, true},
-		{"Invalid min version", &Manifest{Id: "com.company.test", Name: "some name", HomepageURL: "http://someurl.com", SupportURL: "http://someotherurl.com", Version: "5.10.0", MinServerVersion: "version"}, true},
-		{"SettingSchema error", &Manifest{Id: "com.company.test", Name: "some name", HomepageURL: "http://someurl.com", SupportURL: "http://someotherurl.com", Version: "5.10.0", MinServerVersion: "5.10.8", SettingsSchema: &PluginSettingsSchema{
+		{"Invalid Id", &Manifest{ID: "some id", Name: "some name"}, true},
+		{"Invalid Name", &Manifest{ID: "com.company.test", Name: "  "}, true},
+		{"Invalid homePageURL", &Manifest{ID: "com.company.test", Name: "some name", HomepageURL: "some url"}, true},
+		{"Invalid supportURL", &Manifest{ID: "com.company.test", Name: "some name", SupportURL: "some url"}, true},
+		{"Invalid ReleaseNotesURL", &Manifest{ID: "com.company.test", Name: "some name", ReleaseNotesURL: "some url"}, true},
+		{"Invalid version", &Manifest{ID: "com.company.test", Name: "some name", HomepageURL: "http://someurl.com", SupportURL: "http://someotherurl.com", Version: "version"}, true},
+		{"Invalid min version", &Manifest{ID: "com.company.test", Name: "some name", HomepageURL: "http://someurl.com", SupportURL: "http://someotherurl.com", Version: "5.10.0", MinServerVersion: "version"}, true},
+		{"SettingSchema error", &Manifest{ID: "com.company.test", Name: "some name", HomepageURL: "http://someurl.com", SupportURL: "http://someotherurl.com", Version: "5.10.0", MinServerVersion: "5.10.8", SettingsSchema: &PluginSettingsSchema{
 			Settings: []*PluginSetting{{Type: "Invalid"}},
 		}}, true},
-		{"Minimal valid manifest", &Manifest{Id: "com.company.test", Name: "some name"}, false},
+		{"Minimal valid manifest", &Manifest{ID: "com.company.test", Name: "some name"}, false},
 		{"Happy case", &Manifest{
-			Id:               "com.company.test",
+			ID:               "com.company.test",
 			Name:             "thename",
 			Description:      "thedescription",
 			HomepageURL:      "http://someurl.com",
@@ -265,15 +265,15 @@ func TestFindManifest(t *testing.T) {
 		}
 		if !tc.ExpectError {
 			require.NotNil(t, m, tc.Filename)
-			assert.NotEmpty(t, m.Id, tc.Filename)
-			assert.Equal(t, strings.ToLower(m.Id), m.Id)
+			assert.NotEmpty(t, m.ID, tc.Filename)
+			assert.Equal(t, strings.ToLower(m.ID), m.ID)
 		}
 	}
 }
 
 func TestManifestUnmarshal(t *testing.T) {
 	expected := Manifest{
-		Id:               "theid",
+		ID:               "theid",
 		HomepageURL:      "https://example.com",
 		SupportURL:       "https://example.com/support",
 		IconPath:         "assets/icon.svg",
@@ -443,7 +443,7 @@ func TestFindManifest_FolderPermission(t *testing.T) {
 
 func TestManifestJson(t *testing.T) {
 	manifest := &Manifest{
-		Id: "theid",
+		ID: "theid",
 		Server: &ManifestServer{
 			Executable: "theexecutable",
 			Executables: &ManifestExecutables{
@@ -499,7 +499,7 @@ func TestManifestJson(t *testing.T) {
 
 func TestManifestHasClient(t *testing.T) {
 	manifest := &Manifest{
-		Id: "theid",
+		ID: "theid",
 		Server: &ManifestServer{
 			Executable: "theexecutable",
 		},
@@ -516,7 +516,7 @@ func TestManifestHasClient(t *testing.T) {
 
 func TestManifestClientManifest(t *testing.T) {
 	manifest := &Manifest{
-		Id:               "theid",
+		ID:               "theid",
 		Name:             "thename",
 		Description:      "thedescription",
 		Version:          "0.0.1",
@@ -553,7 +553,7 @@ func TestManifestClientManifest(t *testing.T) {
 
 	sanitized := manifest.ClientManifest()
 
-	assert.Equal(t, manifest.Id, sanitized.Id)
+	assert.Equal(t, manifest.ID, sanitized.ID)
 	assert.Equal(t, manifest.Version, sanitized.Version)
 	assert.Equal(t, manifest.MinServerVersion, sanitized.MinServerVersion)
 	assert.Equal(t, "/static/theid/theid_000102030405060708090a0b0c0d0e0f_bundle.js", sanitized.Webapp.BundlePath)
@@ -563,7 +563,7 @@ func TestManifestClientManifest(t *testing.T) {
 	assert.Empty(t, sanitized.Description)
 	assert.Empty(t, sanitized.Server)
 
-	assert.NotEmpty(t, manifest.Id)
+	assert.NotEmpty(t, manifest.ID)
 	assert.NotEmpty(t, manifest.Version)
 	assert.NotEmpty(t, manifest.MinServerVersion)
 	assert.NotEmpty(t, manifest.Webapp)

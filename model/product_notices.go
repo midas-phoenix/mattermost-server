@@ -208,8 +208,8 @@ const (
 
 // Definition of the table keeping the 'viewed' state of each in-product notice per user
 type ProductNoticeViewState struct {
-	UserId    string
-	NoticeId  string
+	UserID    string
+	NoticeID  string
 	Viewed    int32
 	Timestamp int64
 }

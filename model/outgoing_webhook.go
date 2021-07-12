@@ -14,14 +14,14 @@ import (
 )
 
 type OutgoingWebhook struct {
-	Id           string      `json:"id"`
+	ID           string      `json:"id"`
 	Token        string      `json:"token"`
 	CreateAt     int64       `json:"create_at"`
 	UpdateAt     int64       `json:"update_at"`
 	DeleteAt     int64       `json:"delete_at"`
-	CreatorId    string      `json:"creator_id"`
-	ChannelId    string      `json:"channel_id"`
-	TeamId       string      `json:"team_id"`
+	CreatorID    string      `json:"creator_id"`
+	ChannelID    string      `json:"channel_id"`
+	TeamID       string      `json:"team_id"`
 	TriggerWords StringArray `json:"trigger_words"`
 	TriggerWhen  int         `json:"trigger_when"`
 	CallbackURLs StringArray `json:"callback_urls"`
@@ -34,17 +34,17 @@ type OutgoingWebhook struct {
 
 type OutgoingWebhookPayload struct {
 	Token       string `json:"token"`
-	TeamId      string `json:"team_id"`
+	TeamID      string `json:"team_id"`
 	TeamDomain  string `json:"team_domain"`
-	ChannelId   string `json:"channel_id"`
+	ChannelID   string `json:"channel_id"`
 	ChannelName string `json:"channel_name"`
 	Timestamp   int64  `json:"timestamp"`
-	UserId      string `json:"user_id"`
+	UserID      string `json:"user_id"`
 	UserName    string `json:"user_name"`
-	PostId      string `json:"post_id"`
+	PostID      string `json:"post_id"`
 	Text        string `json:"text"`
 	TriggerWord string `json:"trigger_word"`
-	FileIds     string `json:"file_ids"`
+	FileIDs     string `json:"file_ids"`
 }
 
 type OutgoingWebhookResponse struct {
@@ -67,17 +67,17 @@ func (o *OutgoingWebhookPayload) ToJSON() string {
 func (o *OutgoingWebhookPayload) ToFormValues() string {
 	v := url.Values{}
 	v.Set("token", o.Token)
-	v.Set("team_id", o.TeamId)
+	v.Set("team_id", o.TeamID)
 	v.Set("team_domain", o.TeamDomain)
-	v.Set("channel_id", o.ChannelId)
+	v.Set("channel_id", o.ChannelID)
 	v.Set("channel_name", o.ChannelName)
 	v.Set("timestamp", strconv.FormatInt(o.Timestamp/1000, 10))
-	v.Set("user_id", o.UserId)
+	v.Set("user_id", o.UserID)
 	v.Set("user_name", o.UserName)
-	v.Set("post_id", o.PostId)
+	v.Set("post_id", o.PostID)
 	v.Set("text", o.Text)
 	v.Set("trigger_word", o.TriggerWord)
-	v.Set("file_ids", o.FileIds)
+	v.Set("file_ids", o.FileIDs)
 
 	return v.Encode()
 }
@@ -120,7 +120,7 @@ func OutgoingWebhookResponseFromJson(data io.Reader) (*OutgoingWebhookResponse, 
 
 func (o *OutgoingWebhook) IsValid() *AppError {
 
-	if !IsValidId(o.Id) {
+	if !IsValidID(o.ID) {
 		return NewAppError("OutgoingWebhook.IsValid", "model.outgoing_hook.is_valid.id.app_error", nil, "", http.StatusBadRequest)
 	}
 
@@ -129,22 +129,22 @@ func (o *OutgoingWebhook) IsValid() *AppError {
 	}
 
 	if o.CreateAt == 0 {
-		return NewAppError("OutgoingWebhook.IsValid", "model.outgoing_hook.is_valid.create_at.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("OutgoingWebhook.IsValid", "model.outgoing_hook.is_valid.create_at.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if o.UpdateAt == 0 {
-		return NewAppError("OutgoingWebhook.IsValid", "model.outgoing_hook.is_valid.update_at.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("OutgoingWebhook.IsValid", "model.outgoing_hook.is_valid.update_at.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
-	if !IsValidId(o.CreatorId) {
+	if !IsValidID(o.CreatorID) {
 		return NewAppError("OutgoingWebhook.IsValid", "model.outgoing_hook.is_valid.user_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if o.ChannelId != "" && !IsValidId(o.ChannelId) {
+	if o.ChannelID != "" && !IsValidID(o.ChannelID) {
 		return NewAppError("OutgoingWebhook.IsValid", "model.outgoing_hook.is_valid.channel_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if !IsValidId(o.TeamId) {
+	if !IsValidID(o.TeamID) {
 		return NewAppError("OutgoingWebhook.IsValid", "model.outgoing_hook.is_valid.team_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
@@ -198,12 +198,12 @@ func (o *OutgoingWebhook) IsValid() *AppError {
 }
 
 func (o *OutgoingWebhook) PreSave() {
-	if o.Id == "" {
-		o.Id = NewId()
+	if o.ID == "" {
+		o.ID = NewID()
 	}
 
 	if o.Token == "" {
-		o.Token = NewId()
+		o.Token = NewID()
 	}
 
 	o.CreateAt = GetMillis()

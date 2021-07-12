@@ -11,11 +11,11 @@ import (
 )
 
 func TestChannelMemberJson(t *testing.T) {
-	o := ChannelMember{ChannelId: NewId(), UserId: NewId()}
+	o := ChannelMember{ChannelID: NewID(), UserID: NewID()}
 	json := o.ToJson()
 	ro := ChannelMemberFromJson(strings.NewReader(json))
 
-	require.Equal(t, o.ChannelId, ro.ChannelId, "ids do not match")
+	require.Equal(t, o.ChannelID, ro.ChannelID, "ids do not match")
 }
 
 func TestChannelMemberIsValid(t *testing.T) {
@@ -23,11 +23,11 @@ func TestChannelMemberIsValid(t *testing.T) {
 
 	require.NotNil(t, o.IsValid(), "should be invalid")
 
-	o.ChannelId = NewId()
+	o.ChannelID = NewID()
 	require.NotNil(t, o.IsValid(), "should be invalid")
 
 	o.NotifyProps = GetDefaultChannelNotifyProps()
-	o.UserId = NewId()
+	o.UserID = NewID()
 
 	o.NotifyProps["desktop"] = "junk"
 	require.NotNil(t, o.IsValid(), "should be invalid")
@@ -49,10 +49,10 @@ func TestChannelMemberIsValid(t *testing.T) {
 }
 
 func TestChannelUnreadJson(t *testing.T) {
-	o := ChannelUnread{ChannelId: NewId(), TeamId: NewId(), MsgCount: 5, MentionCount: 3}
+	o := ChannelUnread{ChannelID: NewID(), TeamID: NewID(), MsgCount: 5, MentionCount: 3}
 	json := o.ToJson()
 	ro := ChannelUnreadFromJson(strings.NewReader(json))
 
-	require.Equal(t, o.TeamId, ro.TeamId, "team Ids do not match")
+	require.Equal(t, o.TeamID, ro.TeamID, "team Ids do not match")
 	require.Equal(t, o.MentionCount, ro.MentionCount, "mention count do not match")
 }

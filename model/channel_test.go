@@ -11,14 +11,14 @@ import (
 )
 
 func TestChannelJson(t *testing.T) {
-	o := Channel{Id: NewId(), Name: NewId()}
+	o := Channel{ID: NewID(), Name: NewID()}
 	json := o.ToJson()
 	ro := ChannelFromJson(strings.NewReader(json))
 
-	require.Equal(t, o.Id, ro.Id)
+	require.Equal(t, o.ID, ro.ID)
 
 	p := ChannelPatch{Name: new(string)}
-	*p.Name = NewId()
+	*p.Name = NewID()
 	json = p.ToJson()
 	rp := ChannelPatchFromJson(strings.NewReader(json))
 
@@ -26,21 +26,21 @@ func TestChannelJson(t *testing.T) {
 }
 
 func TestChannelCopy(t *testing.T) {
-	o := Channel{Id: NewId(), Name: NewId()}
+	o := Channel{ID: NewID(), Name: NewID()}
 	ro := o.DeepCopy()
 
-	require.Equal(t, o.Id, ro.Id, "Ids do not match")
+	require.Equal(t, o.ID, ro.ID, "Ids do not match")
 }
 
 func TestChannelPatch(t *testing.T) {
 	p := &ChannelPatch{Name: new(string), DisplayName: new(string), Header: new(string), Purpose: new(string), GroupConstrained: new(bool)}
-	*p.Name = NewId()
-	*p.DisplayName = NewId()
-	*p.Header = NewId()
-	*p.Purpose = NewId()
+	*p.Name = NewID()
+	*p.DisplayName = NewID()
+	*p.Header = NewID()
+	*p.Purpose = NewID()
 	*p.GroupConstrained = true
 
-	o := Channel{Id: NewId(), Name: NewId()}
+	o := Channel{ID: NewID(), Name: NewID()}
 	o.Patch(p)
 
 	require.Equal(t, *p.Name, o.Name)
@@ -55,7 +55,7 @@ func TestChannelIsValid(t *testing.T) {
 
 	require.NotNil(t, o.IsValid())
 
-	o.Id = NewId()
+	o.ID = NewID()
 	require.NotNil(t, o.IsValid())
 
 	o.CreateAt = GetMillis()
@@ -109,17 +109,17 @@ func TestChannelPreUpdate(t *testing.T) {
 
 func TestGetGroupDisplayNameFromUsers(t *testing.T) {
 	users := make([]*User, 4)
-	users[0] = &User{Username: NewId()}
-	users[1] = &User{Username: NewId()}
-	users[2] = &User{Username: NewId()}
-	users[3] = &User{Username: NewId()}
+	users[0] = &User{Username: NewID()}
+	users[1] = &User{Username: NewID()}
+	users[2] = &User{Username: NewID()}
+	users[3] = &User{Username: NewID()}
 
 	name := GetGroupDisplayNameFromUsers(users, true)
 	require.LessOrEqual(t, len(name), ChannelNameMaxLength)
 }
 
-func TestGetGroupNameFromUserIds(t *testing.T) {
-	name := GetGroupNameFromUserIds([]string{NewId(), NewId(), NewId(), NewId(), NewId()})
+func TestGetGroupNameFromUserIDs(t *testing.T) {
+	name := GetGroupNameFromUserIDs([]string{NewID(), NewID(), NewID(), NewID(), NewID()})
 
 	require.LessOrEqual(t, len(name), ChannelNameMaxLength)
 }

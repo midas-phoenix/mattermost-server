@@ -12,19 +12,19 @@ import (
 )
 
 func TestOutgoingWebhookJson(t *testing.T) {
-	o := OutgoingWebhook{Id: NewId()}
+	o := OutgoingWebhook{ID: NewID()}
 	json := o.ToJson()
 	ro := OutgoingWebhookFromJson(strings.NewReader(json))
 
-	assert.Equal(t, o.Id, ro.Id, "Ids do not match")
+	assert.Equal(t, o.ID, ro.ID, "Ids do not match")
 }
 
 func TestOutgoingWebhookIsValid(t *testing.T) {
 	o := OutgoingWebhook{}
 	assert.NotNil(t, o.IsValid(), "empty declaration should be invalid")
 
-	o.Id = NewId()
-	assert.NotNilf(t, o.IsValid(), "Id = NewId; %s should be invalid", o.Id)
+	o.ID = NewID()
+	assert.NotNilf(t, o.IsValid(), "Id = NewId; %s should be invalid", o.ID)
 
 	o.CreateAt = GetMillis()
 	assert.NotNilf(t, o.IsValid(), "CreateAt = GetMillis; %d should be invalid", o.CreateAt)
@@ -32,29 +32,29 @@ func TestOutgoingWebhookIsValid(t *testing.T) {
 	o.UpdateAt = GetMillis()
 	assert.NotNilf(t, o.IsValid(), "UpdateAt = GetMillis; %d should be invalid", o.UpdateAt)
 
-	o.CreatorId = "123"
-	assert.NotNilf(t, o.IsValid(), "CreatorId %s should be invalid", o.CreatorId)
+	o.CreatorID = "123"
+	assert.NotNilf(t, o.IsValid(), "CreatorId %s should be invalid", o.CreatorID)
 
-	o.CreatorId = NewId()
-	assert.NotNilf(t, o.IsValid(), "CreatorId = NewId; %s should be invalid", o.CreatorId)
+	o.CreatorID = NewID()
+	assert.NotNilf(t, o.IsValid(), "CreatorId = NewId; %s should be invalid", o.CreatorID)
 
 	o.Token = "123"
 	assert.NotNilf(t, o.IsValid(), "Token %s should be invalid", o.Token)
 
-	o.Token = NewId()
+	o.Token = NewID()
 	assert.NotNilf(t, o.IsValid(), "Token = NewId; %s should be invalid", o.Token)
 
-	o.ChannelId = "123"
-	assert.NotNilf(t, o.IsValid(), "ChannelId %s should be invalid", o.ChannelId)
+	o.ChannelID = "123"
+	assert.NotNilf(t, o.IsValid(), "ChannelId %s should be invalid", o.ChannelID)
 
-	o.ChannelId = NewId()
-	assert.NotNilf(t, o.IsValid(), "ChannelId = NewId; %s should be invalid", o.ChannelId)
+	o.ChannelID = NewID()
+	assert.NotNilf(t, o.IsValid(), "ChannelId = NewId; %s should be invalid", o.ChannelID)
 
-	o.TeamId = "123"
-	assert.NotNilf(t, o.IsValid(), "TeamId %s should be invalid", o.TeamId)
+	o.TeamID = "123"
+	assert.NotNilf(t, o.IsValid(), "TeamId %s should be invalid", o.TeamID)
 
-	o.TeamId = NewId()
-	assert.NotNilf(t, o.IsValid(), "TeamId = NewId; %s should be invalid", o.TeamId)
+	o.TeamID = NewID()
+	assert.NotNilf(t, o.IsValid(), "TeamId = NewId; %s should be invalid", o.TeamID)
 
 	o.CallbackURLs = []string{"nowhere.com/"}
 	assert.NotNilf(t, o.IsValid(), "%v for CallbackURLs should be invalid", o.CallbackURLs)
@@ -96,17 +96,17 @@ func TestOutgoingWebhookIsValid(t *testing.T) {
 func TestOutgoingWebhookPayloadToFormValues(t *testing.T) {
 	p := &OutgoingWebhookPayload{
 		Token:       "Token",
-		TeamId:      "TeamId",
+		TeamID:      "TeamId",
 		TeamDomain:  "TeamDomain",
-		ChannelId:   "ChannelId",
+		ChannelID:   "ChannelId",
 		ChannelName: "ChannelName",
 		Timestamp:   123000,
-		UserId:      "UserId",
+		UserID:      "UserId",
 		UserName:    "UserName",
-		PostId:      "PostId",
+		PostID:      "PostId",
 		Text:        "Text",
 		TriggerWord: "TriggerWord",
-		FileIds:     "FileIds",
+		FileIDs:     "FileIds",
 	}
 	v := url.Values{}
 	v.Set("token", "Token")
@@ -137,7 +137,7 @@ func TestOutgoingWebhookPreUpdate(t *testing.T) {
 }
 
 func TestOutgoingWebhookTriggerWordStartsWith(t *testing.T) {
-	o := OutgoingWebhook{Id: NewId()}
+	o := OutgoingWebhook{ID: NewID()}
 	o.TriggerWords = append(o.TriggerWords, "foo")
 	assert.True(t, o.TriggerWordStartsWith("foobar"), "Should return true")
 	assert.False(t, o.TriggerWordStartsWith("barfoo"), "Should return false")

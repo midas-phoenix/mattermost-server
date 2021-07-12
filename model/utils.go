@@ -83,10 +83,10 @@ func AppErrorInit(t i18n.TranslateFunc) {
 }
 
 type AppError struct {
-	Id            string `json:"id"`
+	ID            string `json:"id"`
 	Message       string `json:"message"`               // Message to be display to the end user without debugging information
 	DetailedError string `json:"detailed_error"`        // Internal error string to help the developer
-	RequestId     string `json:"request_id,omitempty"`  // The RequestId that's also set in the header
+	RequestID     string `json:"request_id,omitempty"`  // The RequestId that's also set in the header
 	StatusCode    int    `json:"status_code,omitempty"` // The http status code
 	Where         string `json:"-"`                     // The function where it happened in the form of Struct.Func
 	IsOAuth       bool   `json:"is_oauth,omitempty"`    // Whether the error is OAuth specific
@@ -99,22 +99,22 @@ func (er *AppError) Error() string {
 
 func (er *AppError) Translate(T i18n.TranslateFunc) {
 	if T == nil {
-		er.Message = er.Id
+		er.Message = er.ID
 		return
 	}
 
 	if er.params == nil {
-		er.Message = T(er.Id)
+		er.Message = T(er.ID)
 	} else {
-		er.Message = T(er.Id, er.params)
+		er.Message = T(er.ID, er.params)
 	}
 }
 
 func (er *AppError) SystemMessage(T i18n.TranslateFunc) string {
 	if er.params == nil {
-		return T(er.Id)
+		return T(er.ID)
 	}
-	return T(er.Id, er.params)
+	return T(er.ID, er.params)
 }
 
 func (er *AppError) ToJson() string {
@@ -143,7 +143,7 @@ func AppErrorFromJson(data io.Reader) *AppError {
 
 func NewAppError(where string, id string, params map[string]interface{}, details string, status int) *AppError {
 	ap := &AppError{}
-	ap.Id = id
+	ap.ID = id
 	ap.params = params
 	ap.Message = id
 	ap.Where = where
@@ -159,7 +159,7 @@ var encoding = base32.NewEncoding("ybndrfg8ejkmcpqxot1uwisza345h769")
 // NewId is a globally unique identifier.  It is a [A-Z0-9] string 26
 // characters long.  It is a UUID version 4 Guid that is zbased32 encoded
 // with the padding stripped off.
-func NewId() string {
+func NewID() string {
 	var b bytes.Buffer
 	encoder := base32.NewEncoder(encoding, &b)
 	encoder.Write(uuid.NewRandom())
@@ -170,9 +170,9 @@ func NewId() string {
 
 // NewRandomTeamName is a NewId that will be a valid team name.
 func NewRandomTeamName() string {
-	teamName := NewId()
+	teamName := NewID()
 	for IsReservedTeamName(teamName) {
-		teamName = NewId()
+		teamName = NewID()
 	}
 	return teamName
 }
@@ -409,7 +409,7 @@ var reservedName = []string{
 	"signup",
 }
 
-func IsValidChannelIdentifier(s string) bool {
+func IsValidChannelIDentifier(s string) bool {
 
 	if !IsValidAlphaNumHyphenUnderscore(s, true) {
 		return false
@@ -561,7 +561,7 @@ func IsValidNumberString(value string) bool {
 	return true
 }
 
-func IsValidId(value string) bool {
+func IsValidID(value string) bool {
 	if len(value) != 26 {
 		return false
 	}
@@ -654,7 +654,7 @@ func GetPreferredTimezone(timezone StringMap) string {
 
 // IsSamlFile checks if filename is a SAML file.
 func IsSamlFile(saml *SamlSettings, filename string) bool {
-	return filename == *saml.PublicCertificateFile || filename == *saml.PrivateKeyFile || filename == *saml.IdpCertificateFile
+	return filename == *saml.PublicCertificateFile || filename == *saml.PrivateKeyFile || filename == *saml.IDpCertificateFile
 }
 
 func AsStringBoolMap(list []string) map[string]bool {

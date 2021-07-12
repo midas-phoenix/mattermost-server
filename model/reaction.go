@@ -11,13 +11,13 @@ import (
 )
 
 type Reaction struct {
-	UserId    string  `json:"user_id"`
-	PostId    string  `json:"post_id"`
+	UserID    string  `json:"user_id"`
+	PostID    string  `json:"post_id"`
 	EmojiName string  `json:"emoji_name"`
 	CreateAt  int64   `json:"create_at"`
 	UpdateAt  int64   `json:"update_at"`
 	DeleteAt  int64   `json:"delete_at"`
-	RemoteId  *string `json:"remote_id"`
+	RemoteID  *string `json:"remote_id"`
 }
 
 func (o *Reaction) ToJson() string {
@@ -39,12 +39,12 @@ func ReactionsToJson(o []*Reaction) string {
 	return string(b)
 }
 
-func MapPostIdToReactionsToJson(o map[string][]*Reaction) string {
+func MapPostIDToReactionsToJson(o map[string][]*Reaction) string {
 	b, _ := json.Marshal(o)
 	return string(b)
 }
 
-func MapPostIdToReactionsFromJson(data io.Reader) map[string][]*Reaction {
+func MapPostIDToReactionsFromJson(data io.Reader) map[string][]*Reaction {
 	decoder := json.NewDecoder(data)
 
 	var objmap map[string][]*Reaction
@@ -64,12 +64,12 @@ func ReactionsFromJson(data io.Reader) []*Reaction {
 }
 
 func (o *Reaction) IsValid() *AppError {
-	if !IsValidId(o.UserId) {
-		return NewAppError("Reaction.IsValid", "model.reaction.is_valid.user_id.app_error", nil, "user_id="+o.UserId, http.StatusBadRequest)
+	if !IsValidID(o.UserID) {
+		return NewAppError("Reaction.IsValid", "model.reaction.is_valid.user_id.app_error", nil, "user_id="+o.UserID, http.StatusBadRequest)
 	}
 
-	if !IsValidId(o.PostId) {
-		return NewAppError("Reaction.IsValid", "model.reaction.is_valid.post_id.app_error", nil, "post_id="+o.PostId, http.StatusBadRequest)
+	if !IsValidID(o.PostID) {
+		return NewAppError("Reaction.IsValid", "model.reaction.is_valid.post_id.app_error", nil, "post_id="+o.PostID, http.StatusBadRequest)
 	}
 
 	validName := regexp.MustCompile(`^[a-zA-Z0-9\-\+_]+$`)
@@ -96,15 +96,15 @@ func (o *Reaction) PreSave() {
 	o.UpdateAt = GetMillis()
 	o.DeleteAt = 0
 
-	if o.RemoteId == nil {
-		o.RemoteId = NewString("")
+	if o.RemoteID == nil {
+		o.RemoteID = NewString("")
 	}
 }
 
 func (o *Reaction) PreUpdate() {
 	o.UpdateAt = GetMillis()
 
-	if o.RemoteId == nil {
-		o.RemoteId = NewString("")
+	if o.RemoteID == nil {
+		o.RemoteID = NewString("")
 	}
 }

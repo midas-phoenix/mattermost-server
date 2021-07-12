@@ -9,7 +9,7 @@ import (
 )
 
 type CommandMoveRequest struct {
-	TeamId string `json:"team_id"`
+	TeamID string `json:"team_id"`
 }
 
 func CommandMoveRequestFromJson(data io.Reader) (*CommandMoveRequest, error) {

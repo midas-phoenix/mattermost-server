@@ -15,10 +15,10 @@ func TestUserTermsOfServiceIsValid(t *testing.T) {
 	s := UserTermsOfService{}
 	require.NotNil(t, s.IsValid(), "should be invalid")
 
-	s.UserId = NewId()
+	s.UserID = NewID()
 	require.NotNil(t, s.IsValid(), "should be invalid")
 
-	s.TermsOfServiceId = NewId()
+	s.TermsOfServiceID = NewID()
 	require.NotNil(t, s.IsValid(), "should be invalid")
 
 	s.CreateAt = GetMillis()
@@ -27,8 +27,8 @@ func TestUserTermsOfServiceIsValid(t *testing.T) {
 
 func TestUserTermsOfServiceJson(t *testing.T) {
 	o := UserTermsOfService{
-		UserId:           NewId(),
-		TermsOfServiceId: NewId(),
+		UserID:           NewID(),
+		TermsOfServiceID: NewID(),
 		CreateAt:         GetMillis(),
 	}
 	j := o.ToJson()

@@ -72,7 +72,7 @@ func TestClient4CreatePost(t *testing.T) {
 }
 
 func TestClient4SetToken(t *testing.T) {
-	expected := NewId()
+	expected := NewID()
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get(HeaderAuth)
@@ -94,7 +94,7 @@ func TestClient4SetToken(t *testing.T) {
 }
 
 func TestClient4MockSession(t *testing.T) {
-	expected := NewId()
+	expected := NewID()
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get(HeaderAuth)

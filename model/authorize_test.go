@@ -12,29 +12,29 @@ import (
 
 func TestAuthJson(t *testing.T) {
 	a1 := AuthData{}
-	a1.ClientId = NewId()
-	a1.UserId = NewId()
-	a1.Code = NewId()
+	a1.ClientID = NewID()
+	a1.UserID = NewID()
+	a1.Code = NewID()
 
 	json := a1.ToJson()
 	ra1 := AuthDataFromJson(strings.NewReader(json))
 	require.Equal(t, a1.Code, ra1.Code, "codes didn't match")
 
 	a2 := AuthorizeRequest{}
-	a2.ClientId = NewId()
-	a2.Scope = NewId()
+	a2.ClientID = NewID()
+	a2.Scope = NewID()
 
 	json = a2.ToJson()
 	ra2 := AuthorizeRequestFromJson(strings.NewReader(json))
 
-	require.Equal(t, a2.ClientId, ra2.ClientId, "client ids didn't match")
+	require.Equal(t, a2.ClientID, ra2.ClientID, "client ids didn't match")
 }
 
 func TestAuthPreSave(t *testing.T) {
 	a1 := AuthData{}
-	a1.ClientId = NewId()
-	a1.UserId = NewId()
-	a1.Code = NewId()
+	a1.ClientID = NewID()
+	a1.UserID = NewID()
+	a1.Code = NewID()
 	a1.PreSave()
 	a1.IsExpired()
 }
@@ -45,16 +45,16 @@ func TestAuthIsValid(t *testing.T) {
 
 	require.NotNil(t, ad.IsValid())
 
-	ad.ClientId = NewRandomString(28)
+	ad.ClientID = NewRandomString(28)
 	require.NotNil(t, ad.IsValid(), "Should have failed Client Id")
 
-	ad.ClientId = NewId()
+	ad.ClientID = NewID()
 	require.NotNil(t, ad.IsValid())
 
-	ad.UserId = NewRandomString(28)
+	ad.UserID = NewRandomString(28)
 	require.NotNil(t, ad.IsValid(), "Should have failed User Id")
 
-	ad.UserId = NewId()
+	ad.UserID = NewID()
 	require.NotNil(t, ad.IsValid())
 
 	ad.Code = NewRandomString(129)
@@ -63,7 +63,7 @@ func TestAuthIsValid(t *testing.T) {
 	ad.Code = ""
 	require.NotNil(t, ad.IsValid(), "Should have failed Code not set")
 
-	ad.Code = NewId()
+	ad.Code = NewID()
 	require.NotNil(t, ad.IsValid())
 
 	ad.ExpiresIn = 0

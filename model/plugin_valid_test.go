@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestIsValidPluginId(t *testing.T) {
+func TestIsValidPluginID(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]bool{
@@ -27,7 +27,7 @@ func TestIsValidPluginId(t *testing.T) {
 
 	for id, valid := range testCases {
 		t.Run(id, func(t *testing.T) {
-			assert.Equal(t, valid, IsValidPluginId(id))
+			assert.Equal(t, valid, IsValidPluginID(id))
 		})
 	}
 }

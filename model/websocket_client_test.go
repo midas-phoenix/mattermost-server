@@ -127,7 +127,7 @@ func TestWebSocketClose(t *testing.T) {
 		checkWriteChan(cli.writeChan)
 
 		require.NotNil(t, cli.ListenError, "non-nil listen error")
-		assert.Equal(t, "model.websocket_client.connect_fail.app_error", cli.ListenError.Id, "unexpected error id")
+		assert.Equal(t, "model.websocket_client.connect_fail.app_error", cli.ListenError.ID, "unexpected error id")
 	})
 
 	t.Run("ExplicitClose", func(t *testing.T) {

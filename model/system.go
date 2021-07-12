@@ -10,10 +10,10 @@ import (
 )
 
 const (
-	SystemTelemetryId                      = "DiagnosticId"
+	SystemTelemetryID                      = "DiagnosticId"
 	SystemRanUnitTests                     = "RanUnitTests"
 	SystemLastSecurityTime                 = "LastSecurityTime"
-	SystemActiveLicenseId                  = "ActiveLicenseId"
+	SystemActiveLicenseID                  = "ActiveLicenseId"
 	SystemLicenseRenewalToken              = "LicenseRenewalToken"
 	SystemLastComplianceTime               = "LastComplianceTime"
 	SystemAsymmetricSigningKeyKey          = "AsymmetricSigningKey"
@@ -21,7 +21,7 @@ const (
 	SystemInstallationDateKey              = "InstallationDate"
 	SystemFirstServerRunTimestampKey       = "FirstServerRunTimestamp"
 	SystemClusterEncryptionKey             = "ClusterEncryptionKey"
-	SystemUpgradedFromTeId                 = "UpgradedFromTE"
+	SystemUpgradedFromTeID                 = "UpgradedFromTE"
 	SystemWarnMetricNumberOfTeams5         = "warn_metric_number_of_teams_5"
 	SystemWarnMetricNumberOfChannels50     = "warn_metric_number_of_channels_50"
 	SystemWarnMetricMfa                    = "warn_metric_mfa"
@@ -118,61 +118,61 @@ func ServerBusyStateFromJson(r io.Reader) *ServerBusyState {
 
 var WarnMetricsTable = map[string]WarnMetric{
 	SystemWarnMetricMfa: {
-		Id:        SystemWarnMetricMfa,
+		ID:        SystemWarnMetricMfa,
 		Limit:     -1,
 		IsBotOnly: true,
 		IsRunOnce: true,
 	},
 	SystemWarnMetricEmailDomain: {
-		Id:        SystemWarnMetricEmailDomain,
+		ID:        SystemWarnMetricEmailDomain,
 		Limit:     -1,
 		IsBotOnly: true,
 		IsRunOnce: true,
 	},
 	SystemWarnMetricNumberOfTeams5: {
-		Id:        SystemWarnMetricNumberOfTeams5,
+		ID:        SystemWarnMetricNumberOfTeams5,
 		Limit:     5,
 		IsBotOnly: true,
 		IsRunOnce: true,
 	},
 	SystemWarnMetricNumberOfChannels50: {
-		Id:        SystemWarnMetricNumberOfChannels50,
+		ID:        SystemWarnMetricNumberOfChannels50,
 		Limit:     50,
 		IsBotOnly: true,
 		IsRunOnce: true,
 	},
 	SystemWarnMetricNumberOfActiveUsers100: {
-		Id:        SystemWarnMetricNumberOfActiveUsers100,
+		ID:        SystemWarnMetricNumberOfActiveUsers100,
 		Limit:     100,
 		IsBotOnly: true,
 		IsRunOnce: true,
 	},
 	SystemWarnMetricNumberOfActiveUsers200: {
-		Id:        SystemWarnMetricNumberOfActiveUsers200,
+		ID:        SystemWarnMetricNumberOfActiveUsers200,
 		Limit:     200,
 		IsBotOnly: true,
 		IsRunOnce: true,
 	},
 	SystemWarnMetricNumberOfActiveUsers300: {
-		Id:        SystemWarnMetricNumberOfActiveUsers300,
+		ID:        SystemWarnMetricNumberOfActiveUsers300,
 		Limit:     300,
 		IsBotOnly: true,
 		IsRunOnce: true,
 	},
 	SystemWarnMetricNumberOfActiveUsers500: {
-		Id:        SystemWarnMetricNumberOfActiveUsers500,
+		ID:        SystemWarnMetricNumberOfActiveUsers500,
 		Limit:     500,
 		IsBotOnly: false,
 		IsRunOnce: true,
 	},
 	SystemWarnMetricNumberOfPosts2m: {
-		Id:        SystemWarnMetricNumberOfPosts2m,
+		ID:        SystemWarnMetricNumberOfPosts2m,
 		Limit:     2000000,
 		IsBotOnly: false,
 		IsRunOnce: true,
 	},
 	SystemMetricSupportEmailNotConfigured: {
-		Id:         SystemMetricSupportEmailNotConfigured,
+		ID:         SystemMetricSupportEmailNotConfigured,
 		Limit:      -1,
 		IsBotOnly:  true,
 		IsRunOnce:  false,
@@ -181,7 +181,7 @@ var WarnMetricsTable = map[string]WarnMetric{
 }
 
 type WarnMetric struct {
-	Id         string
+	ID         string
 	Limit      int64
 	IsBotOnly  bool
 	IsRunOnce  bool
@@ -195,7 +195,7 @@ type WarnMetricDisplayTexts struct {
 	EmailBody         string
 }
 type WarnMetricStatus struct {
-	Id          string `json:"id"`
+	ID          string `json:"id"`
 	Limit       int64  `json:"limit"`
 	Acked       bool   `json:"acked"`
 	StoreStatus string `json:"store_status,omitempty"`

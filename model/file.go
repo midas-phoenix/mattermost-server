@@ -14,7 +14,7 @@ const (
 
 type FileUploadResponse struct {
 	FileInfos []*FileInfo `json:"file_infos"`
-	ClientIds []string    `json:"client_ids"`
+	ClientIDs []string    `json:"client_ids"`
 }
 
 func FileUploadResponseFromJson(data io.Reader) *FileUploadResponse {

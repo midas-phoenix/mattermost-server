@@ -27,12 +27,12 @@ func (o *ChannelList) Etag() string {
 	for _, v := range *o {
 		if v.LastPostAt > t {
 			t = v.LastPostAt
-			id = v.Id
+			id = v.ID
 		}
 
 		if v.UpdateAt > t {
 			t = v.UpdateAt
-			id = v.Id
+			id = v.ID
 		}
 
 	}
@@ -71,17 +71,17 @@ func (o *ChannelListWithTeamData) Etag() string {
 	for _, v := range *o {
 		if v.LastPostAt > t {
 			t = v.LastPostAt
-			id = v.Id
+			id = v.ID
 		}
 
 		if v.UpdateAt > t {
 			t = v.UpdateAt
-			id = v.Id
+			id = v.ID
 		}
 
 		if v.TeamUpdateAt > t {
 			t = v.TeamUpdateAt
-			id = v.Id
+			id = v.ID
 		}
 	}
 

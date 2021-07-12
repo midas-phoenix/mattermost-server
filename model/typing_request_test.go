@@ -11,10 +11,10 @@ import (
 )
 
 func TestTypingRequestJson(t *testing.T) {
-	o := TypingRequest{ChannelId: NewId(), ParentId: NewId()}
+	o := TypingRequest{ChannelID: NewID(), ParentID: NewID()}
 	json := o.ToJson()
 	ro := TypingRequestFromJson(strings.NewReader(json))
 
-	require.Equal(t, o.ChannelId, ro.ChannelId, "ChannelIds do not match")
-	require.Equal(t, o.ParentId, ro.ParentId, "ParentIds do not match")
+	require.Equal(t, o.ChannelID, ro.ChannelID, "ChannelIds do not match")
+	require.Equal(t, o.ParentID, ro.ParentID, "ParentIds do not match")
 }

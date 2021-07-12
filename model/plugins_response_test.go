@@ -12,7 +12,7 @@ import (
 
 func TestPluginsResponseJson(t *testing.T) {
 	manifest := &Manifest{
-		Id: "theid",
+		ID: "theid",
 		Server: &ManifestServer{
 			Executable: "theexecutable",
 		},

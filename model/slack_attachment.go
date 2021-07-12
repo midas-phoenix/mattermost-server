@@ -11,7 +11,7 @@ import (
 var linkWithTextRegex = regexp.MustCompile(`<([^<\|]+)\|([^>]+)>`)
 
 type SlackAttachment struct {
-	Id         int64                   `json:"id"`
+	ID         int64                   `json:"id"`
 	Fallback   string                  `json:"fallback"`
 	Color      string                  `json:"color"`
 	Pretext    string                  `json:"pretext"`
@@ -33,7 +33,7 @@ type SlackAttachment struct {
 func (s *SlackAttachment) Equals(input *SlackAttachment) bool {
 	// Direct comparison of simple types
 
-	if s.Id != input.Id {
+	if s.ID != input.ID {
 		return false
 	}
 

@@ -22,9 +22,9 @@ const (
 )
 
 type Compliance struct {
-	Id       string `json:"id"`
+	ID       string `json:"id"`
 	CreateAt int64  `json:"create_at"`
-	UserId   string `json:"user_id"`
+	UserID   string `json:"user_id"`
 	Status   string `json:"status"`
 	Count    int    `json:"count"`
 	Desc     string `json:"desc"`
@@ -56,8 +56,8 @@ func (c *Compliance) ToJson() string {
 }
 
 func (c *Compliance) PreSave() {
-	if c.Id == "" {
-		c.Id = NewId()
+	if c.ID == "" {
+		c.ID = NewID()
 	}
 
 	if c.Status == "" {
@@ -82,14 +82,14 @@ func (c *Compliance) JobName() string {
 		jobName += "-" + c.Desc
 	}
 
-	jobName += "-" + c.Id
+	jobName += "-" + c.ID
 
 	return jobName
 }
 
 func (c *Compliance) IsValid() *AppError {
 
-	if !IsValidId(c.Id) {
+	if !IsValidID(c.ID) {
 		return NewAppError("Compliance.IsValid", "model.compliance.is_valid.id.app_error", nil, "", http.StatusBadRequest)
 	}
 

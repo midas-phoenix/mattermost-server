@@ -33,13 +33,13 @@ var (
 )
 
 type LicenseRecord struct {
-	Id       string `json:"id"`
+	ID       string `json:"id"`
 	CreateAt int64  `json:"create_at"`
 	Bytes    string `json:"-"`
 }
 
 type License struct {
-	Id           string    `json:"id"`
+	ID           string    `json:"id"`
 	IssuedAt     int64     `json:"issued_at"`
 	StartsAt     int64     `json:"starts_at"`
 	ExpiresAt    int64     `json:"expires_at"`
@@ -51,7 +51,7 @@ type License struct {
 }
 
 type Customer struct {
-	Id      string `json:"id"`
+	ID      string `json:"id"`
 	Name    string `json:"name"`
 	Email   string `json:"email"`
 	Company string `json:"company"`
@@ -80,7 +80,7 @@ type Features struct {
 	MFA                       *bool `json:"mfa"`
 	GoogleOAuth               *bool `json:"google_oauth"`
 	Office365OAuth            *bool `json:"office365_oauth"`
-	OpenId                    *bool `json:"openid"`
+	OpenID                    *bool `json:"openid"`
 	Compliance                *bool `json:"compliance"`
 	Cluster                   *bool `json:"cluster"`
 	Metrics                   *bool `json:"metrics"`
@@ -115,7 +115,7 @@ func (f *Features) ToMap() map[string]interface{} {
 		"mfa":                         *f.MFA,
 		"google":                      *f.GoogleOAuth,
 		"office365":                   *f.Office365OAuth,
-		"openid":                      *f.OpenId,
+		"openid":                      *f.OpenID,
 		"compliance":                  *f.Compliance,
 		"cluster":                     *f.Cluster,
 		"metrics":                     *f.Metrics,
@@ -168,8 +168,8 @@ func (f *Features) SetDefaults() {
 		f.Office365OAuth = NewBool(*f.FutureFeatures)
 	}
 
-	if f.OpenId == nil {
-		f.OpenId = NewBool(*f.FutureFeatures)
+	if f.OpenID == nil {
+		f.OpenID = NewBool(*f.FutureFeatures)
 	}
 
 	if f.Compliance == nil {
@@ -328,7 +328,7 @@ func LicenseFromJson(data io.Reader) *License {
 }
 
 func (lr *LicenseRecord) IsValid() *AppError {
-	if !IsValidId(lr.Id) {
+	if !IsValidID(lr.ID) {
 		return NewAppError("LicenseRecord.IsValid", "model.license_record.is_valid.id.app_error", nil, "", http.StatusBadRequest)
 	}
 

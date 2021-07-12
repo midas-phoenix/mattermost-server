@@ -21,11 +21,11 @@ var EmojiPattern = regexp.MustCompile(`:[a-zA-Z0-9_+-]+:`)
 var ReverseSystemEmojisMap = makeReverseEmojiMap()
 
 type Emoji struct {
-	Id        string `json:"id"`
+	ID        string `json:"id"`
 	CreateAt  int64  `json:"create_at"`
 	UpdateAt  int64  `json:"update_at"`
 	DeleteAt  int64  `json:"delete_at"`
-	CreatorId string `json:"creator_id"`
+	CreatorID string `json:"creator_id"`
 	Name      string `json:"name"`
 }
 
@@ -34,7 +34,7 @@ func inSystemEmoji(emojiName string) bool {
 	return ok
 }
 
-func GetSystemEmojiId(emojiName string) (string, bool) {
+func GetSystemEmojiID(emojiName string) (string, bool) {
 	id, found := SystemEmojis[emojiName]
 	return id, found
 }
@@ -60,19 +60,19 @@ func GetEmojiNameFromUnicode(unicode string) (emojiName string, count int) {
 }
 
 func (emoji *Emoji) IsValid() *AppError {
-	if !IsValidId(emoji.Id) {
+	if !IsValidID(emoji.ID) {
 		return NewAppError("Emoji.IsValid", "model.emoji.id.app_error", nil, "", http.StatusBadRequest)
 	}
 
 	if emoji.CreateAt == 0 {
-		return NewAppError("Emoji.IsValid", "model.emoji.create_at.app_error", nil, "id="+emoji.Id, http.StatusBadRequest)
+		return NewAppError("Emoji.IsValid", "model.emoji.create_at.app_error", nil, "id="+emoji.ID, http.StatusBadRequest)
 	}
 
 	if emoji.UpdateAt == 0 {
-		return NewAppError("Emoji.IsValid", "model.emoji.update_at.app_error", nil, "id="+emoji.Id, http.StatusBadRequest)
+		return NewAppError("Emoji.IsValid", "model.emoji.update_at.app_error", nil, "id="+emoji.ID, http.StatusBadRequest)
 	}
 
-	if len(emoji.CreatorId) > 26 {
+	if len(emoji.CreatorID) > 26 {
 		return NewAppError("Emoji.IsValid", "model.emoji.user_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
@@ -88,8 +88,8 @@ func IsValidEmojiName(name string) *AppError {
 }
 
 func (emoji *Emoji) PreSave() {
-	if emoji.Id == "" {
-		emoji.Id = NewId()
+	if emoji.ID == "" {
+		emoji.ID = NewID()
 	}
 
 	emoji.CreateAt = GetMillis()

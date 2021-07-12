@@ -18,13 +18,13 @@ const (
 )
 
 type Command struct {
-	Id               string `json:"id"`
+	ID               string `json:"id"`
 	Token            string `json:"token"`
 	CreateAt         int64  `json:"create_at"`
 	UpdateAt         int64  `json:"update_at"`
 	DeleteAt         int64  `json:"delete_at"`
-	CreatorId        string `json:"creator_id"`
-	TeamId           string `json:"team_id"`
+	CreatorID        string `json:"creator_id"`
+	TeamID           string `json:"team_id"`
 	Trigger          string `json:"trigger"`
 	Method           string `json:"method"`
 	Username         string `json:"username"`
@@ -37,7 +37,7 @@ type Command struct {
 	URL              string `json:"url"`
 	// PluginId records the id of the plugin that created this Command. If it is blank, the Command
 	// was not created by a plugin.
-	PluginId         string            `json:"plugin_id"`
+	PluginID         string            `json:"plugin_id"`
 	AutocompleteData *AutocompleteData `db:"-" json:"autocomplete_data,omitempty"`
 	// AutocompleteIconData is a base64 encoded svg
 	AutocompleteIconData string `db:"-" json:"autocomplete_icon_data,omitempty"`
@@ -67,7 +67,7 @@ func CommandListFromJson(data io.Reader) []*Command {
 
 func (o *Command) IsValid() *AppError {
 
-	if !IsValidId(o.Id) {
+	if !IsValidID(o.ID) {
 		return NewAppError("Command.IsValid", "model.command.is_valid.id.app_error", nil, "", http.StatusBadRequest)
 	}
 
@@ -84,20 +84,20 @@ func (o *Command) IsValid() *AppError {
 	}
 
 	// If the CreatorId is blank, this should be a command created by a plugin.
-	if o.CreatorId == "" && !IsValidPluginId(o.PluginId) {
+	if o.CreatorID == "" && !IsValidPluginID(o.PluginID) {
 		return NewAppError("Command.IsValid", "model.command.is_valid.plugin_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
 	// If the PluginId is blank, this should be a command associated with a userId.
-	if o.PluginId == "" && !IsValidId(o.CreatorId) {
+	if o.PluginID == "" && !IsValidID(o.CreatorID) {
 		return NewAppError("Command.IsValid", "model.command.is_valid.user_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if o.CreatorId != "" && o.PluginId != "" {
+	if o.CreatorID != "" && o.PluginID != "" {
 		return NewAppError("Command.IsValid", "model.command.is_valid.plugin_id.app_error", nil, "command cannot have both a CreatorId and a PluginId", http.StatusBadRequest)
 	}
 
-	if !IsValidId(o.TeamId) {
+	if !IsValidID(o.TeamID) {
 		return NewAppError("Command.IsValid", "model.command.is_valid.team_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
@@ -135,12 +135,12 @@ func (o *Command) IsValid() *AppError {
 }
 
 func (o *Command) PreSave() {
-	if o.Id == "" {
-		o.Id = NewId()
+	if o.ID == "" {
+		o.ID = NewID()
 	}
 
 	if o.Token == "" {
-		o.Token = NewId()
+		o.Token = NewID()
 	}
 
 	o.CreateAt = GetMillis()
@@ -153,7 +153,7 @@ func (o *Command) PreUpdate() {
 
 func (o *Command) Sanitize() {
 	o.Token = ""
-	o.CreatorId = ""
+	o.CreatorID = ""
 	o.Method = ""
 	o.URL = ""
 	o.Username = ""

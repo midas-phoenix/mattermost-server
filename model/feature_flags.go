@@ -64,12 +64,12 @@ func (f *FeatureFlags) Plugins() map[string]string {
 		rFieldVal := rFFVal.Field(i)
 		rFieldType := rFFType.Field(i)
 
-		pluginId, hasPluginId := rFieldType.Tag.Lookup("plugin_id")
-		if !hasPluginId {
+		pluginID, hasPluginID := rFieldType.Tag.Lookup("plugin_id")
+		if !hasPluginID {
 			continue
 		}
 
-		pluginVersions[pluginId] = rFieldVal.String()
+		pluginVersions[pluginID] = rFieldVal.String()
 	}
 
 	return pluginVersions

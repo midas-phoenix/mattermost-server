@@ -18,7 +18,7 @@ type GitLabProvider struct {
 }
 
 type GitLabUser struct {
-	Id       int64  `json:"id"`
+	ID       int64  `json:"id"`
 	Username string `json:"username"`
 	Login    string `json:"login"`
 	Email    string `json:"email"`
@@ -49,8 +49,8 @@ func userFromGitLabUser(glu *GitLabUser) *model.User {
 	}
 	user.Email = glu.Email
 	user.Email = strings.ToLower(user.Email)
-	userId := glu.getAuthData()
-	user.AuthData = &userId
+	userID := glu.getAuthData()
+	user.AuthData = &userID
 	user.AuthService = model.UserAuthServiceGitlab
 
 	return user
@@ -75,7 +75,7 @@ func (glu *GitLabUser) ToJson() string {
 }
 
 func (glu *GitLabUser) IsValid() error {
-	if glu.Id == 0 {
+	if glu.ID == 0 {
 		return errors.New("user id can't be 0")
 	}
 
@@ -87,7 +87,7 @@ func (glu *GitLabUser) IsValid() error {
 }
 
 func (glu *GitLabUser) getAuthData() string {
-	return strconv.FormatInt(glu.Id, 10)
+	return strconv.FormatInt(glu.ID, 10)
 }
 
 func (m *GitLabProvider) GetUserFromJson(data io.Reader, tokenUser *model.User) (*model.User, error) {
@@ -106,7 +106,7 @@ func (m *GitLabProvider) GetSSOSettings(config *model.Config, service string) (*
 	return &config.GitLabSettings, nil
 }
 
-func (m *GitLabProvider) GetUserFromIdToken(idToken string) (*model.User, error) {
+func (m *GitLabProvider) GetUserFromIDToken(idToken string) (*model.User, error) {
 	return nil, nil
 }
 

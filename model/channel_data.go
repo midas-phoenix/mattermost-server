@@ -19,7 +19,7 @@ func (o *ChannelData) Etag() string {
 		mt = o.Member.LastUpdateAt
 	}
 
-	return Etag(o.Channel.Id, o.Channel.UpdateAt, o.Channel.LastPostAt, mt)
+	return Etag(o.Channel.ID, o.Channel.UpdateAt, o.Channel.LastPostAt, mt)
 }
 
 func (o *ChannelData) ToJson() string {

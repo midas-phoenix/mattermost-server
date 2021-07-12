@@ -21,92 +21,92 @@ var NewSystemRoleIDs []string
 
 func init() {
 	NewSystemRoleIDs = []string{
-		SystemUserManagerRoleId,
-		SystemReadOnlyAdminRoleId,
-		SystemManagerRoleId,
+		SystemUserManagerRoleID,
+		SystemReadOnlyAdminRoleID,
+		SystemManagerRoleID,
 	}
 
 	BuiltInSchemeManagedRoleIDs = append([]string{
-		SystemGuestRoleId,
-		SystemUserRoleId,
-		SystemAdminRoleId,
-		SystemPostAllRoleId,
-		SystemPostAllPublicRoleId,
-		SystemUserAccessTokenRoleId,
+		SystemGuestRoleID,
+		SystemUserRoleID,
+		SystemAdminRoleID,
+		SystemPostAllRoleID,
+		SystemPostAllPublicRoleID,
+		SystemUserAccessTokenRoleID,
 
-		TeamGuestRoleId,
-		TeamUserRoleId,
-		TeamAdminRoleId,
-		TeamPostAllRoleId,
-		TeamPostAllPublicRoleId,
+		TeamGuestRoleID,
+		TeamUserRoleID,
+		TeamAdminRoleID,
+		TeamPostAllRoleID,
+		TeamPostAllPublicRoleID,
 
-		ChannelGuestRoleId,
-		ChannelUserRoleId,
-		ChannelAdminRoleId,
+		ChannelGuestRoleID,
+		ChannelUserRoleID,
+		ChannelAdminRoleID,
 	}, NewSystemRoleIDs...)
 
 	// When updating the values here, the values in mattermost-redux must also be updated.
 	SysconsoleAncillaryPermissions = map[string][]*Permission{
-		PermissionSysconsoleReadAboutEditionAndLicense.Id: {
+		PermissionSysconsoleReadAboutEditionAndLicense.ID: {
 			PermissionReadLicenseInformation,
 		},
-		PermissionSysconsoleWriteAboutEditionAndLicense.Id: {
+		PermissionSysconsoleWriteAboutEditionAndLicense.ID: {
 			PermissionManageLicenseInformation,
 		},
-		PermissionSysconsoleReadUserManagementChannels.Id: {
+		PermissionSysconsoleReadUserManagementChannels.ID: {
 			PermissionReadPublicChannel,
 			PermissionReadChannel,
 			PermissionReadPublicChannelGroups,
 			PermissionReadPrivateChannelGroups,
 		},
-		PermissionSysconsoleReadUserManagementUsers.Id: {
+		PermissionSysconsoleReadUserManagementUsers.ID: {
 			PermissionReadOtherUsersTeams,
 			PermissionGetAnalytics,
 		},
-		PermissionSysconsoleReadUserManagementTeams.Id: {
+		PermissionSysconsoleReadUserManagementTeams.ID: {
 			PermissionListPrivateTeams,
 			PermissionListPublicTeams,
 			PermissionViewTeam,
 		},
-		PermissionSysconsoleReadEnvironmentElasticsearch.Id: {
+		PermissionSysconsoleReadEnvironmentElasticsearch.ID: {
 			PermissionReadElasticsearchPostIndexingJob,
 			PermissionReadElasticsearchPostAggregationJob,
 		},
-		PermissionSysconsoleWriteEnvironmentWebServer.Id: {
+		PermissionSysconsoleWriteEnvironmentWebServer.ID: {
 			PermissionTestSiteUrl,
 			PermissionReloadConfig,
 			PermissionInvalidateCaches,
 		},
-		PermissionSysconsoleWriteEnvironmentDatabase.Id: {
+		PermissionSysconsoleWriteEnvironmentDatabase.ID: {
 			PermissionRecycleDatabaseConnections,
 		},
-		PermissionSysconsoleWriteEnvironmentElasticsearch.Id: {
+		PermissionSysconsoleWriteEnvironmentElasticsearch.ID: {
 			PermissionTestElasticsearch,
 			PermissionCreateElasticsearchPostIndexingJob,
 			PermissionCreateElasticsearchPostAggregationJob,
 			PermissionPurgeElasticsearchIndexes,
 		},
-		PermissionSysconsoleWriteEnvironmentFileStorage.Id: {
+		PermissionSysconsoleWriteEnvironmentFileStorage.ID: {
 			PermissionTestS3,
 		},
-		PermissionSysconsoleWriteEnvironmentSmtp.Id: {
+		PermissionSysconsoleWriteEnvironmentSmtp.ID: {
 			PermissionTestEmail,
 		},
-		PermissionSysconsoleReadReportingServerLogs.Id: {
+		PermissionSysconsoleReadReportingServerLogs.ID: {
 			PermissionGetLogs,
 		},
-		PermissionSysconsoleReadReportingSiteStatistics.Id: {
+		PermissionSysconsoleReadReportingSiteStatistics.ID: {
 			PermissionGetAnalytics,
 		},
-		PermissionSysconsoleReadReportingTeamStatistics.Id: {
+		PermissionSysconsoleReadReportingTeamStatistics.ID: {
 			PermissionViewTeam,
 		},
-		PermissionSysconsoleWriteUserManagementUsers.Id: {
+		PermissionSysconsoleWriteUserManagementUsers.ID: {
 			PermissionEditOtherUsers,
 			PermissionDemoteToGuest,
 			PermissionPromoteGuest,
 		},
-		PermissionSysconsoleWriteUserManagementChannels.Id: {
+		PermissionSysconsoleWriteUserManagementChannels.ID: {
 			PermissionManageTeam,
 			PermissionManagePublicChannelProperties,
 			PermissionManagePrivateChannelProperties,
@@ -118,7 +118,7 @@ func init() {
 			PermissionConvertPublicChannelToPrivate,
 			PermissionConvertPrivateChannelToPublic,
 		},
-		PermissionSysconsoleWriteUserManagementTeams.Id: {
+		PermissionSysconsoleWriteUserManagementTeams.ID: {
 			PermissionManageTeam,
 			PermissionManageTeamRoles,
 			PermissionRemoveUserFromTeam,
@@ -126,212 +126,212 @@ func init() {
 			PermissionJoinPublicTeams,
 			PermissionAddUserToTeam,
 		},
-		PermissionSysconsoleWriteUserManagementGroups.Id: {
+		PermissionSysconsoleWriteUserManagementGroups.ID: {
 			PermissionManageTeam,
 			PermissionManagePrivateChannelMembers,
 			PermissionManagePublicChannelMembers,
 			PermissionConvertPublicChannelToPrivate,
 			PermissionConvertPrivateChannelToPublic,
 		},
-		PermissionSysconsoleWriteSiteCustomization.Id: {
+		PermissionSysconsoleWriteSiteCustomization.ID: {
 			PermissionEditBrand,
 		},
-		PermissionSysconsoleWriteComplianceDataRetentionPolicy.Id: {
+		PermissionSysconsoleWriteComplianceDataRetentionPolicy.ID: {
 			PermissionCreateDataRetentionJob,
 		},
-		PermissionSysconsoleReadComplianceDataRetentionPolicy.Id: {
+		PermissionSysconsoleReadComplianceDataRetentionPolicy.ID: {
 			PermissionReadDataRetentionJob,
 		},
-		PermissionSysconsoleWriteComplianceComplianceExport.Id: {
+		PermissionSysconsoleWriteComplianceComplianceExport.ID: {
 			PermissionCreateComplianceExportJob,
 			PermissionDownloadComplianceExportResult,
 		},
-		PermissionSysconsoleReadComplianceComplianceExport.Id: {
+		PermissionSysconsoleReadComplianceComplianceExport.ID: {
 			PermissionReadComplianceExportJob,
 			PermissionDownloadComplianceExportResult,
 		},
-		PermissionSysconsoleReadComplianceCustomTermsOfService.Id: {
+		PermissionSysconsoleReadComplianceCustomTermsOfService.ID: {
 			PermissionReadAudits,
 		},
-		PermissionSysconsoleWriteExperimentalBleve.Id: {
+		PermissionSysconsoleWriteExperimentalBleve.ID: {
 			PermissionCreatePostBleveIndexesJob,
 			PermissionPurgeBleveIndexes,
 		},
-		PermissionSysconsoleWriteAuthenticationLdap.Id: {
+		PermissionSysconsoleWriteAuthenticationLdap.ID: {
 			PermissionCreateLdapSyncJob,
 			PermissionAddLdapPublicCert,
 			PermissionRemoveLdapPublicCert,
 			PermissionAddLdapPrivateCert,
 			PermissionRemoveLdapPrivateCert,
 		},
-		PermissionSysconsoleReadAuthenticationLdap.Id: {
+		PermissionSysconsoleReadAuthenticationLdap.ID: {
 			PermissionTestLdap,
 			PermissionReadLdapSyncJob,
 		},
-		PermissionSysconsoleWriteAuthenticationEmail.Id: {
+		PermissionSysconsoleWriteAuthenticationEmail.ID: {
 			PermissionInvalidateEmailInvite,
 		},
-		PermissionSysconsoleWriteAuthenticationSaml.Id: {
-			PermissionGetSamlMetadataFromIdp,
+		PermissionSysconsoleWriteAuthenticationSaml.ID: {
+			PermissionGetSamlMetadataFromIDp,
 			PermissionAddSamlPublicCert,
 			PermissionAddSamlPrivateCert,
-			PermissionAddSamlIdpCert,
+			PermissionAddSamlIDpCert,
 			PermissionRemoveSamlPublicCert,
 			PermissionRemoveSamlPrivateCert,
-			PermissionRemoveSamlIdpCert,
+			PermissionRemoveSamlIDpCert,
 			PermissionGetSamlCertStatus,
 		},
 	}
 
 	SystemUserManagerDefaultPermissions = []string{
-		PermissionSysconsoleReadUserManagementGroups.Id,
-		PermissionSysconsoleReadUserManagementTeams.Id,
-		PermissionSysconsoleReadUserManagementChannels.Id,
-		PermissionSysconsoleReadUserManagementPermissions.Id,
-		PermissionSysconsoleWriteUserManagementGroups.Id,
-		PermissionSysconsoleWriteUserManagementTeams.Id,
-		PermissionSysconsoleWriteUserManagementChannels.Id,
-		PermissionSysconsoleReadAuthenticationSignup.Id,
-		PermissionSysconsoleReadAuthenticationEmail.Id,
-		PermissionSysconsoleReadAuthenticationPassword.Id,
-		PermissionSysconsoleReadAuthenticationMfa.Id,
-		PermissionSysconsoleReadAuthenticationLdap.Id,
-		PermissionSysconsoleReadAuthenticationSaml.Id,
-		PermissionSysconsoleReadAuthenticationOpenid.Id,
-		PermissionSysconsoleReadAuthenticationGuestAccess.Id,
+		PermissionSysconsoleReadUserManagementGroups.ID,
+		PermissionSysconsoleReadUserManagementTeams.ID,
+		PermissionSysconsoleReadUserManagementChannels.ID,
+		PermissionSysconsoleReadUserManagementPermissions.ID,
+		PermissionSysconsoleWriteUserManagementGroups.ID,
+		PermissionSysconsoleWriteUserManagementTeams.ID,
+		PermissionSysconsoleWriteUserManagementChannels.ID,
+		PermissionSysconsoleReadAuthenticationSignup.ID,
+		PermissionSysconsoleReadAuthenticationEmail.ID,
+		PermissionSysconsoleReadAuthenticationPassword.ID,
+		PermissionSysconsoleReadAuthenticationMfa.ID,
+		PermissionSysconsoleReadAuthenticationLdap.ID,
+		PermissionSysconsoleReadAuthenticationSaml.ID,
+		PermissionSysconsoleReadAuthenticationOpenid.ID,
+		PermissionSysconsoleReadAuthenticationGuestAccess.ID,
 	}
 
 	SystemReadOnlyAdminDefaultPermissions = []string{
-		PermissionSysconsoleReadAboutEditionAndLicense.Id,
-		PermissionSysconsoleReadReportingSiteStatistics.Id,
-		PermissionSysconsoleReadReportingTeamStatistics.Id,
-		PermissionSysconsoleReadReportingServerLogs.Id,
-		PermissionSysconsoleReadUserManagementUsers.Id,
-		PermissionSysconsoleReadUserManagementGroups.Id,
-		PermissionSysconsoleReadUserManagementTeams.Id,
-		PermissionSysconsoleReadUserManagementChannels.Id,
-		PermissionSysconsoleReadUserManagementPermissions.Id,
-		PermissionSysconsoleReadEnvironmentWebServer.Id,
-		PermissionSysconsoleReadEnvironmentDatabase.Id,
-		PermissionSysconsoleReadEnvironmentElasticsearch.Id,
-		PermissionSysconsoleReadEnvironmentFileStorage.Id,
-		PermissionSysconsoleReadEnvironmentImageProxy.Id,
-		PermissionSysconsoleReadEnvironmentSmtp.Id,
-		PermissionSysconsoleReadEnvironmentPushNotificationServer.Id,
-		PermissionSysconsoleReadEnvironmentHighAvailability.Id,
-		PermissionSysconsoleReadEnvironmentRateLimiting.Id,
-		PermissionSysconsoleReadEnvironmentLogging.Id,
-		PermissionSysconsoleReadEnvironmentSessionLengths.Id,
-		PermissionSysconsoleReadEnvironmentPerformanceMonitoring.Id,
-		PermissionSysconsoleReadEnvironmentDeveloper.Id,
-		PermissionSysconsoleReadSiteCustomization.Id,
-		PermissionSysconsoleReadSiteLocalization.Id,
-		PermissionSysconsoleReadSiteUsersAndTeams.Id,
-		PermissionSysconsoleReadSiteNotifications.Id,
-		PermissionSysconsoleReadSiteAnnouncementBanner.Id,
-		PermissionSysconsoleReadSiteEmoji.Id,
-		PermissionSysconsoleReadSitePosts.Id,
-		PermissionSysconsoleReadSiteFileSharingAndDownloads.Id,
-		PermissionSysconsoleReadSitePublicLinks.Id,
-		PermissionSysconsoleReadSiteNotices.Id,
-		PermissionSysconsoleReadAuthenticationSignup.Id,
-		PermissionSysconsoleReadAuthenticationEmail.Id,
-		PermissionSysconsoleReadAuthenticationPassword.Id,
-		PermissionSysconsoleReadAuthenticationMfa.Id,
-		PermissionSysconsoleReadAuthenticationLdap.Id,
-		PermissionSysconsoleReadAuthenticationSaml.Id,
-		PermissionSysconsoleReadAuthenticationOpenid.Id,
-		PermissionSysconsoleReadAuthenticationGuestAccess.Id,
-		PermissionSysconsoleReadPlugins.Id,
-		PermissionSysconsoleReadIntegrationsIntegrationManagement.Id,
-		PermissionSysconsoleReadIntegrationsBotAccounts.Id,
-		PermissionSysconsoleReadIntegrationsGif.Id,
-		PermissionSysconsoleReadIntegrationsCors.Id,
-		PermissionSysconsoleReadComplianceDataRetentionPolicy.Id,
-		PermissionSysconsoleReadComplianceComplianceExport.Id,
-		PermissionSysconsoleReadComplianceComplianceMonitoring.Id,
-		PermissionSysconsoleReadComplianceCustomTermsOfService.Id,
-		PermissionSysconsoleReadExperimentalFeatures.Id,
-		PermissionSysconsoleReadExperimentalFeatureFlags.Id,
-		PermissionSysconsoleReadExperimentalBleve.Id,
+		PermissionSysconsoleReadAboutEditionAndLicense.ID,
+		PermissionSysconsoleReadReportingSiteStatistics.ID,
+		PermissionSysconsoleReadReportingTeamStatistics.ID,
+		PermissionSysconsoleReadReportingServerLogs.ID,
+		PermissionSysconsoleReadUserManagementUsers.ID,
+		PermissionSysconsoleReadUserManagementGroups.ID,
+		PermissionSysconsoleReadUserManagementTeams.ID,
+		PermissionSysconsoleReadUserManagementChannels.ID,
+		PermissionSysconsoleReadUserManagementPermissions.ID,
+		PermissionSysconsoleReadEnvironmentWebServer.ID,
+		PermissionSysconsoleReadEnvironmentDatabase.ID,
+		PermissionSysconsoleReadEnvironmentElasticsearch.ID,
+		PermissionSysconsoleReadEnvironmentFileStorage.ID,
+		PermissionSysconsoleReadEnvironmentImageProxy.ID,
+		PermissionSysconsoleReadEnvironmentSmtp.ID,
+		PermissionSysconsoleReadEnvironmentPushNotificationServer.ID,
+		PermissionSysconsoleReadEnvironmentHighAvailability.ID,
+		PermissionSysconsoleReadEnvironmentRateLimiting.ID,
+		PermissionSysconsoleReadEnvironmentLogging.ID,
+		PermissionSysconsoleReadEnvironmentSessionLengths.ID,
+		PermissionSysconsoleReadEnvironmentPerformanceMonitoring.ID,
+		PermissionSysconsoleReadEnvironmentDeveloper.ID,
+		PermissionSysconsoleReadSiteCustomization.ID,
+		PermissionSysconsoleReadSiteLocalization.ID,
+		PermissionSysconsoleReadSiteUsersAndTeams.ID,
+		PermissionSysconsoleReadSiteNotifications.ID,
+		PermissionSysconsoleReadSiteAnnouncementBanner.ID,
+		PermissionSysconsoleReadSiteEmoji.ID,
+		PermissionSysconsoleReadSitePosts.ID,
+		PermissionSysconsoleReadSiteFileSharingAndDownloads.ID,
+		PermissionSysconsoleReadSitePublicLinks.ID,
+		PermissionSysconsoleReadSiteNotices.ID,
+		PermissionSysconsoleReadAuthenticationSignup.ID,
+		PermissionSysconsoleReadAuthenticationEmail.ID,
+		PermissionSysconsoleReadAuthenticationPassword.ID,
+		PermissionSysconsoleReadAuthenticationMfa.ID,
+		PermissionSysconsoleReadAuthenticationLdap.ID,
+		PermissionSysconsoleReadAuthenticationSaml.ID,
+		PermissionSysconsoleReadAuthenticationOpenid.ID,
+		PermissionSysconsoleReadAuthenticationGuestAccess.ID,
+		PermissionSysconsoleReadPlugins.ID,
+		PermissionSysconsoleReadIntegrationsIntegrationManagement.ID,
+		PermissionSysconsoleReadIntegrationsBotAccounts.ID,
+		PermissionSysconsoleReadIntegrationsGif.ID,
+		PermissionSysconsoleReadIntegrationsCors.ID,
+		PermissionSysconsoleReadComplianceDataRetentionPolicy.ID,
+		PermissionSysconsoleReadComplianceComplianceExport.ID,
+		PermissionSysconsoleReadComplianceComplianceMonitoring.ID,
+		PermissionSysconsoleReadComplianceCustomTermsOfService.ID,
+		PermissionSysconsoleReadExperimentalFeatures.ID,
+		PermissionSysconsoleReadExperimentalFeatureFlags.ID,
+		PermissionSysconsoleReadExperimentalBleve.ID,
 	}
 
 	SystemManagerDefaultPermissions = []string{
-		PermissionSysconsoleReadAboutEditionAndLicense.Id,
-		PermissionSysconsoleReadReportingSiteStatistics.Id,
-		PermissionSysconsoleReadReportingTeamStatistics.Id,
-		PermissionSysconsoleReadReportingServerLogs.Id,
-		PermissionSysconsoleReadUserManagementGroups.Id,
-		PermissionSysconsoleReadUserManagementTeams.Id,
-		PermissionSysconsoleReadUserManagementChannels.Id,
-		PermissionSysconsoleReadUserManagementPermissions.Id,
-		PermissionSysconsoleWriteUserManagementGroups.Id,
-		PermissionSysconsoleWriteUserManagementTeams.Id,
-		PermissionSysconsoleWriteUserManagementChannels.Id,
-		PermissionSysconsoleWriteUserManagementPermissions.Id,
-		PermissionSysconsoleReadEnvironmentWebServer.Id,
-		PermissionSysconsoleReadEnvironmentDatabase.Id,
-		PermissionSysconsoleReadEnvironmentElasticsearch.Id,
-		PermissionSysconsoleReadEnvironmentFileStorage.Id,
-		PermissionSysconsoleReadEnvironmentImageProxy.Id,
-		PermissionSysconsoleReadEnvironmentSmtp.Id,
-		PermissionSysconsoleReadEnvironmentPushNotificationServer.Id,
-		PermissionSysconsoleReadEnvironmentHighAvailability.Id,
-		PermissionSysconsoleReadEnvironmentRateLimiting.Id,
-		PermissionSysconsoleReadEnvironmentLogging.Id,
-		PermissionSysconsoleReadEnvironmentSessionLengths.Id,
-		PermissionSysconsoleReadEnvironmentPerformanceMonitoring.Id,
-		PermissionSysconsoleReadEnvironmentDeveloper.Id,
-		PermissionSysconsoleWriteEnvironmentWebServer.Id,
-		PermissionSysconsoleWriteEnvironmentDatabase.Id,
-		PermissionSysconsoleWriteEnvironmentElasticsearch.Id,
-		PermissionSysconsoleWriteEnvironmentFileStorage.Id,
-		PermissionSysconsoleWriteEnvironmentImageProxy.Id,
-		PermissionSysconsoleWriteEnvironmentSmtp.Id,
-		PermissionSysconsoleWriteEnvironmentPushNotificationServer.Id,
-		PermissionSysconsoleWriteEnvironmentHighAvailability.Id,
-		PermissionSysconsoleWriteEnvironmentRateLimiting.Id,
-		PermissionSysconsoleWriteEnvironmentLogging.Id,
-		PermissionSysconsoleWriteEnvironmentSessionLengths.Id,
-		PermissionSysconsoleWriteEnvironmentPerformanceMonitoring.Id,
-		PermissionSysconsoleWriteEnvironmentDeveloper.Id,
-		PermissionSysconsoleReadSiteCustomization.Id,
-		PermissionSysconsoleWriteSiteCustomization.Id,
-		PermissionSysconsoleReadSiteLocalization.Id,
-		PermissionSysconsoleWriteSiteLocalization.Id,
-		PermissionSysconsoleReadSiteUsersAndTeams.Id,
-		PermissionSysconsoleWriteSiteUsersAndTeams.Id,
-		PermissionSysconsoleReadSiteNotifications.Id,
-		PermissionSysconsoleWriteSiteNotifications.Id,
-		PermissionSysconsoleReadSiteAnnouncementBanner.Id,
-		PermissionSysconsoleWriteSiteAnnouncementBanner.Id,
-		PermissionSysconsoleReadSiteEmoji.Id,
-		PermissionSysconsoleWriteSiteEmoji.Id,
-		PermissionSysconsoleReadSitePosts.Id,
-		PermissionSysconsoleWriteSitePosts.Id,
-		PermissionSysconsoleReadSiteFileSharingAndDownloads.Id,
-		PermissionSysconsoleWriteSiteFileSharingAndDownloads.Id,
-		PermissionSysconsoleReadSitePublicLinks.Id,
-		PermissionSysconsoleWriteSitePublicLinks.Id,
-		PermissionSysconsoleReadSiteNotices.Id,
-		PermissionSysconsoleWriteSiteNotices.Id,
-		PermissionSysconsoleReadAuthenticationSignup.Id,
-		PermissionSysconsoleReadAuthenticationEmail.Id,
-		PermissionSysconsoleReadAuthenticationPassword.Id,
-		PermissionSysconsoleReadAuthenticationMfa.Id,
-		PermissionSysconsoleReadAuthenticationLdap.Id,
-		PermissionSysconsoleReadAuthenticationSaml.Id,
-		PermissionSysconsoleReadAuthenticationOpenid.Id,
-		PermissionSysconsoleReadAuthenticationGuestAccess.Id,
-		PermissionSysconsoleReadPlugins.Id,
-		PermissionSysconsoleReadIntegrationsIntegrationManagement.Id,
-		PermissionSysconsoleReadIntegrationsBotAccounts.Id,
-		PermissionSysconsoleReadIntegrationsGif.Id,
-		PermissionSysconsoleReadIntegrationsCors.Id,
-		PermissionSysconsoleWriteIntegrationsIntegrationManagement.Id,
-		PermissionSysconsoleWriteIntegrationsBotAccounts.Id,
-		PermissionSysconsoleWriteIntegrationsGif.Id,
-		PermissionSysconsoleWriteIntegrationsCors.Id,
+		PermissionSysconsoleReadAboutEditionAndLicense.ID,
+		PermissionSysconsoleReadReportingSiteStatistics.ID,
+		PermissionSysconsoleReadReportingTeamStatistics.ID,
+		PermissionSysconsoleReadReportingServerLogs.ID,
+		PermissionSysconsoleReadUserManagementGroups.ID,
+		PermissionSysconsoleReadUserManagementTeams.ID,
+		PermissionSysconsoleReadUserManagementChannels.ID,
+		PermissionSysconsoleReadUserManagementPermissions.ID,
+		PermissionSysconsoleWriteUserManagementGroups.ID,
+		PermissionSysconsoleWriteUserManagementTeams.ID,
+		PermissionSysconsoleWriteUserManagementChannels.ID,
+		PermissionSysconsoleWriteUserManagementPermissions.ID,
+		PermissionSysconsoleReadEnvironmentWebServer.ID,
+		PermissionSysconsoleReadEnvironmentDatabase.ID,
+		PermissionSysconsoleReadEnvironmentElasticsearch.ID,
+		PermissionSysconsoleReadEnvironmentFileStorage.ID,
+		PermissionSysconsoleReadEnvironmentImageProxy.ID,
+		PermissionSysconsoleReadEnvironmentSmtp.ID,
+		PermissionSysconsoleReadEnvironmentPushNotificationServer.ID,
+		PermissionSysconsoleReadEnvironmentHighAvailability.ID,
+		PermissionSysconsoleReadEnvironmentRateLimiting.ID,
+		PermissionSysconsoleReadEnvironmentLogging.ID,
+		PermissionSysconsoleReadEnvironmentSessionLengths.ID,
+		PermissionSysconsoleReadEnvironmentPerformanceMonitoring.ID,
+		PermissionSysconsoleReadEnvironmentDeveloper.ID,
+		PermissionSysconsoleWriteEnvironmentWebServer.ID,
+		PermissionSysconsoleWriteEnvironmentDatabase.ID,
+		PermissionSysconsoleWriteEnvironmentElasticsearch.ID,
+		PermissionSysconsoleWriteEnvironmentFileStorage.ID,
+		PermissionSysconsoleWriteEnvironmentImageProxy.ID,
+		PermissionSysconsoleWriteEnvironmentSmtp.ID,
+		PermissionSysconsoleWriteEnvironmentPushNotificationServer.ID,
+		PermissionSysconsoleWriteEnvironmentHighAvailability.ID,
+		PermissionSysconsoleWriteEnvironmentRateLimiting.ID,
+		PermissionSysconsoleWriteEnvironmentLogging.ID,
+		PermissionSysconsoleWriteEnvironmentSessionLengths.ID,
+		PermissionSysconsoleWriteEnvironmentPerformanceMonitoring.ID,
+		PermissionSysconsoleWriteEnvironmentDeveloper.ID,
+		PermissionSysconsoleReadSiteCustomization.ID,
+		PermissionSysconsoleWriteSiteCustomization.ID,
+		PermissionSysconsoleReadSiteLocalization.ID,
+		PermissionSysconsoleWriteSiteLocalization.ID,
+		PermissionSysconsoleReadSiteUsersAndTeams.ID,
+		PermissionSysconsoleWriteSiteUsersAndTeams.ID,
+		PermissionSysconsoleReadSiteNotifications.ID,
+		PermissionSysconsoleWriteSiteNotifications.ID,
+		PermissionSysconsoleReadSiteAnnouncementBanner.ID,
+		PermissionSysconsoleWriteSiteAnnouncementBanner.ID,
+		PermissionSysconsoleReadSiteEmoji.ID,
+		PermissionSysconsoleWriteSiteEmoji.ID,
+		PermissionSysconsoleReadSitePosts.ID,
+		PermissionSysconsoleWriteSitePosts.ID,
+		PermissionSysconsoleReadSiteFileSharingAndDownloads.ID,
+		PermissionSysconsoleWriteSiteFileSharingAndDownloads.ID,
+		PermissionSysconsoleReadSitePublicLinks.ID,
+		PermissionSysconsoleWriteSitePublicLinks.ID,
+		PermissionSysconsoleReadSiteNotices.ID,
+		PermissionSysconsoleWriteSiteNotices.ID,
+		PermissionSysconsoleReadAuthenticationSignup.ID,
+		PermissionSysconsoleReadAuthenticationEmail.ID,
+		PermissionSysconsoleReadAuthenticationPassword.ID,
+		PermissionSysconsoleReadAuthenticationMfa.ID,
+		PermissionSysconsoleReadAuthenticationLdap.ID,
+		PermissionSysconsoleReadAuthenticationSaml.ID,
+		PermissionSysconsoleReadAuthenticationOpenid.ID,
+		PermissionSysconsoleReadAuthenticationGuestAccess.ID,
+		PermissionSysconsoleReadPlugins.ID,
+		PermissionSysconsoleReadIntegrationsIntegrationManagement.ID,
+		PermissionSysconsoleReadIntegrationsBotAccounts.ID,
+		PermissionSysconsoleReadIntegrationsGif.ID,
+		PermissionSysconsoleReadIntegrationsCors.ID,
+		PermissionSysconsoleWriteIntegrationsIntegrationManagement.ID,
+		PermissionSysconsoleWriteIntegrationsBotAccounts.ID,
+		PermissionSysconsoleWriteIntegrationsGif.ID,
+		PermissionSysconsoleWriteIntegrationsCors.ID,
 	}
 
 	// Add the ancillary permissions to each system role
@@ -344,25 +344,25 @@ type RoleType string
 type RoleScope string
 
 const (
-	SystemGuestRoleId           = "system_guest"
-	SystemUserRoleId            = "system_user"
-	SystemAdminRoleId           = "system_admin"
-	SystemPostAllRoleId         = "system_post_all"
-	SystemPostAllPublicRoleId   = "system_post_all_public"
-	SystemUserAccessTokenRoleId = "system_user_access_token"
-	SystemUserManagerRoleId     = "system_user_manager"
-	SystemReadOnlyAdminRoleId   = "system_read_only_admin"
-	SystemManagerRoleId         = "system_manager"
+	SystemGuestRoleID           = "system_guest"
+	SystemUserRoleID            = "system_user"
+	SystemAdminRoleID           = "system_admin"
+	SystemPostAllRoleID         = "system_post_all"
+	SystemPostAllPublicRoleID   = "system_post_all_public"
+	SystemUserAccessTokenRoleID = "system_user_access_token"
+	SystemUserManagerRoleID     = "system_user_manager"
+	SystemReadOnlyAdminRoleID   = "system_read_only_admin"
+	SystemManagerRoleID         = "system_manager"
 
-	TeamGuestRoleId         = "team_guest"
-	TeamUserRoleId          = "team_user"
-	TeamAdminRoleId         = "team_admin"
-	TeamPostAllRoleId       = "team_post_all"
-	TeamPostAllPublicRoleId = "team_post_all_public"
+	TeamGuestRoleID         = "team_guest"
+	TeamUserRoleID          = "team_user"
+	TeamAdminRoleID         = "team_admin"
+	TeamPostAllRoleID       = "team_post_all"
+	TeamPostAllPublicRoleID = "team_post_all_public"
 
-	ChannelGuestRoleId = "channel_guest"
-	ChannelUserRoleId  = "channel_user"
-	ChannelAdminRoleId = "channel_admin"
+	ChannelGuestRoleID = "channel_guest"
+	ChannelUserRoleID  = "channel_user"
+	ChannelAdminRoleID = "channel_admin"
 
 	RoleNameMaxLength        = 64
 	RoleDisplayNameMaxLength = 128
@@ -378,7 +378,7 @@ const (
 )
 
 type Role struct {
-	Id            string   `json:"id"`
+	ID            string   `json:"id"`
 	Name          string   `json:"name"`
 	DisplayName   string   `json:"display_name"`
 	Description   string   `json:"description"`
@@ -451,25 +451,25 @@ func (r *Role) MergeChannelHigherScopedPermissions(higherScopedPermissions *Role
 			continue
 		}
 
-		_, presentOnHigherScope := higherScopedPermissionsMap[cp.Id]
+		_, presentOnHigherScope := higherScopedPermissionsMap[cp.ID]
 
 		// For the channel admin role always look to the higher scope to determine if the role has their permission.
 		// The channel admin is a special case because they're not part of the UI to be "channel moderated", only
 		// channel members and channel guests are.
-		if higherScopedPermissions.RoleID == ChannelAdminRoleId && presentOnHigherScope {
-			mergedPermissions = append(mergedPermissions, cp.Id)
+		if higherScopedPermissions.RoleID == ChannelAdminRoleID && presentOnHigherScope {
+			mergedPermissions = append(mergedPermissions, cp.ID)
 			continue
 		}
 
-		_, permissionIsModerated := ChannelModeratedPermissionsMap[cp.Id]
+		_, permissionIsModerated := ChannelModeratedPermissionsMap[cp.ID]
 		if permissionIsModerated {
-			_, presentOnRole := rolePermissionsMap[cp.Id]
+			_, presentOnRole := rolePermissionsMap[cp.ID]
 			if presentOnRole && presentOnHigherScope {
-				mergedPermissions = append(mergedPermissions, cp.Id)
+				mergedPermissions = append(mergedPermissions, cp.ID)
 			}
 		} else {
 			if presentOnHigherScope {
-				mergedPermissions = append(mergedPermissions, cp.Id)
+				mergedPermissions = append(mergedPermissions, cp.ID)
 			}
 		}
 	}
@@ -569,9 +569,9 @@ func (r *Role) GetChannelModeratedPermissions(channelType string) map[string]boo
 
 			if moderated == permission {
 				// Special case where the channel moderated permission for `manage_members` is different depending on whether the channel is private or public
-				if moderated == PermissionManagePublicChannelMembers.Id || moderated == PermissionManagePrivateChannelMembers.Id {
-					canManagePublic := channelType == ChannelTypeOpen && moderated == PermissionManagePublicChannelMembers.Id
-					canManagePrivate := channelType == ChannelTypePrivate && moderated == PermissionManagePrivateChannelMembers.Id
+				if moderated == PermissionManagePublicChannelMembers.ID || moderated == PermissionManagePrivateChannelMembers.ID {
+					canManagePublic := channelType == ChannelTypeOpen && moderated == PermissionManagePublicChannelMembers.ID
+					canManagePrivate := channelType == ChannelTypePrivate && moderated == PermissionManagePrivateChannelMembers.ID
 					moderatedPermissions[moderatedPermissionValue] = canManagePublic || canManagePrivate
 				} else {
 					moderatedPermissions[moderatedPermissionValue] = true
@@ -638,14 +638,14 @@ func (r *Role) RolePatchFromChannelModerationsPatch(channelModerationsPatch []*C
 }
 
 func (r *Role) IsValid() bool {
-	if !IsValidId(r.Id) {
+	if !IsValidID(r.ID) {
 		return false
 	}
 
-	return r.IsValidWithoutId()
+	return r.IsValidWithoutID()
 }
 
-func (r *Role) IsValidWithoutId() bool {
+func (r *Role) IsValidWithoutID() bool {
 	if !IsValidRoleName(r.Name) {
 		return false
 	}
@@ -660,7 +660,7 @@ func (r *Role) IsValidWithoutId() bool {
 
 	check := func(perms []*Permission, permission string) bool {
 		for _, p := range perms {
-			if permission == p.Id {
+			if permission == p.ID {
 				return true
 			}
 		}
@@ -708,192 +708,192 @@ func IsValidRoleName(roleName string) bool {
 func MakeDefaultRoles() map[string]*Role {
 	roles := make(map[string]*Role)
 
-	roles[ChannelGuestRoleId] = &Role{
+	roles[ChannelGuestRoleID] = &Role{
 		Name:        "channel_guest",
 		DisplayName: "authentication.roles.channel_guest.name",
 		Description: "authentication.roles.channel_guest.description",
 		Permissions: []string{
-			PermissionReadChannel.Id,
-			PermissionAddReaction.Id,
-			PermissionRemoveReaction.Id,
-			PermissionUploadFile.Id,
-			PermissionEditPost.Id,
-			PermissionCreatePost.Id,
-			PermissionUseChannelMentions.Id,
-			PermissionUseSlashCommands.Id,
+			PermissionReadChannel.ID,
+			PermissionAddReaction.ID,
+			PermissionRemoveReaction.ID,
+			PermissionUploadFile.ID,
+			PermissionEditPost.ID,
+			PermissionCreatePost.ID,
+			PermissionUseChannelMentions.ID,
+			PermissionUseSlashCommands.ID,
 		},
 		SchemeManaged: true,
 		BuiltIn:       true,
 	}
 
-	roles[ChannelUserRoleId] = &Role{
+	roles[ChannelUserRoleID] = &Role{
 		Name:        "channel_user",
 		DisplayName: "authentication.roles.channel_user.name",
 		Description: "authentication.roles.channel_user.description",
 		Permissions: []string{
-			PermissionReadChannel.Id,
-			PermissionAddReaction.Id,
-			PermissionRemoveReaction.Id,
-			PermissionManagePublicChannelMembers.Id,
-			PermissionUploadFile.Id,
-			PermissionGetPublicLink.Id,
-			PermissionCreatePost.Id,
-			PermissionUseChannelMentions.Id,
-			PermissionUseSlashCommands.Id,
+			PermissionReadChannel.ID,
+			PermissionAddReaction.ID,
+			PermissionRemoveReaction.ID,
+			PermissionManagePublicChannelMembers.ID,
+			PermissionUploadFile.ID,
+			PermissionGetPublicLink.ID,
+			PermissionCreatePost.ID,
+			PermissionUseChannelMentions.ID,
+			PermissionUseSlashCommands.ID,
 		},
 		SchemeManaged: true,
 		BuiltIn:       true,
 	}
 
-	roles[ChannelAdminRoleId] = &Role{
+	roles[ChannelAdminRoleID] = &Role{
 		Name:        "channel_admin",
 		DisplayName: "authentication.roles.channel_admin.name",
 		Description: "authentication.roles.channel_admin.description",
 		Permissions: []string{
-			PermissionManageChannelRoles.Id,
-			PermissionUseGroupMentions.Id,
+			PermissionManageChannelRoles.ID,
+			PermissionUseGroupMentions.ID,
 		},
 		SchemeManaged: true,
 		BuiltIn:       true,
 	}
 
-	roles[TeamGuestRoleId] = &Role{
+	roles[TeamGuestRoleID] = &Role{
 		Name:        "team_guest",
 		DisplayName: "authentication.roles.team_guest.name",
 		Description: "authentication.roles.team_guest.description",
 		Permissions: []string{
-			PermissionViewTeam.Id,
+			PermissionViewTeam.ID,
 		},
 		SchemeManaged: true,
 		BuiltIn:       true,
 	}
 
-	roles[TeamUserRoleId] = &Role{
+	roles[TeamUserRoleID] = &Role{
 		Name:        "team_user",
 		DisplayName: "authentication.roles.team_user.name",
 		Description: "authentication.roles.team_user.description",
 		Permissions: []string{
-			PermissionListTeamChannels.Id,
-			PermissionJoinPublicChannels.Id,
-			PermissionReadPublicChannel.Id,
-			PermissionViewTeam.Id,
+			PermissionListTeamChannels.ID,
+			PermissionJoinPublicChannels.ID,
+			PermissionReadPublicChannel.ID,
+			PermissionViewTeam.ID,
 		},
 		SchemeManaged: true,
 		BuiltIn:       true,
 	}
 
-	roles[TeamPostAllRoleId] = &Role{
+	roles[TeamPostAllRoleID] = &Role{
 		Name:        "team_post_all",
 		DisplayName: "authentication.roles.team_post_all.name",
 		Description: "authentication.roles.team_post_all.description",
 		Permissions: []string{
-			PermissionCreatePost.Id,
-			PermissionUseChannelMentions.Id,
+			PermissionCreatePost.ID,
+			PermissionUseChannelMentions.ID,
 		},
 		SchemeManaged: false,
 		BuiltIn:       true,
 	}
 
-	roles[TeamPostAllPublicRoleId] = &Role{
+	roles[TeamPostAllPublicRoleID] = &Role{
 		Name:        "team_post_all_public",
 		DisplayName: "authentication.roles.team_post_all_public.name",
 		Description: "authentication.roles.team_post_all_public.description",
 		Permissions: []string{
-			PermissionCreatePostPublic.Id,
-			PermissionUseChannelMentions.Id,
+			PermissionCreatePostPublic.ID,
+			PermissionUseChannelMentions.ID,
 		},
 		SchemeManaged: false,
 		BuiltIn:       true,
 	}
 
-	roles[TeamAdminRoleId] = &Role{
+	roles[TeamAdminRoleID] = &Role{
 		Name:        "team_admin",
 		DisplayName: "authentication.roles.team_admin.name",
 		Description: "authentication.roles.team_admin.description",
 		Permissions: []string{
-			PermissionRemoveUserFromTeam.Id,
-			PermissionManageTeam.Id,
-			PermissionImportTeam.Id,
-			PermissionManageTeamRoles.Id,
-			PermissionManageChannelRoles.Id,
-			PermissionManageOthersIncomingWebhooks.Id,
-			PermissionManageOthersOutgoingWebhooks.Id,
-			PermissionManageSlashCommands.Id,
-			PermissionManageOthersSlashCommands.Id,
-			PermissionManageIncomingWebhooks.Id,
-			PermissionManageOutgoingWebhooks.Id,
-			PermissionConvertPublicChannelToPrivate.Id,
-			PermissionConvertPrivateChannelToPublic.Id,
+			PermissionRemoveUserFromTeam.ID,
+			PermissionManageTeam.ID,
+			PermissionImportTeam.ID,
+			PermissionManageTeamRoles.ID,
+			PermissionManageChannelRoles.ID,
+			PermissionManageOthersIncomingWebhooks.ID,
+			PermissionManageOthersOutgoingWebhooks.ID,
+			PermissionManageSlashCommands.ID,
+			PermissionManageOthersSlashCommands.ID,
+			PermissionManageIncomingWebhooks.ID,
+			PermissionManageOutgoingWebhooks.ID,
+			PermissionConvertPublicChannelToPrivate.ID,
+			PermissionConvertPrivateChannelToPublic.ID,
 		},
 		SchemeManaged: true,
 		BuiltIn:       true,
 	}
 
-	roles[SystemGuestRoleId] = &Role{
+	roles[SystemGuestRoleID] = &Role{
 		Name:        "system_guest",
 		DisplayName: "authentication.roles.global_guest.name",
 		Description: "authentication.roles.global_guest.description",
 		Permissions: []string{
-			PermissionCreateDirectChannel.Id,
-			PermissionCreateGroupChannel.Id,
+			PermissionCreateDirectChannel.ID,
+			PermissionCreateGroupChannel.ID,
 		},
 		SchemeManaged: true,
 		BuiltIn:       true,
 	}
 
-	roles[SystemUserRoleId] = &Role{
+	roles[SystemUserRoleID] = &Role{
 		Name:        "system_user",
 		DisplayName: "authentication.roles.global_user.name",
 		Description: "authentication.roles.global_user.description",
 		Permissions: []string{
-			PermissionListPublicTeams.Id,
-			PermissionJoinPublicTeams.Id,
-			PermissionCreateDirectChannel.Id,
-			PermissionCreateGroupChannel.Id,
-			PermissionViewMembers.Id,
+			PermissionListPublicTeams.ID,
+			PermissionJoinPublicTeams.ID,
+			PermissionCreateDirectChannel.ID,
+			PermissionCreateGroupChannel.ID,
+			PermissionViewMembers.ID,
 		},
 		SchemeManaged: true,
 		BuiltIn:       true,
 	}
 
-	roles[SystemPostAllRoleId] = &Role{
+	roles[SystemPostAllRoleID] = &Role{
 		Name:        "system_post_all",
 		DisplayName: "authentication.roles.system_post_all.name",
 		Description: "authentication.roles.system_post_all.description",
 		Permissions: []string{
-			PermissionCreatePost.Id,
-			PermissionUseChannelMentions.Id,
+			PermissionCreatePost.ID,
+			PermissionUseChannelMentions.ID,
 		},
 		SchemeManaged: false,
 		BuiltIn:       true,
 	}
 
-	roles[SystemPostAllPublicRoleId] = &Role{
+	roles[SystemPostAllPublicRoleID] = &Role{
 		Name:        "system_post_all_public",
 		DisplayName: "authentication.roles.system_post_all_public.name",
 		Description: "authentication.roles.system_post_all_public.description",
 		Permissions: []string{
-			PermissionCreatePostPublic.Id,
-			PermissionUseChannelMentions.Id,
+			PermissionCreatePostPublic.ID,
+			PermissionUseChannelMentions.ID,
 		},
 		SchemeManaged: false,
 		BuiltIn:       true,
 	}
 
-	roles[SystemUserAccessTokenRoleId] = &Role{
+	roles[SystemUserAccessTokenRoleID] = &Role{
 		Name:        "system_user_access_token",
 		DisplayName: "authentication.roles.system_user_access_token.name",
 		Description: "authentication.roles.system_user_access_token.description",
 		Permissions: []string{
-			PermissionCreateUserAccessToken.Id,
-			PermissionReadUserAccessToken.Id,
-			PermissionRevokeUserAccessToken.Id,
+			PermissionCreateUserAccessToken.ID,
+			PermissionReadUserAccessToken.ID,
+			PermissionRevokeUserAccessToken.ID,
 		},
 		SchemeManaged: false,
 		BuiltIn:       true,
 	}
 
-	roles[SystemUserManagerRoleId] = &Role{
+	roles[SystemUserManagerRoleID] = &Role{
 		Name:          "system_user_manager",
 		DisplayName:   "authentication.roles.system_user_manager.name",
 		Description:   "authentication.roles.system_user_manager.description",
@@ -902,7 +902,7 @@ func MakeDefaultRoles() map[string]*Role {
 		BuiltIn:       true,
 	}
 
-	roles[SystemReadOnlyAdminRoleId] = &Role{
+	roles[SystemReadOnlyAdminRoleID] = &Role{
 		Name:          "system_read_only_admin",
 		DisplayName:   "authentication.roles.system_read_only_admin.name",
 		Description:   "authentication.roles.system_read_only_admin.description",
@@ -911,7 +911,7 @@ func MakeDefaultRoles() map[string]*Role {
 		BuiltIn:       true,
 	}
 
-	roles[SystemManagerRoleId] = &Role{
+	roles[SystemManagerRoleID] = &Role{
 		Name:          "system_manager",
 		DisplayName:   "authentication.roles.system_manager.name",
 		Description:   "authentication.roles.system_manager.description",
@@ -922,10 +922,10 @@ func MakeDefaultRoles() map[string]*Role {
 
 	allPermissionIDs := []string{}
 	for _, permission := range AllPermissions {
-		allPermissionIDs = append(allPermissionIDs, permission.Id)
+		allPermissionIDs = append(allPermissionIDs, permission.ID)
 	}
 
-	roles[SystemAdminRoleId] = &Role{
+	roles[SystemAdminRoleID] = &Role{
 		Name:        "system_admin",
 		DisplayName: "authentication.roles.global_admin.name",
 		Description: "authentication.roles.global_admin.description",
@@ -944,7 +944,7 @@ func AddAncillaryPermissions(permissions []string) []string {
 	for _, permission := range permissions {
 		if ancillaryPermissions, ok := SysconsoleAncillaryPermissions[permission]; ok {
 			for _, ancillaryPermission := range ancillaryPermissions {
-				permissions = append(permissions, ancillaryPermission.Id)
+				permissions = append(permissions, ancillaryPermission.ID)
 			}
 		}
 	}

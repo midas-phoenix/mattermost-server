@@ -11,7 +11,7 @@ import (
 )
 
 func TestSwitchRequestJson(t *testing.T) {
-	o := SwitchRequest{Email: NewId(), Password: NewId()}
+	o := SwitchRequest{Email: NewID(), Password: NewID()}
 	json := o.ToJson()
 	ro := SwitchRequestFromJson(strings.NewReader(json))
 

@@ -14,7 +14,7 @@ import (
 )
 
 func TestPostToJson(t *testing.T) {
-	o := Post{Id: NewId(), Message: NewId()}
+	o := Post{ID: NewID(), Message: NewID()}
 	j := o.ToJson()
 	ro := PostFromJson(strings.NewReader(j))
 
@@ -34,7 +34,7 @@ func TestPostIsValid(t *testing.T) {
 	err := o.IsValid(maxPostSize)
 	require.NotNil(t, err)
 
-	o.Id = NewId()
+	o.ID = NewID()
 	err = o.IsValid(maxPostSize)
 	require.NotNil(t, err)
 
@@ -46,26 +46,26 @@ func TestPostIsValid(t *testing.T) {
 	err = o.IsValid(maxPostSize)
 	require.NotNil(t, err)
 
-	o.UserId = NewId()
+	o.UserID = NewID()
 	err = o.IsValid(maxPostSize)
 	require.NotNil(t, err)
 
-	o.ChannelId = NewId()
-	o.RootId = "123"
+	o.ChannelID = NewID()
+	o.RootID = "123"
 	err = o.IsValid(maxPostSize)
 	require.NotNil(t, err)
 
-	o.RootId = ""
-	o.ParentId = "123"
+	o.RootID = ""
+	o.ParentID = "123"
 	err = o.IsValid(maxPostSize)
 	require.NotNil(t, err)
 
-	o.ParentId = NewId()
-	o.RootId = ""
+	o.ParentID = NewID()
+	o.RootID = ""
 	err = o.IsValid(maxPostSize)
 	require.NotNil(t, err)
 
-	o.ParentId = ""
+	o.ParentID = ""
 	o.Message = strings.Repeat("0", maxPostSize+1)
 	err = o.IsValid(maxPostSize)
 	require.NotNil(t, err)
@@ -507,7 +507,7 @@ func BenchmarkRewriteImageURLs(b *testing.B) {
 func TestPostShallowCopy(t *testing.T) {
 	var dst *Post
 	p := &Post{
-		Id: NewId(),
+		ID: NewID(),
 	}
 
 	err := p.ShallowCopy(dst)
@@ -524,7 +524,7 @@ func TestPostShallowCopy(t *testing.T) {
 
 func TestPostClone(t *testing.T) {
 	p := &Post{
-		Id: NewId(),
+		ID: NewID(),
 	}
 
 	pp := p.Clone()
@@ -913,8 +913,8 @@ func TestPostAttachments(t *testing.T) {
 
 		attachments := p.Attachments()
 		require.Len(t, attachments[0].Actions, 2)
-		require.Equal(t, attachments[0].Actions[0].Id, "test1")
-		require.Equal(t, attachments[0].Actions[1].Id, "test2")
+		require.Equal(t, attachments[0].Actions[0].ID, "test1")
+		require.Equal(t, attachments[0].Actions[1].ID, "test2")
 	})
 
 	t.Run("should ignore null actions", func(t *testing.T) {
@@ -926,7 +926,7 @@ func TestPostAttachments(t *testing.T) {
 
 		attachments := p.Attachments()
 		require.Len(t, attachments[0].Actions, 2)
-		require.Equal(t, attachments[0].Actions[0].Id, "test1")
-		require.Equal(t, attachments[0].Actions[1].Id, "test2")
+		require.Equal(t, attachments[0].Actions[0].ID, "test1")
+		require.Equal(t, attachments[0].Actions[1].ID, "test2")
 	})
 }

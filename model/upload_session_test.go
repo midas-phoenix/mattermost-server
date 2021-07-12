@@ -19,11 +19,11 @@ func TestUploadSessionIsValid(t *testing.T) {
 
 	t.Run("valid session should succeed", func(t *testing.T) {
 		session = UploadSession{
-			Id:         NewId(),
+			ID:         NewID(),
 			Type:       UploadTypeAttachment,
 			CreateAt:   GetMillis(),
-			UserId:     NewId(),
-			ChannelId:  NewId(),
+			UserID:     NewID(),
+			ChannelID:  NewID(),
 			Filename:   "test",
 			Path:       "/tmp/test",
 			FileSize:   1024,
@@ -35,10 +35,10 @@ func TestUploadSessionIsValid(t *testing.T) {
 
 	t.Run("invalid Id should fail", func(t *testing.T) {
 		us := session
-		us.Id = "invalid"
+		us.ID = "invalid"
 		err := us.IsValid()
 		require.NotNil(t, err)
-		require.Equal(t, "model.upload_session.is_valid.id.app_error", err.Id)
+		require.Equal(t, "model.upload_session.is_valid.id.app_error", err.ID)
 	})
 
 	t.Run("invalid type should fail", func(t *testing.T) {
@@ -46,7 +46,7 @@ func TestUploadSessionIsValid(t *testing.T) {
 		us.Type = "invalid"
 		err := us.IsValid()
 		require.NotNil(t, err)
-		require.Equal(t, "model.upload_session.is_valid.type.app_error", err.Id)
+		require.Equal(t, "model.upload_session.is_valid.type.app_error", err.ID)
 	})
 
 	t.Run("invalid CreateAt should fail", func(t *testing.T) {
@@ -54,28 +54,28 @@ func TestUploadSessionIsValid(t *testing.T) {
 		us.CreateAt = 0
 		err := us.IsValid()
 		require.NotNil(t, err)
-		require.Equal(t, "model.upload_session.is_valid.create_at.app_error", err.Id)
+		require.Equal(t, "model.upload_session.is_valid.create_at.app_error", err.ID)
 	})
 
 	t.Run("invalid UserId should fail", func(t *testing.T) {
 		us := session
-		us.UserId = "invalid"
+		us.UserID = "invalid"
 		err := us.IsValid()
 		require.NotNil(t, err)
-		require.Equal(t, "model.upload_session.is_valid.user_id.app_error", err.Id)
+		require.Equal(t, "model.upload_session.is_valid.user_id.app_error", err.ID)
 	})
 
 	t.Run("invalid ChannelId should fail", func(t *testing.T) {
 		us := session
-		us.ChannelId = "invalid"
+		us.ChannelID = "invalid"
 		err := us.IsValid()
 		require.NotNil(t, err)
-		require.Equal(t, "model.upload_session.is_valid.channel_id.app_error", err.Id)
+		require.Equal(t, "model.upload_session.is_valid.channel_id.app_error", err.ID)
 	})
 
 	t.Run("ChannelId is not validated if type is not attachment", func(t *testing.T) {
 		us := session
-		us.ChannelId = ""
+		us.ChannelID = ""
 		us.Type = UploadTypeImport
 		err := us.IsValid()
 		require.Nil(t, err)
@@ -86,7 +86,7 @@ func TestUploadSessionIsValid(t *testing.T) {
 		us.Filename = ""
 		err := us.IsValid()
 		require.NotNil(t, err)
-		require.Equal(t, "model.upload_session.is_valid.filename.app_error", err.Id)
+		require.Equal(t, "model.upload_session.is_valid.filename.app_error", err.ID)
 	})
 
 	t.Run("invalid Path should fail", func(t *testing.T) {
@@ -94,7 +94,7 @@ func TestUploadSessionIsValid(t *testing.T) {
 		us.Path = ""
 		err := us.IsValid()
 		require.NotNil(t, err)
-		require.Equal(t, "model.upload_session.is_valid.path.app_error", err.Id)
+		require.Equal(t, "model.upload_session.is_valid.path.app_error", err.ID)
 	})
 
 	t.Run("invalid FileSize should fail", func(t *testing.T) {
@@ -102,12 +102,12 @@ func TestUploadSessionIsValid(t *testing.T) {
 		us.FileSize = 0
 		err := us.IsValid()
 		require.NotNil(t, err)
-		require.Equal(t, "model.upload_session.is_valid.file_size.app_error", err.Id)
+		require.Equal(t, "model.upload_session.is_valid.file_size.app_error", err.ID)
 
 		us.FileSize = -1
 		err = us.IsValid()
 		require.NotNil(t, err)
-		require.Equal(t, "model.upload_session.is_valid.file_size.app_error", err.Id)
+		require.Equal(t, "model.upload_session.is_valid.file_size.app_error", err.ID)
 	})
 
 	t.Run("invalid FileOffset should fail", func(t *testing.T) {
@@ -115,11 +115,11 @@ func TestUploadSessionIsValid(t *testing.T) {
 		us.FileOffset = us.FileSize + 1
 		err := us.IsValid()
 		require.NotNil(t, err)
-		require.Equal(t, "model.upload_session.is_valid.file_offset.app_error", err.Id)
+		require.Equal(t, "model.upload_session.is_valid.file_offset.app_error", err.ID)
 
 		us.FileOffset = -1
 		err = us.IsValid()
 		require.NotNil(t, err)
-		require.Equal(t, "model.upload_session.is_valid.file_offset.app_error", err.Id)
+		require.Equal(t, "model.upload_session.is_valid.file_offset.app_error", err.ID)
 	})
 }

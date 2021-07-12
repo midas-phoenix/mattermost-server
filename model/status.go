@@ -20,7 +20,7 @@ const (
 )
 
 type Status struct {
-	UserId         string `json:"user_id"`
+	UserID         string `json:"user_id"`
 	Status         string `json:"status"`
 	Manual         bool   `json:"manual"`
 	LastActivityAt int64  `json:"last_activity_at"`
@@ -71,7 +71,7 @@ func StatusMapToInterfaceMap(statusMap map[string]*Status) map[string]interface{
 	for _, s := range statusMap {
 		// Omitted statues mean offline
 		if s.Status != StatusOffline {
-			interfaceMap[s.UserId] = s.Status
+			interfaceMap[s.UserID] = s.Status
 		}
 	}
 	return interfaceMap

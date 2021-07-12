@@ -87,7 +87,7 @@ type MarketplacePluginFilter struct {
 	Cloud                bool
 	LocalOnly            bool
 	Platform             string
-	PluginId             string
+	PluginID             string
 	ReturnAllVersions    bool
 }
 
@@ -105,14 +105,14 @@ func (filter *MarketplacePluginFilter) ApplyToURL(u *url.URL) {
 	q.Add("cloud", strconv.FormatBool(filter.Cloud))
 	q.Add("local_only", strconv.FormatBool(filter.LocalOnly))
 	q.Add("platform", filter.Platform)
-	q.Add("plugin_id", filter.PluginId)
+	q.Add("plugin_id", filter.PluginID)
 	q.Add("return_all_versions", strconv.FormatBool(filter.ReturnAllVersions))
 	u.RawQuery = q.Encode()
 }
 
 // InstallMarketplacePluginRequest struct describes parameters of the requested plugin.
 type InstallMarketplacePluginRequest struct {
-	Id      string `json:"id"`
+	ID      string `json:"id"`
 	Version string `json:"version"`
 }
 

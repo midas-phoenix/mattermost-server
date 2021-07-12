@@ -8,15 +8,15 @@ import (
 )
 
 type Thread struct {
-	PostId       string      `json:"id"`
-	ChannelId    string      `json:"channel_id"`
+	PostID       string      `json:"id"`
+	ChannelID    string      `json:"channel_id"`
 	ReplyCount   int64       `json:"reply_count"`
 	LastReplyAt  int64       `json:"last_reply_at"`
 	Participants StringArray `json:"participants"`
 }
 
 type ThreadResponse struct {
-	PostId         string  `json:"id"`
+	PostID         string  `json:"id"`
 	ReplyCount     int64   `json:"reply_count"`
 	LastReplyAt    int64   `json:"last_reply_at"`
 	LastViewedAt   int64   `json:"last_viewed_at"`
@@ -84,12 +84,12 @@ func ThreadFromJson(s string) (*Thread, error) {
 }
 
 func (o *Thread) Etag() string {
-	return Etag(o.PostId, o.LastReplyAt)
+	return Etag(o.PostID, o.LastReplyAt)
 }
 
 type ThreadMembership struct {
-	PostId         string `json:"post_id"`
-	UserId         string `json:"user_id"`
+	PostID         string `json:"post_id"`
+	UserID         string `json:"user_id"`
 	Following      bool   `json:"following"`
 	LastViewed     int64  `json:"last_view_at"`
 	LastUpdated    int64  `json:"last_update_at"`

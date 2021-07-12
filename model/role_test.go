@@ -25,25 +25,25 @@ func TestChannelModeratedPermissionsChangedByPatch(t *testing.T) {
 		{
 			"Adds permissions to empty initial permissions list",
 			[]string{},
-			[]string{PermissionCreatePost.Id, PermissionAddReaction.Id},
+			[]string{PermissionCreatePost.ID, PermissionAddReaction.ID},
 			[]string{ChannelModeratedPermissions[0], ChannelModeratedPermissions[1]},
 		},
 		{
 			"Ignores non moderated permissions in initial permissions list",
-			[]string{PermissionAssignBot.Id},
-			[]string{PermissionCreatePost.Id, PermissionRemoveReaction.Id},
+			[]string{PermissionAssignBot.ID},
+			[]string{PermissionCreatePost.ID, PermissionRemoveReaction.ID},
 			[]string{ChannelModeratedPermissions[0], ChannelModeratedPermissions[1]},
 		},
 		{
 			"Adds removed moderated permissions from initial permissions list",
-			[]string{PermissionCreatePost.Id},
+			[]string{PermissionCreatePost.ID},
 			[]string{},
-			[]string{PermissionCreatePost.Id},
+			[]string{PermissionCreatePost.ID},
 		},
 		{
 			"No changes returns empty slice",
-			[]string{PermissionCreatePost.Id, PermissionAssignBot.Id},
-			[]string{PermissionCreatePost.Id},
+			[]string{PermissionCreatePost.ID, PermissionAssignBot.ID},
+			[]string{PermissionCreatePost.ID},
 			[]string{},
 		},
 	}
@@ -64,22 +64,22 @@ func TestRolePatchFromChannelModerationsPatch(t *testing.T) {
 	channelMentions := ChannelModeratedPermissions[3]
 
 	basePermissions := []string{
-		PermissionAddReaction.Id,
-		PermissionRemoveReaction.Id,
-		PermissionCreatePost.Id,
-		PermissionUseChannelMentions.Id,
-		PermissionManagePublicChannelMembers.Id,
-		PermissionUploadFile.Id,
-		PermissionGetPublicLink.Id,
-		PermissionUseSlashCommands.Id,
+		PermissionAddReaction.ID,
+		PermissionRemoveReaction.ID,
+		PermissionCreatePost.ID,
+		PermissionUseChannelMentions.ID,
+		PermissionManagePublicChannelMembers.ID,
+		PermissionUploadFile.ID,
+		PermissionGetPublicLink.ID,
+		PermissionUseSlashCommands.ID,
 	}
 
 	baseModeratedPermissions := []string{
-		PermissionAddReaction.Id,
-		PermissionRemoveReaction.Id,
-		PermissionCreatePost.Id,
-		PermissionManagePublicChannelMembers.Id,
-		PermissionUseChannelMentions.Id,
+		PermissionAddReaction.ID,
+		PermissionRemoveReaction.ID,
+		PermissionCreatePost.ID,
+		PermissionManagePublicChannelMembers.ID,
+		PermissionUseChannelMentions.ID,
 	}
 
 	testCases := []struct {
@@ -143,7 +143,7 @@ func TestRolePatchFromChannelModerationsPatch(t *testing.T) {
 				},
 			},
 			"members",
-			[]string{PermissionCreatePost.Id},
+			[]string{PermissionCreatePost.ID},
 		},
 		{
 			"Patch to guest role removing multiple channel moderated permissions",
@@ -163,11 +163,11 @@ func TestRolePatchFromChannelModerationsPatch(t *testing.T) {
 				},
 			},
 			"guests",
-			[]string{PermissionCreatePost.Id},
+			[]string{PermissionCreatePost.ID},
 		},
 		{
 			"Patch enabling and removing multiple channel moderated permissions ",
-			[]string{PermissionAddReaction.Id, PermissionManagePublicChannelMembers.Id},
+			[]string{PermissionAddReaction.ID, PermissionManagePublicChannelMembers.ID},
 			[]*ChannelModerationPatch{
 				{
 					Name:  &createReactions,
@@ -187,11 +187,11 @@ func TestRolePatchFromChannelModerationsPatch(t *testing.T) {
 				},
 			},
 			"members",
-			[]string{PermissionCreatePost.Id, PermissionUseChannelMentions.Id},
+			[]string{PermissionCreatePost.ID, PermissionUseChannelMentions.ID},
 		},
 		{
 			"Patch enabling a partially enabled permission",
-			[]string{PermissionAddReaction.Id},
+			[]string{PermissionAddReaction.ID},
 			[]*ChannelModerationPatch{
 				{
 					Name:  &createReactions,
@@ -199,11 +199,11 @@ func TestRolePatchFromChannelModerationsPatch(t *testing.T) {
 				},
 			},
 			"members",
-			[]string{PermissionAddReaction.Id, PermissionRemoveReaction.Id},
+			[]string{PermissionAddReaction.ID, PermissionRemoveReaction.ID},
 		},
 		{
 			"Patch disabling a partially disabled permission",
-			[]string{PermissionAddReaction.Id},
+			[]string{PermissionAddReaction.ID},
 			[]*ChannelModerationPatch{
 				{
 					Name:  &createReactions,
@@ -215,7 +215,7 @@ func TestRolePatchFromChannelModerationsPatch(t *testing.T) {
 				},
 			},
 			"members",
-			[]string{PermissionCreatePost.Id},
+			[]string{PermissionCreatePost.ID},
 		},
 	}
 	for _, tc := range testCases {
@@ -236,13 +236,13 @@ func TestGetChannelModeratedPermissions(t *testing.T) {
 	}{
 		{
 			"Filters non moderated permissions",
-			[]string{PermissionCreateBot.Id},
+			[]string{PermissionCreateBot.ID},
 			ChannelTypeOpen,
 			map[string]bool{},
 		},
 		{
 			"Returns a map of moderated permissions",
-			[]string{PermissionCreatePost.Id, PermissionAddReaction.Id, PermissionRemoveReaction.Id, PermissionManagePublicChannelMembers.Id, PermissionManagePrivateChannelMembers.Id, PermissionUseChannelMentions.Id},
+			[]string{PermissionCreatePost.ID, PermissionAddReaction.ID, PermissionRemoveReaction.ID, PermissionManagePublicChannelMembers.ID, PermissionManagePrivateChannelMembers.ID, PermissionUseChannelMentions.ID},
 			ChannelTypeOpen,
 			map[string]bool{
 				ChannelModeratedPermissions[0]: true,
@@ -253,7 +253,7 @@ func TestGetChannelModeratedPermissions(t *testing.T) {
 		},
 		{
 			"Returns a map of moderated permissions when non moderated present",
-			[]string{PermissionCreatePost.Id, PermissionCreateDirectChannel.Id},
+			[]string{PermissionCreatePost.ID, PermissionCreateDirectChannel.ID},
 			ChannelTypeOpen,
 			map[string]bool{
 				ChannelModeratedPermissions[0]: true,

@@ -23,11 +23,11 @@ func (gst GroupSyncableType) String() string {
 }
 
 type GroupSyncable struct {
-	GroupId string `json:"group_id"`
+	GroupID string `json:"group_id"`
 
 	// SyncableId represents the Id of the model that is being synced with the group, for example a ChannelId or
 	// TeamId.
-	SyncableId string `db:"-" json:"-"`
+	SyncableID string `db:"-" json:"-"`
 
 	AutoAdd     bool              `json:"auto_add"`
 	SchemeAdmin bool              `json:"scheme_admin"`
@@ -45,10 +45,10 @@ type GroupSyncable struct {
 }
 
 func (syncable *GroupSyncable) IsValid() *AppError {
-	if !IsValidId(syncable.GroupId) {
+	if !IsValidID(syncable.GroupID) {
 		return NewAppError("GroupSyncable.SyncableIsValid", "model.group_syncable.group_id.app_error", nil, "", http.StatusBadRequest)
 	}
-	if !IsValidId(syncable.SyncableId) {
+	if !IsValidID(syncable.SyncableID) {
 		return NewAppError("GroupSyncable.SyncableIsValid", "model.group_syncable.syncable_id.app_error", nil, "", http.StatusBadRequest)
 	}
 	return nil
@@ -60,27 +60,27 @@ func (syncable *GroupSyncable) UnmarshalJSON(b []byte) error {
 	if err != nil {
 		return err
 	}
-	var channelId string
-	var teamId string
+	var channelID string
+	var teamID string
 	for key, value := range kvp {
 		switch key {
 		case "team_id":
-			teamId = value.(string)
+			teamID = value.(string)
 		case "channel_id":
-			channelId = value.(string)
+			channelID = value.(string)
 		case "group_id":
-			syncable.GroupId = value.(string)
+			syncable.GroupID = value.(string)
 		case "auto_add":
 			syncable.AutoAdd = value.(bool)
 		default:
 		}
 	}
-	if channelId != "" {
-		syncable.TeamID = teamId
-		syncable.SyncableId = channelId
+	if channelID != "" {
+		syncable.TeamID = teamID
+		syncable.SyncableID = channelID
 		syncable.Type = GroupSyncableTypeChannel
 	} else {
-		syncable.SyncableId = teamId
+		syncable.SyncableID = teamID
 		syncable.Type = GroupSyncableTypeTeam
 	}
 	return nil
@@ -99,7 +99,7 @@ func (syncable *GroupSyncable) MarshalJSON() ([]byte, error) {
 		}{
 			TeamDisplayName: syncable.TeamDisplayName,
 			TeamType:        syncable.TeamType,
-			TeamID:          syncable.SyncableId,
+			TeamID:          syncable.SyncableID,
 			Type:            syncable.Type,
 			Alias:           (*Alias)(syncable),
 		})
@@ -116,7 +116,7 @@ func (syncable *GroupSyncable) MarshalJSON() ([]byte, error) {
 
 			*Alias
 		}{
-			ChannelID:          syncable.SyncableId,
+			ChannelID:          syncable.SyncableID,
 			ChannelDisplayName: syncable.ChannelDisplayName,
 			ChannelType:        syncable.ChannelType,
 			Type:               syncable.Type,
@@ -174,8 +174,8 @@ func GroupSyncablesFromJson(data io.Reader) []*GroupSyncable {
 
 func NewGroupTeam(groupID, teamID string, autoAdd bool) *GroupSyncable {
 	return &GroupSyncable{
-		GroupId:    groupID,
-		SyncableId: teamID,
+		GroupID:    groupID,
+		SyncableID: teamID,
 		Type:       GroupSyncableTypeTeam,
 		AutoAdd:    autoAdd,
 	}
@@ -183,8 +183,8 @@ func NewGroupTeam(groupID, teamID string, autoAdd bool) *GroupSyncable {
 
 func NewGroupChannel(groupID, channelID string, autoAdd bool) *GroupSyncable {
 	return &GroupSyncable{
-		GroupId:    groupID,
-		SyncableId: channelID,
+		GroupID:    groupID,
+		SyncableID: channelID,
 		Type:       GroupSyncableTypeChannel,
 		AutoAdd:    autoAdd,
 	}

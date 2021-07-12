@@ -67,7 +67,7 @@ type auditChannel struct {
 func newAuditChannel(c *Channel) auditChannel {
 	var channel auditChannel
 	if c != nil {
-		channel.ID = c.Id
+		channel.ID = c.ID
 		channel.Name = c.Name
 		channel.Type = c.Type
 	}
@@ -94,7 +94,7 @@ type auditTeam struct {
 func newAuditTeam(t *Team) auditTeam {
 	var team auditTeam
 	if t != nil {
-		team.ID = t.Id
+		team.ID = t.ID
 		team.Name = t.Name
 		team.Type = t.Type
 	}
@@ -121,7 +121,7 @@ type auditUser struct {
 func newAuditUser(u *User) auditUser {
 	var user auditUser
 	if u != nil {
-		user.ID = u.Id
+		user.ID = u.ID
 		user.Name = u.Username
 		user.Roles = u.Roles
 	}
@@ -158,9 +158,9 @@ type auditCommand struct {
 func newAuditCommand(c *Command) auditCommand {
 	var cmd auditCommand
 	if c != nil {
-		cmd.ID = c.Id
-		cmd.CreatorID = c.CreatorId
-		cmd.TeamID = c.TeamId
+		cmd.ID = c.ID
+		cmd.CreatorID = c.CreatorID
+		cmd.TeamID = c.TeamID
 		cmd.Trigger = c.Trigger
 		cmd.Method = c.Method
 		cmd.Username = c.Username
@@ -206,9 +206,9 @@ type auditCommandArgs struct {
 func newAuditCommandArgs(ca *CommandArgs) auditCommandArgs {
 	var cmdargs auditCommandArgs
 	if ca != nil {
-		cmdargs.ChannelID = ca.ChannelId
-		cmdargs.TeamID = ca.TeamId
-		cmdargs.TriggerID = ca.TriggerId
+		cmdargs.ChannelID = ca.ChannelID
+		cmdargs.TeamID = ca.TeamID
+		cmdargs.TriggerID = ca.TriggerID
 		cmdargs.Command = ca.Command
 	}
 	return cmdargs
@@ -235,7 +235,7 @@ type auditBot struct {
 func newAuditBot(b *Bot) auditBot {
 	var bot auditBot
 	if b != nil {
-		bot.UserID = b.UserId
+		bot.UserID = b.UserID
 		bot.Username = b.Username
 		bot.Displayname = b.DisplayName
 	}
@@ -294,7 +294,7 @@ type auditEmoji struct {
 func newAuditEmoji(e *Emoji) auditEmoji {
 	var emoji auditEmoji
 	if e != nil {
-		emoji.ID = e.Id
+		emoji.ID = e.ID
 		emoji.Name = e.Name
 	}
 	return emoji
@@ -322,8 +322,8 @@ type auditFileInfo struct {
 func newAuditFileInfo(f *FileInfo) auditFileInfo {
 	var fi auditFileInfo
 	if f != nil {
-		fi.ID = f.Id
-		fi.PostID = f.PostId
+		fi.ID = f.ID
+		fi.PostID = f.PostID
 		fi.Path = f.Path
 		fi.Name = f.Name
 		fi.Extension = f.Extension
@@ -356,7 +356,7 @@ type auditGroup struct {
 func newAuditGroup(g *Group) auditGroup {
 	var group auditGroup
 	if g != nil {
-		group.ID = g.Id
+		group.ID = g.ID
 		if g.Name == nil {
 			group.Name = ""
 		} else {
@@ -390,7 +390,7 @@ type auditJob struct {
 func newAuditJob(j *Job) auditJob {
 	var job auditJob
 	if j != nil {
-		job.ID = j.Id
+		job.ID = j.ID
 		job.Type = j.Type
 		job.Priority = j.Priority
 		job.StartAt = j.StartAt
@@ -421,8 +421,8 @@ type auditOAuthApp struct {
 func newAuditOAuthApp(o *OAuthApp) auditOAuthApp {
 	var oauth auditOAuthApp
 	if o != nil {
-		oauth.ID = o.Id
-		oauth.CreatorID = o.CreatorId
+		oauth.ID = o.ID
+		oauth.CreatorID = o.CreatorID
 		oauth.Name = o.Name
 		oauth.Description = o.Description
 		oauth.IsTrusted = o.IsTrusted
@@ -453,8 +453,8 @@ type auditPost struct {
 func newAuditPost(p *Post) auditPost {
 	var post auditPost
 	if p != nil {
-		post.ID = p.Id
-		post.ChannelID = p.ChannelId
+		post.ID = p.ID
+		post.ChannelID = p.ChannelID
 		post.Type = p.Type
 		post.IsPinned = p.IsPinned
 	}
@@ -485,7 +485,7 @@ type auditRole struct {
 func newAuditRole(r *Role) auditRole {
 	var role auditRole
 	if r != nil {
-		role.ID = r.Id
+		role.ID = r.ID
 		role.Name = r.Name
 		role.DisplayName = r.DisplayName
 		role.Permissions = append(role.Permissions, r.Permissions...)
@@ -519,7 +519,7 @@ type auditScheme struct {
 func newAuditScheme(s *Scheme) auditScheme {
 	var scheme auditScheme
 	if s != nil {
-		scheme.ID = s.Id
+		scheme.ID = s.ID
 		scheme.Name = s.Name
 		scheme.DisplayName = s.DisplayName
 		scheme.Scope = s.Scope
@@ -567,25 +567,25 @@ func (s auditSchemeRoles) IsNil() bool {
 
 type auditSession struct {
 	ID       string
-	UserId   string
-	DeviceId string
+	UserID   string
+	DeviceID string
 }
 
 // newAuditSession creates a simplified representation of Session for output to audit log.
 func newAuditSession(s *Session) auditSession {
 	var session auditSession
 	if s != nil {
-		session.ID = s.Id
-		session.UserId = s.UserId
-		session.DeviceId = s.DeviceId
+		session.ID = s.ID
+		session.UserID = s.UserID
+		session.DeviceID = s.DeviceID
 	}
 	return session
 }
 
 func (s auditSession) MarshalJSONObject(enc *gojay.Encoder) {
 	enc.StringKey("id", s.ID)
-	enc.StringKey("user_id", s.UserId)
-	enc.StringKey("device_id", s.DeviceId)
+	enc.StringKey("user_id", s.UserID)
+	enc.StringKey("device_id", s.DeviceID)
 }
 
 func (s auditSession) IsNil() bool {
@@ -595,7 +595,7 @@ func (s auditSession) IsNil() bool {
 type auditIncomingWebhook struct {
 	ID          string
 	ChannelID   string
-	TeamId      string
+	TeamID      string
 	DisplayName string
 	Description string
 }
@@ -604,9 +604,9 @@ type auditIncomingWebhook struct {
 func newAuditIncomingWebhook(h *IncomingWebhook) auditIncomingWebhook {
 	var hook auditIncomingWebhook
 	if h != nil {
-		hook.ID = h.Id
-		hook.ChannelID = h.ChannelId
-		hook.TeamId = h.TeamId
+		hook.ID = h.ID
+		hook.ChannelID = h.ChannelID
+		hook.TeamID = h.TeamID
 		hook.DisplayName = h.DisplayName
 		hook.Description = h.Description
 	}
@@ -616,7 +616,7 @@ func newAuditIncomingWebhook(h *IncomingWebhook) auditIncomingWebhook {
 func (h auditIncomingWebhook) MarshalJSONObject(enc *gojay.Encoder) {
 	enc.StringKey("id", h.ID)
 	enc.StringKey("channel_id", h.ChannelID)
-	enc.StringKey("team_id", h.TeamId)
+	enc.StringKey("team_id", h.TeamID)
 	enc.StringKey("display", h.DisplayName)
 	enc.StringKey("desc", h.Description)
 }
@@ -641,9 +641,9 @@ type auditOutgoingWebhook struct {
 func newAuditOutgoingWebhook(h *OutgoingWebhook) auditOutgoingWebhook {
 	var hook auditOutgoingWebhook
 	if h != nil {
-		hook.ID = h.Id
-		hook.ChannelID = h.ChannelId
-		hook.TeamID = h.TeamId
+		hook.ID = h.ID
+		hook.ChannelID = h.ChannelID
+		hook.TeamID = h.TeamID
 		hook.TriggerWords = h.TriggerWords
 		hook.TriggerWhen = h.TriggerWhen
 		hook.DisplayName = h.DisplayName
@@ -671,41 +671,41 @@ func (h auditOutgoingWebhook) IsNil() bool {
 }
 
 type auditRemoteCluster struct {
-	RemoteId     string
-	RemoteTeamId string
+	RemoteID     string
+	RemoteTeamID string
 	Name         string
 	DisplayName  string
 	SiteURL      string
 	CreateAt     int64
 	LastPingAt   int64
-	CreatorId    string
+	CreatorID    string
 }
 
 // newRemoteCluster creates a simplified representation of RemoteCluster for output to audit log.
 func newRemoteCluster(r *RemoteCluster) auditRemoteCluster {
 	var rc auditRemoteCluster
 	if r != nil {
-		rc.RemoteId = r.RemoteId
-		rc.RemoteTeamId = r.RemoteTeamId
+		rc.RemoteID = r.RemoteID
+		rc.RemoteTeamID = r.RemoteTeamID
 		rc.Name = r.Name
 		rc.DisplayName = r.DisplayName
 		rc.SiteURL = r.SiteURL
 		rc.CreateAt = r.CreateAt
 		rc.LastPingAt = r.LastPingAt
-		rc.CreatorId = r.CreatorId
+		rc.CreatorID = r.CreatorID
 	}
 	return rc
 }
 
 func (r auditRemoteCluster) MarshalJSONObject(enc *gojay.Encoder) {
-	enc.StringKey("remote_id", r.RemoteId)
-	enc.StringKey("remote_team_id", r.RemoteTeamId)
+	enc.StringKey("remote_id", r.RemoteID)
+	enc.StringKey("remote_team_id", r.RemoteTeamID)
 	enc.StringKey("name", r.Name)
 	enc.StringKey("display_name", r.DisplayName)
 	enc.StringKey("site_url", r.SiteURL)
 	enc.Int64Key("create_at", r.CreateAt)
 	enc.Int64Key("last_ping_at", r.LastPingAt)
-	enc.StringKey("creator_id", r.CreatorId)
+	enc.StringKey("creator_id", r.CreatorID)
 }
 
 func (r auditRemoteCluster) IsNil() bool {

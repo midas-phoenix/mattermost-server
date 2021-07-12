@@ -14,26 +14,26 @@ import (
 )
 
 func TestSessionDeepCopy(t *testing.T) {
-	sessionId := NewId()
-	userId := NewId()
+	sessionID := NewID()
+	userID := NewID()
 	mapKey := "key"
 	mapValue := "val"
 
-	session := &Session{Id: sessionId, Props: map[string]string{mapKey: mapValue}, TeamMembers: []*TeamMember{{UserId: userId, TeamId: "someteamId"}}}
+	session := &Session{ID: sessionID, Props: map[string]string{mapKey: mapValue}, TeamMembers: []*TeamMember{{UserID: userID, TeamID: "someteamId"}}}
 
 	copySession := session.DeepCopy()
-	copySession.Id = "changed"
+	copySession.ID = "changed"
 	copySession.Props[mapKey] = "changed"
-	copySession.TeamMembers[0].UserId = "changed"
+	copySession.TeamMembers[0].UserID = "changed"
 
-	assert.Equal(t, sessionId, session.Id)
+	assert.Equal(t, sessionID, session.ID)
 	assert.Equal(t, mapValue, session.Props[mapKey])
-	assert.Equal(t, userId, session.TeamMembers[0].UserId)
+	assert.Equal(t, userID, session.TeamMembers[0].UserID)
 
-	session = &Session{Id: sessionId}
+	session = &Session{ID: sessionID}
 	copySession = session.DeepCopy()
 
-	assert.Equal(t, sessionId, copySession.Id)
+	assert.Equal(t, sessionID, copySession.ID)
 
 	session = &Session{TeamMembers: []*TeamMember{}}
 	copySession = session.DeepCopy()
@@ -47,7 +47,7 @@ func TestSessionJson(t *testing.T) {
 	json := session.ToJson()
 	rsession := SessionFromJson(strings.NewReader(json))
 
-	require.Equal(t, rsession.Id, session.Id, "Ids do not match")
+	require.Equal(t, rsession.ID, session.ID, "Ids do not match")
 
 	session.Sanitize()
 

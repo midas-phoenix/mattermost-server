@@ -9,7 +9,7 @@ import (
 )
 
 type ClusterStats struct {
-	Id                        string `json:"id"`
+	ID                        string `json:"id"`
 	TotalWebsocketConnections int    `json:"total_websocket_connections"`
 	TotalReadDbConnections    int    `json:"total_read_db_connections"`
 	TotalMasterDbConnections  int    `json:"total_master_db_connections"`

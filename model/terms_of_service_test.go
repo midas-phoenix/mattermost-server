@@ -15,13 +15,13 @@ func TestTermsOfServiceIsValid(t *testing.T) {
 
 	assert.NotNil(t, s.IsValid(), "should be invalid")
 
-	s.Id = NewId()
+	s.ID = NewID()
 	assert.NotNil(t, s.IsValid(), "should be invalid")
 
 	s.CreateAt = GetMillis()
 	assert.NotNil(t, s.IsValid(), "should be invalid")
 
-	s.UserId = NewId()
+	s.UserID = NewID()
 	assert.Nil(t, s.IsValid(), "should be valid")
 
 	s.Text = strings.Repeat("0", PostMessageMaxRunesV2+1)
@@ -36,10 +36,10 @@ func TestTermsOfServiceIsValid(t *testing.T) {
 
 func TestTermsOfServiceJson(t *testing.T) {
 	o := TermsOfService{
-		Id:       NewId(),
-		Text:     NewId(),
+		ID:       NewID(),
+		Text:     NewID(),
 		CreateAt: GetMillis(),
-		UserId:   NewId(),
+		UserID:   NewID(),
 	}
 	j := o.ToJson()
 	ro := TermsOfServiceFromJson(strings.NewReader(j))

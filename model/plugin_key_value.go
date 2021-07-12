@@ -9,19 +9,19 @@ import (
 )
 
 const (
-	KeyValuePluginIdMaxRunes = 190
+	KeyValuePluginIDMaxRunes = 190
 	KeyValueKeyMaxRunes      = 50
 )
 
 type PluginKeyValue struct {
-	PluginId string `json:"plugin_id"`
+	PluginID string `json:"plugin_id"`
 	Key      string `json:"key" db:"PKey"`
 	Value    []byte `json:"value" db:"PValue"`
 	ExpireAt int64  `json:"expire_at"`
 }
 
 func (kv *PluginKeyValue) IsValid() *AppError {
-	if kv.PluginId == "" || utf8.RuneCountInString(kv.PluginId) > KeyValuePluginIdMaxRunes {
+	if kv.PluginID == "" || utf8.RuneCountInString(kv.PluginID) > KeyValuePluginIDMaxRunes {
 		return NewAppError("PluginKeyValue.IsValid", "model.plugin_key_value.is_valid.plugin_id.app_error", map[string]interface{}{"Max": KeyValueKeyMaxRunes, "Min": 0}, "key="+kv.Key, http.StatusBadRequest)
 	}
 

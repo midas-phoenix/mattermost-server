@@ -11,9 +11,9 @@ import (
 )
 
 func TestClusterStatsJson(t *testing.T) {
-	cluster := ClusterStats{Id: NewId(), TotalWebsocketConnections: 1, TotalReadDbConnections: 1}
+	cluster := ClusterStats{ID: NewID(), TotalWebsocketConnections: 1, TotalReadDbConnections: 1}
 	json := cluster.ToJson()
 	result := ClusterStatsFromJson(strings.NewReader(json))
 
-	require.Equal(t, cluster.Id, result.Id, "Ids do not match")
+	require.Equal(t, cluster.ID, result.ID, "Ids do not match")
 }

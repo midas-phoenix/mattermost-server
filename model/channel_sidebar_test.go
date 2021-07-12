@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestIsValidCategoryId(t *testing.T) {
+func TestIsValidCategoryID(t *testing.T) {
 	for _, test := range []struct {
 		Name     string
 		Input    string
@@ -18,22 +18,22 @@ func TestIsValidCategoryId(t *testing.T) {
 	}{
 		{
 			Name:     "should accept a regular ID",
-			Input:    NewId(),
+			Input:    NewID(),
 			Expected: true,
 		},
 		{
 			Name:     "should accept a favorites ID",
-			Input:    fmt.Sprintf("favorites_%s_%s", NewId(), NewId()),
+			Input:    fmt.Sprintf("favorites_%s_%s", NewID(), NewID()),
 			Expected: true,
 		},
 		{
 			Name:     "should accept a channels ID",
-			Input:    fmt.Sprintf("channels_%s_%s", NewId(), NewId()),
+			Input:    fmt.Sprintf("channels_%s_%s", NewID(), NewID()),
 			Expected: true,
 		},
 		{
 			Name:     "should accept a direct messages ID",
-			Input:    fmt.Sprintf("direct_messages_%s_%s", NewId(), NewId()),
+			Input:    fmt.Sprintf("direct_messages_%s_%s", NewID(), NewID()),
 			Expected: true,
 		},
 		{
@@ -43,7 +43,7 @@ func TestIsValidCategoryId(t *testing.T) {
 		},
 	} {
 		t.Run(test.Name, func(t *testing.T) {
-			assert.Equal(t, test.Expected, IsValidCategoryId(test.Input))
+			assert.Equal(t, test.Expected, IsValidCategoryID(test.Input))
 		})
 	}
 }

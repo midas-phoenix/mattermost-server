@@ -22,9 +22,9 @@ const (
 // GetFileInfosOptions contains options for getting FileInfos
 type GetFileInfosOptions struct {
 	// UserIds optionally limits the FileInfos to those created by the given users.
-	UserIds []string `json:"user_ids"`
+	UserIDs []string `json:"user_ids"`
 	// ChannelIds optionally limits the FileInfos to those created in the given channels.
-	ChannelIds []string `json:"channel_ids"`
+	ChannelIDs []string `json:"channel_ids"`
 	// Since optionally limits FileInfos to those created at or after the given time, specified as Unix time in milliseconds.
 	Since int64 `json:"since"`
 	// IncludeDeleted if set includes deleted FileInfos.
@@ -36,10 +36,10 @@ type GetFileInfosOptions struct {
 }
 
 type FileInfo struct {
-	Id              string  `json:"id"`
-	CreatorId       string  `json:"user_id"`
-	PostId          string  `json:"post_id,omitempty"`
-	ChannelId       string  `db:"-" json:"channel_id"`
+	ID              string  `json:"id"`
+	CreatorID       string  `json:"user_id"`
+	PostID          string  `json:"post_id,omitempty"`
+	ChannelID       string  `db:"-" json:"channel_id"`
 	CreateAt        int64   `json:"create_at"`
 	UpdateAt        int64   `json:"update_at"`
 	DeleteAt        int64   `json:"delete_at"`
@@ -55,7 +55,7 @@ type FileInfo struct {
 	HasPreviewImage bool    `json:"has_preview_image,omitempty"`
 	MiniPreview     *[]byte `json:"mini_preview"` // declared as *[]byte to avoid postgres/mysql differences in deserialization
 	Content         string  `json:"-"`
-	RemoteId        *string `json:"remote_id"`
+	RemoteID        *string `json:"remote_id"`
 }
 
 func (fi *FileInfo) ToJson() string {
@@ -89,8 +89,8 @@ func FileInfosFromJson(data io.Reader) []*FileInfo {
 }
 
 func (fi *FileInfo) PreSave() {
-	if fi.Id == "" {
-		fi.Id = NewId()
+	if fi.ID == "" {
+		fi.ID = NewID()
 	}
 
 	if fi.CreateAt == 0 {
@@ -101,34 +101,34 @@ func (fi *FileInfo) PreSave() {
 		fi.UpdateAt = fi.CreateAt
 	}
 
-	if fi.RemoteId == nil {
-		fi.RemoteId = NewString("")
+	if fi.RemoteID == nil {
+		fi.RemoteID = NewString("")
 	}
 }
 
 func (fi *FileInfo) IsValid() *AppError {
-	if !IsValidId(fi.Id) {
+	if !IsValidID(fi.ID) {
 		return NewAppError("FileInfo.IsValid", "model.file_info.is_valid.id.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if !IsValidId(fi.CreatorId) && fi.CreatorId != "nouser" {
-		return NewAppError("FileInfo.IsValid", "model.file_info.is_valid.user_id.app_error", nil, "id="+fi.Id, http.StatusBadRequest)
+	if !IsValidID(fi.CreatorID) && fi.CreatorID != "nouser" {
+		return NewAppError("FileInfo.IsValid", "model.file_info.is_valid.user_id.app_error", nil, "id="+fi.ID, http.StatusBadRequest)
 	}
 
-	if fi.PostId != "" && !IsValidId(fi.PostId) {
-		return NewAppError("FileInfo.IsValid", "model.file_info.is_valid.post_id.app_error", nil, "id="+fi.Id, http.StatusBadRequest)
+	if fi.PostID != "" && !IsValidID(fi.PostID) {
+		return NewAppError("FileInfo.IsValid", "model.file_info.is_valid.post_id.app_error", nil, "id="+fi.ID, http.StatusBadRequest)
 	}
 
 	if fi.CreateAt == 0 {
-		return NewAppError("FileInfo.IsValid", "model.file_info.is_valid.create_at.app_error", nil, "id="+fi.Id, http.StatusBadRequest)
+		return NewAppError("FileInfo.IsValid", "model.file_info.is_valid.create_at.app_error", nil, "id="+fi.ID, http.StatusBadRequest)
 	}
 
 	if fi.UpdateAt == 0 {
-		return NewAppError("FileInfo.IsValid", "model.file_info.is_valid.update_at.app_error", nil, "id="+fi.Id, http.StatusBadRequest)
+		return NewAppError("FileInfo.IsValid", "model.file_info.is_valid.update_at.app_error", nil, "id="+fi.ID, http.StatusBadRequest)
 	}
 
 	if fi.Path == "" {
-		return NewAppError("FileInfo.IsValid", "model.file_info.is_valid.path.app_error", nil, "id="+fi.Id, http.StatusBadRequest)
+		return NewAppError("FileInfo.IsValid", "model.file_info.is_valid.path.app_error", nil, "id="+fi.ID, http.StatusBadRequest)
 	}
 
 	return nil
@@ -211,5 +211,5 @@ func GetEtagForFileInfos(infos []*FileInfo) string {
 		}
 	}
 
-	return Etag(infos[0].PostId, maxUpdateAt)
+	return Etag(infos[0].PostID, maxUpdateAt)
 }

@@ -16,77 +16,77 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestTriggerIdDecodeAndVerification(t *testing.T) {
+func TestTriggerIDDecodeAndVerification(t *testing.T) {
 
 	key, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	require.NoError(t, err)
 
 	t.Run("should succeed decoding and validation", func(t *testing.T) {
-		userId := NewId()
-		clientTriggerId, triggerId, err := GenerateTriggerId(userId, key)
+		userID := NewID()
+		clientTriggerID, triggerID, err := GenerateTriggerID(userID, key)
 		require.Nil(t, err)
-		decodedClientTriggerId, decodedUserId, err := DecodeAndVerifyTriggerId(triggerId, key)
+		decodedClientTriggerID, decodedUserID, err := DecodeAndVerifyTriggerID(triggerID, key)
 		assert.Nil(t, err)
-		assert.Equal(t, clientTriggerId, decodedClientTriggerId)
-		assert.Equal(t, userId, decodedUserId)
+		assert.Equal(t, clientTriggerID, decodedClientTriggerID)
+		assert.Equal(t, userID, decodedUserID)
 	})
 
 	t.Run("should succeed decoding and validation through request structs", func(t *testing.T) {
 		actionReq := &PostActionIntegrationRequest{
-			UserId: NewId(),
+			UserID: NewID(),
 		}
-		clientTriggerId, triggerId, err := actionReq.GenerateTriggerId(key)
+		clientTriggerID, triggerID, err := actionReq.GenerateTriggerID(key)
 		require.Nil(t, err)
-		dialogReq := &OpenDialogRequest{TriggerId: triggerId}
-		decodedClientTriggerId, decodedUserId, err := dialogReq.DecodeAndVerifyTriggerId(key)
+		dialogReq := &OpenDialogRequest{TriggerID: triggerID}
+		decodedClientTriggerID, decodedUserID, err := dialogReq.DecodeAndVerifyTriggerID(key)
 		assert.Nil(t, err)
-		assert.Equal(t, clientTriggerId, decodedClientTriggerId)
-		assert.Equal(t, actionReq.UserId, decodedUserId)
+		assert.Equal(t, clientTriggerID, decodedClientTriggerID)
+		assert.Equal(t, actionReq.UserID, decodedUserID)
 	})
 
 	t.Run("should fail on base64 decode", func(t *testing.T) {
-		_, _, err := DecodeAndVerifyTriggerId("junk!", key)
+		_, _, err := DecodeAndVerifyTriggerID("junk!", key)
 		require.NotNil(t, err)
-		assert.Equal(t, "interactive_message.decode_trigger_id.base64_decode_failed", err.Id)
+		assert.Equal(t, "interactive_message.decode_trigger_id.base64_decode_failed", err.ID)
 	})
 
 	t.Run("should fail on trigger parsing", func(t *testing.T) {
-		_, _, err := DecodeAndVerifyTriggerId(base64.StdEncoding.EncodeToString([]byte("junk!")), key)
+		_, _, err := DecodeAndVerifyTriggerID(base64.StdEncoding.EncodeToString([]byte("junk!")), key)
 		require.NotNil(t, err)
-		assert.Equal(t, "interactive_message.decode_trigger_id.missing_data", err.Id)
+		assert.Equal(t, "interactive_message.decode_trigger_id.missing_data", err.ID)
 	})
 
 	t.Run("should fail on expired timestamp", func(t *testing.T) {
-		_, _, err := DecodeAndVerifyTriggerId(base64.StdEncoding.EncodeToString([]byte("some-trigger-id:some-user-id:1234567890:junksignature")), key)
+		_, _, err := DecodeAndVerifyTriggerID(base64.StdEncoding.EncodeToString([]byte("some-trigger-id:some-user-id:1234567890:junksignature")), key)
 		require.NotNil(t, err)
-		assert.Equal(t, "interactive_message.decode_trigger_id.expired", err.Id)
+		assert.Equal(t, "interactive_message.decode_trigger_id.expired", err.ID)
 	})
 
 	t.Run("should fail on base64 decoding signature", func(t *testing.T) {
-		_, _, err := DecodeAndVerifyTriggerId(base64.StdEncoding.EncodeToString([]byte("some-trigger-id:some-user-id:12345678900000:junk!")), key)
+		_, _, err := DecodeAndVerifyTriggerID(base64.StdEncoding.EncodeToString([]byte("some-trigger-id:some-user-id:12345678900000:junk!")), key)
 		require.NotNil(t, err)
-		assert.Equal(t, "interactive_message.decode_trigger_id.base64_decode_failed_signature", err.Id)
+		assert.Equal(t, "interactive_message.decode_trigger_id.base64_decode_failed_signature", err.ID)
 	})
 
 	t.Run("should fail on bad signature", func(t *testing.T) {
-		_, _, err := DecodeAndVerifyTriggerId(base64.StdEncoding.EncodeToString([]byte("some-trigger-id:some-user-id:12345678900000:junk")), key)
+		_, _, err := DecodeAndVerifyTriggerID(base64.StdEncoding.EncodeToString([]byte("some-trigger-id:some-user-id:12345678900000:junk")), key)
 		require.NotNil(t, err)
-		assert.Equal(t, "interactive_message.decode_trigger_id.signature_decode_failed", err.Id)
+		assert.Equal(t, "interactive_message.decode_trigger_id.signature_decode_failed", err.ID)
 	})
 
 	t.Run("should fail on bad key", func(t *testing.T) {
-		_, triggerId, err := GenerateTriggerId(NewId(), key)
+		_, triggerID, err := GenerateTriggerID(NewID(), key)
 		require.Nil(t, err)
 		newKey, keyErr := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 		require.NoError(t, keyErr)
-		_, _, err = DecodeAndVerifyTriggerId(triggerId, newKey)
+		_, _, err = DecodeAndVerifyTriggerID(triggerID, newKey)
 		require.NotNil(t, err)
-		assert.Equal(t, "interactive_message.decode_trigger_id.verify_signature_failed", err.Id)
+		assert.Equal(t, "interactive_message.decode_trigger_id.verify_signature_failed", err.ID)
 	})
 }
 
 func TestPostActionIntegrationRequestToJson(t *testing.T) {
-	o := PostActionIntegrationRequest{UserId: NewId(), Context: StringInterface{"a": "abc"}}
+	o := PostActionIntegrationRequest{UserID: NewID(), Context: StringInterface{"a": "abc"}}
 	j := o.ToJson()
 	ro := PostActionIntegrationRequestFromJson(bytes.NewReader(j))
 
@@ -100,7 +100,7 @@ func TestPostActionIntegrationRequestFromJsonError(t *testing.T) {
 }
 
 func TestPostActionIntegrationResponseToJson(t *testing.T) {
-	o := PostActionIntegrationResponse{Update: &Post{Id: NewId(), Message: NewId()}, EphemeralText: NewId()}
+	o := PostActionIntegrationResponse{Update: &Post{ID: NewID(), Message: NewID()}, EphemeralText: NewID()}
 	j := o.ToJson()
 	ro := PostActionIntegrationResponseFromJson(bytes.NewReader(j))
 
@@ -117,11 +117,11 @@ func TestSubmitDialogRequestToJson(t *testing.T) {
 	t.Run("all fine", func(t *testing.T) {
 		request := SubmitDialogRequest{
 			URL:        "http://example.org",
-			CallbackId: NewId(),
+			CallbackID: NewID(),
 			State:      "some state",
-			UserId:     NewId(),
-			ChannelId:  NewId(),
-			TeamId:     NewId(),
+			UserID:     NewID(),
+			ChannelID:  NewID(),
+			TeamID:     NewID(),
 			Submission: map[string]interface{}{
 				"text":  "some text",
 				"float": 1.2,

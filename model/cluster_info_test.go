@@ -11,7 +11,7 @@ import (
 )
 
 func TestClusterInfoJson(t *testing.T) {
-	cluster := ClusterInfo{IpAddress: NewId(), Hostname: NewId()}
+	cluster := ClusterInfo{IpAddress: NewID(), Hostname: NewID()}
 	json := cluster.ToJson()
 	result := ClusterInfoFromJson(strings.NewReader(json))
 
@@ -19,7 +19,7 @@ func TestClusterInfoJson(t *testing.T) {
 }
 
 func TestClusterInfosJson(t *testing.T) {
-	cluster := ClusterInfo{IpAddress: NewId(), Hostname: NewId()}
+	cluster := ClusterInfo{IpAddress: NewID(), Hostname: NewID()}
 	clusterInfos := make([]*ClusterInfo, 1)
 	clusterInfos[0] = &cluster
 	json := ClusterInfosToJson(clusterInfos)

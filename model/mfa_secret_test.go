@@ -11,7 +11,7 @@ import (
 )
 
 func TestMfaSecretJson(t *testing.T) {
-	secret := MfaSecret{Secret: NewId(), QRCode: NewId()}
+	secret := MfaSecret{Secret: NewID(), QRCode: NewID()}
 	json := secret.ToJson()
 	result := MfaSecretFromJson(strings.NewReader(json))
 

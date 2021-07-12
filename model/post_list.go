@@ -12,16 +12,16 @@ import (
 type PostList struct {
 	Order      []string         `json:"order"`
 	Posts      map[string]*Post `json:"posts"`
-	NextPostId string           `json:"next_post_id"`
-	PrevPostId string           `json:"prev_post_id"`
+	NextPostID string           `json:"next_post_id"`
+	PrevPostID string           `json:"prev_post_id"`
 }
 
 func NewPostList() *PostList {
 	return &PostList{
 		Order:      make([]string, 0),
 		Posts:      make(map[string]*Post),
-		NextPostId: "",
-		PrevPostId: "",
+		NextPostID: "",
+		PrevPostID: "",
 	}
 }
 
@@ -96,16 +96,16 @@ func (o *PostList) AddPost(post *Post) {
 		o.Posts = make(map[string]*Post)
 	}
 
-	o.Posts[post.Id] = post
+	o.Posts[post.ID] = post
 }
 
 func (o *PostList) UniqueOrder() {
 	keys := make(map[string]bool)
 	order := []string{}
-	for _, postId := range o.Order {
-		if _, value := keys[postId]; !value {
-			keys[postId] = true
-			order = append(order, postId)
+	for _, postID := range o.Order {
+		if _, value := keys[postID]; !value {
+			keys[postID] = true
+			order = append(order, postID)
 		}
 	}
 
@@ -113,12 +113,12 @@ func (o *PostList) UniqueOrder() {
 }
 
 func (o *PostList) Extend(other *PostList) {
-	for postId := range other.Posts {
-		o.AddPost(other.Posts[postId])
+	for postID := range other.Posts {
+		o.AddPost(other.Posts[postID])
 	}
 
-	for _, postId := range other.Order {
-		o.AddOrder(postId)
+	for _, postID := range other.Order {
+		o.AddOrder(postID)
 	}
 
 	o.UniqueOrder()
@@ -138,24 +138,24 @@ func (o *PostList) Etag() string {
 	for _, v := range o.Posts {
 		if v.UpdateAt > t {
 			t = v.UpdateAt
-			id = v.Id
-		} else if v.UpdateAt == t && v.Id > id {
+			id = v.ID
+		} else if v.UpdateAt == t && v.ID > id {
 			t = v.UpdateAt
-			id = v.Id
+			id = v.ID
 		}
 	}
 
-	orderId := ""
+	orderID := ""
 	if len(o.Order) > 0 {
-		orderId = o.Order[0]
+		orderID = o.Order[0]
 	}
 
-	return Etag(orderId, id, t)
+	return Etag(orderID, id, t)
 }
 
-func (o *PostList) IsChannelId(channelId string) bool {
+func (o *PostList) IsChannelID(channelID string) bool {
 	for _, v := range o.Posts {
-		if v.ChannelId != channelId {
+		if v.ChannelID != channelID {
 			return false
 		}
 	}

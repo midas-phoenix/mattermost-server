@@ -30,14 +30,14 @@ func (opt *PluginKVSetOptions) IsValid() *AppError {
 }
 
 // NewPluginKeyValueFromOptions return a PluginKeyValue given a pluginID, a KV pair and options.
-func NewPluginKeyValueFromOptions(pluginId, key string, value []byte, opt PluginKVSetOptions) (*PluginKeyValue, *AppError) {
+func NewPluginKeyValueFromOptions(pluginID, key string, value []byte, opt PluginKVSetOptions) (*PluginKeyValue, *AppError) {
 	expireAt := int64(0)
 	if opt.ExpireInSeconds != 0 {
 		expireAt = GetMillis() + (opt.ExpireInSeconds * 1000)
 	}
 
 	kv := &PluginKeyValue{
-		PluginId: pluginId,
+		PluginID: pluginID,
 		Key:      key,
 		Value:    value,
 		ExpireAt: expireAt,

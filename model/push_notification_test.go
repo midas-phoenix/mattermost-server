@@ -56,49 +56,49 @@ func TestPushNotificationAck(t *testing.T) {
 	})
 }
 
-func TestPushNotificationDeviceId(t *testing.T) {
+func TestPushNotificationDeviceID(t *testing.T) {
 
 	msg := PushNotification{Platform: "test"}
 
-	msg.SetDeviceIdAndPlatform("android:12345")
+	msg.SetDeviceIDAndPlatform("android:12345")
 	require.Equal(t, msg.Platform, "android", msg.Platform)
-	require.Equal(t, msg.DeviceId, "12345", msg.DeviceId)
+	require.Equal(t, msg.DeviceID, "12345", msg.DeviceID)
 	msg.Platform = ""
-	msg.DeviceId = ""
+	msg.DeviceID = ""
 
-	msg.SetDeviceIdAndPlatform("android:12:345")
+	msg.SetDeviceIDAndPlatform("android:12:345")
 	require.Equal(t, msg.Platform, "android", msg.Platform)
-	require.Equal(t, msg.DeviceId, "12:345", msg.DeviceId)
+	require.Equal(t, msg.DeviceID, "12:345", msg.DeviceID)
 	msg.Platform = ""
-	msg.DeviceId = ""
+	msg.DeviceID = ""
 
-	msg.SetDeviceIdAndPlatform("android::12345")
+	msg.SetDeviceIDAndPlatform("android::12345")
 	require.Equal(t, msg.Platform, "android", msg.Platform)
-	require.Equal(t, msg.DeviceId, ":12345", msg.DeviceId)
+	require.Equal(t, msg.DeviceID, ":12345", msg.DeviceID)
 	msg.Platform = ""
-	msg.DeviceId = ""
+	msg.DeviceID = ""
 
-	msg.SetDeviceIdAndPlatform(":12345")
+	msg.SetDeviceIDAndPlatform(":12345")
 	require.Equal(t, msg.Platform, "", msg.Platform)
-	require.Equal(t, msg.DeviceId, "12345", msg.DeviceId)
+	require.Equal(t, msg.DeviceID, "12345", msg.DeviceID)
 	msg.Platform = ""
-	msg.DeviceId = ""
+	msg.DeviceID = ""
 
-	msg.SetDeviceIdAndPlatform("android:")
+	msg.SetDeviceIDAndPlatform("android:")
 	require.Equal(t, msg.Platform, "android", msg.Platform)
-	require.Equal(t, msg.DeviceId, "", msg.DeviceId)
+	require.Equal(t, msg.DeviceID, "", msg.DeviceID)
 	msg.Platform = ""
-	msg.DeviceId = ""
+	msg.DeviceID = ""
 
-	msg.SetDeviceIdAndPlatform("")
+	msg.SetDeviceIDAndPlatform("")
 	require.Equal(t, msg.Platform, "", msg.Platform)
-	require.Equal(t, msg.DeviceId, "", msg.DeviceId)
+	require.Equal(t, msg.DeviceID, "", msg.DeviceID)
 	msg.Platform = ""
-	msg.DeviceId = ""
+	msg.DeviceID = ""
 
-	msg.SetDeviceIdAndPlatform(":")
+	msg.SetDeviceIDAndPlatform(":")
 	require.Equal(t, msg.Platform, "", msg.Platform)
-	require.Equal(t, msg.DeviceId, "", msg.DeviceId)
+	require.Equal(t, msg.DeviceID, "", msg.DeviceID)
 	msg.Platform = ""
-	msg.DeviceId = ""
+	msg.DeviceID = ""
 }

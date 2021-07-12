@@ -11,7 +11,7 @@ import (
 )
 
 func TestTeamSearchJson(t *testing.T) {
-	teamSearch := TeamSearch{Term: NewId()}
+	teamSearch := TeamSearch{Term: NewID()}
 	json := teamSearch.ToJson()
 	rteamSearch := ChannelSearchFromJson(strings.NewReader(json))
 

@@ -11,7 +11,7 @@ import (
 )
 
 func TestUserSearchJson(t *testing.T) {
-	userSearch := UserSearch{Term: NewId(), TeamId: NewId()}
+	userSearch := UserSearch{Term: NewID(), TeamID: NewID()}
 	json := userSearch.ToJson()
 	ruserSearch := UserSearchFromJson(bytes.NewReader(json))
 

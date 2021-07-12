@@ -60,7 +60,7 @@ const (
 
 	PropsAddChannelMember = "add_channel_member"
 
-	PostPropsAddedUserId       = "addedUserId"
+	PostPropsAddedUserID       = "addedUserId"
 	PostPropsDeleteBy          = "deleteBy"
 	PostPropsOverrideIconUrl   = "override_icon_url"
 	PostPropsOverrideIconEmoji = "override_icon_emoji"
@@ -72,17 +72,17 @@ const (
 var AtMentionPattern = regexp.MustCompile(`\B@`)
 
 type Post struct {
-	Id         string `json:"id"`
+	ID         string `json:"id"`
 	CreateAt   int64  `json:"create_at"`
 	UpdateAt   int64  `json:"update_at"`
 	EditAt     int64  `json:"edit_at"`
 	DeleteAt   int64  `json:"delete_at"`
 	IsPinned   bool   `json:"is_pinned"`
-	UserId     string `json:"user_id"`
-	ChannelId  string `json:"channel_id"`
-	RootId     string `json:"root_id"`
-	ParentId   string `json:"parent_id"`
-	OriginalId string `json:"original_id"`
+	UserID     string `json:"user_id"`
+	ChannelID  string `json:"channel_id"`
+	RootID     string `json:"root_id"`
+	ParentID   string `json:"parent_id"`
+	OriginalID string `json:"original_id"`
 
 	Message string `json:"message"`
 	// MessageSource will contain the message as submitted by the user if Message has been modified
@@ -95,10 +95,10 @@ type Post struct {
 	Props         StringInterface `json:"props"` // Deprecated: use GetProps()
 	Hashtags      string          `json:"hashtags"`
 	Filenames     StringArray     `json:"filenames,omitempty"` // Deprecated, do not use this field any more
-	FileIds       StringArray     `json:"file_ids,omitempty"`
-	PendingPostId string          `json:"pending_post_id" db:"-"`
+	FileIDs       StringArray     `json:"file_ids,omitempty"`
+	PendingPostID string          `json:"pending_post_id" db:"-"`
 	HasReactions  bool            `json:"has_reactions,omitempty"`
-	RemoteId      *string         `json:"remote_id,omitempty"`
+	RemoteID      *string         `json:"remote_id,omitempty"`
 
 	// Transient data populated before sending a post to the client
 	ReplyCount   int64         `json:"reply_count" db:"-"`
@@ -117,7 +117,7 @@ type PostPatch struct {
 	IsPinned     *bool            `json:"is_pinned"`
 	Message      *string          `json:"message"`
 	Props        *StringInterface `json:"props"`
-	FileIds      *StringArray     `json:"file_ids"`
+	FileIDs      *StringArray     `json:"file_ids"`
 	HasReactions *bool            `json:"has_reactions"`
 }
 
@@ -131,7 +131,7 @@ type SearchParameter struct {
 }
 
 type AnalyticsPostCountsOptions struct {
-	TeamId        string
+	TeamID        string
 	BotsOnly      bool
 	YesterdayOnly bool
 }
@@ -165,13 +165,13 @@ type ReplyForExport struct {
 
 type PostForIndexing struct {
 	Post
-	TeamId         string `json:"team_id"`
+	TeamID         string `json:"team_id"`
 	ParentCreateAt *int64 `json:"parent_create_at"`
 }
 
 type FileForIndexing struct {
 	FileInfo
-	ChannelId string `json:"channel_id"`
+	ChannelID string `json:"channel_id"`
 	Content   string `json:"content"`
 }
 
@@ -185,25 +185,25 @@ func (o *Post) ShallowCopy(dst *Post) error {
 	defer o.propsMu.RUnlock()
 	dst.propsMu.Lock()
 	defer dst.propsMu.Unlock()
-	dst.Id = o.Id
+	dst.ID = o.ID
 	dst.CreateAt = o.CreateAt
 	dst.UpdateAt = o.UpdateAt
 	dst.EditAt = o.EditAt
 	dst.DeleteAt = o.DeleteAt
 	dst.IsPinned = o.IsPinned
-	dst.UserId = o.UserId
-	dst.ChannelId = o.ChannelId
-	dst.RootId = o.RootId
-	dst.ParentId = o.ParentId
-	dst.OriginalId = o.OriginalId
+	dst.UserID = o.UserID
+	dst.ChannelID = o.ChannelID
+	dst.RootID = o.RootID
+	dst.ParentID = o.ParentID
+	dst.OriginalID = o.OriginalID
 	dst.Message = o.Message
 	dst.MessageSource = o.MessageSource
 	dst.Type = o.Type
 	dst.Props = o.Props
 	dst.Hashtags = o.Hashtags
 	dst.Filenames = o.Filenames
-	dst.FileIds = o.FileIds
-	dst.PendingPostId = o.PendingPostId
+	dst.FileIDs = o.FileIDs
+	dst.PendingPostID = o.PendingPostID
 	dst.HasReactions = o.HasReactions
 	dst.ReplyCount = o.ReplyCount
 	dst.Participants = o.Participants
@@ -212,7 +212,7 @@ func (o *Post) ShallowCopy(dst *Post) error {
 	if o.IsFollowing != nil {
 		dst.IsFollowing = NewBool(*o.IsFollowing)
 	}
-	dst.RemoteId = o.RemoteId
+	dst.RemoteID = o.RemoteID
 	return nil
 }
 
@@ -236,8 +236,8 @@ func (o *Post) ToUnsanitizedJson() string {
 }
 
 type GetPostsSinceOptions struct {
-	UserId                   string
-	ChannelId                string
+	UserID                   string
+	ChannelID                string
 	Time                     int64
 	SkipFetchThreads         bool
 	CollapsedThreads         bool
@@ -247,19 +247,19 @@ type GetPostsSinceOptions struct {
 
 type GetPostsSinceForSyncCursor struct {
 	LastPostUpdateAt int64
-	LastPostId       string
+	LastPostID       string
 }
 
 type GetPostsSinceForSyncOptions struct {
-	ChannelId       string
-	ExcludeRemoteId string
+	ChannelID       string
+	ExcludeRemoteID string
 	IncludeDeleted  bool
 }
 
 type GetPostsOptions struct {
-	UserId                   string
-	ChannelId                string
-	PostId                   string
+	UserID                   string
+	ChannelID                string
+	PostID                   string
 	Page                     int
 	PerPage                  int
 	SkipFetchThreads         bool
@@ -274,52 +274,52 @@ func PostFromJson(data io.Reader) *Post {
 }
 
 func (o *Post) Etag() string {
-	return Etag(o.Id, o.UpdateAt)
+	return Etag(o.ID, o.UpdateAt)
 }
 
 func (o *Post) IsValid(maxPostSize int) *AppError {
-	if !IsValidId(o.Id) {
+	if !IsValidID(o.ID) {
 		return NewAppError("Post.IsValid", "model.post.is_valid.id.app_error", nil, "", http.StatusBadRequest)
 	}
 
 	if o.CreateAt == 0 {
-		return NewAppError("Post.IsValid", "model.post.is_valid.create_at.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Post.IsValid", "model.post.is_valid.create_at.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if o.UpdateAt == 0 {
-		return NewAppError("Post.IsValid", "model.post.is_valid.update_at.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Post.IsValid", "model.post.is_valid.update_at.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
-	if !IsValidId(o.UserId) {
+	if !IsValidID(o.UserID) {
 		return NewAppError("Post.IsValid", "model.post.is_valid.user_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if !IsValidId(o.ChannelId) {
+	if !IsValidID(o.ChannelID) {
 		return NewAppError("Post.IsValid", "model.post.is_valid.channel_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if !(IsValidId(o.RootId) || o.RootId == "") {
+	if !(IsValidID(o.RootID) || o.RootID == "") {
 		return NewAppError("Post.IsValid", "model.post.is_valid.root_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if !(IsValidId(o.ParentId) || o.ParentId == "") {
+	if !(IsValidID(o.ParentID) || o.ParentID == "") {
 		return NewAppError("Post.IsValid", "model.post.is_valid.parent_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if len(o.ParentId) == 26 && o.RootId == "" {
+	if len(o.ParentID) == 26 && o.RootID == "" {
 		return NewAppError("Post.IsValid", "model.post.is_valid.root_parent.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if !(len(o.OriginalId) == 26 || o.OriginalId == "") {
+	if !(len(o.OriginalID) == 26 || o.OriginalID == "") {
 		return NewAppError("Post.IsValid", "model.post.is_valid.original_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
 	if utf8.RuneCountInString(o.Message) > maxPostSize {
-		return NewAppError("Post.IsValid", "model.post.is_valid.msg.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Post.IsValid", "model.post.is_valid.msg.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if utf8.RuneCountInString(o.Hashtags) > PostHashtagsMaxRunes {
-		return NewAppError("Post.IsValid", "model.post.is_valid.hashtags.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Post.IsValid", "model.post.is_valid.hashtags.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	switch o.Type {
@@ -358,15 +358,15 @@ func (o *Post) IsValid(maxPostSize int) *AppError {
 	}
 
 	if utf8.RuneCountInString(ArrayToJson(o.Filenames)) > PostFilenamesMaxRunes {
-		return NewAppError("Post.IsValid", "model.post.is_valid.filenames.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Post.IsValid", "model.post.is_valid.filenames.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
-	if utf8.RuneCountInString(ArrayToJson(o.FileIds)) > PostFileidsMaxRunes {
-		return NewAppError("Post.IsValid", "model.post.is_valid.file_ids.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+	if utf8.RuneCountInString(ArrayToJson(o.FileIDs)) > PostFileidsMaxRunes {
+		return NewAppError("Post.IsValid", "model.post.is_valid.file_ids.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	if utf8.RuneCountInString(StringInterfaceToJson(o.GetProps())) > PostPropsMaxRunes {
-		return NewAppError("Post.IsValid", "model.post.is_valid.props.app_error", nil, "id="+o.Id, http.StatusBadRequest)
+		return NewAppError("Post.IsValid", "model.post.is_valid.props.app_error", nil, "id="+o.ID, http.StatusBadRequest)
 	}
 
 	return nil
@@ -391,11 +391,11 @@ func (o *Post) SanitizeProps() {
 }
 
 func (o *Post) PreSave() {
-	if o.Id == "" {
-		o.Id = NewId()
+	if o.ID == "" {
+		o.ID = NewID()
 	}
 
-	o.OriginalId = ""
+	o.OriginalID = ""
 
 	if o.CreateAt == 0 {
 		o.CreateAt = GetMillis()
@@ -414,14 +414,14 @@ func (o *Post) PreCommit() {
 		o.Filenames = []string{}
 	}
 
-	if o.FileIds == nil {
-		o.FileIds = []string{}
+	if o.FileIDs == nil {
+		o.FileIDs = []string{}
 	}
 
-	o.GenerateActionIds()
+	o.GenerateActionIDs()
 
 	// There's a rare bug where the client sends up duplicate FileIds so protect against that
-	o.FileIds = RemoveDuplicateStrings(o.FileIds)
+	o.FileIDs = RemoveDuplicateStrings(o.FileIDs)
 }
 
 func (o *Post) MakeNonNil() {
@@ -476,13 +476,13 @@ func (o *Post) IsSystemMessage() bool {
 
 // IsRemote returns true if the post originated on a remote cluster.
 func (o *Post) IsRemote() bool {
-	return o.RemoteId != nil && *o.RemoteId != ""
+	return o.RemoteID != nil && *o.RemoteID != ""
 }
 
 // GetRemoteID safely returns the remoteID or empty string if not remote.
 func (o *Post) GetRemoteID() string {
-	if o.RemoteId != nil {
-		return *o.RemoteId
+	if o.RemoteID != nil {
+		return *o.RemoteID
 	}
 	return ""
 }
@@ -514,8 +514,8 @@ func (o *Post) Patch(patch *PostPatch) {
 		o.SetProps(newProps)
 	}
 
-	if patch.FileIds != nil {
-		o.FileIds = *patch.FileIds
+	if patch.FileIDs != nil {
+		o.FileIDs = *patch.FileIDs
 	}
 
 	if patch.HasReactions != nil {
@@ -735,7 +735,7 @@ func (o *Post) IsFromOAuthBot() bool {
 }
 
 func (o *Post) ToNilIfInvalid() *Post {
-	if o.Id == "" {
+	if o.ID == "" {
 		return nil
 	}
 	return o

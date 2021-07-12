@@ -84,9 +84,9 @@ type WebSocketMessage interface {
 
 type WebsocketBroadcast struct {
 	OmitUsers             map[string]bool `json:"omit_users"` // broadcast is omitted for users listed here
-	UserId                string          `json:"user_id"`    // broadcast only occurs for this user
-	ChannelId             string          `json:"channel_id"` // broadcast only occurs for users in this channel
-	TeamId                string          `json:"team_id"`    // broadcast only occurs for users in this team
+	UserID                string          `json:"user_id"`    // broadcast only occurs for this user
+	ChannelID             string          `json:"channel_id"` // broadcast only occurs for users in this channel
+	TeamID                string          `json:"team_id"`    // broadcast only occurs for users in this team
 	ContainsSanitizedData bool            `json:"-"`
 	ContainsSensitiveData bool            `json:"-"`
 }
@@ -134,9 +134,9 @@ func (ev *WebSocketEvent) Add(key string, value interface{}) {
 	ev.Data[key] = value
 }
 
-func NewWebSocketEvent(event, teamId, channelId, userId string, omitUsers map[string]bool) *WebSocketEvent {
+func NewWebSocketEvent(event, teamID, channelID, userID string, omitUsers map[string]bool) *WebSocketEvent {
 	return &WebSocketEvent{Event: event, Data: make(map[string]interface{}),
-		Broadcast: &WebsocketBroadcast{TeamId: teamId, ChannelId: channelId, UserId: userId, OmitUsers: omitUsers}}
+		Broadcast: &WebsocketBroadcast{TeamID: teamID, ChannelID: channelID, UserID: userID, OmitUsers: omitUsers}}
 }
 
 func (ev *WebSocketEvent) Copy() *WebSocketEvent {

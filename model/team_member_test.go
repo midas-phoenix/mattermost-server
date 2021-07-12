@@ -11,11 +11,11 @@ import (
 )
 
 func TestTeamMemberJson(t *testing.T) {
-	o := TeamMember{TeamId: NewId(), UserId: NewId()}
+	o := TeamMember{TeamID: NewID(), UserID: NewID()}
 	json := o.ToJson()
 	ro := TeamMemberFromJson(strings.NewReader(json))
 
-	require.Equal(t, o.TeamId, ro.TeamId, "Ids do not match")
+	require.Equal(t, o.TeamID, ro.TeamID, "Ids do not match")
 }
 
 func TestTeamMemberIsValid(t *testing.T) {
@@ -23,18 +23,18 @@ func TestTeamMemberIsValid(t *testing.T) {
 
 	require.NotNil(t, o.IsValid(), "should be invalid")
 
-	o.TeamId = NewId()
+	o.TeamID = NewID()
 
 	require.NotNil(t, o.IsValid(), "should be invalid")
 }
 
 func TestUnreadMemberJson(t *testing.T) {
-	o := TeamUnread{TeamId: NewId(), MsgCount: 5, MentionCount: 3}
+	o := TeamUnread{TeamID: NewID(), MsgCount: 5, MentionCount: 3}
 	json := o.ToJson()
 
 	r := TeamUnreadFromJson(strings.NewReader(json))
 
-	require.Equal(t, o.TeamId, r.TeamId, "Ids do not match")
+	require.Equal(t, o.TeamID, r.TeamID, "Ids do not match")
 
 	require.Equal(t, o.MsgCount, r.MsgCount, "MsgCount do not match")
 }

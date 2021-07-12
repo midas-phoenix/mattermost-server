@@ -12,11 +12,11 @@ import (
 )
 
 func TestTeamJson(t *testing.T) {
-	o := Team{Id: NewId(), DisplayName: NewId()}
+	o := Team{ID: NewID(), DisplayName: NewID()}
 	json := o.ToJson()
 	ro := TeamFromJson(strings.NewReader(json))
 
-	require.Equal(t, o.Id, ro.Id, "Ids do not match")
+	require.Equal(t, o.ID, ro.ID, "Ids do not match")
 }
 
 func TestTeamIsValid(t *testing.T) {
@@ -25,7 +25,7 @@ func TestTeamIsValid(t *testing.T) {
 	err := o.IsValid()
 	require.NotNil(t, err, "should be invalid")
 
-	o.Id = NewId()
+	o.ID = NewID()
 	err = o.IsValid()
 	require.NotNil(t, err, "should be invalid")
 
@@ -53,7 +53,7 @@ func TestTeamIsValid(t *testing.T) {
 
 	o.Name = "zzzzz"
 	o.Type = TeamOpen
-	o.InviteId = NewId()
+	o.InviteID = NewID()
 	err = o.IsValid()
 	require.Nil(t, err, err)
 }
@@ -130,14 +130,14 @@ func TestTeamPatch(t *testing.T) {
 		GroupConstrained: new(bool),
 	}
 
-	*p.DisplayName = NewId()
-	*p.Description = NewId()
-	*p.CompanyName = NewId()
-	*p.AllowedDomains = NewId()
+	*p.DisplayName = NewID()
+	*p.Description = NewID()
+	*p.CompanyName = NewID()
+	*p.AllowedDomains = NewID()
 	*p.AllowOpenInvite = true
 	*p.GroupConstrained = true
 
-	o := Team{Id: NewId()}
+	o := Team{ID: NewID()}
 	o.Patch(p)
 
 	require.Equal(t, *p.DisplayName, o.DisplayName, "DisplayName did not update")

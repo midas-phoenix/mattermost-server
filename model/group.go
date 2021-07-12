@@ -31,12 +31,12 @@ var groupSourcesRequiringRemoteID = []GroupSource{
 }
 
 type Group struct {
-	Id             string      `json:"id"`
+	ID             string      `json:"id"`
 	Name           *string     `json:"name,omitempty"`
 	DisplayName    string      `json:"display_name"`
 	Description    string      `json:"description"`
 	Source         GroupSource `json:"source"`
-	RemoteId       string      `json:"remote_id"`
+	RemoteID       string      `json:"remote_id"`
 	CreateAt       int64       `json:"create_at"`
 	UpdateAt       int64       `json:"update_at"`
 	DeleteAt       int64       `json:"delete_at"`
@@ -51,12 +51,12 @@ type GroupWithSchemeAdmin struct {
 }
 
 type GroupsAssociatedToChannelWithSchemeAdmin struct {
-	ChannelId string `json:"channel_id"`
+	ChannelID string `json:"channel_id"`
 	Group
 	SchemeAdmin *bool `db:"SyncableSchemeAdmin" json:"scheme_admin,omitempty"`
 }
 type GroupsAssociatedToChannel struct {
-	ChannelId string                  `json:"channel_id"`
+	ChannelID string                  `json:"channel_id"`
 	Groups    []*GroupWithSchemeAdmin `json:"groups"`
 }
 
@@ -139,14 +139,14 @@ func (group *Group) IsValidForCreate() *AppError {
 		return NewAppError("Group.IsValidForCreate", "model.group.source.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if len(group.RemoteId) > GroupRemoteIDMaxLength || (group.RemoteId == "" && group.requiresRemoteId()) {
+	if len(group.RemoteID) > GroupRemoteIDMaxLength || (group.RemoteID == "" && group.requiresRemoteID()) {
 		return NewAppError("Group.IsValidForCreate", "model.group.remote_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
 	return nil
 }
 
-func (group *Group) requiresRemoteId() bool {
+func (group *Group) requiresRemoteID() bool {
 	for _, groupSource := range groupSourcesRequiringRemoteID {
 		if groupSource == group.Source {
 			return true
@@ -156,7 +156,7 @@ func (group *Group) requiresRemoteId() bool {
 }
 
 func (group *Group) IsValidForUpdate() *AppError {
-	if !IsValidId(group.Id) {
+	if !IsValidID(group.ID) {
 		return NewAppError("Group.IsValidForUpdate", "app.group.id.app_error", nil, "", http.StatusBadRequest)
 	}
 	if group.CreateAt == 0 {

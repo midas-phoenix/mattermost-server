@@ -20,8 +20,8 @@ const (
 )
 
 type OAuthApp struct {
-	Id           string      `json:"id"`
-	CreatorId    string      `json:"creator_id"`
+	ID           string      `json:"id"`
+	CreatorID    string      `json:"creator_id"`
 	CreateAt     int64       `json:"create_at"`
 	UpdateAt     int64       `json:"update_at"`
 	ClientSecret string      `json:"client_secret"`
@@ -37,32 +37,32 @@ type OAuthApp struct {
 // correctly.
 func (a *OAuthApp) IsValid() *AppError {
 
-	if !IsValidId(a.Id) {
+	if !IsValidID(a.ID) {
 		return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.app_id.app_error", nil, "", http.StatusBadRequest)
 	}
 
 	if a.CreateAt == 0 {
-		return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.create_at.app_error", nil, "app_id="+a.Id, http.StatusBadRequest)
+		return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.create_at.app_error", nil, "app_id="+a.ID, http.StatusBadRequest)
 	}
 
 	if a.UpdateAt == 0 {
-		return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.update_at.app_error", nil, "app_id="+a.Id, http.StatusBadRequest)
+		return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.update_at.app_error", nil, "app_id="+a.ID, http.StatusBadRequest)
 	}
 
-	if !IsValidId(a.CreatorId) {
-		return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.creator_id.app_error", nil, "app_id="+a.Id, http.StatusBadRequest)
+	if !IsValidID(a.CreatorID) {
+		return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.creator_id.app_error", nil, "app_id="+a.ID, http.StatusBadRequest)
 	}
 
 	if a.ClientSecret == "" || len(a.ClientSecret) > 128 {
-		return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.client_secret.app_error", nil, "app_id="+a.Id, http.StatusBadRequest)
+		return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.client_secret.app_error", nil, "app_id="+a.ID, http.StatusBadRequest)
 	}
 
 	if a.Name == "" || len(a.Name) > 64 {
-		return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.name.app_error", nil, "app_id="+a.Id, http.StatusBadRequest)
+		return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.name.app_error", nil, "app_id="+a.ID, http.StatusBadRequest)
 	}
 
 	if len(a.CallbackUrls) == 0 || len(fmt.Sprintf("%s", a.CallbackUrls)) > 1024 {
-		return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.callback.app_error", nil, "app_id="+a.Id, http.StatusBadRequest)
+		return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.callback.app_error", nil, "app_id="+a.ID, http.StatusBadRequest)
 	}
 
 	for _, callback := range a.CallbackUrls {
@@ -72,16 +72,16 @@ func (a *OAuthApp) IsValid() *AppError {
 	}
 
 	if a.Homepage == "" || len(a.Homepage) > 256 || !IsValidHttpUrl(a.Homepage) {
-		return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.homepage.app_error", nil, "app_id="+a.Id, http.StatusBadRequest)
+		return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.homepage.app_error", nil, "app_id="+a.ID, http.StatusBadRequest)
 	}
 
 	if utf8.RuneCountInString(a.Description) > 512 {
-		return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.description.app_error", nil, "app_id="+a.Id, http.StatusBadRequest)
+		return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.description.app_error", nil, "app_id="+a.ID, http.StatusBadRequest)
 	}
 
 	if a.IconURL != "" {
 		if len(a.IconURL) > 512 || !IsValidHttpUrl(a.IconURL) {
-			return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.icon_url.app_error", nil, "app_id="+a.Id, http.StatusBadRequest)
+			return NewAppError("OAuthApp.IsValid", "model.oauth.is_valid.icon_url.app_error", nil, "app_id="+a.ID, http.StatusBadRequest)
 		}
 	}
 
@@ -91,12 +91,12 @@ func (a *OAuthApp) IsValid() *AppError {
 // PreSave will set the Id and ClientSecret if missing.  It will also fill
 // in the CreateAt, UpdateAt times. It should be run before saving the app to the db.
 func (a *OAuthApp) PreSave() {
-	if a.Id == "" {
-		a.Id = NewId()
+	if a.ID == "" {
+		a.ID = NewID()
 	}
 
 	if a.ClientSecret == "" {
-		a.ClientSecret = NewId()
+		a.ClientSecret = NewID()
 	}
 
 	a.CreateAt = GetMillis()
@@ -115,7 +115,7 @@ func (a *OAuthApp) ToJson() string {
 
 // Generate a valid strong etag so the browser can cache the results
 func (a *OAuthApp) Etag() string {
-	return Etag(a.Id, a.UpdateAt)
+	return Etag(a.ID, a.UpdateAt)
 }
 
 // Remove any private data from the app object

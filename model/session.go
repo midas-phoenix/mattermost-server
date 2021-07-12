@@ -21,7 +21,7 @@ const (
 	SessionPropOs                 = "os"
 	SessionPropBrowser            = "browser"
 	SessionPropType               = "type"
-	SessionPropUserAccessTokenId  = "user_access_token_id"
+	SessionPropUserAccessTokenID  = "user_access_token_id"
 	SessionPropIsBot              = "is_bot"
 	SessionPropIsBotValue         = "true"
 	SessionTypeUserAccessToken    = "UserAccessToken"
@@ -41,13 +41,13 @@ type StringMap map[string]string
 // This struct's serializer methods are auto-generated. If a new field is added/removed,
 // please run make gen-serialized.
 type Session struct {
-	Id             string        `json:"id"`
+	ID             string        `json:"id"`
 	Token          string        `json:"token"`
 	CreateAt       int64         `json:"create_at"`
 	ExpiresAt      int64         `json:"expires_at"`
 	LastActivityAt int64         `json:"last_activity_at"`
-	UserId         string        `json:"user_id"`
-	DeviceId       string        `json:"device_id"`
+	UserID         string        `json:"user_id"`
+	DeviceID       string        `json:"device_id"`
 	Roles          string        `json:"roles"`
 	IsOAuth        bool          `json:"is_oauth"`
 	ExpiredNotify  bool          `json:"expired_notify"`
@@ -92,12 +92,12 @@ func SessionFromJson(data io.Reader) *Session {
 }
 
 func (s *Session) PreSave() {
-	if s.Id == "" {
-		s.Id = NewId()
+	if s.ID == "" {
+		s.ID = NewID()
 	}
 
 	if s.Token == "" {
-		s.Token = NewId()
+		s.Token = NewID()
 	}
 
 	s.CreateAt = GetMillis()
@@ -145,9 +145,9 @@ func (s *Session) AddProp(key string, value string) {
 	s.Props[key] = value
 }
 
-func (s *Session) GetTeamByTeamId(teamId string) *TeamMember {
+func (s *Session) GetTeamByTeamID(teamID string) *TeamMember {
 	for _, team := range s.TeamMembers {
-		if team.TeamId == teamId {
+		if team.TeamID == teamID {
 			return team
 		}
 	}
@@ -156,7 +156,7 @@ func (s *Session) GetTeamByTeamId(teamId string) *TeamMember {
 }
 
 func (s *Session) IsMobileApp() bool {
-	return s.DeviceId != "" || s.IsMobile()
+	return s.DeviceID != "" || s.IsMobile()
 }
 
 func (s *Session) IsMobile() bool {
@@ -207,7 +207,7 @@ func (s *Session) GetUserRoles() []string {
 }
 
 func (s *Session) GenerateCSRF() string {
-	token := NewId()
+	token := NewID()
 	s.AddProp("csrf", token)
 	return token
 }

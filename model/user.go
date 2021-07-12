@@ -66,7 +66,7 @@ const (
 // This struct's serializer methods are auto-generated. If a new field is added/removed,
 // please run make gen-serialized.
 type User struct {
-	Id                     string    `json:"id"`
+	ID                     string    `json:"id"`
 	CreateAt               int64     `json:"create_at,omitempty"`
 	UpdateAt               int64     `json:"update_at,omitempty"`
 	DeleteAt               int64     `json:"delete_at"`
@@ -91,12 +91,12 @@ type User struct {
 	Timezone               StringMap `json:"timezone"`
 	MfaActive              bool      `json:"mfa_active,omitempty"`
 	MfaSecret              string    `json:"mfa_secret,omitempty"`
-	RemoteId               *string   `json:"remote_id,omitempty"`
+	RemoteID               *string   `json:"remote_id,omitempty"`
 	LastActivityAt         int64     `db:"-" json:"last_activity_at,omitempty"`
 	IsBot                  bool      `db:"-" json:"is_bot,omitempty"`
 	BotDescription         string    `db:"-" json:"bot_description,omitempty"`
 	BotLastIconUpdate      int64     `db:"-" json:"bot_last_icon_update,omitempty"`
-	TermsOfServiceId       string    `db:"-" json:"terms_of_service_id,omitempty"`
+	TermsOfServiceID       string    `db:"-" json:"terms_of_service_id,omitempty"`
 	TermsOfServiceCreateAt int64     `db:"-" json:"terms_of_service_create_at,omitempty"`
 	DisableWelcomeEmail    bool      `db:"-" json:"disable_welcome_email"`
 }
@@ -126,7 +126,7 @@ type UserPatch struct {
 	NotifyProps StringMap `json:"notify_props,omitempty"`
 	Locale      *string   `json:"locale"`
 	Timezone    StringMap `json:"timezone"`
-	RemoteId    *string   `json:"remote_id"`
+	RemoteID    *string   `json:"remote_id"`
 }
 
 //msgp:ignore UserAuth
@@ -138,7 +138,7 @@ type UserAuth struct {
 
 //msgp:ignore UserForIndexing
 type UserForIndexing struct {
-	Id          string   `json:"id"`
+	ID          string   `json:"id"`
 	Username    string   `json:"username"`
 	Nickname    string   `json:"nickname"`
 	FirstName   string   `json:"first_name"`
@@ -146,8 +146,8 @@ type UserForIndexing struct {
 	Roles       string   `json:"roles"`
 	CreateAt    int64    `json:"create_at"`
 	DeleteAt    int64    `json:"delete_at"`
-	TeamsIds    []string `json:"team_id"`
-	ChannelsIds []string `json:"channel_id"`
+	TeamsIDs    []string `json:"team_id"`
+	ChannelsIDs []string `json:"channel_id"`
 }
 
 //msgp:ignore ViewUsersRestrictions
@@ -182,7 +182,7 @@ func (u UserSlice) Usernames() []string {
 func (u UserSlice) IDs() []string {
 	ids := []string{}
 	for _, user := range u {
-		ids = append(ids, user.Id)
+		ids = append(ids, user.ID)
 	}
 	return ids
 }
@@ -215,7 +215,7 @@ func (u UserSlice) FilterByID(ids []string) UserSlice {
 	var matches []*User
 	for _, user := range u {
 		for _, id := range ids {
-			if id == user.Id {
+			if id == user.ID {
 				matches = append(matches, user)
 			}
 		}
@@ -228,7 +228,7 @@ func (u UserSlice) FilterWithoutID(ids []string) UserSlice {
 	for _, user := range u {
 		present := false
 		for _, id := range ids {
-			if id == user.Id {
+			if id == user.ID {
 				present = true
 			}
 		}
@@ -260,84 +260,84 @@ func (u *User) DeepCopy() *User {
 // correctly.
 func (u *User) IsValid() *AppError {
 
-	if !IsValidId(u.Id) {
+	if !IsValidID(u.ID) {
 		return InvalidUserError("id", "")
 	}
 
 	if u.CreateAt == 0 {
-		return InvalidUserError("create_at", u.Id)
+		return InvalidUserError("create_at", u.ID)
 	}
 
 	if u.UpdateAt == 0 {
-		return InvalidUserError("update_at", u.Id)
+		return InvalidUserError("update_at", u.ID)
 	}
 
 	if u.IsRemote() {
 		if !IsValidUsernameAllowRemote(u.Username) {
-			return InvalidUserError("username", u.Id)
+			return InvalidUserError("username", u.ID)
 		}
 	} else {
 		if !IsValidUsername(u.Username) {
-			return InvalidUserError("username", u.Id)
+			return InvalidUserError("username", u.ID)
 		}
 	}
 
 	if len(u.Email) > UserEmailMaxLength || u.Email == "" || !IsValidEmail(u.Email) {
-		return InvalidUserError("email", u.Id)
+		return InvalidUserError("email", u.ID)
 	}
 
 	if utf8.RuneCountInString(u.Nickname) > UserNicknameMaxRunes {
-		return InvalidUserError("nickname", u.Id)
+		return InvalidUserError("nickname", u.ID)
 	}
 
 	if utf8.RuneCountInString(u.Position) > UserPositionMaxRunes {
-		return InvalidUserError("position", u.Id)
+		return InvalidUserError("position", u.ID)
 	}
 
 	if utf8.RuneCountInString(u.FirstName) > UserFirstNameMaxRunes {
-		return InvalidUserError("first_name", u.Id)
+		return InvalidUserError("first_name", u.ID)
 	}
 
 	if utf8.RuneCountInString(u.LastName) > UserLastNameMaxRunes {
-		return InvalidUserError("last_name", u.Id)
+		return InvalidUserError("last_name", u.ID)
 	}
 
 	if u.AuthData != nil && len(*u.AuthData) > UserAuthDataMaxLength {
-		return InvalidUserError("auth_data", u.Id)
+		return InvalidUserError("auth_data", u.ID)
 	}
 
 	if u.AuthData != nil && *u.AuthData != "" && u.AuthService == "" {
-		return InvalidUserError("auth_data_type", u.Id)
+		return InvalidUserError("auth_data_type", u.ID)
 	}
 
 	if u.Password != "" && u.AuthData != nil && *u.AuthData != "" {
-		return InvalidUserError("auth_data_pwd", u.Id)
+		return InvalidUserError("auth_data_pwd", u.ID)
 	}
 
 	if len(u.Password) > UserPasswordMaxLength {
-		return InvalidUserError("password_limit", u.Id)
+		return InvalidUserError("password_limit", u.ID)
 	}
 
 	if !IsValidLocale(u.Locale) {
-		return InvalidUserError("locale", u.Id)
+		return InvalidUserError("locale", u.ID)
 	}
 
 	if len(u.Timezone) > 0 {
 		if tzJSON, err := json.Marshal(u.Timezone); err != nil {
 			return NewAppError("User.IsValid", "model.user.is_valid.marshal.app_error", nil, err.Error(), http.StatusInternalServerError)
 		} else if utf8.RuneCount(tzJSON) > UserTimezoneMaxRunes {
-			return InvalidUserError("timezone_limit", u.Id)
+			return InvalidUserError("timezone_limit", u.ID)
 		}
 	}
 
 	return nil
 }
 
-func InvalidUserError(fieldName string, userId string) *AppError {
+func InvalidUserError(fieldName string, userID string) *AppError {
 	id := fmt.Sprintf("model.user.is_valid.%s.app_error", fieldName)
 	details := ""
-	if userId != "" {
-		details = "user_id=" + userId
+	if userID != "" {
+		details = "user_id=" + userID
 	}
 	return NewAppError("User.IsValid", id, nil, details, http.StatusBadRequest)
 }
@@ -354,12 +354,12 @@ func NormalizeEmail(email string) string {
 // in the CreateAt, UpdateAt times.  It will also hash the password.  It should
 // be run before saving the user to the db.
 func (u *User) PreSave() {
-	if u.Id == "" {
-		u.Id = NewId()
+	if u.ID == "" {
+		u.ID = NewID()
 	}
 
 	if u.Username == "" {
-		u.Username = NewId()
+		u.Username = NewID()
 	}
 
 	if u.AuthData != nil && *u.AuthData == "" {
@@ -522,8 +522,8 @@ func (u *User) Patch(patch *UserPatch) {
 		u.Timezone = patch.Timezone
 	}
 
-	if patch.RemoteId != nil {
-		u.RemoteId = patch.RemoteId
+	if patch.RemoteID != nil {
+		u.RemoteID = patch.RemoteID
 	}
 }
 
@@ -545,7 +545,7 @@ func (u *UserAuth) ToJson() string {
 
 // Generate a valid strong etag so the browser can cache the results
 func (u *User) Etag(showFullName, showEmail bool) string {
-	return Etag(u.Id, u.UpdateAt, u.TermsOfServiceId, u.TermsOfServiceCreateAt, showFullName, showEmail, u.BotLastIconUpdate)
+	return Etag(u.ID, u.UpdateAt, u.TermsOfServiceID, u.TermsOfServiceCreateAt, showFullName, showEmail, u.BotLastIconUpdate)
 }
 
 // Remove any private data from the user object
@@ -698,11 +698,11 @@ func IsValidUserRoles(userRoles string) bool {
 // Make sure you acually want to use this function. In context.go there are functions to check permissions
 // This function should not be used to check permissions.
 func (u *User) IsGuest() bool {
-	return IsInRole(u.Roles, SystemGuestRoleId)
+	return IsInRole(u.Roles, SystemGuestRoleID)
 }
 
 func (u *User) IsSystemAdmin() bool {
-	return IsInRole(u.Roles, SystemAdminRoleId)
+	return IsInRole(u.Roles, SystemAdminRoleID)
 }
 
 // Make sure you acually want to use this function. In context.go there are functions to check permissions
@@ -750,13 +750,13 @@ func (u *User) GetPreferredTimezone() string {
 
 // IsRemote returns true if the user belongs to a remote cluster (has RemoteId).
 func (u *User) IsRemote() bool {
-	return u.RemoteId != nil && *u.RemoteId != ""
+	return u.RemoteID != nil && *u.RemoteID != ""
 }
 
 // GetRemoteID returns the remote id for this user or "" if not a remote user.
 func (u *User) GetRemoteID() string {
-	if u.RemoteId != nil {
-		return *u.RemoteId
+	if u.RemoteID != nil {
+		return *u.RemoteID
 	}
 	return ""
 }
@@ -923,7 +923,7 @@ func CleanUsername(username string) string {
 	s = strings.Trim(s, "-")
 
 	if !IsValidUsername(s) {
-		s = "a" + NewId()
+		s = "a" + NewID()
 		mlog.Warn("Generating new username since provided username was invalid",
 			mlog.String("provided_username", username), mlog.String("new_username", s))
 	}

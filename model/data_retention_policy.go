@@ -110,7 +110,7 @@ func (rpList *RetentionPolicyWithTeamAndChannelCountsList) ToJson() []byte {
 	return b
 }
 
-func RetentionPolicyWithTeamAndChannelIdsFromJson(data io.Reader) (*RetentionPolicyWithTeamAndChannelIDs, error) {
+func RetentionPolicyWithTeamAndChannelIDsFromJson(data io.Reader) (*RetentionPolicyWithTeamAndChannelIDs, error) {
 	var rp *RetentionPolicyWithTeamAndChannelIDs
 	err := json.NewDecoder(data).Decode(&rp)
 	return rp, err

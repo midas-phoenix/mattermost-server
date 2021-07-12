@@ -11,8 +11,8 @@ import (
 )
 
 func TestAuditJson(t *testing.T) {
-	audit := Audit{Id: NewId(), UserId: NewId(), CreateAt: GetMillis()}
+	audit := Audit{ID: NewID(), UserID: NewID(), CreateAt: GetMillis()}
 	json := audit.ToJson()
 	result := AuditFromJson(strings.NewReader(json))
-	require.Equal(t, audit.Id, result.Id, "Ids do not match")
+	require.Equal(t, audit.ID, result.ID, "Ids do not match")
 }

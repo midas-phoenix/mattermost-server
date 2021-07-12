@@ -12,10 +12,10 @@ import (
 
 func TestAccessJson(t *testing.T) {
 	a1 := AccessData{}
-	a1.ClientId = NewId()
-	a1.UserId = NewId()
-	a1.Token = NewId()
-	a1.RefreshToken = NewId()
+	a1.ClientID = NewID()
+	a1.UserID = NewID()
+	a1.Token = NewID()
+	a1.RefreshToken = NewID()
 
 	json := a1.ToJson()
 	ra1 := AccessDataFromJson(strings.NewReader(json))
@@ -28,34 +28,34 @@ func TestAccessIsValid(t *testing.T) {
 
 	require.NotNil(t, ad.IsValid())
 
-	ad.ClientId = NewRandomString(28)
+	ad.ClientID = NewRandomString(28)
 	require.NotNil(t, ad.IsValid())
 
-	ad.ClientId = ""
+	ad.ClientID = ""
 	require.NotNil(t, ad.IsValid())
 
-	ad.ClientId = NewId()
+	ad.ClientID = NewID()
 	require.NotNil(t, ad.IsValid())
 
-	ad.UserId = NewRandomString(28)
+	ad.UserID = NewRandomString(28)
 	require.NotNil(t, ad.IsValid())
 
-	ad.UserId = ""
+	ad.UserID = ""
 	require.NotNil(t, ad.IsValid())
 
-	ad.UserId = NewId()
+	ad.UserID = NewID()
 	require.NotNil(t, ad.IsValid())
 
 	ad.Token = NewRandomString(22)
 	require.NotNil(t, ad.IsValid())
 
-	ad.Token = NewId()
+	ad.Token = NewID()
 	require.NotNil(t, ad.IsValid())
 
 	ad.RefreshToken = NewRandomString(28)
 	require.NotNil(t, ad.IsValid())
 
-	ad.RefreshToken = NewId()
+	ad.RefreshToken = NewID()
 	require.NotNil(t, ad.IsValid())
 
 	ad.RedirectUri = ""

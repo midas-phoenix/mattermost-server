@@ -9,15 +9,15 @@ import (
 )
 
 type OrphanedRecord struct {
-	ParentId *string `json:"parent_id"`
-	ChildId  *string `json:"child_id"`
+	ParentID *string `json:"parent_id"`
+	ChildID  *string `json:"child_id"`
 }
 
 type RelationalIntegrityCheckData struct {
 	ParentName   string           `json:"parent_name"`
 	ChildName    string           `json:"child_name"`
-	ParentIdAttr string           `json:"parent_id_attr"`
-	ChildIdAttr  string           `json:"child_id_attr"`
+	ParentIDAttr string           `json:"parent_id_attr"`
+	ChildIDAttr  string           `json:"child_id_attr"`
 	Records      []OrphanedRecord `json:"records"`
 }
 
@@ -36,16 +36,16 @@ func (r *IntegrityCheckResult) UnmarshalJSON(b []byte) error {
 		m := d.(map[string]interface{})
 		rdata.ParentName = m["parent_name"].(string)
 		rdata.ChildName = m["child_name"].(string)
-		rdata.ParentIdAttr = m["parent_id_attr"].(string)
-		rdata.ChildIdAttr = m["child_id_attr"].(string)
+		rdata.ParentIDAttr = m["parent_id_attr"].(string)
+		rdata.ChildIDAttr = m["child_id_attr"].(string)
 		for _, recData := range m["records"].([]interface{}) {
 			var record OrphanedRecord
 			m := recData.(map[string]interface{})
 			if val := m["parent_id"]; val != nil {
-				record.ParentId = NewString(val.(string))
+				record.ParentID = NewString(val.(string))
 			}
 			if val := m["child_id"]; val != nil {
-				record.ChildId = NewString(val.(string))
+				record.ChildID = NewString(val.(string))
 			}
 			rdata.Records = append(rdata.Records, record)
 		}

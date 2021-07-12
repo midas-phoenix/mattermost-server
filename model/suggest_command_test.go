@@ -11,7 +11,7 @@ import (
 )
 
 func TestSuggestCommandJson(t *testing.T) {
-	command := &SuggestCommand{Suggestion: NewId()}
+	command := &SuggestCommand{Suggestion: NewID()}
 	json := command.ToJson()
 	result := SuggestCommandFromJson(strings.NewReader(json))
 

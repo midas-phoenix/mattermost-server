@@ -25,18 +25,18 @@ type CompliancePost struct {
 	UserNickname string
 
 	// From Post
-	PostId         string
+	PostID         string
 	PostCreateAt   int64
 	PostUpdateAt   int64
 	PostDeleteAt   int64
-	PostRootId     string
-	PostParentId   string
-	PostOriginalId string
+	PostRootID     string
+	PostParentID   string
+	PostOriginalID string
 	PostMessage    string
 	PostType       string
 	PostProps      string
 	PostHashtags   string
-	PostFileIds    string
+	PostFileIDs    string
 
 	IsBot bool
 }
@@ -107,18 +107,18 @@ func (cp *CompliancePost) Row() []string {
 		cleanComplianceStrings(cp.UserNickname),
 		userType,
 
-		cp.PostId,
+		cp.PostID,
 		time.Unix(0, cp.PostCreateAt*int64(1000*1000)).Format(time.RFC3339),
 		postUpdateAt,
 		postDeleteAt,
 
-		cp.PostRootId,
-		cp.PostParentId,
-		cp.PostOriginalId,
+		cp.PostRootID,
+		cp.PostParentID,
+		cp.PostOriginalID,
 		cleanComplianceStrings(cp.PostMessage),
 		cp.PostType,
 		cp.PostProps,
 		cp.PostHashtags,
-		cp.PostFileIds,
+		cp.PostFileIDs,
 	}
 }

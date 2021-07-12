@@ -9,8 +9,8 @@ import (
 )
 
 type TypingRequest struct {
-	ChannelId string `json:"channel_id"`
-	ParentId  string `json:"parent_id"`
+	ChannelID string `json:"channel_id"`
+	ParentID  string `json:"parent_id"`
 }
 
 func (o *TypingRequest) ToJson() string {

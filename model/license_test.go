@@ -148,15 +148,15 @@ func TestLicenseToFromJson(t *testing.T) {
 	f.SetDefaults()
 
 	l := License{
-		Id:        NewId(),
+		ID:        NewID(),
 		IssuedAt:  GetMillis(),
 		StartsAt:  GetMillis(),
 		ExpiresAt: GetMillis(),
 		Customer: &Customer{
-			Id:      NewId(),
-			Name:    NewId(),
-			Email:   NewId(),
-			Company: NewId(),
+			ID:      NewID(),
+			Name:    NewID(),
+			Email:   NewID(),
+			Company: NewID(),
 		},
 		Features: &f,
 		IsTrial:  true,
@@ -167,13 +167,13 @@ func TestLicenseToFromJson(t *testing.T) {
 	l1 := LicenseFromJson(strings.NewReader(j))
 	assert.NotNil(t, l1)
 
-	CheckString(t, l1.Id, l.Id)
+	CheckString(t, l1.ID, l.ID)
 	CheckInt64(t, l1.IssuedAt, l.IssuedAt)
 	CheckInt64(t, l1.StartsAt, l.StartsAt)
 	CheckInt64(t, l1.ExpiresAt, l.ExpiresAt)
 	CheckBool(t, l1.IsTrial, l.IsTrial)
 
-	CheckString(t, l1.Customer.Id, l.Customer.Id)
+	CheckString(t, l1.Customer.ID, l.Customer.ID)
 	CheckString(t, l1.Customer.Name, l.Customer.Name)
 	CheckString(t, l1.Customer.Email, l.Customer.Email)
 	CheckString(t, l1.Customer.Company, l.Customer.Company)
@@ -216,7 +216,7 @@ func TestLicenseRecordIsValid(t *testing.T) {
 	err := lr.IsValid()
 	assert.NotNil(t, err)
 
-	lr.Id = NewId()
+	lr.ID = NewID()
 	lr.CreateAt = 0
 	err = lr.IsValid()
 	assert.NotNil(t, err)
