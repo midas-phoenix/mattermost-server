@@ -41,7 +41,7 @@ type GroupSyncable struct {
 	TeamDisplayName    string `db:"-" json:"-"`
 	TeamType           string `db:"-" json:"-"`
 	ChannelType        string `db:"-" json:"-"`
-	TeamID             string `db:"-" json:"-"`
+	TeamID_            string `db:"-" json:"-"`
 }
 
 func (syncable *GroupSyncable) IsValid() *AppError {
@@ -76,7 +76,7 @@ func (syncable *GroupSyncable) UnmarshalJSON(b []byte) error {
 		}
 	}
 	if channelID != "" {
-		syncable.TeamID = teamID
+		syncable.TeamID_ = teamID
 		syncable.SyncableID = channelID
 		syncable.Type = GroupSyncableTypeChannel
 	} else {
@@ -121,7 +121,7 @@ func (syncable *GroupSyncable) MarshalJSON() ([]byte, error) {
 			ChannelType:        syncable.ChannelType,
 			Type:               syncable.Type,
 
-			TeamID:          syncable.TeamID,
+			TeamID:          syncable.TeamID_,
 			TeamDisplayName: syncable.TeamDisplayName,
 			TeamType:        syncable.TeamType,
 

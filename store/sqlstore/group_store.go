@@ -485,7 +485,7 @@ func (s *SQLGroupStore) CreateGroupSyncable(groupSyncable *model.GroupSyncable) 
 			return nil, err
 		}
 		insertErr = s.GetMaster().Insert(groupSyncableToGroupChannel(groupSyncable))
-		groupSyncable.TeamID = channel.TeamID
+		groupSyncable.TeamID_ = channel.TeamID
 	default:
 		return nil, fmt.Errorf("invalid GroupSyncableType: %s", groupSyncable.Type)
 	}
@@ -627,7 +627,7 @@ func (s *SQLGroupStore) GetAllGroupSyncablesByGroupID(groupID string, syncableTy
 				ChannelType:        result.ChannelType,
 				TeamDisplayName:    result.TeamDisplayName,
 				TeamType:           result.TeamType,
-				TeamID:             result.TeamID,
+				TeamID_:            result.TeamID,
 				SchemeAdmin:        result.SchemeAdmin,
 			}
 			groupSyncables = append(groupSyncables, groupSyncable)
@@ -672,7 +672,7 @@ func (s *SQLGroupStore) UpdateGroupSyncable(groupSyncable *model.GroupSyncable) 
 
 		_, err = s.GetMaster().Update(groupSyncableToGroupChannel(groupSyncable))
 
-		groupSyncable.TeamID = channel.TeamID
+		groupSyncable.TeamID_ = channel.TeamID
 	default:
 		return nil, fmt.Errorf("invalid GroupSyncableType: %s", groupSyncable.Type)
 	}
