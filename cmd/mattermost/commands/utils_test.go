@@ -75,8 +75,8 @@ func TestStructToMap(t *testing.T) {
 					"Exportformat": "abc",
 					"TestGlobalRelaySettings": map[string]interface{}{
 						"Customertype": "abc",
-						"Smtpusername": "def",
-						"Smtppassword": "ghi",
+						"SMTPUsername": "def",
+						"SMTPPassword": "ghi",
 					},
 				},
 			},
@@ -98,8 +98,8 @@ func TestPrintMap(t *testing.T) {
 	inputCases := []interface{}{
 		map[string]interface{}{
 			"CustomerType": "A9",
-			"SmtpUsername": "",
-			"SmtpPassword": "",
+			"SMTPUsername": "",
+			"SMTPPassword": "",
 			"EmailAddress": "",
 		},
 		map[string]interface{}{
@@ -108,16 +108,16 @@ func TestPrintMap(t *testing.T) {
 			"DailyRunTime": "01:00",
 			"GlobalRelaySettings": map[string]interface{}{
 				"CustomerType": "A9",
-				"SmtpUsername": "",
-				"SmtpPassword": "",
+				"SMTPUsername": "",
+				"SMTPPassword": "",
 				"EmailAddress": "",
 			},
 		},
 	}
 
 	outputCases := []string{
-		"CustomerType: \"A9\"\nSmtpUsername: \"\"\nSmtpPassword: \"\"\nEmailAddress: \"\"\n",
-		"EnableExport: \"false\"\nExportFormat: \"actiance\"\nDailyRunTime: \"01:00\"\nGlobalRelaySettings:\n\t	CustomerType: \"A9\"\n\tSmtpUsername: \"\"\n\tSmtpPassword: \"\"\n\tEmailAddress: \"\"\n",
+		"CustomerType: \"A9\"\nSMTPUsername: \"\"\nSMTPPassword: \"\"\nEmailAddress: \"\"\n",
+		"EnableExport: \"false\"\nExportFormat: \"actiance\"\nDailyRunTime: \"01:00\"\nGlobalRelaySettings:\n\t	CustomerType: \"A9\"\n\tSMTPUsername: \"\"\n\tSMTPPassword: \"\"\n\tEmailAddress: \"\"\n",
 	}
 
 	cases := []struct {

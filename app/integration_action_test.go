@@ -500,7 +500,7 @@ func TestSubmitInteractiveDialog(t *testing.T) {
 				Errors: map[string]string{"name1": errReply},
 			}
 			w.WriteHeader(http.StatusOK)
-			_, _ = w.Write(response.ToJson())
+			_, _ = w.Write(response.ToJSON())
 		}
 
 		func main() {
@@ -782,7 +782,7 @@ func TestPostActionRelativePluginURL(t *testing.T) {
 		func (p *MyPlugin) 	ServeHTTP(c *plugin.Context, w http.ResponseWriter, r *http.Request) {
 			response := &model.PostActionIntegrationResponse{}
 			w.WriteHeader(http.StatusOK)
-			_, _ = w.Write(response.ToJson())
+			_, _ = w.Write(response.ToJSON())
 		}
 
 		func main() {
