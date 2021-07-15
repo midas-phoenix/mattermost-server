@@ -22,9 +22,9 @@ func newSQLTermsOfServiceStore(sqlStore *SQLStore, metrics einterfaces.MetricsIn
 	s := SQLTermsOfServiceStore{sqlStore, metrics}
 
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(model.TermsOfService{}, "TermsOfService").SetKeys(false, "Id")
-		table.ColMap("Id").SetMaxSize(26)
-		table.ColMap("UserId").SetMaxSize(26)
+		table := db.AddTableWithName(model.TermsOfService{}, "TermsOfService").SetKeys(false, "ID")
+		table.ColMap("ID").SetMaxSize(26)
+		table.ColMap("UserID").SetMaxSize(26)
 		table.ColMap("Text").SetMaxSize(model.PostMessageMaxBytesV2)
 	}
 

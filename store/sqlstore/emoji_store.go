@@ -27,9 +27,9 @@ func newSQLEmojiStore(sqlStore *SQLStore, metrics einterfaces.MetricsInterface) 
 	}
 
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(model.Emoji{}, "Emoji").SetKeys(false, "Id")
-		table.ColMap("Id").SetMaxSize(26)
-		table.ColMap("CreatorId").SetMaxSize(26)
+		table := db.AddTableWithName(model.Emoji{}, "Emoji").SetKeys(false, "ID")
+		table.ColMap("ID").SetMaxSize(26)
+		table.ColMap("CreatorID").SetMaxSize(26)
 		table.ColMap("Name").SetMaxSize(64)
 
 		table.SetUniqueTogether("Name", "DeleteAt")

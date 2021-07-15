@@ -22,13 +22,13 @@ func newSQLCommandWebhookStore(sqlStore *SQLStore) store.CommandWebhookStore {
 	s := &SQLCommandWebhookStore{sqlStore}
 
 	for _, db := range sqlStore.GetAllConns() {
-		tablec := db.AddTableWithName(model.CommandWebhook{}, "CommandWebhooks").SetKeys(false, "Id")
-		tablec.ColMap("Id").SetMaxSize(26)
-		tablec.ColMap("CommandId").SetMaxSize(26)
-		tablec.ColMap("UserId").SetMaxSize(26)
-		tablec.ColMap("ChannelId").SetMaxSize(26)
-		tablec.ColMap("RootId").SetMaxSize(26)
-		tablec.ColMap("ParentId").SetMaxSize(26)
+		tablec := db.AddTableWithName(model.CommandWebhook{}, "CommandWebhooks").SetKeys(false, "ID")
+		tablec.ColMap("ID").SetMaxSize(26)
+		tablec.ColMap("CommandID").SetMaxSize(26)
+		tablec.ColMap("UserID").SetMaxSize(26)
+		tablec.ColMap("ChannelID").SetMaxSize(26)
+		tablec.ColMap("RootID").SetMaxSize(26)
+		tablec.ColMap("ParentID").SetMaxSize(26)
 	}
 
 	return s

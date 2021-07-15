@@ -22,16 +22,16 @@ func newSQLRemoteClusterStore(sqlStore *SQLStore) store.RemoteClusterStore {
 	s := &sqlRemoteClusterStore{sqlStore}
 
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(model.RemoteCluster{}, "RemoteClusters").SetKeys(false, "RemoteId", "Name")
-		table.ColMap("RemoteId").SetMaxSize(26)
-		table.ColMap("RemoteTeamId").SetMaxSize(26)
+		table := db.AddTableWithName(model.RemoteCluster{}, "RemoteClusters").SetKeys(false, "RemoteID", "Name")
+		table.ColMap("RemoteID").SetMaxSize(26)
+		table.ColMap("RemoteTeamID").SetMaxSize(26)
 		table.ColMap("Name").SetMaxSize(64)
 		table.ColMap("DisplayName").SetMaxSize(64)
 		table.ColMap("SiteURL").SetMaxSize(512)
 		table.ColMap("Token").SetMaxSize(26)
 		table.ColMap("RemoteToken").SetMaxSize(26)
 		table.ColMap("Topics").SetMaxSize(512)
-		table.ColMap("CreatorId").SetMaxSize(26)
+		table.ColMap("CreatorID").SetMaxSize(26)
 	}
 	return s
 }

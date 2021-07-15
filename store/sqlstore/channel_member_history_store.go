@@ -25,9 +25,9 @@ func newSQLChannelMemberHistoryStore(sqlStore *SQLStore) store.ChannelMemberHist
 	}
 
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(model.ChannelMemberHistory{}, "ChannelMemberHistory").SetKeys(false, "ChannelId", "UserId", "JoinTime")
-		table.ColMap("ChannelId").SetMaxSize(26)
-		table.ColMap("UserId").SetMaxSize(26)
+		table := db.AddTableWithName(model.ChannelMemberHistory{}, "ChannelMemberHistory").SetKeys(false, "ChannelID", "UserID", "JoinTime")
+		table.ColMap("ChannelID").SetMaxSize(26)
+		table.ColMap("UserID").SetMaxSize(26)
 		table.ColMap("JoinTime").SetNotNull(true)
 	}
 

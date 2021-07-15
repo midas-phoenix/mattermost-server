@@ -26,11 +26,11 @@ func newSQLCommandStore(sqlStore *SQLStore) store.CommandStore {
 		Select("*").
 		From("Commands")
 	for _, db := range sqlStore.GetAllConns() {
-		tableo := db.AddTableWithName(model.Command{}, "Commands").SetKeys(false, "Id")
-		tableo.ColMap("Id").SetMaxSize(26)
+		tableo := db.AddTableWithName(model.Command{}, "Commands").SetKeys(false, "ID")
+		tableo.ColMap("ID").SetMaxSize(26)
 		tableo.ColMap("Token").SetMaxSize(26)
-		tableo.ColMap("CreatorId").SetMaxSize(26)
-		tableo.ColMap("TeamId").SetMaxSize(26)
+		tableo.ColMap("CreatorID").SetMaxSize(26)
+		tableo.ColMap("TeamID").SetMaxSize(26)
 		tableo.ColMap("Trigger").SetMaxSize(128)
 		tableo.ColMap("URL").SetMaxSize(1024)
 		tableo.ColMap("Method").SetMaxSize(1)
@@ -40,7 +40,7 @@ func newSQLCommandStore(sqlStore *SQLStore) store.CommandStore {
 		tableo.ColMap("AutoCompleteHint").SetMaxSize(1024)
 		tableo.ColMap("DisplayName").SetMaxSize(64)
 		tableo.ColMap("Description").SetMaxSize(128)
-		tableo.ColMap("PluginId").SetMaxSize(190)
+		tableo.ColMap("PluginID").SetMaxSize(190)
 	}
 
 	return s

@@ -136,20 +136,20 @@ func newSQLPostStore(sqlStore *SQLStore, metrics einterfaces.MetricsInterface) s
 	}
 
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(model.Post{}, "Posts").SetKeys(false, "Id")
-		table.ColMap("Id").SetMaxSize(26)
-		table.ColMap("UserId").SetMaxSize(26)
-		table.ColMap("ChannelId").SetMaxSize(26)
-		table.ColMap("RootId").SetMaxSize(26)
-		table.ColMap("ParentId").SetMaxSize(26)
-		table.ColMap("OriginalId").SetMaxSize(26)
+		table := db.AddTableWithName(model.Post{}, "Posts").SetKeys(false, "ID")
+		table.ColMap("ID").SetMaxSize(26)
+		table.ColMap("UserID").SetMaxSize(26)
+		table.ColMap("ChannelID").SetMaxSize(26)
+		table.ColMap("RootID").SetMaxSize(26)
+		table.ColMap("ParentID").SetMaxSize(26)
+		table.ColMap("OriginalID").SetMaxSize(26)
 		table.ColMap("Message").SetMaxSize(model.PostMessageMaxBytesV2)
 		table.ColMap("Type").SetMaxSize(26)
 		table.ColMap("Hashtags").SetMaxSize(1000)
 		table.ColMap("Props").SetMaxSize(8000)
 		table.ColMap("Filenames").SetMaxSize(model.PostFilenamesMaxRunes)
-		table.ColMap("FileIds").SetMaxSize(300)
-		table.ColMap("RemoteId").SetMaxSize(26)
+		table.ColMap("FileIDs").SetMaxSize(300)
+		table.ColMap("RemoteID").SetMaxSize(26)
 	}
 
 	return s

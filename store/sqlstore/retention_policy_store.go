@@ -31,19 +31,19 @@ func newSQLRetentionPolicyStore(sqlStore *SQLStore, metrics einterfaces.MetricsI
 
 	for _, db := range sqlStore.GetAllConns() {
 		table := db.AddTableWithName(model.RetentionPolicy{}, "RetentionPolicies")
-		table.SetKeys(false, "Id")
-		table.ColMap("Id").SetMaxSize(26)
+		table.SetKeys(false, "ID")
+		table.ColMap("ID").SetMaxSize(26)
 		table.ColMap("DisplayName").SetMaxSize(64)
 
 		tableC := db.AddTableWithName(model.RetentionPolicyChannel{}, "RetentionPoliciesChannels")
-		tableC.SetKeys(false, "ChannelId")
-		tableC.ColMap("PolicyId").SetMaxSize(26)
-		tableC.ColMap("ChannelId").SetMaxSize(26)
+		tableC.SetKeys(false, "ChannelID")
+		tableC.ColMap("PolicyID").SetMaxSize(26)
+		tableC.ColMap("ChannelID").SetMaxSize(26)
 
 		tableT := db.AddTableWithName(model.RetentionPolicyTeam{}, "RetentionPoliciesTeams")
-		tableT.SetKeys(false, "TeamId")
-		tableT.ColMap("PolicyId").SetMaxSize(26)
-		tableT.ColMap("TeamId").SetMaxSize(26)
+		tableT.SetKeys(false, "TeamID")
+		tableT.ColMap("PolicyID").SetMaxSize(26)
+		tableT.ColMap("TeamID").SetMaxSize(26)
 	}
 
 	return s

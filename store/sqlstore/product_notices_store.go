@@ -21,9 +21,9 @@ func newSQLProductNoticesStore(sqlStore *SQLStore) store.ProductNoticesStore {
 	s := SQLProductNoticesStore{sqlStore}
 
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(model.ProductNoticeViewState{}, "ProductNoticeViewState").SetKeys(false, "UserId", "NoticeId")
-		table.ColMap("UserId").SetMaxSize(26)
-		table.ColMap("NoticeId").SetMaxSize(26)
+		table := db.AddTableWithName(model.ProductNoticeViewState{}, "ProductNoticeViewState").SetKeys(false, "UserID", "NoticeID")
+		table.ColMap("UserID").SetMaxSize(26)
+		table.ColMap("NoticeID").SetMaxSize(26)
 	}
 
 	return s

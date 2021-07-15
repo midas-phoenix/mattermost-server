@@ -22,15 +22,15 @@ func newSQLUploadSessionStore(sqlStore *SQLStore) store.UploadSessionStore {
 		SQLStore: sqlStore,
 	}
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(model.UploadSession{}, "UploadSessions").SetKeys(false, "Id")
-		table.ColMap("Id").SetMaxSize(26)
+		table := db.AddTableWithName(model.UploadSession{}, "UploadSessions").SetKeys(false, "ID")
+		table.ColMap("ID").SetMaxSize(26)
 		table.ColMap("Type").SetMaxSize(32)
-		table.ColMap("UserId").SetMaxSize(26)
-		table.ColMap("ChannelId").SetMaxSize(26)
+		table.ColMap("UserID").SetMaxSize(26)
+		table.ColMap("ChannelID").SetMaxSize(26)
 		table.ColMap("Filename").SetMaxSize(256)
 		table.ColMap("Path").SetMaxSize(512)
-		table.ColMap("RemoteId").SetMaxSize(26)
-		table.ColMap("ReqFileId").SetMaxSize(26)
+		table.ColMap("RemoteID").SetMaxSize(26)
+		table.ColMap("ReqFileID").SetMaxSize(26)
 	}
 	return s
 }

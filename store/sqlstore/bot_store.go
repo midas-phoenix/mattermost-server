@@ -54,10 +54,10 @@ func newSQLBotStore(sqlStore *SQLStore, metrics einterfaces.MetricsInterface) st
 	}
 
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(bot{}, "Bots").SetKeys(false, "UserId")
-		table.ColMap("UserId").SetMaxSize(26)
+		table := db.AddTableWithName(bot{}, "Bots").SetKeys(false, "UserID")
+		table.ColMap("UserID").SetMaxSize(26)
 		table.ColMap("Description").SetMaxSize(1024)
-		table.ColMap("OwnerId").SetMaxSize(model.BotCreatorIDMaxRunes)
+		table.ColMap("OwnerID").SetMaxSize(model.BotCreatorIDMaxRunes)
 	}
 
 	return us

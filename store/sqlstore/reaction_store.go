@@ -22,11 +22,11 @@ func newSQLReactionStore(sqlStore *SQLStore) store.ReactionStore {
 	s := &SQLReactionStore{sqlStore}
 
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(model.Reaction{}, "Reactions").SetKeys(false, "PostId", "UserId", "EmojiName")
-		table.ColMap("UserId").SetMaxSize(26)
-		table.ColMap("PostId").SetMaxSize(26)
+		table := db.AddTableWithName(model.Reaction{}, "Reactions").SetKeys(false, "PostID", "UserID", "EmojiName")
+		table.ColMap("UserID").SetMaxSize(26)
+		table.ColMap("PostID").SetMaxSize(26)
 		table.ColMap("EmojiName").SetMaxSize(64)
-		table.ColMap("RemoteId").SetMaxSize(26)
+		table.ColMap("RemoteID").SetMaxSize(26)
 	}
 
 	return s

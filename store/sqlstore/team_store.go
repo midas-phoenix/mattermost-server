@@ -29,8 +29,8 @@ type SQLTeamStore struct {
 }
 
 type teamMember struct {
-	TeamID      string
-	UserID      string
+	TeamID      string `db:"TeamId"`
+	UserID      string `db:"UserId"`
 	Roles       string
 	DeleteAt    int64
 	SchemeUser  sql.NullBool
@@ -212,8 +212,8 @@ func newSQLTeamStore(sqlStore *SQLStore) store.TeamStore {
 		From("Teams")
 
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(model.Team{}, "Teams").SetKeys(false, "Id")
-		table.ColMap("Id").SetMaxSize(26)
+		table := db.AddTableWithName(model.Team{}, "Teams").SetKeys(false, "ID")
+		table.ColMap("ID").SetMaxSize(26)
 		table.ColMap("DisplayName").SetMaxSize(64)
 		table.ColMap("Name").SetMaxSize(64).SetUnique(true)
 		table.ColMap("Description").SetMaxSize(255)
@@ -221,12 +221,12 @@ func newSQLTeamStore(sqlStore *SQLStore) store.TeamStore {
 		table.ColMap("Email").SetMaxSize(128)
 		table.ColMap("CompanyName").SetMaxSize(64)
 		table.ColMap("AllowedDomains").SetMaxSize(1000)
-		table.ColMap("InviteId").SetMaxSize(32)
-		table.ColMap("SchemeId").SetMaxSize(26)
+		table.ColMap("InviteID").SetMaxSize(32)
+		table.ColMap("SchemeID").SetMaxSize(26)
 
-		tablem := db.AddTableWithName(teamMember{}, "TeamMembers").SetKeys(false, "TeamId", "UserId")
-		tablem.ColMap("TeamId").SetMaxSize(26)
-		tablem.ColMap("UserId").SetMaxSize(26)
+		tablem := db.AddTableWithName(teamMember{}, "TeamMembers").SetKeys(false, "TeamID", "UserID")
+		tablem.ColMap("TeamID").SetMaxSize(26)
+		tablem.ColMap("UserID").SetMaxSize(26)
 		tablem.ColMap("Roles").SetMaxSize(64)
 	}
 

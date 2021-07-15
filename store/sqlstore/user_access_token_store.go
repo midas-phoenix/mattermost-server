@@ -22,10 +22,10 @@ func newSQLUserAccessTokenStore(sqlStore *SQLStore) store.UserAccessTokenStore {
 	s := &SQLUserAccessTokenStore{sqlStore}
 
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(model.UserAccessToken{}, "UserAccessTokens").SetKeys(false, "Id")
-		table.ColMap("Id").SetMaxSize(26)
+		table := db.AddTableWithName(model.UserAccessToken{}, "UserAccessTokens").SetKeys(false, "ID")
+		table.ColMap("ID").SetMaxSize(26)
 		table.ColMap("Token").SetMaxSize(26).SetUnique(true)
-		table.ColMap("UserId").SetMaxSize(26)
+		table.ColMap("UserID").SetMaxSize(26)
 		table.ColMap("Description").SetMaxSize(512)
 	}
 

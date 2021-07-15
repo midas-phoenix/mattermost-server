@@ -58,8 +58,8 @@ func newSQLUserStore(sqlStore *SQLStore, metrics einterfaces.MetricsInterface) s
 		LeftJoin("Bots b ON ( b.UserId = u.Id )")
 
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(model.User{}, "Users").SetKeys(false, "Id")
-		table.ColMap("Id").SetMaxSize(26)
+		table := db.AddTableWithName(model.User{}, "Users").SetKeys(false, "ID")
+		table.ColMap("ID").SetMaxSize(26)
 		table.ColMap("Username").SetMaxSize(64).SetUnique(true)
 		table.ColMap("Password").SetMaxSize(128)
 		table.ColMap("AuthData").SetMaxSize(128).SetUnique(true)
@@ -73,7 +73,7 @@ func newSQLUserStore(sqlStore *SQLStore, metrics einterfaces.MetricsInterface) s
 		table.ColMap("NotifyProps").SetMaxSize(2000)
 		table.ColMap("Locale").SetMaxSize(5)
 		table.ColMap("MfaSecret").SetMaxSize(128)
-		table.ColMap("RemoteId").SetMaxSize(26)
+		table.ColMap("RemoteID").SetMaxSize(26)
 		table.ColMap("Position").SetMaxSize(128)
 		table.ColMap("Timezone").SetMaxSize(256)
 	}

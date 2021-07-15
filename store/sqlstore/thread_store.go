@@ -30,13 +30,13 @@ func newSQLThreadStore(sqlStore *SQLStore) store.ThreadStore {
 	}
 
 	for _, db := range sqlStore.GetAllConns() {
-		tableThreads := db.AddTableWithName(model.Thread{}, "Threads").SetKeys(false, "PostId")
-		tableThreads.ColMap("PostId").SetMaxSize(26)
-		tableThreads.ColMap("ChannelId").SetMaxSize(26)
+		tableThreads := db.AddTableWithName(model.Thread{}, "Threads").SetKeys(false, "PostID")
+		tableThreads.ColMap("PostID").SetMaxSize(26)
+		tableThreads.ColMap("ChannelID").SetMaxSize(26)
 		tableThreads.ColMap("Participants").SetMaxSize(0)
-		tableThreadMemberships := db.AddTableWithName(model.ThreadMembership{}, "ThreadMemberships").SetKeys(false, "PostId", "UserId")
-		tableThreadMemberships.ColMap("PostId").SetMaxSize(26)
-		tableThreadMemberships.ColMap("UserId").SetMaxSize(26)
+		tableThreadMemberships := db.AddTableWithName(model.ThreadMembership{}, "ThreadMemberships").SetKeys(false, "PostID", "UserID")
+		tableThreadMemberships.ColMap("PostID").SetMaxSize(26)
+		tableThreadMemberships.ColMap("UserID").SetMaxSize(26)
 	}
 
 	return s

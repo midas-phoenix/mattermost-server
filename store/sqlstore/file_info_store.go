@@ -57,10 +57,10 @@ func newSQLFileInfoStore(sqlStore *SQLStore, metrics einterfaces.MetricsInterfac
 	}
 
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(model.FileInfo{}, "FileInfo").SetKeys(false, "Id")
-		table.ColMap("Id").SetMaxSize(26)
-		table.ColMap("CreatorId").SetMaxSize(26)
-		table.ColMap("PostId").SetMaxSize(26)
+		table := db.AddTableWithName(model.FileInfo{}, "FileInfo").SetKeys(false, "ID")
+		table.ColMap("ID").SetMaxSize(26)
+		table.ColMap("CreatorID").SetMaxSize(26)
+		table.ColMap("PostID").SetMaxSize(26)
 		table.ColMap("Path").SetMaxSize(512)
 		table.ColMap("ThumbnailPath").SetMaxSize(512)
 		table.ColMap("PreviewPath").SetMaxSize(512)
@@ -68,7 +68,7 @@ func newSQLFileInfoStore(sqlStore *SQLStore, metrics einterfaces.MetricsInterfac
 		table.ColMap("Content").SetMaxSize(0)
 		table.ColMap("Extension").SetMaxSize(64)
 		table.ColMap("MimeType").SetMaxSize(256)
-		table.ColMap("RemoteId").SetMaxSize(26)
+		table.ColMap("RemoteID").SetMaxSize(26)
 	}
 
 	return s

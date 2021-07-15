@@ -20,9 +20,9 @@ func newSQLUserTermsOfServiceStore(sqlStore *SQLStore) store.UserTermsOfServiceS
 	s := SQLUserTermsOfServiceStore{sqlStore}
 
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(model.UserTermsOfService{}, "UserTermsOfService").SetKeys(false, "UserId")
-		table.ColMap("UserId").SetMaxSize(26)
-		table.ColMap("TermsOfServiceId").SetMaxSize(26)
+		table := db.AddTableWithName(model.UserTermsOfService{}, "UserTermsOfService").SetKeys(false, "UserID")
+		table.ColMap("UserID").SetMaxSize(26)
+		table.ColMap("TermsOfServiceID").SetMaxSize(26)
 	}
 
 	return s

@@ -27,8 +27,8 @@ func newSQLPluginStore(sqlStore *SQLStore) store.PluginStore {
 	s := &SQLPluginStore{sqlStore}
 
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(model.PluginKeyValue{}, "PluginKeyValueStore").SetKeys(false, "PluginId", "Key")
-		table.ColMap("PluginId").SetMaxSize(190)
+		table := db.AddTableWithName(model.PluginKeyValue{}, "PluginKeyValueStore").SetKeys(false, "PluginID", "Key")
+		table.ColMap("PluginID").SetMaxSize(190)
 		table.ColMap("Key").SetMaxSize(50)
 		table.ColMap("Value").SetMaxSize(8192)
 	}

@@ -23,8 +23,8 @@ func newSQLSchemeStore(sqlStore *SQLStore) store.SchemeStore {
 	s := &SQLSchemeStore{sqlStore}
 
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(model.Scheme{}, "Schemes").SetKeys(false, "Id")
-		table.ColMap("Id").SetMaxSize(26)
+		table := db.AddTableWithName(model.Scheme{}, "Schemes").SetKeys(false, "ID")
+		table.ColMap("ID").SetMaxSize(26)
 		table.ColMap("Name").SetMaxSize(model.SchemeNameMaxLength).SetUnique(true)
 		table.ColMap("DisplayName").SetMaxSize(model.SchemeDisplayNameMaxLength)
 		table.ColMap("Description").SetMaxSize(model.SchemeDescriptionMaxLength)

@@ -28,11 +28,11 @@ func newSQLSessionStore(sqlStore *SQLStore) store.SessionStore {
 	us := &SQLSessionStore{sqlStore}
 
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(model.Session{}, "Sessions").SetKeys(false, "Id")
-		table.ColMap("Id").SetMaxSize(26)
+		table := db.AddTableWithName(model.Session{}, "Sessions").SetKeys(false, "ID")
+		table.ColMap("ID").SetMaxSize(26)
 		table.ColMap("Token").SetMaxSize(26)
-		table.ColMap("UserId").SetMaxSize(26)
-		table.ColMap("DeviceId").SetMaxSize(512)
+		table.ColMap("UserID").SetMaxSize(26)
+		table.ColMap("DeviceID").SetMaxSize(512)
 		table.ColMap("Roles").SetMaxSize(64)
 		table.ColMap("Props").SetMaxSize(1000)
 	}

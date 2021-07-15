@@ -22,32 +22,32 @@ func newSQLOAuthStore(sqlStore *SQLStore) store.OAuthStore {
 	as := &SQLOAuthStore{sqlStore}
 
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(model.OAuthApp{}, "OAuthApps").SetKeys(false, "Id")
-		table.ColMap("Id").SetMaxSize(26)
-		table.ColMap("CreatorId").SetMaxSize(26)
+		table := db.AddTableWithName(model.OAuthApp{}, "OAuthApps").SetKeys(false, "ID")
+		table.ColMap("ID").SetMaxSize(26)
+		table.ColMap("CreatorID").SetMaxSize(26)
 		table.ColMap("ClientSecret").SetMaxSize(128)
 		table.ColMap("Name").SetMaxSize(64)
 		table.ColMap("Description").SetMaxSize(512)
-		table.ColMap("CallbackUrls").SetMaxSize(1024)
+		table.ColMap("CallbackURLs").SetMaxSize(1024)
 		table.ColMap("Homepage").SetMaxSize(256)
 		table.ColMap("IconURL").SetMaxSize(512)
 
 		tableAuth := db.AddTableWithName(model.AuthData{}, "OAuthAuthData").SetKeys(false, "Code")
-		tableAuth.ColMap("UserId").SetMaxSize(26)
-		tableAuth.ColMap("ClientId").SetMaxSize(26)
+		tableAuth.ColMap("UserID").SetMaxSize(26)
+		tableAuth.ColMap("ClientID").SetMaxSize(26)
 		tableAuth.ColMap("Code").SetMaxSize(128)
-		tableAuth.ColMap("RedirectUri").SetMaxSize(256)
+		tableAuth.ColMap("RedirectURI").SetMaxSize(256)
 		tableAuth.ColMap("State").SetMaxSize(1024)
 		tableAuth.ColMap("Scope").SetMaxSize(128)
 
 		tableAccess := db.AddTableWithName(model.AccessData{}, "OAuthAccessData").SetKeys(false, "Token")
-		tableAccess.ColMap("ClientId").SetMaxSize(26)
-		tableAccess.ColMap("UserId").SetMaxSize(26)
+		tableAccess.ColMap("ClientID").SetMaxSize(26)
+		tableAccess.ColMap("UserID").SetMaxSize(26)
 		tableAccess.ColMap("Token").SetMaxSize(26)
 		tableAccess.ColMap("RefreshToken").SetMaxSize(26)
-		tableAccess.ColMap("RedirectUri").SetMaxSize(256)
+		tableAccess.ColMap("RedirectURI").SetMaxSize(256)
 		tableAccess.ColMap("Scope").SetMaxSize(128)
-		tableAccess.SetUniqueTogether("ClientId", "UserId")
+		tableAccess.SetUniqueTogether("ClientID", "UserID")
 	}
 
 	return as

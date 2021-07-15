@@ -87,8 +87,8 @@ func newSQLRoleStore(sqlStore *SQLStore) store.RoleStore {
 	s := &SQLRoleStore{sqlStore}
 
 	for _, db := range sqlStore.GetAllConns() {
-		table := db.AddTableWithName(Role{}, "Roles").SetKeys(false, "Id")
-		table.ColMap("Id").SetMaxSize(26)
+		table := db.AddTableWithName(Role{}, "Roles").SetKeys(false, "ID")
+		table.ColMap("ID").SetMaxSize(26)
 		table.ColMap("Name").SetMaxSize(64).SetUnique(true)
 		table.ColMap("DisplayName").SetMaxSize(128)
 		table.ColMap("Description").SetMaxSize(1024)
