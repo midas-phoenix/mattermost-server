@@ -59,11 +59,11 @@ func BenchmarkDiff(b *testing.B) {
 		actualCfg := defaultConfigGen()
 		baseCfg.ServiceSettings.SiteURL = model.NewString("http://localhost")
 		baseCfg.ServiceSettings.ReadTimeout = model.NewInt(300)
-		baseCfg.SqlSettings.QueryTimeout = model.NewInt(0)
+		baseCfg.SQLSettings.QueryTimeout = model.NewInt(0)
 		actualCfg.PluginSettings.EnableUploads = nil
 		actualCfg.TeamSettings.MaxChannelsPerTeam = model.NewInt64(100000)
 		actualCfg.FeatureFlags = nil
-		actualCfg.SqlSettings.DataSourceReplicas = []string{
+		actualCfg.SQLSettings.DataSourceReplicas = []string{
 			"ds0",
 			"ds1",
 			"ds2",
@@ -243,7 +243,7 @@ func TestDiff(t *testing.T) {
 			defaultConfigGen(),
 			func() *model.Config {
 				cfg := defaultConfigGen()
-				cfg.SqlSettings.DataSourceReplicas = []string{
+				cfg.SQLSettings.DataSourceReplicas = []string{
 					"ds0",
 					"ds1",
 				}
@@ -251,8 +251,8 @@ func TestDiff(t *testing.T) {
 			}(),
 			ConfigDiffs{
 				{
-					Path:    "SqlSettings.DataSourceReplicas",
-					BaseVal: defaultConfigGen().SqlSettings.DataSourceReplicas,
+					Path:    "SQLSettings.DataSourceReplicas",
+					BaseVal: defaultConfigGen().SQLSettings.DataSourceReplicas,
 					ActualVal: []string{
 						"ds0",
 						"ds1",
@@ -265,7 +265,7 @@ func TestDiff(t *testing.T) {
 			"slice deletion",
 			func() *model.Config {
 				cfg := defaultConfigGen()
-				cfg.SqlSettings.DataSourceReplicas = []string{
+				cfg.SQLSettings.DataSourceReplicas = []string{
 					"ds0",
 					"ds1",
 				}
@@ -273,14 +273,14 @@ func TestDiff(t *testing.T) {
 			}(),
 			func() *model.Config {
 				cfg := defaultConfigGen()
-				cfg.SqlSettings.DataSourceReplicas = []string{
+				cfg.SQLSettings.DataSourceReplicas = []string{
 					"ds0",
 				}
 				return cfg
 			}(),
 			ConfigDiffs{
 				{
-					Path: "SqlSettings.DataSourceReplicas",
+					Path: "SQLSettings.DataSourceReplicas",
 					BaseVal: []string{
 						"ds0",
 						"ds1",
@@ -296,7 +296,7 @@ func TestDiff(t *testing.T) {
 			"slice nil",
 			func() *model.Config {
 				cfg := defaultConfigGen()
-				cfg.SqlSettings.DataSourceReplicas = []string{
+				cfg.SQLSettings.DataSourceReplicas = []string{
 					"ds0",
 					"ds1",
 				}
@@ -304,12 +304,12 @@ func TestDiff(t *testing.T) {
 			}(),
 			func() *model.Config {
 				cfg := defaultConfigGen()
-				cfg.SqlSettings.DataSourceReplicas = nil
+				cfg.SQLSettings.DataSourceReplicas = nil
 				return cfg
 			}(),
 			ConfigDiffs{
 				{
-					Path: "SqlSettings.DataSourceReplicas",
+					Path: "SQLSettings.DataSourceReplicas",
 					BaseVal: []string{
 						"ds0",
 						"ds1",

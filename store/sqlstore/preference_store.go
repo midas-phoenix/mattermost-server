@@ -12,12 +12,12 @@ import (
 	"github.com/pkg/errors"
 )
 
-type SqlPreferenceStore struct {
-	*SqlStore
+type SQLPreferenceStore struct {
+	*SQLStore
 }
 
-func newSqlPreferenceStore(sqlStore *SqlStore) store.PreferenceStore {
-	s := &SqlPreferenceStore{sqlStore}
+func newSQLPreferenceStore(sqlStore *SQLStore) store.PreferenceStore {
+	s := &SQLPreferenceStore{sqlStore}
 
 	for _, db := range sqlStore.GetAllConns() {
 		table := db.AddTableWithName(model.Preference{}, "Preferences").SetKeys(false, "UserId", "Category", "Name")
@@ -30,12 +30,12 @@ func newSqlPreferenceStore(sqlStore *SqlStore) store.PreferenceStore {
 	return s
 }
 
-func (s SqlPreferenceStore) createIndexesIfNotExists() {
+func (s SQLPreferenceStore) createIndexesIfNotExists() {
 	s.CreateIndexIfNotExists("idx_preferences_category", "Preferences", "Category")
 	s.CreateIndexIfNotExists("idx_preferences_name", "Preferences", "Name")
 }
 
-func (s SqlPreferenceStore) deleteUnusedFeatures() {
+func (s SQLPreferenceStore) deleteUnusedFeatures() {
 	mlog.Debug("Deleting any unused pre-release features")
 	sql, args, err := s.getQueryBuilder().
 		Delete("Preferences").
@@ -50,7 +50,7 @@ func (s SqlPreferenceStore) deleteUnusedFeatures() {
 	}
 }
 
-func (s SqlPreferenceStore) Save(preferences *model.Preferences) error {
+func (s SQLPreferenceStore) Save(preferences *model.Preferences) error {
 	// wrap in a transaction so that if one fails, everything fails
 	transaction, err := s.GetMaster().Begin()
 	if err != nil {
@@ -72,7 +72,7 @@ func (s SqlPreferenceStore) Save(preferences *model.Preferences) error {
 	return nil
 }
 
-func (s SqlPreferenceStore) save(transaction *gorp.Transaction, preference *model.Preference) error {
+func (s SQLPreferenceStore) save(transaction *gorp.Transaction, preference *model.Preference) error {
 	preference.PreUpdate()
 
 	if err := preference.IsValid(); err != nil {
@@ -103,7 +103,7 @@ func (s SqlPreferenceStore) save(transaction *gorp.Transaction, preference *mode
 	return nil
 }
 
-func (s SqlPreferenceStore) Get(userId string, category string, name string) (*model.Preference, error) {
+func (s SQLPreferenceStore) Get(userId string, category string, name string) (*model.Preference, error) {
 	var preference *model.Preference
 	query, args, err := s.getQueryBuilder().
 		Select("*").
@@ -123,7 +123,7 @@ func (s SqlPreferenceStore) Get(userId string, category string, name string) (*m
 	return preference, nil
 }
 
-func (s SqlPreferenceStore) GetCategory(userId string, category string) (model.Preferences, error) {
+func (s SQLPreferenceStore) GetCategory(userId string, category string) (model.Preferences, error) {
 	var preferences model.Preferences
 	query, args, err := s.getQueryBuilder().
 		Select("*").
@@ -141,7 +141,7 @@ func (s SqlPreferenceStore) GetCategory(userId string, category string) (model.P
 
 }
 
-func (s SqlPreferenceStore) GetAll(userId string) (model.Preferences, error) {
+func (s SQLPreferenceStore) GetAll(userId string) (model.Preferences, error) {
 	var preferences model.Preferences
 	query, args, err := s.getQueryBuilder().
 		Select("*").
@@ -157,7 +157,7 @@ func (s SqlPreferenceStore) GetAll(userId string) (model.Preferences, error) {
 	return preferences, nil
 }
 
-func (s SqlPreferenceStore) PermanentDeleteByUser(userId string) error {
+func (s SQLPreferenceStore) PermanentDeleteByUser(userId string) error {
 	sql, args, err := s.getQueryBuilder().
 		Delete("Preferences").
 		Where(sq.Eq{"UserId": userId}).ToSql()
@@ -170,7 +170,7 @@ func (s SqlPreferenceStore) PermanentDeleteByUser(userId string) error {
 	return nil
 }
 
-func (s SqlPreferenceStore) Delete(userId, category, name string) error {
+func (s SQLPreferenceStore) Delete(userId, category, name string) error {
 
 	sql, args, err := s.getQueryBuilder().
 		Delete("Preferences").
@@ -189,7 +189,7 @@ func (s SqlPreferenceStore) Delete(userId, category, name string) error {
 	return nil
 }
 
-func (s SqlPreferenceStore) DeleteCategory(userId string, category string) error {
+func (s SQLPreferenceStore) DeleteCategory(userId string, category string) error {
 
 	sql, args, err := s.getQueryBuilder().
 		Delete("Preferences").
@@ -207,7 +207,7 @@ func (s SqlPreferenceStore) DeleteCategory(userId string, category string) error
 	return nil
 }
 
-func (s SqlPreferenceStore) DeleteCategoryAndName(category string, name string) error {
+func (s SQLPreferenceStore) DeleteCategoryAndName(category string, name string) error {
 	sql, args, err := s.getQueryBuilder().
 		Delete("Preferences").
 		Where(sq.Eq{"Name": name}).
@@ -226,7 +226,7 @@ func (s SqlPreferenceStore) DeleteCategoryAndName(category string, name string) 
 
 // DeleteOrphanedRows removes entries from Preferences (flagged post) when a
 // corresponding post no longer exists.
-func (s *SqlPreferenceStore) DeleteOrphanedRows(limit int) (deleted int64, err error) {
+func (s *SQLPreferenceStore) DeleteOrphanedRows(limit int) (deleted int64, err error) {
 	// We need the extra level of nesting to deal with MySQL's locking
 	const query = `
 	DELETE FROM Preferences WHERE Name IN (
@@ -246,7 +246,7 @@ func (s *SqlPreferenceStore) DeleteOrphanedRows(limit int) (deleted int64, err e
 	return
 }
 
-func (s SqlPreferenceStore) CleanupFlagsBatch(limit int64) (int64, error) {
+func (s SQLPreferenceStore) CleanupFlagsBatch(limit int64) (int64, error) {
 	if limit < 0 {
 		// uint64 does not throw an error, it overflows if it is negative.
 		// it is better to manually check here, or change the function type to uint64

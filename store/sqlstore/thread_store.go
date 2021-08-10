@@ -17,16 +17,16 @@ import (
 	"github.com/mattermost/mattermost-server/v6/utils"
 )
 
-type SqlThreadStore struct {
-	*SqlStore
+type SQLThreadStore struct {
+	*SQLStore
 }
 
-func (s *SqlThreadStore) ClearCaches() {
+func (s *SQLThreadStore) ClearCaches() {
 }
 
-func newSqlThreadStore(sqlStore *SqlStore) store.ThreadStore {
-	s := &SqlThreadStore{
-		SqlStore: sqlStore,
+func newSQLThreadStore(sqlStore *SQLStore) store.ThreadStore {
+	s := &SQLThreadStore{
+		SQLStore: sqlStore,
 	}
 
 	for _, db := range sqlStore.GetAllConns() {
@@ -56,14 +56,14 @@ func threadToSlice(thread *model.Thread) []interface{} {
 	}
 }
 
-func (s *SqlThreadStore) createIndexesIfNotExists() {
+func (s *SQLThreadStore) createIndexesIfNotExists() {
 	s.CreateIndexIfNotExists("idx_thread_memberships_last_update_at", "ThreadMemberships", "LastUpdated")
 	s.CreateIndexIfNotExists("idx_thread_memberships_last_view_at", "ThreadMemberships", "LastViewed")
 	s.CreateIndexIfNotExists("idx_thread_memberships_user_id", "ThreadMemberships", "UserId")
 	s.CreateIndexIfNotExists("idx_threads_channel_id", "Threads", "ChannelId")
 }
 
-func (s *SqlThreadStore) SaveMultiple(threads []*model.Thread) ([]*model.Thread, int, error) {
+func (s *SQLThreadStore) SaveMultiple(threads []*model.Thread) ([]*model.Thread, int, error) {
 	builder := s.getQueryBuilder().Insert("Threads").Columns(threadSliceColumns()...)
 	for _, thread := range threads {
 		builder = builder.Values(threadToSlice(thread)...)
@@ -80,7 +80,7 @@ func (s *SqlThreadStore) SaveMultiple(threads []*model.Thread) ([]*model.Thread,
 	return threads, -1, nil
 }
 
-func (s *SqlThreadStore) Save(thread *model.Thread) (*model.Thread, error) {
+func (s *SQLThreadStore) Save(thread *model.Thread) (*model.Thread, error) {
 	threads, _, err := s.SaveMultiple([]*model.Thread{thread})
 	if err != nil {
 		return nil, err
@@ -88,11 +88,11 @@ func (s *SqlThreadStore) Save(thread *model.Thread) (*model.Thread, error) {
 	return threads[0], nil
 }
 
-func (s *SqlThreadStore) Update(thread *model.Thread) (*model.Thread, error) {
+func (s *SQLThreadStore) Update(thread *model.Thread) (*model.Thread, error) {
 	return s.update(s.GetMaster(), thread)
 }
 
-func (s *SqlThreadStore) update(ex gorp.SqlExecutor, thread *model.Thread) (*model.Thread, error) {
+func (s *SQLThreadStore) update(ex gorp.SqlExecutor, thread *model.Thread) (*model.Thread, error) {
 	if _, err := ex.Update(thread); err != nil {
 		return nil, errors.Wrapf(err, "failed to update thread with id=%s", thread.PostId)
 	}
@@ -100,11 +100,11 @@ func (s *SqlThreadStore) update(ex gorp.SqlExecutor, thread *model.Thread) (*mod
 	return thread, nil
 }
 
-func (s *SqlThreadStore) Get(id string) (*model.Thread, error) {
+func (s *SQLThreadStore) Get(id string) (*model.Thread, error) {
 	return s.get(s.GetReplica(), id)
 }
 
-func (s *SqlThreadStore) get(ex gorp.SqlExecutor, id string) (*model.Thread, error) {
+func (s *SQLThreadStore) get(ex gorp.SqlExecutor, id string) (*model.Thread, error) {
 	var thread model.Thread
 	query, args, _ := s.getQueryBuilder().Select("*").From("Threads").Where(sq.Eq{"PostId": id}).ToSql()
 	err := ex.SelectOne(&thread, query, args...)
@@ -118,7 +118,7 @@ func (s *SqlThreadStore) get(ex gorp.SqlExecutor, id string) (*model.Thread, err
 	return &thread, nil
 }
 
-func (s *SqlThreadStore) GetThreadsForUser(userId, teamId string, opts model.GetUserThreadsOpts) (*model.Threads, error) {
+func (s *SQLThreadStore) GetThreadsForUser(userId, teamId string, opts model.GetUserThreadsOpts) (*model.Threads, error) {
 	type JoinedThread struct {
 		PostId         string
 		ReplyCount     int64
@@ -358,7 +358,7 @@ func (s *SqlThreadStore) GetThreadsForUser(userId, teamId string, opts model.Get
 	return result, nil
 }
 
-func (s *SqlThreadStore) GetThreadFollowers(threadID string) ([]string, error) {
+func (s *SQLThreadStore) GetThreadFollowers(threadID string) ([]string, error) {
 	var users []string
 	query, args, _ := s.getQueryBuilder().
 		Select("ThreadMemberships.UserId").
@@ -372,7 +372,7 @@ func (s *SqlThreadStore) GetThreadFollowers(threadID string) ([]string, error) {
 	return users, nil
 }
 
-func (s *SqlThreadStore) GetThreadForUser(teamId string, threadMembership *model.ThreadMembership, extended bool) (*model.ThreadResponse, error) {
+func (s *SQLThreadStore) GetThreadForUser(teamId string, threadMembership *model.ThreadMembership, extended bool) (*model.ThreadResponse, error) {
 	if !threadMembership.Following {
 		return nil, nil // in case the thread is not followed anymore - return nil error to be interpreted as 404
 	}
@@ -448,7 +448,7 @@ func (s *SqlThreadStore) GetThreadForUser(teamId string, threadMembership *model
 
 	return result, nil
 }
-func (s *SqlThreadStore) MarkAllAsReadInChannels(userID string, channelIDs []string) error {
+func (s *SQLThreadStore) MarkAllAsReadInChannels(userID string, channelIDs []string) error {
 	var threadIDs []string
 
 	query, args, _ := s.getQueryBuilder().
@@ -479,7 +479,7 @@ func (s *SqlThreadStore) MarkAllAsReadInChannels(userID string, channelIDs []str
 	return nil
 
 }
-func (s *SqlThreadStore) MarkAllAsRead(userId, teamId string) error {
+func (s *SQLThreadStore) MarkAllAsRead(userId, teamId string) error {
 	memberships, err := s.GetMembershipsForUser(userId, teamId)
 	if err != nil {
 		return err
@@ -502,7 +502,7 @@ func (s *SqlThreadStore) MarkAllAsRead(userId, teamId string) error {
 	return nil
 }
 
-func (s *SqlThreadStore) MarkAsRead(userId, threadId string, timestamp int64) error {
+func (s *SQLThreadStore) MarkAsRead(userId, threadId string, timestamp int64) error {
 	query, args, _ := s.getQueryBuilder().
 		Update("ThreadMemberships").
 		Where(sq.Eq{"UserId": userId}).
@@ -515,7 +515,7 @@ func (s *SqlThreadStore) MarkAsRead(userId, threadId string, timestamp int64) er
 	return nil
 }
 
-func (s *SqlThreadStore) Delete(threadId string) error {
+func (s *SQLThreadStore) Delete(threadId string) error {
 	query, args, _ := s.getQueryBuilder().Delete("Threads").Where(sq.Eq{"PostId": threadId}).ToSql()
 	if _, err := s.GetMaster().Exec(query, args...); err != nil {
 		return errors.Wrap(err, "failed to update threads")
@@ -524,11 +524,11 @@ func (s *SqlThreadStore) Delete(threadId string) error {
 	return nil
 }
 
-func (s *SqlThreadStore) SaveMembership(membership *model.ThreadMembership) (*model.ThreadMembership, error) {
+func (s *SQLThreadStore) SaveMembership(membership *model.ThreadMembership) (*model.ThreadMembership, error) {
 	return s.saveMembership(s.GetMaster(), membership)
 }
 
-func (s *SqlThreadStore) saveMembership(ex gorp.SqlExecutor, membership *model.ThreadMembership) (*model.ThreadMembership, error) {
+func (s *SQLThreadStore) saveMembership(ex gorp.SqlExecutor, membership *model.ThreadMembership) (*model.ThreadMembership, error) {
 	if err := ex.Insert(membership); err != nil {
 		return nil, errors.Wrapf(err, "failed to save thread membership with postid=%s userid=%s", membership.PostId, membership.UserId)
 	}
@@ -536,11 +536,11 @@ func (s *SqlThreadStore) saveMembership(ex gorp.SqlExecutor, membership *model.T
 	return membership, nil
 }
 
-func (s *SqlThreadStore) UpdateMembership(membership *model.ThreadMembership) (*model.ThreadMembership, error) {
+func (s *SQLThreadStore) UpdateMembership(membership *model.ThreadMembership) (*model.ThreadMembership, error) {
 	return s.updateMembership(s.GetMaster(), membership)
 }
 
-func (s *SqlThreadStore) updateMembership(ex gorp.SqlExecutor, membership *model.ThreadMembership) (*model.ThreadMembership, error) {
+func (s *SQLThreadStore) updateMembership(ex gorp.SqlExecutor, membership *model.ThreadMembership) (*model.ThreadMembership, error) {
 	if _, err := ex.Update(membership); err != nil {
 		return nil, errors.Wrapf(err, "failed to update thread membership with postid=%s userid=%s", membership.PostId, membership.UserId)
 	}
@@ -548,7 +548,7 @@ func (s *SqlThreadStore) updateMembership(ex gorp.SqlExecutor, membership *model
 	return membership, nil
 }
 
-func (s *SqlThreadStore) GetMembershipsForUser(userId, teamId string) ([]*model.ThreadMembership, error) {
+func (s *SQLThreadStore) GetMembershipsForUser(userId, teamId string) ([]*model.ThreadMembership, error) {
 	var memberships []*model.ThreadMembership
 
 	query, args, _ := s.getQueryBuilder().
@@ -567,11 +567,11 @@ func (s *SqlThreadStore) GetMembershipsForUser(userId, teamId string) ([]*model.
 	return memberships, nil
 }
 
-func (s *SqlThreadStore) GetMembershipForUser(userId, postId string) (*model.ThreadMembership, error) {
+func (s *SQLThreadStore) GetMembershipForUser(userId, postId string) (*model.ThreadMembership, error) {
 	return s.getMembershipForUser(s.GetReplica(), userId, postId)
 }
 
-func (s *SqlThreadStore) getMembershipForUser(ex gorp.SqlExecutor, userId, postId string) (*model.ThreadMembership, error) {
+func (s *SQLThreadStore) getMembershipForUser(ex gorp.SqlExecutor, userId, postId string) (*model.ThreadMembership, error) {
 	var membership model.ThreadMembership
 	err := ex.SelectOne(&membership, "SELECT * from ThreadMemberships WHERE UserId = :UserId AND PostId = :PostId", map[string]interface{}{"UserId": userId, "PostId": postId})
 	if err != nil {
@@ -583,7 +583,7 @@ func (s *SqlThreadStore) getMembershipForUser(ex gorp.SqlExecutor, userId, postI
 	return &membership, nil
 }
 
-func (s *SqlThreadStore) DeleteMembershipForUser(userId string, postId string) error {
+func (s *SQLThreadStore) DeleteMembershipForUser(userId string, postId string) error {
 	if _, err := s.GetMaster().Exec("DELETE FROM ThreadMemberships Where PostId = :PostId AND UserId = :UserId", map[string]interface{}{"PostId": postId, "UserId": userId}); err != nil {
 		return errors.Wrap(err, "failed to update thread membership")
 	}
@@ -597,7 +597,7 @@ func (s *SqlThreadStore) DeleteMembershipForUser(userId string, postId string) e
 // - post creation (mentions handling)
 // - channel marked unread
 // - user explicitly following a thread
-func (s *SqlThreadStore) MaintainMembership(userId, postId string, opts store.ThreadMembershipOpts) (*model.ThreadMembership, error) {
+func (s *SQLThreadStore) MaintainMembership(userId, postId string, opts store.ThreadMembershipOpts) (*model.ThreadMembership, error) {
 	trx, err := s.GetMaster().Begin()
 	if err != nil {
 		return nil, errors.Wrap(err, "begin_transaction")
@@ -677,7 +677,7 @@ func (s *SqlThreadStore) MaintainMembership(userId, postId string, opts store.Th
 	return membership, err
 }
 
-func (s *SqlThreadStore) CollectThreadsWithNewerReplies(userId string, channelIds []string, timestamp int64) ([]string, error) {
+func (s *SQLThreadStore) CollectThreadsWithNewerReplies(userId string, channelIds []string, timestamp int64) ([]string, error) {
 	var changedThreads []string
 	query, args, _ := s.getQueryBuilder().
 		Select("Threads.PostId").
@@ -698,7 +698,7 @@ func (s *SqlThreadStore) CollectThreadsWithNewerReplies(userId string, channelId
 	return changedThreads, nil
 }
 
-func (s *SqlThreadStore) UpdateUnreadsByChannel(userId string, changedThreads []string, timestamp int64, updateViewedTimestamp bool) error {
+func (s *SQLThreadStore) UpdateUnreadsByChannel(userId string, changedThreads []string, timestamp int64, updateViewedTimestamp bool) error {
 	if len(changedThreads) == 0 {
 		return nil
 	}
@@ -720,7 +720,7 @@ func (s *SqlThreadStore) UpdateUnreadsByChannel(userId string, changedThreads []
 	return nil
 }
 
-func (s *SqlThreadStore) GetPosts(threadId string, since int64) ([]*model.Post, error) {
+func (s *SQLThreadStore) GetPosts(threadId string, since int64) ([]*model.Post, error) {
 	query, args, _ := s.getQueryBuilder().
 		Select("*").
 		From("Posts").
@@ -737,7 +737,7 @@ func (s *SqlThreadStore) GetPosts(threadId string, since int64) ([]*model.Post, 
 // PermanentDeleteBatchForRetentionPolicies deletes a batch of records which are affected by
 // the global or a granular retention policy.
 // See `genericPermanentDeleteBatchForRetentionPolicies` for details.
-func (s *SqlThreadStore) PermanentDeleteBatchForRetentionPolicies(now, globalPolicyEndTime, limit int64, cursor model.RetentionPolicyCursor) (int64, model.RetentionPolicyCursor, error) {
+func (s *SQLThreadStore) PermanentDeleteBatchForRetentionPolicies(now, globalPolicyEndTime, limit int64, cursor model.RetentionPolicyCursor) (int64, model.RetentionPolicyCursor, error) {
 	builder := s.getQueryBuilder().
 		Select("Threads.PostId").
 		From("Threads")
@@ -750,13 +750,13 @@ func (s *SqlThreadStore) PermanentDeleteBatchForRetentionPolicies(now, globalPol
 		NowMillis:           now,
 		GlobalPolicyEndTime: globalPolicyEndTime,
 		Limit:               limit,
-	}, s.SqlStore, cursor)
+	}, s.SQLStore, cursor)
 }
 
 // PermanentDeleteBatchThreadMembershipsForRetentionPolicies deletes a batch of records
 // which are affected by the global or a granular retention policy.
 // See `genericPermanentDeleteBatchForRetentionPolicies` for details.
-func (s *SqlThreadStore) PermanentDeleteBatchThreadMembershipsForRetentionPolicies(now, globalPolicyEndTime, limit int64, cursor model.RetentionPolicyCursor) (int64, model.RetentionPolicyCursor, error) {
+func (s *SQLThreadStore) PermanentDeleteBatchThreadMembershipsForRetentionPolicies(now, globalPolicyEndTime, limit int64, cursor model.RetentionPolicyCursor) (int64, model.RetentionPolicyCursor, error) {
 	builder := s.getQueryBuilder().
 		Select("ThreadMemberships.PostId").
 		From("ThreadMemberships").
@@ -770,11 +770,11 @@ func (s *SqlThreadStore) PermanentDeleteBatchThreadMembershipsForRetentionPolici
 		NowMillis:           now,
 		GlobalPolicyEndTime: globalPolicyEndTime,
 		Limit:               limit,
-	}, s.SqlStore, cursor)
+	}, s.SQLStore, cursor)
 }
 
 // DeleteOrphanedRows removes orphaned rows from Threads and ThreadMemberships
-func (s *SqlThreadStore) DeleteOrphanedRows(limit int) (deleted int64, err error) {
+func (s *SQLThreadStore) DeleteOrphanedRows(limit int) (deleted int64, err error) {
 	// We need the extra level of nesting to deal with MySQL's locking
 	const threadsQuery = `
 	DELETE FROM Threads WHERE PostId IN (

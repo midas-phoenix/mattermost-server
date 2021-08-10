@@ -108,7 +108,7 @@
         "IosLatestVersion": "",
         "IosMinVersion": ""
     },
-    "SqlSettings": {
+    "SQLSettings": {
         "DriverName": "mysql",
         "DataSource": "mmuser:mostest@tcp(localhost:3306)/mattermost_test?charset=utf8mb4,utf8\u0026readTimeout=30s\u0026writeTimeout=30s",
         "DataSourceReplicas": [],

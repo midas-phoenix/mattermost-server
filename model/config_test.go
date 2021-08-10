@@ -1298,8 +1298,8 @@ func TestConfigSanitize(t *testing.T) {
 	*c.EmailSettings.SMTPPassword = "baz"
 	*c.GitLabSettings.Secret = "bingo"
 	*c.OpenIdSettings.Secret = "secret"
-	c.SqlSettings.DataSourceReplicas = []string{"stuff"}
-	c.SqlSettings.DataSourceSearchReplicas = []string{"stuff"}
+	c.SQLSettings.DataSourceReplicas = []string{"stuff"}
+	c.SQLSettings.DataSourceSearchReplicas = []string{"stuff"}
 
 	c.Sanitize()
 
@@ -1309,11 +1309,11 @@ func TestConfigSanitize(t *testing.T) {
 	assert.Equal(t, FakeSetting, *c.EmailSettings.SMTPPassword)
 	assert.Equal(t, FakeSetting, *c.GitLabSettings.Secret)
 	assert.Equal(t, FakeSetting, *c.OpenIdSettings.Secret)
-	assert.Equal(t, FakeSetting, *c.SqlSettings.DataSource)
-	assert.Equal(t, FakeSetting, *c.SqlSettings.AtRestEncryptKey)
+	assert.Equal(t, FakeSetting, *c.SQLSettings.DataSource)
+	assert.Equal(t, FakeSetting, *c.SQLSettings.AtRestEncryptKey)
 	assert.Equal(t, FakeSetting, *c.ElasticsearchSettings.Password)
-	assert.Equal(t, FakeSetting, c.SqlSettings.DataSourceReplicas[0])
-	assert.Equal(t, FakeSetting, c.SqlSettings.DataSourceSearchReplicas[0])
+	assert.Equal(t, FakeSetting, c.SQLSettings.DataSourceReplicas[0])
+	assert.Equal(t, FakeSetting, c.SQLSettings.DataSourceSearchReplicas[0])
 }
 
 func TestConfigFilteredByTag(t *testing.T) {
@@ -1323,7 +1323,7 @@ func TestConfigFilteredByTag(t *testing.T) {
 	cfgMap := structToMapFilteredByTag(c, ConfigAccessTagType, ConfigAccessTagCloudRestrictable)
 
 	// Remove entire sections but the map is still there
-	clusterSettings, ok := cfgMap["SqlSettings"].(map[string]interface{})
+	clusterSettings, ok := cfgMap["SQLSettings"].(map[string]interface{})
 	require.True(t, ok)
 	require.Equal(t, 0, len(clusterSettings))
 
@@ -1344,7 +1344,7 @@ func TestConfigToJSONFiltered(t *testing.T) {
 	err := json.Unmarshal([]byte(jsonCfgFiltered), &unmarshaledCfg)
 	require.NoError(t, err)
 
-	_, ok := unmarshaledCfg["SqlSettings"]
+	_, ok := unmarshaledCfg["SQLSettings"]
 	require.False(t, ok)
 
 	serviceSettingsRaw, ok := unmarshaledCfg["ServiceSettings"]

@@ -154,7 +154,7 @@ func (s *LocalCacheUserStore) GetProfileByIds(ctx context.Context, userIds []str
 	return users, nil
 }
 
-// Get is a cache wrapper around the SqlStore method to get a user profile by id.
+// Get is a cache wrapper around the SQLStore method to get a user profile by id.
 // It checks if the user entry is present in the cache, returning the entry from cache
 // if it is present. Otherwise, it fetches the entry from the store and stores it in the
 // cache.
@@ -187,7 +187,7 @@ func (s *LocalCacheUserStore) Get(ctx context.Context, id string) (*model.User, 
 	return user, nil
 }
 
-// GetMany is a cache wrapper around the SqlStore method to get a user profiles by ids.
+// GetMany is a cache wrapper around the SQLStore method to get a user profiles by ids.
 // It checks if the user entries are present in the cache, returning the entries from cache
 // if it is present. Otherwise, it fetches the entries from the store and stores it in the
 // cache.

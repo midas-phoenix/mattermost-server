@@ -50,7 +50,7 @@ var ConfigGetCmd = &cobra.Command{
 	Use:     "get",
 	Short:   "Get config setting",
 	Long:    "Gets the value of a config setting by its name in dot notation.",
-	Example: `config get SqlSettings.DriverName`,
+	Example: `config get SQLSettings.DriverName`,
 	Args:    cobra.ExactArgs(1),
 	RunE:    configGetCmdF,
 }
@@ -67,7 +67,7 @@ var ConfigSetCmd = &cobra.Command{
 	Use:     "set",
 	Short:   "Set config setting",
 	Long:    "Sets the value of a config setting by its name in dot notation. Accepts multiple values for array settings",
-	Example: "config set SqlSettings.DriverName mysql",
+	Example: "config set store/storetest/mocks/SQLStore.go.DriverName mysql",
 	Args:    cobra.MinimumNArgs(2),
 	RunE:    configSetCmdF,
 }
@@ -85,7 +85,7 @@ var ConfigResetCmd = &cobra.Command{
 	Use:     "reset",
 	Short:   "Reset config setting",
 	Long:    "Resets the value of a config setting by its name in dot notation or a setting section. Accepts multiple values for array settings.",
-	Example: "config reset SqlSettings.DriverName LogSettings",
+	Example: "config reset SQLSettings.DriverName LogSettings",
 	RunE:    configResetCmdF,
 }
 

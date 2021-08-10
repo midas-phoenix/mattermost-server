@@ -432,7 +432,7 @@ func TestConfigShow(t *testing.T) {
 
 	t.Run("successfully dumping config", func(t *testing.T) {
 		output := th.CheckCommand(t, "config", "show")
-		assert.Contains(t, output, "SqlSettings")
+		assert.Contains(t, output, "SQLSettings")
 		assert.Contains(t, output, "MessageExportSettings")
 		assert.Contains(t, output, "AnnouncementSettings")
 	})

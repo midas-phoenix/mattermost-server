@@ -15,7 +15,7 @@ import (
 	"github.com/mattermost/mattermost-server/v6/store"
 )
 
-func TestThreadStore(t *testing.T, ss store.Store, s SqlStore) {
+func TestThreadStore(t *testing.T, ss store.Store, s SQLStore) {
 	t.Run("ThreadSQLOperations", func(t *testing.T) { testThreadSQLOperations(t, ss, s) })
 	t.Run("ThreadStorePopulation", func(t *testing.T) { testThreadStorePopulation(t, ss) })
 	t.Run("ThreadStorePermanentDeleteBatchForRetentionPolicies", func(t *testing.T) {
@@ -419,7 +419,7 @@ func testThreadStorePopulation(t *testing.T, ss store.Store) {
 	})
 }
 
-func testThreadSQLOperations(t *testing.T, ss store.Store, s SqlStore) {
+func testThreadSQLOperations(t *testing.T, ss store.Store, s SQLStore) {
 	t.Run("Save", func(t *testing.T) {
 		threadToSave := &model.Thread{
 			PostId:       model.NewId(),

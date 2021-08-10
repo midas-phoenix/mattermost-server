@@ -16,7 +16,7 @@ import (
 
 func TestStoreUpgradeDotRelease(t *testing.T) {
 	StoreTest(t, func(t *testing.T, ss store.Store) {
-		sqlStore := ss.(*SqlStore)
+		sqlStore := ss.(*SQLStore)
 		saveSchemaVersion(sqlStore, "5.33.1")
 		err := upgradeDatabase(sqlStore, CurrentSchemaVersion)
 		require.NoError(t, err)
@@ -26,7 +26,7 @@ func TestStoreUpgradeDotRelease(t *testing.T) {
 
 func TestStoreUpgrade(t *testing.T) {
 	StoreTest(t, func(t *testing.T, ss store.Store) {
-		sqlStore := ss.(*SqlStore)
+		sqlStore := ss.(*SQLStore)
 
 		t.Run("invalid currentModelVersion", func(t *testing.T) {
 			err := upgradeDatabase(sqlStore, "notaversion")
@@ -95,7 +95,7 @@ func TestStoreUpgrade(t *testing.T) {
 
 func TestSaveSchemaVersion(t *testing.T) {
 	StoreTest(t, func(t *testing.T, ss store.Store) {
-		sqlStore := ss.(*SqlStore)
+		sqlStore := ss.(*SQLStore)
 
 		t.Run("set earliest version", func(t *testing.T) {
 			saveSchemaVersion(sqlStore, Version300)
@@ -200,7 +200,7 @@ func TestMsgCountRootMigration(t *testing.T) {
 	for _, testCase := range testTable {
 		t.Run(testCase.name, func(t *testing.T) {
 			StoreTest(t, func(t *testing.T, ss store.Store) {
-				sqlStore := ss.(*SqlStore)
+				sqlStore := ss.(*SQLStore)
 				team := createTeam(ss)
 				for _, testChannel := range testCase.data {
 					t.Run(testChannel.Name, func(t *testing.T) {
@@ -260,7 +260,7 @@ func TestMsgCountRootMigration(t *testing.T) {
 
 func TestFixCRTCountsAndUnreads(t *testing.T) {
 	StoreTest(t, func(t *testing.T, ss store.Store) {
-		sqlStore := ss.(*SqlStore)
+		sqlStore := ss.(*SQLStore)
 
 		team := createTeam(ss)
 		uId1 := model.NewId()
@@ -350,7 +350,7 @@ func TestFixCRTCountsAndUnreads(t *testing.T) {
 
 func TestFixCRTChannelUnreads(t *testing.T) {
 	StoreTest(t, func(t *testing.T, ss store.Store) {
-		sqlStore := ss.(*SqlStore)
+		sqlStore := ss.(*SQLStore)
 
 		team := createTeam(ss)
 		uId1 := model.NewId()

@@ -3380,7 +3380,7 @@ func TestLoginWithLag(t *testing.T) {
 			t.Skipf("requires test flag: -mysql-replica")
 		}
 
-		if *th.App.Srv().Config().SqlSettings.DriverName != model.DatabaseDriverMysql {
+		if *th.App.Srv().Config().SQLSettings.DriverName != model.DatabaseDriverMysql {
 			t.Skipf("requires %q database driver", model.DatabaseDriverMysql)
 		}
 

@@ -77,7 +77,7 @@ import (
 var SentryDSN = "placeholder_sentry_dsn"
 
 type Server struct {
-	sqlStore        *sqlstore.SqlStore
+	sqlStore        *sqlstore.SQLStore
 	Store           store.Store
 	WebSocketRouter *WebSocketRouter
 
@@ -353,7 +353,7 @@ func NewServer(options ...Option) (*Server, error) {
 
 	if s.newStore == nil {
 		s.newStore = func() (store.Store, error) {
-			s.sqlStore = sqlstore.New(s.Config().SqlSettings, s.Metrics)
+			s.sqlStore = sqlstore.New(s.Config().SQLSettings, s.Metrics)
 
 			lcl, err2 := localcachelayer.NewLocalCacheLayer(
 				retrylayer.New(s.sqlStore),
@@ -784,7 +784,7 @@ func (s *Server) AppOptions() []AppOption {
 // Return Database type (postgres or mysql) and current version of Mattermost
 func (s *Server) DatabaseTypeAndMattermostVersion() (string, string) {
 	mattermostVersion, _ := s.Store.System().GetByName("Version")
-	return *s.Config().SqlSettings.DriverName, mattermostVersion.Value
+	return *s.Config().SQLSettings.DriverName, mattermostVersion.Value
 }
 
 // initLogging initializes and configures the logger. This may be called more than once.

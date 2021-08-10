@@ -20,12 +20,12 @@ const (
 	SessionsCleanupDelayMilliseconds = 100
 )
 
-type SqlSessionStore struct {
-	*SqlStore
+type SQLSessionStore struct {
+	*SQLStore
 }
 
-func newSqlSessionStore(sqlStore *SqlStore) store.SessionStore {
-	us := &SqlSessionStore{sqlStore}
+func newSQLSessionStore(sqlStore *SQLStore) store.SessionStore {
+	us := &SQLSessionStore{sqlStore}
 
 	for _, db := range sqlStore.GetAllConns() {
 		table := db.AddTableWithName(model.Session{}, "Sessions").SetKeys(false, "Id")
@@ -40,7 +40,7 @@ func newSqlSessionStore(sqlStore *SqlStore) store.SessionStore {
 	return us
 }
 
-func (me SqlSessionStore) createIndexesIfNotExists() {
+func (me SQLSessionStore) createIndexesIfNotExists() {
 	me.CreateIndexIfNotExists("idx_sessions_user_id", "Sessions", "UserId")
 	me.CreateIndexIfNotExists("idx_sessions_token", "Sessions", "Token")
 	me.CreateIndexIfNotExists("idx_sessions_expires_at", "Sessions", "ExpiresAt")
@@ -48,7 +48,7 @@ func (me SqlSessionStore) createIndexesIfNotExists() {
 	me.CreateIndexIfNotExists("idx_sessions_last_activity_at", "Sessions", "LastActivityAt")
 }
 
-func (me SqlSessionStore) Save(session *model.Session) (*model.Session, error) {
+func (me SQLSessionStore) Save(session *model.Session) (*model.Session, error) {
 	if session.Id != "" {
 		return nil, store.NewErrInvalidInput("Session", "id", session.Id)
 	}
@@ -73,7 +73,7 @@ func (me SqlSessionStore) Save(session *model.Session) (*model.Session, error) {
 	return session, nil
 }
 
-func (me SqlSessionStore) Get(ctx context.Context, sessionIdOrToken string) (*model.Session, error) {
+func (me SQLSessionStore) Get(ctx context.Context, sessionIdOrToken string) (*model.Session, error) {
 	var sessions []*model.Session
 
 	if _, err := me.DBFromContext(ctx).Select(&sessions, "SELECT * FROM Sessions WHERE Token = :Token OR Id = :Id LIMIT 1", map[string]interface{}{"Token": sessionIdOrToken, "Id": sessionIdOrToken}); err != nil {
@@ -98,7 +98,7 @@ func (me SqlSessionStore) Get(ctx context.Context, sessionIdOrToken string) (*mo
 	return session, nil
 }
 
-func (me SqlSessionStore) GetSessions(userId string) ([]*model.Session, error) {
+func (me SQLSessionStore) GetSessions(userId string) ([]*model.Session, error) {
 	var sessions []*model.Session
 
 	if _, err := me.GetReplica().Select(&sessions, "SELECT * FROM Sessions WHERE UserId = :UserId ORDER BY LastActivityAt DESC", map[string]interface{}{"UserId": userId}); err != nil {
@@ -121,7 +121,7 @@ func (me SqlSessionStore) GetSessions(userId string) ([]*model.Session, error) {
 	return sessions, nil
 }
 
-func (me SqlSessionStore) GetSessionsWithActiveDeviceIds(userId string) ([]*model.Session, error) {
+func (me SQLSessionStore) GetSessionsWithActiveDeviceIds(userId string) ([]*model.Session, error) {
 	query :=
 		`SELECT *
 		FROM
@@ -141,7 +141,7 @@ func (me SqlSessionStore) GetSessionsWithActiveDeviceIds(userId string) ([]*mode
 	return sessions, nil
 }
 
-func (me SqlSessionStore) GetSessionsExpired(thresholdMillis int64, mobileOnly bool, unnotifiedOnly bool) ([]*model.Session, error) {
+func (me SQLSessionStore) GetSessionsExpired(thresholdMillis int64, mobileOnly bool, unnotifiedOnly bool) ([]*model.Session, error) {
 	now := model.GetMillis()
 	builder := me.getQueryBuilder().
 		Select("*").
@@ -170,7 +170,7 @@ func (me SqlSessionStore) GetSessionsExpired(thresholdMillis int64, mobileOnly b
 	return sessions, nil
 }
 
-func (me SqlSessionStore) UpdateExpiredNotify(sessionId string, notified bool) error {
+func (me SQLSessionStore) UpdateExpiredNotify(sessionId string, notified bool) error {
 	query, args, err := me.getQueryBuilder().
 		Update("Sessions").
 		Set("ExpiredNotify", notified).
@@ -187,7 +187,7 @@ func (me SqlSessionStore) UpdateExpiredNotify(sessionId string, notified bool) e
 	return nil
 }
 
-func (me SqlSessionStore) Remove(sessionIdOrToken string) error {
+func (me SQLSessionStore) Remove(sessionIdOrToken string) error {
 	_, err := me.GetMaster().Exec("DELETE FROM Sessions WHERE Id = :Id Or Token = :Token", map[string]interface{}{"Id": sessionIdOrToken, "Token": sessionIdOrToken})
 	if err != nil {
 		return errors.Wrapf(err, "failed to delete Session with sessionIdOrToken=%s", sessionIdOrToken)
@@ -195,7 +195,7 @@ func (me SqlSessionStore) Remove(sessionIdOrToken string) error {
 	return nil
 }
 
-func (me SqlSessionStore) RemoveAllSessions() error {
+func (me SQLSessionStore) RemoveAllSessions() error {
 	_, err := me.GetMaster().Exec("DELETE FROM Sessions")
 	if err != nil {
 		return errors.Wrap(err, "failed to delete all Sessions")
@@ -203,7 +203,7 @@ func (me SqlSessionStore) RemoveAllSessions() error {
 	return nil
 }
 
-func (me SqlSessionStore) PermanentDeleteSessionsByUser(userId string) error {
+func (me SQLSessionStore) PermanentDeleteSessionsByUser(userId string) error {
 	_, err := me.GetMaster().Exec("DELETE FROM Sessions WHERE UserId = :UserId", map[string]interface{}{"UserId": userId})
 	if err != nil {
 		return errors.Wrapf(err, "failed to delete Session with userId=%s", userId)
@@ -212,7 +212,7 @@ func (me SqlSessionStore) PermanentDeleteSessionsByUser(userId string) error {
 	return nil
 }
 
-func (me SqlSessionStore) UpdateExpiresAt(sessionId string, time int64) error {
+func (me SQLSessionStore) UpdateExpiresAt(sessionId string, time int64) error {
 	_, err := me.GetMaster().Exec("UPDATE Sessions SET ExpiresAt = :ExpiresAt, ExpiredNotify = false WHERE Id = :Id", map[string]interface{}{"ExpiresAt": time, "Id": sessionId})
 	if err != nil {
 		return errors.Wrapf(err, "failed to update Session with sessionId=%s", sessionId)
@@ -220,7 +220,7 @@ func (me SqlSessionStore) UpdateExpiresAt(sessionId string, time int64) error {
 	return nil
 }
 
-func (me SqlSessionStore) UpdateLastActivityAt(sessionId string, time int64) error {
+func (me SQLSessionStore) UpdateLastActivityAt(sessionId string, time int64) error {
 	_, err := me.GetMaster().Exec("UPDATE Sessions SET LastActivityAt = :LastActivityAt WHERE Id = :Id", map[string]interface{}{"LastActivityAt": time, "Id": sessionId})
 	if err != nil {
 		return errors.Wrapf(err, "failed to update Session with id=%s", sessionId)
@@ -228,7 +228,7 @@ func (me SqlSessionStore) UpdateLastActivityAt(sessionId string, time int64) err
 	return nil
 }
 
-func (me SqlSessionStore) UpdateRoles(userId, roles string) (string, error) {
+func (me SQLSessionStore) UpdateRoles(userId, roles string) (string, error) {
 	query := "UPDATE Sessions SET Roles = :Roles WHERE UserId = :UserId"
 
 	_, err := me.GetMaster().Exec(query, map[string]interface{}{"Roles": roles, "UserId": userId})
@@ -238,7 +238,7 @@ func (me SqlSessionStore) UpdateRoles(userId, roles string) (string, error) {
 	return userId, nil
 }
 
-func (me SqlSessionStore) UpdateDeviceId(id string, deviceId string, expiresAt int64) (string, error) {
+func (me SQLSessionStore) UpdateDeviceId(id string, deviceId string, expiresAt int64) (string, error) {
 	query := "UPDATE Sessions SET DeviceId = :DeviceId, ExpiresAt = :ExpiresAt, ExpiredNotify = false WHERE Id = :Id"
 
 	_, err := me.GetMaster().Exec(query, map[string]interface{}{"DeviceId": deviceId, "Id": id, "ExpiresAt": expiresAt})
@@ -248,7 +248,7 @@ func (me SqlSessionStore) UpdateDeviceId(id string, deviceId string, expiresAt i
 	return deviceId, nil
 }
 
-func (me SqlSessionStore) UpdateProps(session *model.Session) error {
+func (me SQLSessionStore) UpdateProps(session *model.Session) error {
 	oldSession, err := me.Get(context.Background(), session.Id)
 	if err != nil {
 		return err
@@ -265,7 +265,7 @@ func (me SqlSessionStore) UpdateProps(session *model.Session) error {
 	return nil
 }
 
-func (me SqlSessionStore) AnalyticsSessionCount() (int64, error) {
+func (me SQLSessionStore) AnalyticsSessionCount() (int64, error) {
 	query :=
 		`SELECT
 			COUNT(*)
@@ -279,7 +279,7 @@ func (me SqlSessionStore) AnalyticsSessionCount() (int64, error) {
 	return count, nil
 }
 
-func (me SqlSessionStore) Cleanup(expiryTime int64, batchSize int64) {
+func (me SQLSessionStore) Cleanup(expiryTime int64, batchSize int64) {
 	mlog.Debug("Cleaning up session store.")
 
 	var query string

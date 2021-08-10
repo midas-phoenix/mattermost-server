@@ -2289,7 +2289,7 @@ func TestReplyToPostWithLag(t *testing.T) {
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
 
-	if *th.App.Srv().Config().SqlSettings.DriverName != model.DatabaseDriverMysql {
+	if *th.App.Srv().Config().SQLSettings.DriverName != model.DatabaseDriverMysql {
 		t.Skipf("requires %q database driver", model.DatabaseDriverMysql)
 	}
 

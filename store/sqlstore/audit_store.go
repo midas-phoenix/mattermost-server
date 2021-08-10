@@ -11,12 +11,12 @@ import (
 	"github.com/mattermost/mattermost-server/v6/store"
 )
 
-type SqlAuditStore struct {
-	*SqlStore
+type SQLAuditStore struct {
+	*SQLStore
 }
 
-func newSqlAuditStore(sqlStore *SqlStore) store.AuditStore {
-	s := &SqlAuditStore{sqlStore}
+func newSQLAuditStore(sqlStore *SQLStore) store.AuditStore {
+	s := &SQLAuditStore{sqlStore}
 
 	for _, db := range sqlStore.GetAllConns() {
 		table := db.AddTableWithName(model.Audit{}, "Audits").SetKeys(false, "Id")
@@ -31,11 +31,11 @@ func newSqlAuditStore(sqlStore *SqlStore) store.AuditStore {
 	return s
 }
 
-func (s SqlAuditStore) createIndexesIfNotExists() {
+func (s SQLAuditStore) createIndexesIfNotExists() {
 	s.CreateIndexIfNotExists("idx_audits_user_id", "Audits", "UserId")
 }
 
-func (s SqlAuditStore) Save(audit *model.Audit) error {
+func (s SQLAuditStore) Save(audit *model.Audit) error {
 	audit.Id = model.NewId()
 	audit.CreateAt = model.GetMillis()
 
@@ -45,7 +45,7 @@ func (s SqlAuditStore) Save(audit *model.Audit) error {
 	return nil
 }
 
-func (s SqlAuditStore) Get(userId string, offset int, limit int) (model.Audits, error) {
+func (s SQLAuditStore) Get(userId string, offset int, limit int) (model.Audits, error) {
 	if limit > 1000 {
 		return nil, store.NewErrOutOfBounds(limit)
 	}
@@ -73,7 +73,7 @@ func (s SqlAuditStore) Get(userId string, offset int, limit int) (model.Audits, 
 	return audits, nil
 }
 
-func (s SqlAuditStore) PermanentDeleteByUser(userId string) error {
+func (s SQLAuditStore) PermanentDeleteByUser(userId string) error {
 	if _, err := s.GetMaster().Exec("DELETE FROM Audits WHERE UserId = :userId",
 		map[string]interface{}{"userId": userId}); err != nil {
 		return errors.Wrapf(err, "failed to delete Audit with userId=%s", userId)
